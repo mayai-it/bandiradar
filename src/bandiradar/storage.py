@@ -271,6 +271,18 @@ class Store:
         ).fetchone()
         return Match.model_validate_json(row["data"]) if row else None
 
+    def list_matches(
+        self, profile_version: str, min_score: int = 0, limit: int | None = None
+    ) -> list[Match]:
+        """Persisted matches for a profile_version, score descending."""
+        rows = self.conn.execute(
+            "SELECT data FROM matches WHERE profile_version=? AND score>=? "
+            "ORDER BY score DESC",
+            (profile_version, min_score),
+        ).fetchall()
+        matches = [Match.model_validate_json(r["data"]) for r in rows]
+        return matches[:limit] if limit is not None else matches
+
     # -------------------------------------------------------------------- runs
     def start_run(self, source: str | None, started_at: datetime | None = None) -> int:
         cur = self.conn.execute(
