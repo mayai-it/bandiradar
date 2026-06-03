@@ -16,6 +16,7 @@ MODULES = [
     "bandiradar.sources.base",
     "bandiradar.sources.anac",
     "bandiradar.sources.ted",
+    "bandiradar.sources.incentivi",
     "bandiradar.matching",
     "bandiradar.matching.prefilter",
     "bandiradar.matching.relevance",

@@ -1,0 +1,2710 @@
+{
+ "_note": "REAL capture from incentivi.gov.it (MIMIT) public Solr export (/solr/coredrupal/select, index 'incentivi'). OFFLINE tests/--sample. Records verbatim. Licensed IODL v2.0 - Italian Open Data License (attribution required).",
+ "_attribution": "Source: incentivi.gov.it (Ministero delle Imprese e del Made in Italy). Italian Open Data License v2.0 (IODL 2.0) - https://www.dati.gov.it/iodl/2.0/",
+ "_source": "GET https://www.incentivi.gov.it/solr/coredrupal/select?q=...&fq=index_id:incentivi&wt=json",
+ "_captured": "2026-06-04",
+ "docs": [
+  {
+   "id": "t9gcjo-incentivi-entity:node/3400:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Altri servizi",
+    "Alberghiero",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Turismo",
+    "Servizi di trasporto",
+    "Tutti i settori economici ammissibili a ricevere aiuti",
+    "<p>2066866</p>",
+    "25835",
+    "2026-06-30T00:00:00",
+    "0",
+    "1000000",
+    "Microimpresa",
+    "Media Impresa",
+    "Grande Impresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa",
+    "<p>Non classificabile (Soggetto Pubblico); Piccola Impresa (escluse Microimprese); Grande Impresa; Microimpresa; Media Impresa</p>",
+    "Formazione Professionale",
+    "Costo del personale",
+    "Materie prime, di consumo e merci",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri",
+    "Impianti/Macchinari/Attrezzature",
+    "Fabbricati e terreni",
+    "<p>Immateriali - Know-How; Immateriali - Marchi; Materiali - Progettazione/studi/consulenze; Oneri diversi di gestione; Oneri finanziari; Servizi - Servizi professionali; Costi di personale - Costo del personale; Immateriali - Diritti Di Brevetto; Costi generali - Spese generali; Immateriali - Licenze; Materiali - Impianti/Macchinari/Attrezzature; Materie prime, di consumo e merci; Servizi - Altri servizi; Costi di personale - Formazione Professionale; Immateriali - Conoscenze Tecniche Non Brevettate; Ammortamenti - Costo dei fabbricati e dei terreni; Ammortamenti - Costi della ricerca contrattuale, delle conoscenze e dei brevetti acquisiti o ottenuti in licenza da fonti esterne alle normali condizioni di mercato; Ammortamenti - Costo di strumenti e attrezzature</p>",
+    "105173",
+    "<p>Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR</p>",
+    "1734521555",
+    "2023-03-10T00:00:00",
+    "Ministero delle Imprese e del Made in Italy - Dipartimento per le politiche per le imprese - Direzione generale per la politica industriale, la riconversione e la crisi industriale, l’innovazione, le PMI e il made in Italy (Autorità responsabile) Dipartimento per le politiche per le imprese - DGIND - Divisione II - Politiche per la digitalizzazione delle imprese, l’innovazione e l’analisi dei settori produttivi (Unità Organizzativa)",
+    "<p>Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR</p>",
+    "Campania",
+    "Puglia",
+    "Digitalizzazione",
+    "Innovazione e ricerca",
+    "Start up/Sviluppo d'impresa",
+    "<p>Ministero delle Imprese e del Made in Italy</p>",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "300000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-03-10T00:00:00Z\"\n                 close-date=\"2026-06-30T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-580\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Start up/Sviluppo d&#039;impresa</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Manifestazione d&#039;interesse per l&#039;accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/manifestazione-dinteresse-laccesso-ai-servizi-la-digitalizzazione-forniti-da-soe-ap-edih\">vai alla scheda <span class=\"visually-hidden\">Manifestazione d&amp;#039;interesse per l&amp;#039;accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/manifestazione-dinteresse-laccesso-ai-servizi-la-digitalizzazione-forniti-da-soe-ap-edih",
+   "zs_body": "Cos'è Il So E AP-EDIH (Apulian European Digital Innovation Hub) è un centro di innovazione digitale localizzato in Puglia e Campania nato per supportare le PMI regionali nella transizione digitale. Si occupa di fornire servizi avanzati in ambiti come Intelligenza Artificiale e Cybersecurity, con focus su settori strategici come manifattura, agroalimentare, sanità, energia.  A chi si rivolge I servizi sono rivolti alle PMI Pugliesi e Campane.  Cosa prevede AP-EDIH offre servizi integrati di assessment tecnologico, test prima dell’investimento, formazione, supporto agli investimenti e networking, collaborando anche con altri hub italiani ed europei per rafforzare la leadership digitale a livello UE. ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Il So E AP-EDIH (Apulian European Digital Innovation Hub) è un centro di innovazione digitale localizzato in Puglia e Campania nato per supportare le PMI regionali nella transizione digitale. Si occupa di fornire servizi avanzati in ambiti come Intelligenza Artificiale e Cybersecurity, con focus su settori strategici come manifattura, agroalimentare, sanità, energia.  ",
+    "A chi si rivolge",
+    "I servizi sono rivolti alle PMI Pugliesi e Campane.  ",
+    "Cosa prevede",
+    "AP-EDIH offre servizi integrati di assessment tecnologico, test prima dell’investimento, formazione, supporto agli investimenti e networking, collaborando anche con altri hub italiani ed europei per rafforzare la leadership digitale a livello UE.  "
+   ],
+   "zm_field_activity_sector": [
+    "586",
+    "474",
+    "490",
+    "484",
+    "260",
+    "480",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "250",
+    "486",
+    "479",
+    "477",
+    "481",
+    "475",
+    "485",
+    "489",
+    "488",
+    "483"
+   ],
+   "zs_field_activity_sector": "586",
+   "zm_field_activity_sector_value": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Altri servizi",
+    "Alberghiero",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Turismo",
+    "Servizi di trasporto"
+   ],
+   "zs_field_activity_sector_value": "Agricoltura, silvicoltura e pesca",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+   "zs_field_budget_allocation": "2066866",
+   "zs_field_close_date": "2026-06-30T00:00:00",
+   "zs_field_cost_max": "1000000",
+   "zs_field_cost_min": "0",
+   "zm_field_costs": [
+    "0",
+    "1000000"
+   ],
+   "zs_field_costs": "1000000",
+   "zm_field_dimensions": [
+    "570",
+    "212",
+    "211",
+    "263",
+    "213"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa",
+    "Media Impresa",
+    "Grande Impresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "299",
+    "284",
+    "285",
+    "215",
+    "217",
+    "216",
+    "289"
+   ],
+   "zs_field_granted_costs": "299",
+   "zm_field_granted_costs_value": [
+    "Formazione Professionale",
+    "Costo del personale",
+    "Materie prime, di consumo e merci",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri",
+    "Impianti/Macchinari/Attrezzature",
+    "Fabbricati e terreni"
+   ],
+   "zs_field_granted_costs_value": "Formazione Professionale",
+   "zs_field_implementation_ruleset": "Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR",
+   "zs_field_link": "https://www.medisdih.it/wp/",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2023-03-10T00:00:00",
+   "zs_field_primary_ruleset": "Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR",
+   "zm_field_regions": [
+    "221",
+    "230"
+   ],
+   "zs_field_regions": "221",
+   "zm_field_regions_value": [
+    "Campania",
+    "Puglia"
+   ],
+   "zs_field_regions_value": "Campania",
+   "zm_field_scopes": [
+    "265",
+    "273",
+    "580"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione",
+    "Innovazione e ricerca",
+    "Start up/Sviluppo d'impresa"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "Ministero delle Imprese e del Made in Italy",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "300000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "300000"
+   ],
+   "zs_field_support_grant_type_min_max": "300000",
+   "zs_nid": "3400",
+   "zs_title": "Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH",
+   "tum_X3b_it_title_ft": [
+    "Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH"
+   ],
+   "ss_search_api_id": "entity:node/3400:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-12-18T11:32:35Z",
+   "boost_document": 1.0,
+   "_version_": 1860757702984073216,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:27:09Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/3265:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "Metallurgia",
+    "Meccanica",
+    "ICT",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Salute",
+    "Ristorazione",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti",
+    "9000000",
+    "31299",
+    "2027-12-31T00:00:00",
+    " ",
+    "0",
+    "3000000",
+    "Microimpresa",
+    "Microimpresa",
+    "Servizi, brevetti e licenze",
+    "Servizi - Servizi professionali",
+    "104934",
+    "Decreto direttoriale MIMIT 19 novembre 2024 - Voucher 3I",
+    "1742990255",
+    "278 del 27/11/2024",
+    "2024-12-10T00:00:00",
+    "Ministero delle Imprese e del Made in Italy - Dipartimento per le politiche per le imprese - Direzione generale per gli incentivi alle imprese (Autorità responsabile) Dipartimento per le politiche per le imprese - DGIAI - Divisione IX - Interventi per il sostegno all'innovazione e alla competitivita' delle imprese (Unità Organizzativa)",
+    " ",
+    "Decreto direttoriale MIMIT 19 novembre 2024 - Voucher 3I",
+    "Piemonte",
+    "Lombardia",
+    "Valle d'Aosta/Vallée d'Aoste",
+    "Liguria",
+    "Abruzzo",
+    "Molise",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Puglia",
+    "Sicilia",
+    "Trentino-Alto Adige/Südtirol",
+    "Veneto",
+    "Sardegna",
+    "Trentino-Alto Adige/Südtirol",
+    "Toscana",
+    "Friuli-Venezia Giulia",
+    "Emilia-Romagna",
+    "Umbria",
+    "Marche",
+    "Lazio",
+    "Innovazione e ricerca",
+    "Sostegno investimenti",
+    " ",
+    "Ministero delle Imprese e del Made in Italy",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "Sovvenzione/Contributo in conto interessi - Contributo in c/capitale c/impianti",
+    "0",
+    "3000000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-12-10T00:00:00Z\"\n                 close-date=\"2027-12-31T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-270\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Sostegno investimenti</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Voucher 3I - Investire in innovazione</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/voucher-3i-investire-innovazione\">vai alla scheda <span class=\"visually-hidden\">Voucher 3I - Investire in innovazione</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/voucher-3i-investire-innovazione",
+   "zs_body": "Cos'è Il “Voucher 3I – Investire in innovazione” sostiene l’innovazione incentivando l’acquisto di servizi professionali, resi esclusivamente da avvocati e consulenti in proprietà industriale, per la brevettazione delle invenzioni industriali. A chi si rivolge La misura si rivolge a startup e microimprese. Cosa prevede Il “Voucher 3I” consentirà di acquisire i seguenti servizi di consulenza forniti dai professionisti iscritti negli elenchi gestiti dal Consiglio Nazionale Forense e dall’Ordine dei consulenti in proprietà industriale: verifica della brevettabilità dell'invenzione e ricerche di anteriorità preventive; stesura della domanda di brevetto e di deposito presso l'Ufficio Italiano Brevetti e Marchi; deposito all'estero di una domanda che rivendica la priorità di una precedente domanda nazionale di brevetto.",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Il “Voucher 3I – Investire in innovazione” sostiene l’innovazione incentivando l’acquisto di servizi professionali, resi esclusivamente da avvocati e consulenti in proprietà industriale, per la brevettazione delle invenzioni industriali.",
+    "A chi si rivolge",
+    "La misura si rivolge a startup e microimprese.",
+    "Cosa prevede",
+    "Il “Voucher 3I” consentirà di acquisire i seguenti servizi di consulenza forniti dai professionisti iscritti negli elenchi gestiti dal Consiglio Nazionale Forense e dall’Ordine dei consulenti in proprietà industriale: verifica della brevettabilità dell'invenzione e ricerche di anteriorità preventive; stesura della domanda di brevetto e di deposito presso l'Ufficio Italiano Brevetti e Marchi; deposito all'estero di una domanda che rivendica la priorità di una precedente domanda nazionale di brevetto."
+   ],
+   "zm_field_activity_sector": [
+    "586",
+    "474",
+    "484",
+    "490",
+    "260",
+    "480",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "250",
+    "477",
+    "479",
+    "486",
+    "481",
+    "475",
+    "489",
+    "485",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "586",
+   "zm_field_activity_sector_value": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "Metallurgia",
+    "Meccanica",
+    "ICT",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Salute",
+    "Ristorazione",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Agricoltura, silvicoltura e pesca",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+   "zs_field_budget_allocation": "9000000",
+   "zs_field_close_date": "2027-12-31T00:00:00",
+   "zs_field_close_date_descriptor": "Le domande dovranno essere presentate dalle ore 12.00 alle ore 18.00 del giorno 10 dicembre 2024, e dalle ore 9.00 alle ore 18.00 dei giorni lavorativi successivi, fino a esaurimento delle risorse disponibili.",
+   "zs_field_cost_max": "3000000",
+   "zs_field_cost_min": "0",
+   "zm_field_costs": [
+    "0",
+    "3000000"
+   ],
+   "zs_field_costs": "3000000",
+   "zm_field_dimensions": [
+    "570"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "215"
+   ],
+   "zs_field_granted_costs": "215",
+   "zm_field_granted_costs_value": [
+    "Servizi, brevetti e licenze"
+   ],
+   "zs_field_granted_costs_value": "Servizi, brevetti e licenze",
+   "zs_field_implementation_ruleset": "Decreto direttoriale MIMIT 19 novembre 2024 - Voucher 3I",
+   "zs_field_link": "https://www.mimit.gov.it/it/incentivi/voucher-3i-investire-in-innovazione",
+   "zs_field_multibando": "0",
+   "zs_field_official_references": "278 del 27/11/2024",
+   "zs_field_open_date": "2024-12-10T00:00:00",
+   "zs_field_primary_ruleset": "Decreto direttoriale MIMIT 19 novembre 2024 - Voucher 3I",
+   "zm_field_regions": [
+    "229",
+    "226",
+    "236",
+    "225",
+    "218",
+    "228",
+    "219",
+    "220",
+    "221",
+    "230",
+    "232",
+    "234",
+    "237",
+    "231",
+    "234",
+    "233",
+    "223",
+    "222",
+    "235",
+    "227",
+    "224"
+   ],
+   "zs_field_regions": "229",
+   "zm_field_regions_value": [
+    "Piemonte",
+    "Lombardia",
+    "Valle d'Aosta/Vallée d'Aoste",
+    "Liguria",
+    "Abruzzo",
+    "Molise",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Puglia",
+    "Sicilia",
+    "Trentino-Alto Adige/Südtirol",
+    "Veneto",
+    "Sardegna",
+    "Trentino-Alto Adige/Südtirol",
+    "Toscana",
+    "Friuli-Venezia Giulia",
+    "Emilia-Romagna",
+    "Umbria",
+    "Marche",
+    "Lazio"
+   ],
+   "zs_field_regions_value": "Piemonte",
+   "zm_field_scopes": [
+    "273",
+    "270"
+   ],
+   "zs_field_scopes": "273",
+   "zm_field_scopes_value": [
+    "Innovazione e ricerca",
+    "Sostegno investimenti"
+   ],
+   "zs_field_scopes_value": "Innovazione e ricerca",
+   "zs_field_subject_grant": "Ministero delle Imprese e del Made in Italy",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "3000000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "3000000"
+   ],
+   "zs_field_support_grant_type_min_max": "3000000",
+   "zs_nid": "3265",
+   "zs_title": "Voucher 3I - Investire in innovazione",
+   "tum_X3b_it_title_ft": [
+    "Voucher 3I - Investire in innovazione"
+   ],
+   "ss_search_api_id": "entity:node/3265:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2025-03-26T11:57:35Z",
+   "boost_document": 1.0,
+   "_version_": 1860757701541232640,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:27:08Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/7828:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti",
+    "<p>50000000</p>",
+    "35556",
+    "2026-06-23T00:00:00",
+    "10000",
+    "60000",
+    "Microimpresa",
+    "Media Impresa",
+    "Piccola Impresa",
+    "<p>Microimpresa; Media Impresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Formazione Professionale",
+    "Costo del personale",
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature",
+    "<p>Costi di personale - Formazione Professionale; Materiali - Impianti/Macchinari/Attrezzature; Materiali - Progettazione/studi/consulenze; Servizi - Servizi professionali; Costi di personale - Costo del personale</p>",
+    "113819",
+    "<p>Decreto del Ministro delle imprese e del made in Italy 4 settembre 2025</p>",
+    "1774001467",
+    "2026-04-21T00:00:00",
+    "Ministero delle Imprese e del Made in Italy - Dipartimento per le politiche per le imprese - Direzione generale per gli incentivi alle imprese (Autorità responsabile) Dipartimento per le politiche per le imprese - DGIAI - Divisione VIII - Interventi per lo sviluppo locale (Unità Organizzativa)",
+    "<p>Decreto del Ministro delle imprese e del made in Italy 4 settembre 2025</p>",
+    "Molise",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Puglia",
+    "Sicilia",
+    "Sardegna",
+    "Transizione ecologica",
+    "Digitalizzazione",
+    "<p>Ministero delle Imprese e del Made in Italy</p>",
+    "Impresa",
+    "Cooperative/Associazioni Non Profit",
+    "Rete d'impresa",
+    "Consorzio",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "42000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2026-04-21T00:00:00Z\"\n                 close-date=\"2026-06-23T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-291\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Transizione ecologica</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Sviluppo competenze - Innovazione tecnologica e transizione verde e digitale</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/sviluppo-competenze-innovazione-tecnologica-e-transizione-verde-e-digitale\">vai alla scheda <span class=\"visually-hidden\">Sviluppo competenze - Innovazione tecnologica e transizione verde e digitale</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/sviluppo-competenze-innovazione-tecnologica-e-transizione-verde-e-digitale",
+   "zs_body": "Cos'è Sviluppo Competenze è un regime di aiuto destinato alle PMI localizzate nelle regioni Basilicata, Calabria, Campania, Molise, Puglia, Sardegna e Sicilia, per l’acquisizione, anche in un’ottica di rafforzamento delle filiere di appartenenza, di servizi finalizzati allo sviluppo e all’accrescimento delle competenze del relativo personale dipendente. L’obiettivo è consentire loro di affrontare le sfide e cogliere le opportunità connesse all’innovazione tecnologica e alla transizione verde e digitale.  A chi si rivolge Le agevolazioni sono concesse alle micro, piccole e medie imprese (PMI) localizzate nelle regioni Basilicata, Calabria, Campania, Molise, Puglia, Sardegna e Sicilia.  Cosa prevede La misura si propone di accrescere le competenze del capitale umano delle PMI per cogliere le nuove opportunità legate alle aree prioritarie e alle relative traiettorie tecnologiche della Strategia Nazionale di Specializzazione Intelligente, favorire la realizzazione di processi di transizione verde e digitale, rafforzare la conoscenza, l’utilizzo e la diffusione delle tecnologie STEP. Le agevolazioni sono concedibili, ai sensi e nei limiti del regolamento de minimis, nella forma del contributo diretto alla spesa, nella misura pari al 50% delle spese ammissibili. Nel caso in cui i soggetti proponenti abbiano presentato progetti integrati sovraregionali di cui all’articolo 4, comma 4, del decreto del Ministro delle imprese e del mande in Italy 4 settembre 2025, il contributo diretto alla spesa è maggiorato di 20 (venti) punti percentuali per le micro e piccole imprese e di 10 (dieci) punti percentuali per le medie imprese. Le agevolazioni possono essere cumulate con altri aiuti di Stato, nei limiti previsti dalla disciplina europea in materia di aiuti di Stato di riferimento. ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Sviluppo Competenze è un regime di aiuto destinato alle PMI localizzate nelle regioni Basilicata, Calabria, Campania, Molise, Puglia, Sardegna e Sicilia, per l’acquisizione, anche in un’ottica di rafforzamento delle filiere di appartenenza, di servizi finalizzati allo sviluppo e all’accrescimento delle competenze del relativo personale dipendente. L’obiettivo è consentire loro di affrontare le sfide e cogliere le opportunità connesse all’innovazione tecnologica e alla transizione verde e digitale.  ",
+    "A chi si rivolge",
+    "Le agevolazioni sono concesse alle micro, piccole e medie imprese (PMI) localizzate nelle regioni Basilicata, Calabria, Campania, Molise, Puglia, Sardegna e Sicilia.  ",
+    "Cosa prevede",
+    "La misura si propone di accrescere le competenze del capitale umano delle PMI per cogliere le nuove opportunità legate alle aree prioritarie e alle relative traiettorie tecnologiche della Strategia Nazionale di Specializzazione Intelligente, favorire la realizzazione di processi di transizione verde e digitale, rafforzare la conoscenza, l’utilizzo e la diffusione delle tecnologie STEP. Le agevolazioni sono concedibili, ai sensi e nei limiti del regolamento de minimis, nella forma del contributo diretto alla spesa, nella misura pari al 50% delle spese ammissibili. Nel caso in cui i soggetti proponenti abbiano presentato progetti integrati sovraregionali di cui all’articolo 4, comma 4, del decreto del Ministro delle imprese e del mande in Italy 4 settembre 2025, il contributo diretto alla spesa è maggiorato di 20 (venti) punti percentuali per le micro e piccole imprese e di 10 (dieci) punti percentuali per le medie imprese. Le agevolazioni possono essere cumulate con altri aiuti di Stato, nei limiti previsti dalla disciplina europea in materia di aiuti di Stato di riferimento.  "
+   ],
+   "zm_field_activity_sector": [
+    "474",
+    "484",
+    "490",
+    "260",
+    "480",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "250",
+    "486",
+    "479",
+    "477",
+    "481",
+    "475",
+    "485",
+    "489",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "474",
+   "zm_field_activity_sector_value": [
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Agroalimentare",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+   "zs_field_budget_allocation": "50000000",
+   "zs_field_close_date": "2026-06-23T00:00:00",
+   "zs_field_close_date_descriptor": "Le domande di accesso alle agevolazioni potranno essere presentate a Invitalia S.p.a., secondo le modalità e i modelli indicati nell’apposita sezione del sito internet dell’Agenzia medesima (www.invitalia.it) a partire dalle ore 12.00 del 21/04/2026 fino alle ore 12.00 del 23/06/2026.",
+   "zs_field_cost_max": "60000",
+   "zs_field_cost_min": "10000",
+   "zm_field_costs": [
+    "10000",
+    "60000"
+   ],
+   "zs_field_costs": "10000",
+   "zm_field_dimensions": [
+    "570",
+    "212",
+    "213"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa",
+    "Media Impresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "299",
+    "284",
+    "215",
+    "216"
+   ],
+   "zs_field_granted_costs": "299",
+   "zm_field_granted_costs_value": [
+    "Formazione Professionale",
+    "Costo del personale",
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature"
+   ],
+   "zs_field_granted_costs_value": "Formazione Professionale",
+   "zs_field_implementation_ruleset": "Decreto del Ministro delle imprese e del made in Italy 4 settembre 2025",
+   "zs_field_link": "https://www.mimit.gov.it/it/incentivi/sviluppo-competenze",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2026-04-21T00:00:00",
+   "zs_field_primary_ruleset": "Decreto del Ministro delle imprese e del made in Italy 4 settembre 2025",
+   "zm_field_regions": [
+    "228",
+    "219",
+    "220",
+    "221",
+    "230",
+    "232",
+    "231"
+   ],
+   "zs_field_regions": "228",
+   "zm_field_regions_value": [
+    "Molise",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Puglia",
+    "Sicilia",
+    "Sardegna"
+   ],
+   "zs_field_regions_value": "Molise",
+   "zm_field_scopes": [
+    "291",
+    "265"
+   ],
+   "zs_field_scopes": "291",
+   "zm_field_scopes_value": [
+    "Transizione ecologica",
+    "Digitalizzazione"
+   ],
+   "zs_field_scopes_value": "Transizione ecologica",
+   "zs_field_subject_grant": "Ministero delle Imprese e del Made in Italy",
+   "zm_field_subject_type": [
+    "238",
+    "296",
+    "321",
+    "297"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa",
+    "Cooperative/Associazioni Non Profit",
+    "Rete d'impresa",
+    "Consorzio"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "42000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "42000"
+   ],
+   "zs_field_support_grant_type_min_max": "42000",
+   "zs_nid": "7828",
+   "zs_title": "Sviluppo competenze - Innovazione tecnologica e transizione verde e digitale",
+   "tum_X3b_it_title_ft": [
+    "Sviluppo competenze - Innovazione tecnologica e transizione verde e digitale"
+   ],
+   "ss_search_api_id": "entity:node/7828:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2026-03-20T10:11:07Z",
+   "boost_document": 1.0,
+   "_version_": 1860757762129002496,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:28:06Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/5525:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Servizi di trasporto",
+    "Tutti i settori economici ammissibili a ricevere aiuti",
+    "<p>3500000</p>",
+    "33720",
+    "2028-12-31T00:00:00",
+    "2000",
+    "15000",
+    "Microimpresa",
+    "<p>Microimpresa</p>",
+    "Servizi, brevetti e licenze",
+    "<p>Servizi - Altri servizi</p>",
+    "108984",
+    "<p>Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia</p>",
+    "1762872946",
+    "2025-10-17T00:00:00",
+    "Provincia Autonoma di Bolzano - Ripartizione Economia (Autorità responsabile) Ripartizione Economia (Ufficio gestore della misura)",
+    "<p>Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia</p>",
+    "Trentino-Alto Adige/Südtirol",
+    "Digitalizzazione",
+    "<p>Provincia Autonoma di Bolzano</p>",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo in c/capitale c/impianti</p>",
+    "0",
+    "9000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2025-10-17T00:00:00Z\"\n                 close-date=\"2028-12-31T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Interventi per la promozione della digitalizzazione delle microimprese (2025-2028)</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/interventi-la-promozione-della-digitalizzazione-delle-microimprese-2025-2028\">vai alla scheda <span class=\"visually-hidden\">Interventi per la promozione della digitalizzazione delle microimprese (2025-2028)</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/interventi-la-promozione-della-digitalizzazione-delle-microimprese-2025-2028",
+   "zs_body": "Cos'è Sono agevolabili le iniziative strettamente attinenti all’attività svolta in provincia di Bolzano dalle imprese e che hanno una ricaduta diretta sulla stessa e sono finalizzate all’introduzione di tecnologie e processi digitali volti a implementare e migliorare:- i modelli organizzativi e di business;- la presenza in internet dell’impresa e le forme di commercio elettronico;- la gestione dei social media e di modelli di comunicazione digitale e in particolare:- le iniziative di formazione, coaching e tutoraggio destinate a dipendenti, titolari e soci/socie che operano nell’impresa richiedente o in imprese associate o collegate alla stessa;- le iniziative di consulenza e di diffusione di conoscenze;- le spese per servizi finalizzati alla promozione e alla comunicazione digitale da parte di Social Media Manager, agenzie o professionisti specializzati nella gestione dei canali social;- l’acquisto di licenze d’uso per software;- l’acquisto e l’ottimizzazione di software e la realizzazione di pagine web.  A chi si rivolge Possono accedere alle agevolazioni le imprese individuali, le società di persone o di capitali nonché i consorzi, le cooperazioni e le associazioni giuridicamente costituite tra due o più imprese che svolgono quale attività prevalente un’attività artigianale, industriale, commerciale, di servizi, o del turismo (esercizi pubblici) in provincia di Bolzano, che siano classificate quali microimprese:- le imprese iscritte secondo il rispettivo ordinamento vigente nel Registro delle imprese della Camera di Commercio, Industria, Artigianato e Agricoltura di Bolzano;- le libere professioniste e i liberi professionisti iscritti agli albi o negli elenchi di cui all’articolo 2229 del Codice Civile e le lavoratrici e lavoratori autonomi solamente per la prima attività libero professionale o autonoma nei primi 5 anni di attività.  Cosa prevede Sono agevolabili iniziative con un importo complessivo minimo ammissibile per domanda di 2.000,00 euro e massimo di 15.000,00 euro. L’agevolazione è concessa nella misura massima del 60% della spesa ammessa in regime “de minimis”. ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Sono agevolabili le iniziative strettamente attinenti all’attività svolta in provincia di Bolzano dalle imprese e che hanno una ricaduta diretta sulla stessa e sono finalizzate all’introduzione di tecnologie e processi digitali volti a implementare e migliorare: - i modelli organizzativi e di business; - la presenza in internet dell’impresa e le forme di commercio elettronico; - la gestione dei social media e di modelli di comunicazione digitale e in particolare: - le iniziative di formazione, coaching e tutoraggio destinate a dipendenti, titolari e soci/socie che operano nell’impresa richiedente o in imprese associate o collegate alla stessa; - le iniziative di consulenza e di diffusione di conoscenze; - le spese per servizi finalizzati alla promozione e alla comunicazione digitale da parte di Social Media Manager, agenzie o professionisti specializzati nella gestione dei canali social; - l’acquisto di licenze d’uso per software; - l’acquisto e l’ottimizzazione di software e la realizzazione di pagine web.  ",
+    "A chi si rivolge",
+    "Possono accedere alle agevolazioni le imprese individuali, le società di persone o di capitali nonché i consorzi, le cooperazioni e le associazioni giuridicamente costituite tra due o più imprese che svolgono quale attività prevalente un’attività artigianale, industriale, commerciale, di servizi, o del turismo (esercizi pubblici) in provincia di Bolzano, che siano classificate quali microimprese: - le imprese iscritte secondo il rispettivo ordinamento vigente nel Registro delle imprese della Camera di Commercio, Industria, Artigianato e Agricoltura di Bolzano; - le libere professioniste e i liberi professionisti iscritti agli albi o negli elenchi di cui all’articolo 2229 del Codice Civile e le lavoratrici e lavoratori autonomi solamente per la prima attività libero professionale o autonoma nei primi 5 anni di attività.  ",
+    "Cosa prevede",
+    "Sono agevolabili iniziative con un importo complessivo minimo ammissibile per domanda di 2.000,00 euro e massimo di 15.000,00 euro. L’agevolazione è concessa nella misura massima del 60% della spesa ammessa in regime “de minimis”.  "
+   ],
+   "zm_field_activity_sector": [
+    "490",
+    "260",
+    "480",
+    "476",
+    "482",
+    "249",
+    "478",
+    "250",
+    "479",
+    "477",
+    "481",
+    "475",
+    "483"
+   ],
+   "zs_field_activity_sector": "490",
+   "zm_field_activity_sector_value": [
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Servizi di trasporto"
+   ],
+   "zs_field_activity_sector_value": "Altri servizi",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+   "zs_field_budget_allocation": "3500000",
+   "zs_field_close_date": "2028-12-31T00:00:00",
+   "zs_field_close_date_descriptor": "Le domande per l'anno 2025 possono essere presentate fino al 31.12.2025. Successivamente si potrà presentare domanda dal 1 gennaio fino al 30 settembre di ogni anno.",
+   "zs_field_cost_max": "15000",
+   "zs_field_cost_min": "2000",
+   "zm_field_costs": [
+    "2000",
+    "15000"
+   ],
+   "zs_field_costs": "2000",
+   "zm_field_dimensions": [
+    "570"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "215"
+   ],
+   "zs_field_granted_costs": "215",
+   "zm_field_granted_costs_value": [
+    "Servizi, brevetti e licenze"
+   ],
+   "zs_field_granted_costs_value": "Servizi, brevetti e licenze",
+   "zs_field_implementation_ruleset": "Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia",
+   "zs_field_link": "https://civis.bz.it/it/servizi/servizio.html?id=1045225",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2025-10-17T00:00:00",
+   "zs_field_primary_ruleset": "Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia",
+   "zm_field_regions": [
+    "234"
+   ],
+   "zs_field_regions": "234",
+   "zm_field_regions_value": [
+    "Trentino-Alto Adige/Südtirol"
+   ],
+   "zs_field_regions_value": "Trentino-Alto Adige/Südtirol",
+   "zm_field_scopes": [
+    "265"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "Provincia Autonoma di Bolzano",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "9000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "9000"
+   ],
+   "zs_field_support_grant_type_min_max": "9000",
+   "zs_nid": "5525",
+   "zs_title": "Interventi per la promozione della digitalizzazione delle microimprese (2025-2028)",
+   "tum_X3b_it_title_ft": [
+    "Interventi per la promozione della digitalizzazione delle microimprese (2025-2028)"
+   ],
+   "ss_search_api_id": "entity:node/5525:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2025-11-11T14:55:46Z",
+   "boost_document": 1.0,
+   "_version_": 1860757738857955329,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:27:44Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/8141:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Artigianato",
+    "Commercio",
+    "Alberghiero",
+    "Ristorazione",
+    "Turismo",
+    "ATECO 2025: 10.51; 10.52; 10; 10.62; 10.61; 14; 55.90; 10.6; 10.5; 10.4; 10.3; 10.2; 10.1; 56.1; 10.9; 56.2; 10.8; 56.3; 10.7; 56.4; 10.31; 10.32; 10.39; 10.42; 10.41; 55.9; 55.1; 55.2; 55.3; 55.4; 46; 47; 10.11; 47.92; 47.91; 10.13; 10.12; 55; 56; 10.20; 96.99; 47.83; 47.81; 47.82; 96.91; 47.72; 47.73; 47.71; 47.78; 47.79; 47.76; 47.77; 47.74; 47.75; 47.61; 47.62; 46.90; 47.69; 47.63; 47.64; 14.10; 95.10; 46.82; 46.83; 47.51; 46.81; 46.89; 46.86; 47.54; 95; 46.87; 47.55; 96; 46.84; 47.52; 46.85; 47.53; 14.21; 14.22; 14.23; 14.24; 55.10; 14.2; 46.71; 14.1; 46.72; 47.40; 14.29; 46.73; 95.31; 95.32; 55.20; 46.61; 46.64; 46.62; 47.30; 46.63; 95.29; 47.27; 55.30; 95.24; 95.25; 95.21; 95.22; 95.23; 46.50; 47.25; 47.26; 47.23; 47.24; 47.21; 47.22; 10.92; 46.48; 46.49; 55.40; 56.11; 56.12; 96.21; 96.22; 10.91; 96.23; 47.3; 47.4; 47.5; 47.6; 47.7; 47.8; 47.9; 46.46; 46.47; 46.44; 47.12; 46.45; 46.42; 46.43; 47.11; 47.1; 46.41; 47.2; 46.39; 46.37; 46.38; 56.21; 56.22; 96.10; 95.40; 96.9; 46.35; 96.3; 46.36; 96.4; 46.33; 96.1; 46.34; 96.2; 46.31; 46.32; 10.71; 10.73; 10.72; 95.1; 56.30; 46.4; 46.5; 96.40; 46.6; 46.7; 46.8; 46.9; 46.24; 46.22; 46.23; 46.1; 46.21; 46.2; 46.3; 10.82; 10.81; 10.84; 46.19; 10.83; 10.86; 46.17; 10.85; 46.18; 46.15; 46.16; 56.40; 96.30; 46.13; 95.4; 10.89; 46.14; 46.11; 95.2; 46.12; 95.3",
+    "<p>70047.34</p>",
+    "36117",
+    "2026-06-30T00:00:00",
+    "0",
+    "5000",
+    "Microimpresa",
+    "Media Impresa",
+    "Piccola Impresa",
+    "<p>Microimpresa; Media Impresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature",
+    "<p>Materiali - Impianti/Macchinari/Attrezzature; Servizi - Servizi professionali</p>",
+    "114344",
+    "<p>FVG - Sviluppo Impresa. Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia.</p>",
+    "1776333840",
+    "2024-07-08T00:00:00",
+    "Comune di San Vito al Tagliamento (Autorità responsabile) Area Amministrazione e Gestione (Ufficio gestore della misura)",
+    "<p>FVG - Sviluppo Impresa. Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia.</p>",
+    "Friuli-Venezia Giulia",
+    "Digitalizzazione",
+    "Start up/Sviluppo d'impresa",
+    "<p>Regolamento recante modalità e criteri per la concessione di contributi per l’attuazione dei progetti di distretto mediante l’utilizzo del Fondo per lo sviluppo dei distretti del commercio, di cui agli articoli 10, comma 6 e 13, commi 2 e 3 della legge regionale 22 febbraio 2021, n. 3, (Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia - SviluppoImpresa).</p>",
+    "<p>Comune di San Vito Al Tagliamento</p>",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "1500",
+    "5000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-07-08T00:00:00Z\"\n                 close-date=\"2026-06-30T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-580\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Start up/Sviluppo d&#039;impresa</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Distretto del Commercio Terre Tagliamento - Contributi alle imprese per acquisto e attivazione di impianti e sistemi tecnologici per la digitalizzazione dei processi produttivi e lo sviluppo sostenibile - Annualità 2025</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/distretto-del-commercio-terre-tagliamento-contributi-alle-imprese-acquisto-e-attivazione\">vai alla scheda <span class=\"visually-hidden\">Distretto del Commercio Terre Tagliamento - Contributi alle imprese per acquisto e attivazione di impianti e sistemi tecnologici per la digitalizzazione dei processi produttivi e lo sviluppo sostenibile - Annualità 2025</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/distretto-del-commercio-terre-tagliamento-contributi-alle-imprese-acquisto-e-attivazione",
+   "zs_body": "Cos'è Il bando prevede la concessione di contributi alle imprese del Distretto del Commercio “Terre Tagliamento” finalizzati all’acquisto e all’attivazione di impianti e sistemi tecnologici necessari alla digitalizzazione dei processi produttivi nonché allo sviluppo sostenibile, per l'annualità 2025.  A chi si rivolge Il bando è rivolto alle micro e piccole imprese dei settori del commercio, artigianato e cooperative (con attività di cui ai Codici Ateco previsti dal bando). Non possono beneficiare degli incentivi le imprese già oggetto di atto di liquidazione del contributo concesso a valere sul Bando 2024 del Distretto del Commercio “Terre Tagliamento”.  Cosa prevede Sono ammissibili le spese per lo sviluppo dei sistemi tecnologici e della digitalizzazione efficientamento energetico e alla gestione dei rifiuti. Sono ammesse le sole spese per investimento, ad esclusione di spese per la gestione corrente. Gli interventi sono ammissibili per le sedi o unità Locali localizzate nei Comuni del Distretto del Commercio “Terre Tagliamento” comprendente i Comuni di San Vito al Tagliamento, Casarsa della Delizia, Cordovado, Morsano al Tagliamento, San Giorgio della Richinvelda, San Martino al Tagliamento, Sesto al Reghena, Valvasone Arzene. L'agevolazione è pari al 50% di contributo a fondo perduto. La spesa minima ammissibile è di euro 1.500,00 e il contributo massimo ammesso è di euro 5.000,00 (per una spesa di euro 10.000,00 e oltre). ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Il bando prevede la concessione di contributi alle imprese del Distretto del Commercio “Terre Tagliamento” finalizzati all’acquisto e all’attivazione di impianti e sistemi tecnologici necessari alla digitalizzazione dei processi produttivi nonché allo sviluppo sostenibile, per l'annualità 2025.  ",
+    "A chi si rivolge",
+    "Il bando è rivolto alle micro e piccole imprese dei settori del commercio, artigianato e cooperative (con attività di cui ai Codici Ateco previsti dal bando). Non possono beneficiare degli incentivi le imprese già oggetto di atto di liquidazione del contributo concesso a valere sul Bando 2024 del Distretto del Commercio “Terre Tagliamento”.  ",
+    "Cosa prevede",
+    "Sono ammissibili le spese per lo sviluppo dei sistemi tecnologici e della digitalizzazione efficientamento energetico e alla gestione dei rifiuti. Sono ammesse le sole spese per investimento, ad esclusione di spese per la gestione corrente. Gli interventi sono ammissibili per le sedi o unità Locali localizzate nei Comuni del Distretto del Commercio “Terre Tagliamento” comprendente i Comuni di San Vito al Tagliamento, Casarsa della Delizia, Cordovado, Morsano al Tagliamento, San Giorgio della Richinvelda, San Martino al Tagliamento, Sesto al Reghena, Valvasone Arzene. L'agevolazione è pari al 50% di contributo a fondo perduto. La spesa minima ammissibile è di euro 1.500,00 e il contributo massimo ammesso è di euro 5.000,00 (per una spesa di euro 10.000,00 e oltre).  "
+   ],
+   "zm_field_activity_sector": [
+    "260",
+    "482",
+    "484",
+    "485",
+    "488"
+   ],
+   "zs_field_activity_sector": "260",
+   "zm_field_activity_sector_value": [
+    "Artigianato",
+    "Commercio",
+    "Alberghiero",
+    "Ristorazione",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Artigianato",
+   "zs_field_ateco": "ATECO 2025: 10.51; 10.52; 10; 10.62; 10.61; 14; 55.90; 10.6; 10.5; 10.4; 10.3; 10.2; 10.1; 56.1; 10.9; 56.2; 10.8; 56.3; 10.7; 56.4; 10.31; 10.32; 10.39; 10.42; 10.41; 55.9; 55.1; 55.2; 55.3; 55.4; 46; 47; 10.11; 47.92; 47.91; 10.13; 10.12; 55; 56; 10.20; 96.99; 47.83; 47.81; 47.82; 96.91; 47.72; 47.73; 47.71; 47.78; 47.79; 47.76; 47.77; 47.74; 47.75; 47.61; 47.62; 46.90; 47.69; 47.63; 47.64; 14.10; 95.10; 46.82; 46.83; 47.51; 46.81; 46.89; 46.86; 47.54; 95; 46.87; 47.55; 96; 46.84; 47.52; 46.85; 47.53; 14.21; 14.22; 14.23; 14.24; 55.10; 14.2; 46.71; 14.1; 46.72; 47.40; 14.29; 46.73; 95.31; 95.32; 55.20; 46.61; 46.64; 46.62; 47.30; 46.63; 95.29; 47.27; 55.30; 95.24; 95.25; 95.21; 95.22; 95.23; 46.50; 47.25; 47.26; 47.23; 47.24; 47.21; 47.22; 10.92; 46.48; 46.49; 55.40; 56.11; 56.12; 96.21; 96.22; 10.91; 96.23; 47.3; 47.4; 47.5; 47.6; 47.7; 47.8; 47.9; 46.46; 46.47; 46.44; 47.12; 46.45; 46.42; 46.43; 47.11; 47.1; 46.41; 47.2; 46.39; 46.37; 46.38; 56.21; 56.22; 96.10; 95.40; 96.9; 46.35; 96.3; 46.36; 96.4; 46.33; 96.1; 46.34; 96.2; 46.31; 46.32; 10.71; 10.73; 10.72; 95.1; 56.30; 46.4; 46.5; 96.40; 46.6; 46.7; 46.8; 46.9; 46.24; 46.22; 46.23; 46.1; 46.21; 46.2; 46.3; 10.82; 10.81; 10.84; 46.19; 10.83; 10.86; 46.17; 10.85; 46.18; 46.15; 46.16; 56.40; 96.30; 46.13; 95.4; 10.89; 46.14; 46.11; 95.2; 46.12; 95.3",
+   "zs_field_budget_allocation": "70047.34",
+   "zs_field_close_date": "2026-06-30T00:00:00",
+   "zs_field_cost_max": "5000",
+   "zs_field_cost_min": "0",
+   "zm_field_costs": [
+    "0",
+    "5000"
+   ],
+   "zs_field_costs": "5000",
+   "zm_field_dimensions": [
+    "570",
+    "212",
+    "213"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa",
+    "Media Impresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "215",
+    "216"
+   ],
+   "zs_field_granted_costs": "215",
+   "zm_field_granted_costs_value": [
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature"
+   ],
+   "zs_field_granted_costs_value": "Servizi, brevetti e licenze",
+   "zs_field_implementation_ruleset": "FVG - Sviluppo Impresa. Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia.",
+   "zs_field_link": "https://www.comune.san-vito-al-tagliamento.pn.it/it/novita-190366/avvisi-190369/bando-per-le-imprese-2025-distretto-del-commercio-terre-tagliamento-316550",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2024-07-08T00:00:00",
+   "zs_field_primary_ruleset": "FVG - Sviluppo Impresa. Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia.",
+   "zm_field_regions": [
+    "223"
+   ],
+   "zs_field_regions": "223",
+   "zm_field_regions_value": [
+    "Friuli-Venezia Giulia"
+   ],
+   "zs_field_regions_value": "Friuli-Venezia Giulia",
+   "zm_field_scopes": [
+    "265",
+    "580"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione",
+    "Start up/Sviluppo d'impresa"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_secondary_ruleset": "Regolamento recante modalità e criteri per la concessione di contributi per l’attuazione dei progetti di distretto mediante l’utilizzo del Fondo per lo sviluppo dei distretti del commercio, di cui agli articoli 10, comma 6 e 13, commi 2 e 3 della legge regionale 22 febbraio 2021, n. 3, (Disposizioni per la modernizzazione, la crescita e lo sviluppo sostenibile verso una nuova economia del Friuli Venezia Giulia - SviluppoImpresa).",
+   "zs_field_subject_grant": "Comune di San Vito Al Tagliamento",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "5000",
+   "zs_field_support_grant_type_min": "1500",
+   "zm_field_support_grant_type_min_max": [
+    "1500",
+    "5000"
+   ],
+   "zs_field_support_grant_type_min_max": "1500",
+   "zs_nid": "8141",
+   "zs_title": "Distretto del Commercio Terre Tagliamento - Contributi alle imprese per acquisto e attivazione di impianti e sistemi tecnologici per la digitalizzazione dei processi produttivi e lo sviluppo sostenibile - Annualità 2025",
+   "tum_X3b_it_title_ft": [
+    "Distretto del Commercio Terre Tagliamento - Contributi alle imprese per acquisto e attivazione di impianti e sistemi tecnologici per la digitalizzazione dei processi produttivi e lo sviluppo sostenibile - Annualità 2025"
+   ],
+   "ss_search_api_id": "entity:node/8141:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2026-04-16T10:04:00Z",
+   "boost_document": 1.0,
+   "_version_": 1862613527457431552,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-04-16T08:04:41Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/2748:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Artigianato",
+    "Altri servizi",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti",
+    "<p>23500000</p>",
+    "30755",
+    "2026-12-31T00:00:00",
+    "0",
+    "540000",
+    "Microimpresa",
+    "Media Impresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa",
+    "<p>Piccola Impresa (escluse Microimprese); Media Impresa; Microimpresa; Non classificabile</p>",
+    "Costo del personale",
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature",
+    "Spese generali/altri oneri",
+    "<p>Immateriali - Diritti Di Brevetto; Immateriali - Know-How; Immateriali - Licenze; Immateriali - Marchi; Non individuabili secondo le definizioni di cui ai Regolamenti Comunitari; Servizi - Servizi professionali; Ammortamenti - Costi della ricerca contrattuale, delle conoscenze e dei brevetti acquisiti o ottenuti in licenza da fonti esterne alle normali condizioni di mercato; Ammortamenti - Costo di strumenti e attrezzature; Costi di personale - Costo del personale; Costi generali - Spese generali; Materiali - Progettazione/studi/consulenze</p>",
+    "104132",
+    "<p>Determinazione del Dirigente della Sezione Crescita Digitale delle persone, del territorio e delle imprese n.64 del 24/06/2024 pubblicata sul BURP n.52 del 27/06/2024</p>",
+    "1729772240",
+    "2024-07-10T00:00:00",
+    "Regione Puglia - Dipartimento Sviluppo Economico (Autorità responsabile) Sezione Crescita digitale delle persone, del territorio e delle imprese (Ufficio gestore della misura)",
+    "<p>La dotazione finanziaria complessiva dell’Avviso è pari ad €23.500.000,00 a valere sul PR Puglia 2021 – 2027 – fondo FESR – Asse I – Azione 1.2 “Servizi per l’innovazione e l’avanzamento tecnologico delle PMI” - Azione 1.7 “Interventi di digitalizzazione delle imprese”.<br><br>I progetti candidati a finanziamento sono selezionati con procedura valutativa a sportello. Per la gestione dell’avviso la Regione si avvale dell’Organismo Intermedio InnovaPuglia S.p.A.<br>Come partecipare<br>Le domande di agevolazione dovranno essere inoltrate, pena l’esclusione, unicamente in via telematica, attraverso la procedura on line disponibile sul portale www.sistema.puglia.it alla sezione “Trasformazioni” www.sistema.puglia.it/trasformazioni.</p>",
+    "<p>Determinazione del Dirigente della Sezione Crescita Digitale delle persone, del territorio e delle imprese n.64 del 24/06/2024 pubblicata sul BURP n.52 del 27/06/2024</p>",
+    "Puglia",
+    "Digitalizzazione",
+    "Imprenditoria femminile",
+    "Imprenditoria giovanile",
+    "Innovazione e ricerca",
+    "Internazionalizzazione",
+    "Transizione ecologica",
+    "Start up/Sviluppo d'impresa",
+    "Sostegno investimenti",
+    "<p>Regione Puglia</p>",
+    "Impresa",
+    "Impresa - prevalenza femminile",
+    "Impresa - prevalenza giovanile",
+    "Impresa - SU/PMI innovativa",
+    "Professionista",
+    "Rete d'impresa",
+    "Cooperative/Associazioni Non Profit",
+    "Consorzio",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "270000"
+   ],
+   "zs_url": "/it/catalogo/avviso-trasformazioni-servizi-linnovazione-e-lavanzamento-tecnologico-e-interventi-la",
+   "zs_body": "Cos'è L’avviso dà piena attuazione alla direttrice “D3- Trasformazione digitale delle imprese, in particolare delle MPMI” della Agenda Digitale Pugliese, approvata don DGR n. 1604/2023, che intende intercettare i settori maggiormente strategici e le filiere maggiormente innovative, supportando la crescita della maturità ed intensità digitale del sistema imprenditoriale ed incentivando l’acquisizione di tecnologie ICT nelle imprese dei servizi e manifatturiere (Big Data, Analytics, Cloud, Blockchain, manifattura additiva, 5G, realtà virtuale e realtà aumentata, intelligenza artificiale, Io T, Digital Twin, Cybersecurity, ecc.).  A chi si rivolge I soggetti beneficiari dell’aiuto previsto dal presente Avviso sono le Micro Piccole e Medie Imprese (MPMI), come definite ai sensi Reg. UE n. 651/2014 e del D. M. del 18/04/2005, in forma singola o associata, in Associazione Temporanea di Scopo, Contratto di Rete, Consorzio o Società Consortile. Possono beneficiare delle agevolazioni anche i liberi professionisti, in quanto equiparati alle piccole e medie imprese come esercenti attività economica.  Cosa prevede Gli interventi ammissibili sono rientranti nelle Linee di intervento di seguito indicate:1. Linea A: sostegno per iniziative orientate all’acquisto di servizi di consulenza:- per l’innovazione tecnologica, strategica, organizzativa correlata alla transizione ecologica;- per l’avanzamento tecnologico delle imprese attraverso soluzioni tecnologiche relative a software, macchinari, modelli organizzativi, in relazione alla transizione ecologica;- per l’efficientamento energetico delle Micro Piccole e Medie Imprese, con particolare riferimento alle imprese la cui attività comporta notevoli consumi energetici, pur senza rientrare nella definizione di impresa energivora di cui al decreto del Ministero dello Sviluppo Economico 21.12.2017.2. La Linea B: sostegno ad iniziative orientate all’acquisto di consulenze e tecnologie (hardware e software):- per l’innovazione di processo supportata dalle tecnologie digitali;- per lo sviluppo di piattaforme e soluzioni digitali nei processi produttivi, organizzativi delle PMI anche attraverso la fruizione della connettività a banda ultra-larga da parte delle imprese;- per sfruttare le potenzialità di cloud, big-data, intelligenza artificiale, Internet of things, ecc;- per il rafforzamento della sicurezza digitale, anche a supporto della business continuity;- per l’implementazione di nuove modalità di interazione con i clienti ed i fornitori (augmented e virtual reality e altri approcci digitali);- per lo sviluppo dell'innovazione e l'accelerazione di nuove iniziative produttive basate sull’utilizzo delle tecnologie digitali e degli strumenti telematici;- per ampliare il numero delle piccole e medie imprese regionali che fanno ricorso a servizi digitali innovativi e applicazioni hardware e software finalizzati ad innovare la sfera produttiva, organizzativa e di mercato dell’impresa. Nei singoli progetti candidati si potranno selezionare quattro tipologie di servizi, da scegliere in una delle due linee o in entrambe con un massimo due servizi per linea. ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "L’avviso dà piena attuazione alla direttrice “D3- Trasformazione digitale delle imprese, in particolare delle MPMI” della Agenda Digitale Pugliese, approvata don DGR n. 1604/2023, che intende intercettare i settori maggiormente strategici e le filiere maggiormente innovative, supportando la crescita della maturità ed intensità digitale del sistema imprenditoriale ed incentivando l’acquisizione di tecnologie ICT nelle imprese dei servizi e manifatturiere (Big Data, Analytics, Cloud, Blockchain, manifattura additiva, 5G, realtà virtuale e realtà aumentata, intelligenza artificiale, Io T, Digital Twin, Cybersecurity, ecc.).  ",
+    "A chi si rivolge",
+    "I soggetti beneficiari dell’aiuto previsto dal presente Avviso sono le Micro Piccole e Medie Imprese (MPMI), come definite ai sensi Reg. UE n. 651/2014 e del D. M. del 18/04/2005, in forma singola o associata, in Associazione Temporanea di Scopo, Contratto di Rete, Consorzio o Società Consortile. Possono beneficiare delle agevolazioni anche i liberi professionisti, in quanto equiparati alle piccole e medie imprese come esercenti attività economica.  ",
+    "Cosa prevede",
+    "Gli interventi ammissibili sono rientranti nelle Linee di intervento di seguito indicate: 1. Linea A: sostegno per iniziative orientate all’acquisto di servizi di consulenza: - per l’innovazione tecnologica, strategica, organizzativa correlata alla transizione ecologica; - per l’avanzamento tecnologico delle imprese attraverso soluzioni tecnologiche relative a software, macchinari, modelli organizzativi, in relazione alla transizione ecologica; - per l’efficientamento energetico delle Micro Piccole e Medie Imprese, con particolare riferimento alle imprese la cui attività comporta notevoli consumi energetici, pur senza rientrare nella definizione di impresa energivora di cui al decreto del Ministero dello Sviluppo Economico 21.12.2017. 2. La Linea B: sostegno ad iniziative orientate all’acquisto di consulenze e tecnologie (hardware e software): - per l’innovazione di processo supportata dalle tecnologie digitali; - per lo sviluppo di piattaforme e soluzioni digitali nei processi produttivi, organizzativi delle PMI anche attraverso la fruizione della connettività a banda ultra-larga da parte delle imprese; - per sfruttare le potenzialità di cloud, big-data, intelligenza artificiale, Internet of things, ecc; - per il rafforzamento della sicurezza digitale, anche a supporto della business continuity; - per l’implementazione di nuove modalità di interazione con i clienti ed i fornitori (augmented e virtual reality e altri approcci digitali); - per lo sviluppo dell'innovazione e l'accelerazione di nuove iniziative produttive basate sull’utilizzo delle tecnologie digitali e degli strumenti telematici; - per ampliare il numero delle piccole e medie imprese regionali che fanno ricorso a servizi digitali innovativi e applicazioni hardware e software finalizzati ad innovare la sfera produttiva, organizzativa e di mercato dell’impresa. Nei singoli progetti candidati si potranno selezionare quattro tipologie di servizi, da scegliere in una delle due linee o in entrambe con un massimo due servizi per linea.  "
+   ],
+   "zm_field_activity_sector": [
+    "586",
+    "474",
+    "484",
+    "260",
+    "490",
+    "480",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "486",
+    "479",
+    "477",
+    "481",
+    "475",
+    "485",
+    "489",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "586",
+   "zm_field_activity_sector_value": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Artigianato",
+    "Altri servizi",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Agricoltura, silvicoltura e pesca",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+   "zs_field_budget_allocation": "23500000",
+   "zs_field_close_date": "2026-12-31T00:00:00",
+   "zs_field_close_date_descriptor": "La presentazione delle candidature sarà possibile a partire dalle ore 14:00 del 10/07/2024 sino alle ore 14:00 del 31/12/2026, salvo esaurimento dei fondi.",
+   "zs_field_cost_max": "540000",
+   "zs_field_cost_min": "0",
+   "zm_field_costs": [
+    "0",
+    "540000"
+   ],
+   "zs_field_costs": "540000",
+   "zm_field_dimensions": [
+    "570",
+    "212",
+    "263",
+    "213"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa",
+    "Media Impresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "284",
+    "215",
+    "216",
+    "217"
+   ],
+   "zs_field_granted_costs": "284",
+   "zm_field_granted_costs_value": [
+    "Costo del personale",
+    "Servizi, brevetti e licenze",
+    "Impianti/Macchinari/Attrezzature",
+    "Spese generali/altri oneri"
+   ],
+   "zs_field_granted_costs_value": "Costo del personale",
+   "zs_field_implementation_ruleset": "Determinazione del Dirigente della Sezione Crescita Digitale delle persone, del territorio e delle imprese n.64 del 24/06/2024 pubblicata sul BURP n.52 del 27/06/2024",
+   "zs_field_link": "https://www.regione.puglia.it/web/trasformazione-digitale/-/avviso-trasformazioni-servizi-per-l-innovazione-e-l-avanzamento-tecnologico-e-interventi-per-la-trasformazione-digitale-a-supporto-delle-pmi",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2024-07-10T00:00:00",
+   "zs_field_other_characteristic": "La dotazione finanziaria complessiva dell’Avviso è pari ad €23.500.000,00 a valere sul PR Puglia 2021 – 2027 – fondo FESR – Asse I – Azione 1.2 “Servizi per l’innovazione e l’avanzamento tecnologico delle PMI” - Azione 1.7 “Interventi di digitalizzazione delle imprese”.I progetti candidati a finanziamento sono selezionati con procedura valutativa a sportello. Per la gestione dell’avviso la Regione si avvale dell’Organismo Intermedio InnovaPuglia S.p.A.Come partecipareLe domande di agevolazione dovranno essere inoltrate, pena l’esclusione, unicamente in via telematica, attraverso la procedura on line disponibile sul portale www.sistema.puglia.it alla sezione “Trasformazioni” www.sistema.puglia.it/trasformazioni.",
+   "zs_field_primary_ruleset": "Determinazione del Dirigente della Sezione Crescita Digitale delle persone, del territorio e delle imprese n.64 del 24/06/2024 pubblicata sul BURP n.52 del 27/06/2024",
+   "zm_field_regions": [
+    "230"
+   ],
+   "zs_field_regions": "230",
+   "zm_field_regions_value": [
+    "Puglia"
+   ],
+   "zs_field_regions_value": "Puglia",
+   "zm_field_scopes": [
+    "265",
+    "310",
+    "298",
+    "273",
+    "301",
+    "291",
+    "580",
+    "270"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione",
+    "Imprenditoria femminile",
+    "Imprenditoria giovanile",
+    "Innovazione e ricerca",
+    "Internazionalizzazione",
+    "Transizione ecologica",
+    "Start up/Sviluppo d'impresa",
+    "Sostegno investimenti"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "Regione Puglia",
+   "zm_field_subject_type": [
+    "238",
+    "241",
+    "306",
+    "239",
+    "240",
+    "321",
+    "296",
+    "297"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa",
+    "Impresa - prevalenza femminile",
+    "Impresa - prevalenza giovanile",
+    "Impresa - SU/PMI innovativa",
+    "Professionista",
+    "Rete d'impresa",
+    "Cooperative/Associazioni Non Profit",
+    "Consorzio"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "270000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "270000"
+   ],
+   "zs_field_support_grant_type_min_max": "270000",
+   "zs_nid": "2748",
+   "zs_title": "Avviso Trasformazioni - Servizi per l’innovazione e l’avanzamento tecnologico e interventi per la trasformazione digitale a supporto delle PMI",
+   "tum_X3b_it_title_ft": [
+    "Avviso Trasformazioni - Servizi per l’innovazione e l’avanzamento tecnologico e interventi per la trasformazione digitale a supporto delle PMI"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-07-10T00:00:00Z\"\n                 close-date=\"2026-12-31T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-310\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Imprenditoria femminile</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-298\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Imprenditoria giovanile</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-301\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Internazionalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-291\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Transizione ecologica</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-580\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Start up/Sviluppo d&#039;impresa</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-270\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Sostegno investimenti</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Avviso Trasformazioni - Servizi per l’innovazione e l’avanzamento tecnologico e interventi per la trasformazione digitale a supporto delle PMI</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/avviso-trasformazioni-servizi-linnovazione-e-lavanzamento-tecnologico-e-interventi-la\">vai alla scheda <span class=\"visually-hidden\">Avviso Trasformazioni - Servizi per l’innovazione e l’avanzamento tecnologico e interventi per la trasformazione digitale a supporto delle PMI</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "ss_search_api_id": "entity:node/2748:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-10-24T12:17:20Z",
+   "boost_document": 1.0,
+   "_version_": 1860757695003361280,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:27:01Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1053:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Artigianato",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti;",
+    "28000000",
+    "28537",
+    "2024-05-10T00:00:00",
+    "0",
+    "400000",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa",
+    "Media Impresa; Microimpresa; Piccola Impresa (escluse Microimprese)",
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri",
+    "Costi di personale - Costo del personale; Costi generali - Spese generali; Immateriali - Conoscenze Tecniche Non Brevettate; Immateriali - Diritti Di Brevetto; Immateriali - Know-How; Immateriali - Licenze; Immateriali - Marchi; Materiali - Impianti/Macchinari/Attrezzature; Materiali - Progettazione/studi/consulenze",
+    "98375",
+    "PR MARCHE FESR 2021-2027 - Asse 1 – OS 1.1 – AZIONE 1.1.2 – Approvazione bando “Innovazione di prodotto sostenibile e digitale”",
+    "1712829607",
+    "2024-01-08T00:00:00",
+    "Regione Marche (Autorità responsabile)",
+    "PR MARCHE FESR 2021-2027 - Asse 1 – OS 1.1 – AZIONE 1.1.2 – Approvazione bando “Innovazione di prodotto sostenibile e digitale”",
+    "Marche",
+    "Innovazione e ricerca",
+    "Regione Marche",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "Sovvenzione/Contributo in conto interessi - Contributo in c/capitale c/impianti",
+    "0",
+    "200000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-01-08T00:00:00Z\"\n                 close-date=\"2024-05-10T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Bando innovazione di prodotto sostenibile e digitale – Regione Marche</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/bando-innovazione-di-prodotto-sostenibile-e-digitale-regione-marche\">vai alla scheda <span class=\"visually-hidden\">Bando innovazione di prodotto sostenibile e digitale – Regione Marche</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/bando-innovazione-di-prodotto-sostenibile-e-digitale-regione-marche",
+   "zs_body": "Cos'è Questa iniziativa mira a supportare progetti di innovazione e di diversificazione del prodotto o del servizio che prevedano soluzioni innovative basate sulla “twin transition” (innovazione sostenibile/circolare e innovazione digitale), nonché l’adozione di adeguate strategie commerciali e di marketing incentrate sul prodotto innovato A chi si rivolge Possono beneficiare delle agevolazioni previste dal presente bando le micro, piccole e medie imprese (MPMI) , in forma singola o aggregata nella forma di contratto di rete , associazione temporanea di scopo o raggruppamento temporaneo. Cosa prevede L’iniziativa ha l’obiettivo di rafforzare e rilanciare la presenza sui mercati delle PMI marchigiane operanti negli ambiti della S3 2021-2027 attraverso progetti per la realizzazione e la commercializzazione di prodotti o servizi nuovi o significativamente migliorati rispetto allo stato pre-esistente, nonché per l’adozione di adeguate strategie commerciali e di marketing incentrate sul prodotto innovato, anche mediante l'utilizzo di risorse e competenze esterne e servizi nel campo delle tecnologie applicate, delle tecnologie digitali, dell'ingegneria, del design e delle discipline artistiche, del marketing e della comunicazione e della tutela dei diritti di proprietà intellettuale.",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Questa iniziativa mira a supportare progetti di innovazione e di diversificazione del prodotto o del servizio che prevedano soluzioni innovative basate sulla “twin transition” (innovazione sostenibile/circolare e innovazione digitale), nonché l’adozione di adeguate strategie commerciali e di marketing incentrate sul prodotto innovato",
+    "A chi si rivolge",
+    "Possono beneficiare delle agevolazioni previste dal presente bando le micro, piccole e medie imprese (MPMI) , in forma singola o aggregata nella forma di contratto di rete , associazione temporanea di scopo o raggruppamento temporaneo.",
+    "Cosa prevede",
+    "L’iniziativa ha l’obiettivo di rafforzare e rilanciare la presenza sui mercati delle PMI marchigiane operanti negli ambiti della S3 2021-2027 attraverso progetti per la realizzazione e la commercializzazione di prodotti o servizi nuovi o significativamente migliorati rispetto allo stato pre-esistente, nonché per l’adozione di adeguate strategie commerciali e di marketing incentrate sul prodotto innovato, anche mediante l'utilizzo di risorse e competenze esterne e servizi nel campo delle tecnologie applicate, delle tecnologie digitali, dell'ingegneria, del design e delle discipline artistiche, del marketing e della comunicazione e della tutela dei diritti di proprietà intellettuale."
+   ],
+   "zm_field_activity_sector": [
+    "260",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "250",
+    "486",
+    "479",
+    "477",
+    "481",
+    "475",
+    "485",
+    "489",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "260",
+   "zm_field_activity_sector_value": [
+    "Artigianato",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Artigianato",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti;",
+   "zs_field_budget_allocation": "28000000",
+   "zs_field_close_date": "2024-05-10T00:00:00",
+   "zs_field_cost_max": "400000",
+   "zs_field_cost_min": "0",
+   "zm_field_costs": [
+    "0",
+    "400000"
+   ],
+   "zs_field_costs": "400000",
+   "zm_field_dimensions": [
+    "212",
+    "570",
+    "213"
+   ],
+   "zs_field_dimensions": "212",
+   "zm_field_dimensions_value": [
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Media Impresa",
+   "zm_field_granted_costs": [
+    "284",
+    "216",
+    "215",
+    "215",
+    "215",
+    "215",
+    "215",
+    "215",
+    "217"
+   ],
+   "zs_field_granted_costs": "284",
+   "zm_field_granted_costs_value": [
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri"
+   ],
+   "zs_field_granted_costs_value": "Costo del personale",
+   "zs_field_implementation_ruleset": "PR MARCHE FESR 2021-2027 - Asse 1 – OS 1.1 – AZIONE 1.1.2 – Approvazione bando “Innovazione di prodotto sostenibile e digitale”",
+   "zs_field_link": "https://www.regione.marche.it/Entra-in-Regione/Bandi-e-opportunita/Bandi-attivi?idb=7597",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2024-01-08T00:00:00",
+   "zs_field_primary_ruleset": "PR MARCHE FESR 2021-2027 - Asse 1 – OS 1.1 – AZIONE 1.1.2 – Approvazione bando “Innovazione di prodotto sostenibile e digitale”",
+   "zm_field_regions": [
+    "227"
+   ],
+   "zs_field_regions": "227",
+   "zm_field_regions_value": [
+    "Marche"
+   ],
+   "zs_field_regions_value": "Marche",
+   "zm_field_scopes": [
+    "273"
+   ],
+   "zs_field_scopes": "273",
+   "zm_field_scopes_value": [
+    "Innovazione e ricerca"
+   ],
+   "zs_field_scopes_value": "Innovazione e ricerca",
+   "zs_field_subject_grant": "Regione Marche",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "200000",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "200000"
+   ],
+   "zs_field_support_grant_type_min_max": "200000",
+   "zs_nid": "1053",
+   "zs_title": "Bando innovazione di prodotto sostenibile e digitale – Regione Marche",
+   "tum_X3b_it_title_ft": [
+    "Bando innovazione di prodotto sostenibile e digitale – Regione Marche"
+   ],
+   "ss_search_api_id": "entity:node/1053:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-04-11T10:00:07Z",
+   "boost_document": 1.0,
+   "_version_": 1860757663022841857,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:31Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1071:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "ICT",
+    "72.00; 72.10; 72.11; 72.19; 72.20;",
+    "<p>14270351.57</p>",
+    "28570",
+    "2023-09-20T00:00:00",
+    "0",
+    "700000",
+    "Grande Impresa",
+    "Media Impresa",
+    "Microimpresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa",
+    "<p>Grande Impresa; Media Impresa; Microimpresa; Non classificabile; Piccola Impresa (escluse Microimprese)</p>",
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri",
+    "<p>Ammortamenti - Costi della ricerca contrattuale, delle conoscenze e dei brevetti acquisiti o ottenuti in licenza da fonti esterne alle normali condizioni di mercato; Costi di personale - Costo del personale; Costi generali - Spese generali; Materiali - Impianti/Macchinari/Attrezzature; Materiali - Progettazione/studi/consulenze</p>",
+    "98504",
+    "<p>Decreto Mur - Ecosistema RAISE – Robotics and Artifical Intelligence for Socio-Economic Empowerment (codice ECS 00000035) (PNRR) – MISSIONE 4 COMPONENTE 2, “Dalla ricerca all’impresa” INVESTIMENTO 1.5, “Creazione e rafforzamento di “Ecosistemi dell’innovazione” costruzione di “leader Territoriali di R&amp;S” CUP RAISE J33C22001220001</p>",
+    "1707848828",
+    "2023-07-05T00:00:00",
+    "FONDAZIONE ISTITUTO ITALIANO DI TECNOLOGIA (Autorità responsabile) || FONDAZIONE ISTITUTO ITALIANO DI TECNOLOGIA (Ufficio gestore della misura)",
+    "<p>Decreto Mur - Ecosistema RAISE – Robotics and Artifical Intelligence for Socio-Economic Empowerment (codice ECS 00000035) (PNRR) – MISSIONE 4 COMPONENTE 2, “Dalla ricerca all’impresa” INVESTIMENTO 1.5, “Creazione e rafforzamento di “Ecosistemi dell’innovazione” costruzione di “leader Territoriali di R&amp;S” CUP RAISE J33C22001220001</p>",
+    "Abruzzo",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Emilia-Romagna",
+    "Friuli-Venezia Giulia",
+    "Lazio",
+    "Liguria",
+    "Lombardia",
+    "Marche",
+    "Molise",
+    "Piemonte",
+    "Puglia",
+    "Sardegna",
+    "Sicilia",
+    "Toscana",
+    "Trentino-Alto Adige/Südtirol",
+    "Umbria",
+    "Valle d'Aosta/Vallée d'Aoste",
+    "Veneto",
+    "Innovazione e ricerca",
+    "Start up/Sviluppo d'impresa",
+    "<p>FONDAZIONE ISTITUTO ITALIANO DI TECNOLOGIA</p>",
+    "Università/Ente di Ricerca",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "700000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-07-05T00:00:00Z\"\n                 close-date=\"2023-09-20T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-580\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Start up/Sviluppo d&#039;impresa</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Progetti di Ricerca Industriale e Sviluppo Sperimentale Intelligenza Artificiale e Robotica - Fondazione Istituto Italiano di Tecnologia</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/progetti-di-ricerca-industriale-e-sviluppo-sperimentale-intelligenza-artificiale-e\">vai alla scheda <span class=\"visually-hidden\">Progetti di Ricerca Industriale e Sviluppo Sperimentale Intelligenza Artificiale e Robotica - Fondazione Istituto Italiano di Tecnologia</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/progetti-di-ricerca-industriale-e-sviluppo-sperimentale-intelligenza-artificiale-e",
+   "zs_body": "Cos'è Bando per progetti di Ricerca Industriale e Sviluppo Sperimentale nei domini dell’Intelligenza Artificiale e della Robotica. Il bando vuole favorire:- l’identificazione (discovery) di prodotti, servizi e processi innovativi;- l’aumento di maturità delle relative tecnologie sottostanti (TRL, technology readiness level);- l’inserimento dei prodotti, dei servizi e dei processi innovativi di cui sopra nel portfolio di RAISE, affinché siano disponibili per il territorio (injection). L'iniziativa si inserisce nell'ambito del “Bando per la creazione e il rafforzamento di Ecosistemi dell’innovazione territoriali” incluso tra le misure di ricerca in filiera del Piano Nazionale di Ripresa e Resilienza (PNRR), e pubblicato dal ministero dell’Università e della Ricerca (MUR) nel mese di dicembre 2021. A chi si rivolge Imprese Cosa prevede Contributo a fondo perduto (grant). Creazione di nuovi prodotti, servizi o processi di rilevanza industriale.  I progetti dovranno dimostrare un elevato livello di innovazione attraverso lo sviluppo di tecnologie abilitanti che migliorino la competitività del sistema produttivo e sociale e favoriscano la transizione verde e digitale. ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Bando per progetti di Ricerca Industriale e Sviluppo Sperimentale nei domini dell’Intelligenza Artificiale e della Robotica. Il bando vuole favorire: - l’identificazione (discovery) di prodotti, servizi e processi innovativi; - l’aumento di maturità delle relative tecnologie sottostanti (TRL, technology readiness level); - l’inserimento dei prodotti, dei servizi e dei processi innovativi di cui sopra nel portfolio di RAISE, affinché siano disponibili per il territorio (injection). L'iniziativa si inserisce nell'ambito del “Bando per la creazione e il rafforzamento di Ecosistemi dell’innovazione territoriali” incluso tra le misure di ricerca in filiera del Piano Nazionale di Ripresa e Resilienza (PNRR), e pubblicato dal ministero dell’Università e della Ricerca (MUR) nel mese di dicembre 2021.",
+    "A chi si rivolge",
+    "Imprese",
+    "Cosa prevede",
+    "Contributo a fondo perduto (grant). Creazione di nuovi prodotti, servizi o processi di rilevanza industriale.  I progetti dovranno dimostrare un elevato livello di innovazione attraverso lo sviluppo di tecnologie abilitanti che migliorino la competitività del sistema produttivo e sociale e favoriscano la transizione verde e digitale.  "
+   ],
+   "zm_field_activity_sector": [
+    "486"
+   ],
+   "zs_field_activity_sector": "486",
+   "zm_field_activity_sector_value": [
+    "ICT"
+   ],
+   "zs_field_activity_sector_value": "ICT",
+   "zs_field_ateco": "72.00; 72.10; 72.11; 72.19; 72.20;",
+   "zs_field_budget_allocation": "14270351.57",
+   "zs_field_close_date": "2023-09-20T00:00:00",
+   "zs_field_close_date_descriptor": "La documentazione potrà essere trasmessa a mezzo Posta Elettronica Certificata (raise@pec.iit.it) a partire dal giorno 05/07/2023 ed entro e non oltre il giorno 20/09/2023 alle ore 18.00.",
+   "zm_field_costs": [
+    "0",
+    "700000"
+   ],
+   "zs_field_costs": "700000",
+   "zm_field_dimensions": [
+    "211",
+    "212",
+    "570",
+    "263",
+    "213"
+   ],
+   "zs_field_dimensions": "211",
+   "zm_field_dimensions_value": [
+    "Grande Impresa",
+    "Media Impresa",
+    "Microimpresa",
+    "Non classificabile/classificato",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Grande Impresa",
+   "zm_field_granted_costs": [
+    "284",
+    "216",
+    "215",
+    "217"
+   ],
+   "zs_field_granted_costs": "284",
+   "zm_field_granted_costs_value": [
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri"
+   ],
+   "zs_field_granted_costs_value": "Costo del personale",
+   "zs_field_implementation_ruleset": "Decreto Mur - Ecosistema RAISE – Robotics and Artifical Intelligence for Socio-Economic Empowerment (codice ECS 00000035) (PNRR) – MISSIONE 4 COMPONENTE 2, “Dalla ricerca all’impresa” INVESTIMENTO 1.5, “Creazione e rafforzamento di “Ecosistemi dell’innovazione” costruzione di “leader Territoriali di R&S” CUP RAISE J33C22001220001",
+   "zs_field_link": "https://www.raiseliguria.it/bandi/bando-per-progetti-di-ricerca-industriale-e-sviluppo-sperimentale-nei-domini-dellintelligenza-artificiale-e-della-robotica/",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2023-07-05T00:00:00",
+   "zs_field_primary_ruleset": "Decreto Mur - Ecosistema RAISE – Robotics and Artifical Intelligence for Socio-Economic Empowerment (codice ECS 00000035) (PNRR) – MISSIONE 4 COMPONENTE 2, “Dalla ricerca all’impresa” INVESTIMENTO 1.5, “Creazione e rafforzamento di “Ecosistemi dell’innovazione” costruzione di “leader Territoriali di R&S” CUP RAISE J33C22001220001",
+   "zm_field_regions": [
+    "218",
+    "219",
+    "220",
+    "221",
+    "222",
+    "223",
+    "224",
+    "225",
+    "226",
+    "227",
+    "228",
+    "229",
+    "230",
+    "231",
+    "232",
+    "233",
+    "234",
+    "235",
+    "236",
+    "237"
+   ],
+   "zs_field_regions": "218",
+   "zm_field_regions_value": [
+    "Abruzzo",
+    "Basilicata",
+    "Calabria",
+    "Campania",
+    "Emilia-Romagna",
+    "Friuli-Venezia Giulia",
+    "Lazio",
+    "Liguria",
+    "Lombardia",
+    "Marche",
+    "Molise",
+    "Piemonte",
+    "Puglia",
+    "Sardegna",
+    "Sicilia",
+    "Toscana",
+    "Trentino-Alto Adige/Südtirol",
+    "Umbria",
+    "Valle d'Aosta/Vallée d'Aoste",
+    "Veneto"
+   ],
+   "zs_field_regions_value": "Abruzzo",
+   "zm_field_scopes": [
+    "273",
+    "580"
+   ],
+   "zs_field_scopes": "273",
+   "zm_field_scopes_value": [
+    "Innovazione e ricerca",
+    "Start up/Sviluppo d'impresa"
+   ],
+   "zs_field_scopes_value": "Innovazione e ricerca",
+   "zs_field_subject_grant": "FONDAZIONE ISTITUTO ITALIANO DI TECNOLOGIA",
+   "zm_field_subject_type": [
+    "286"
+   ],
+   "zs_field_subject_type": "286",
+   "zm_field_subject_type_value": [
+    "Università/Ente di Ricerca"
+   ],
+   "zs_field_subject_type_value": "Università/Ente di Ricerca",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "700000"
+   ],
+   "zs_field_support_grant_type_min_max": "700000",
+   "zs_nid": "1071",
+   "zs_title": "Progetti di Ricerca Industriale e Sviluppo Sperimentale Intelligenza Artificiale e Robotica - Fondazione Istituto Italiano di Tecnologia",
+   "tum_X3b_it_title_ft": [
+    "Progetti di Ricerca Industriale e Sviluppo Sperimentale Intelligenza Artificiale e Robotica - Fondazione Istituto Italiano di Tecnologia"
+   ],
+   "ss_search_api_id": "entity:node/1071:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-02-13T18:27:08Z",
+   "boost_document": 1.0,
+   "_version_": 1860757663048007680,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:31Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1133:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti;",
+    "<p>100000</p>",
+    "28656",
+    "2024-11-29T00:00:00",
+    "<p>Arcidosso; Bibbona; Campagnatico; Campiglia Marittima; Campo nell'Elba; Capalbio; Capoliveri; Capraia Isola; Castagneto Carducci; Castel del Piano; Castell'Azzara; Castiglione della Pescaia; Cecina; Cinigiano; Civitella Paganico; Collesalvetti; Follonica; Gavorrano; Grosseto; Isola del Giglio; Livorno; Magliano in Toscana; Manciano; Marciana; Marciana Marina; Massa Marittima; Monte Argentario; Monterotondo Marittimo; Montieri; Orbetello; Piombino; Pitigliano; Porto Azzurro; Portoferraio; Rio; Rio Marina; Rio nell'Elba; Roccalbegna; Roccastrada; Rosignano Marittimo; San Vincenzo; Santa Fiora; Sassetta; Scansano; Scarlino; Seggiano; Semproniano; Sorano; Suvereto</p>",
+    "3000",
+    "7143",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa",
+    "<p>Media Impresa; Microimpresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Impianti/Macchinari/Attrezzature",
+    "<p>Materiali - Impianti/Macchinari/Attrezzature</p>",
+    "98828",
+    "<p>Riordinamento delle camere di commercio, industria, artigianato e agricoltura.</p>",
+    "1708532957",
+    "2024-03-01T00:00:00",
+    "Camera di Commercio della Maremma e del Tirreno (Autorità responsabile) || Promozione (Ufficio gestore della misura)",
+    "<p>Riordinamento delle camere di commercio, industria, artigianato e agricoltura.</p>",
+    "Toscana",
+    "Digitalizzazione",
+    "<p>Camera di Commercio della Maremma e del Tirreno</p>",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "2100",
+    "5000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-03-01T00:00:00Z\"\n                 close-date=\"2024-11-29T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Bando Innovazione digitale 4.0 Anno 2024 - CCIAA Maremma e Tirreno</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/bando-innovazione-digitale-40-anno-2024-cciaa-maremma-e-tirreno\">vai alla scheda <span class=\"visually-hidden\">Bando Innovazione digitale 4.0 Anno 2024 - CCIAA Maremma e Tirreno</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/bando-innovazione-digitale-40-anno-2024-cciaa-maremma-e-tirreno",
+   "zs_body": "Cos'è Misura finalizzata a promuovere la diffusione della cultura e della pratica digitale nelle Micro, Piccole e Medie imprese di tutti i settori economici attraverso il sostegno economico alle iniziative di digitalizzazione dei processi aziendali, anche finalizzate ad approcci green oriented volti a sostenere la transizione ecologica del tessuto produttivo. Nello specifico, con questa iniziativa, si propone di promuovere l’utilizzo, da parte delle MPMI della circoscrizione territoriale camerale, di servizi o soluzioni focalizzati sulle competenze e tecnologie digitali nell’ambito delle attività previste dal Piano Transizione 4.0. A chi si rivolge Bando rivolto alle MPMI (Micro, Piccole, Medie Imprese) con sede legale e/o un’unità operativa nella provincia di Livorno o Grosseto. Cosa prevede L'agevolazione consiste in un contributo a fondo perduto pari al 70% delle spese sostenute e ritenute ammissibili (al netto di IVA), nell'ambito delle tecnologie I4.0, per un importo unitario massimo pari ad euro 5.000,00. In percentuale, è ammessa anche la spesa per consulenza. Sono inoltre previste maggiorazioni in caso di possesso del rating di legalità, redazione del Bilancio Sociale, certificazione di genere (UNI/Pd R 125:2022) o in caso di imprese femminili",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Misura finalizzata a promuovere la diffusione della cultura e della pratica digitale nelle Micro, Piccole e Medie imprese di tutti i settori economici attraverso il sostegno economico alle iniziative di digitalizzazione dei processi aziendali, anche finalizzate ad approcci green oriented volti a sostenere la transizione ecologica del tessuto produttivo. Nello specifico, con questa iniziativa, si propone di promuovere l’utilizzo, da parte delle MPMI della circoscrizione territoriale camerale, di servizi o soluzioni focalizzati sulle competenze e tecnologie digitali nell’ambito delle attività previste dal Piano Transizione 4.0.",
+    "A chi si rivolge",
+    "Bando rivolto alle MPMI (Micro, Piccole, Medie Imprese) con sede legale e/o un’unità operativa nella provincia di Livorno o Grosseto.",
+    "Cosa prevede",
+    "L'agevolazione consiste in un contributo a fondo perduto pari al 70% delle spese sostenute e ritenute ammissibili (al netto di IVA), nell'ambito delle tecnologie I4.0, per un importo unitario massimo pari ad euro 5.000,00. In percentuale, è ammessa anche la spesa per consulenza. Sono inoltre previste maggiorazioni in caso di possesso del rating di legalità, redazione del Bilancio Sociale, certificazione di genere (UNI/Pd R 125:2022) o in caso di imprese femminili"
+   ],
+   "zm_field_activity_sector": [
+    "586",
+    "474",
+    "484",
+    "490",
+    "260",
+    "480",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "250",
+    "486",
+    "479",
+    "477",
+    "481",
+    "475",
+    "485",
+    "489",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "586",
+   "zm_field_activity_sector_value": [
+    "Agricoltura, silvicoltura e pesca",
+    "Agroalimentare",
+    "Alberghiero",
+    "Altri servizi",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "Fornitura Energia, Acqua e gestione Rifiuti",
+    "ICT",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Salute",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Agricoltura, silvicoltura e pesca",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti;",
+   "zs_field_budget_allocation": "100000",
+   "zs_field_close_date": "2024-11-29T00:00:00",
+   "zs_field_close_date_descriptor": "Il bando è aperto dal 1° marzo al 29 novembre 2024 salvo chiusura anticipata per esaurimento fondi.",
+   "zs_field_comuni": "Arcidosso; Bibbona; Campagnatico; Campiglia Marittima; Campo nell'Elba; Capalbio; Capoliveri; Capraia Isola; Castagneto Carducci; Castel del Piano; Castell'Azzara; Castiglione della Pescaia; Cecina; Cinigiano; Civitella Paganico; Collesalvetti; Follonica; Gavorrano; Grosseto; Isola del Giglio; Livorno; Magliano in Toscana; Manciano; Marciana; Marciana Marina; Massa Marittima; Monte Argentario; Monterotondo Marittimo; Montieri; Orbetello; Piombino; Pitigliano; Porto Azzurro; Portoferraio; Rio; Rio Marina; Rio nell'Elba; Roccalbegna; Roccastrada; Rosignano Marittimo; San Vincenzo; Santa Fiora; Sassetta; Scansano; Scarlino; Seggiano; Semproniano; Sorano; Suvereto",
+   "zm_field_costs": [
+    "3000",
+    "7143"
+   ],
+   "zs_field_costs": "3000",
+   "zm_field_dimensions": [
+    "212",
+    "570",
+    "213"
+   ],
+   "zs_field_dimensions": "212",
+   "zm_field_dimensions_value": [
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Media Impresa",
+   "zm_field_granted_costs": [
+    "216"
+   ],
+   "zs_field_granted_costs": "216",
+   "zm_field_granted_costs_value": [
+    "Impianti/Macchinari/Attrezzature"
+   ],
+   "zs_field_granted_costs_value": "Impianti/Macchinari/Attrezzature",
+   "zs_field_implementation_ruleset": "Riordinamento delle camere di commercio, industria, artigianato e agricoltura.",
+   "zs_field_link": "https://www.lg.camcom.it/bandi-contributi-alle-imprese",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2024-03-01T00:00:00",
+   "zs_field_primary_ruleset": "Riordinamento delle camere di commercio, industria, artigianato e agricoltura.",
+   "zm_field_regions": [
+    "233"
+   ],
+   "zs_field_regions": "233",
+   "zm_field_regions_value": [
+    "Toscana"
+   ],
+   "zs_field_regions_value": "Toscana",
+   "zm_field_scopes": [
+    "265"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "Camera di Commercio della Maremma e del Tirreno",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zm_field_support_grant_type_min_max": [
+    "2100",
+    "5000"
+   ],
+   "zs_field_support_grant_type_min_max": "2100",
+   "zs_nid": "1133",
+   "zs_title": "Bando Innovazione digitale 4.0 Anno 2024 - CCIAA Maremma e Tirreno",
+   "tum_X3b_it_title_ft": [
+    "Bando Innovazione digitale 4.0 Anno 2024 - CCIAA Maremma e Tirreno"
+   ],
+   "ss_search_api_id": "entity:node/1133:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-02-21T16:29:17Z",
+   "boost_document": 1.0,
+   "_version_": 1860757663855411200,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:31Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1155:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Alberghiero",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Commercio",
+    "Edilizia",
+    "Elettronica",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Servizi di trasporto",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti;",
+    "<p>2000000</p>",
+    "28673",
+    "2024-12-31T00:00:00",
+    "0",
+    "10000",
+    "Microimpresa",
+    "<p>Microimpresa</p>",
+    "Formazione Professionale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "<p>Costi di personale - Formazione Professionale; Materiali - Impianti/Macchinari/Attrezzature; Servizi - Servizi professionali</p>",
+    "98898",
+    "<p>Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia</p>",
+    "1708616393",
+    "2024-02-02T00:00:00",
+    "Provincia Autonoma di Bolzano - Ripartizione Economia (Autorità responsabile) || Ripartizione Economia (Ufficio gestore della misura)",
+    "<p>Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia</p>",
+    "Trentino-Alto Adige/Südtirol",
+    "Digitalizzazione",
+    "<p>Provincia Autonoma di Bolzano - Ripartizione Economia</p>",
+    "Impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo in c/capitale c/impianti; Sovvenzione/Contributo in conto interessi - Contributo in c/interessi</p>",
+    "0",
+    "6000"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2024-02-02T00:00:00Z\"\n                 close-date=\"2024-12-31T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Interventi per la promozione della digitalizzazione delle microimprese 2024</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/interventi-la-promozione-della-digitalizzazione-delle-microimprese-2024\">vai alla scheda <span class=\"visually-hidden\">Interventi per la promozione della digitalizzazione delle microimprese 2024</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/interventi-la-promozione-della-digitalizzazione-delle-microimprese-2024",
+   "zs_body": "Cos'è Contributo a fondo perduto per l'acquisto di software e consulenze e formazione con l'obiettivo di digitalizzare i processi dell'impresa. A chi si rivolge Microimprese con max 5 addetti. Cosa prevede Contributo a fondo perduto.",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Contributo a fondo perduto per l'acquisto di software e consulenze e formazione con l'obiettivo di digitalizzare i processi dell'impresa.",
+    "A chi si rivolge",
+    "Microimprese con max 5 addetti.",
+    "Cosa prevede",
+    "Contributo a fondo perduto."
+   ],
+   "zm_field_activity_sector": [
+    "484",
+    "260",
+    "480",
+    "482",
+    "249",
+    "478",
+    "479",
+    "477",
+    "481",
+    "475",
+    "483",
+    "488"
+   ],
+   "zs_field_activity_sector": "484",
+   "zm_field_activity_sector_value": [
+    "Alberghiero",
+    "Artigianato",
+    "Autoveicoli e altri mezzi di trasporto",
+    "Commercio",
+    "Edilizia",
+    "Elettronica",
+    "Meccanica",
+    "Metallurgia",
+    "Mobili, Legno e Carta",
+    "Moda e Tessile",
+    "Servizi di trasporto",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Alberghiero",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti;",
+   "zs_field_budget_allocation": "2000000",
+   "zs_field_close_date": "2024-12-31T00:00:00",
+   "zs_field_close_date_descriptor": "Le domande possono essere presentate fino al 31 ottobre 2024",
+   "zm_field_costs": [
+    "0",
+    "10000"
+   ],
+   "zs_field_costs": "10000",
+   "zm_field_dimensions": [
+    "570"
+   ],
+   "zs_field_dimensions": "570",
+   "zm_field_dimensions_value": [
+    "Microimpresa"
+   ],
+   "zs_field_dimensions_value": "Microimpresa",
+   "zm_field_granted_costs": [
+    "299",
+    "216",
+    "215"
+   ],
+   "zs_field_granted_costs": "299",
+   "zm_field_granted_costs_value": [
+    "Formazione Professionale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze"
+   ],
+   "zs_field_granted_costs_value": "Formazione Professionale",
+   "zs_field_implementation_ruleset": "Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia",
+   "zs_field_link": "https://civis.bz.it/it/servizi/servizio.html?id=1043405",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2024-02-02T00:00:00",
+   "zs_field_primary_ruleset": "Interventi della Provincia autonoma di Bolzano-Alto Adige per il sostegno dell'economia",
+   "zm_field_regions": [
+    "234"
+   ],
+   "zs_field_regions": "234",
+   "zm_field_regions_value": [
+    "Trentino-Alto Adige/Südtirol"
+   ],
+   "zs_field_regions_value": "Trentino-Alto Adige/Südtirol",
+   "zm_field_scopes": [
+    "265"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "Provincia Autonoma di Bolzano - Ripartizione Economia",
+   "zm_field_subject_type": [
+    "238"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "6000"
+   ],
+   "zs_field_support_grant_type_min_max": "6000",
+   "zs_nid": "1155",
+   "zs_title": "Interventi per la promozione della digitalizzazione delle microimprese 2024",
+   "tum_X3b_it_title_ft": [
+    "Interventi per la promozione della digitalizzazione delle microimprese 2024"
+   ],
+   "ss_search_api_id": "entity:node/1155:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-02-22T15:39:53Z",
+   "boost_document": 1.0,
+   "_version_": 1860757664733069312,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:33Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1304:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Altri servizi",
+    "Commercio",
+    "47.00; 47.10; 47.11; 47.19; 47.20; 47.21; 47.22; 47.23; 47.24; 47.25; 47.26; 47.29; 47.30; 47.40; 47.41; 47.42; 47.43; 47.50; 47.51; 47.52; 47.53; 47.54; 47.59; 47.60; 47.61; 47.62; 47.63; 47.64; 47.65; 47.70; 47.71; 47.72; 47.73; 47.74; 47.75; 47.76; 47.77; 47.78; 47.79; 47.80; 47.81; 47.82; 47.89; 47.90; 47.91; 47.99;",
+    "<p>75000</p>",
+    "28866",
+    "2024-02-07T00:00:00",
+    "<p>Villafranca Padovana</p>",
+    "1000",
+    "200000",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa",
+    "<p>Media Impresa; Microimpresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Fabbricati e terreni",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "<p>Ammortamenti - Costo di strumenti e attrezzature; Immateriali - Licenze; Materiali - Immobili; Materiali - Impianti/Macchinari/Attrezzature</p>",
+    "99696",
+    "<p>Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale. Erogazione di contributi di cui al bando regionale D.G.R. n. 1019 del 28.07.2021</p>",
+    "1710500627",
+    "2023-12-29T00:00:00",
+    "COMUNE DI VILLAFRANCA PADOVANA (Autorità responsabile) || UFFICIO TECNICO (Ufficio gestore della misura)",
+    "<p>APPROVAZIONE DELLA CONVENZIONE TRA REGIONE LOMBARDIA E FONDAZIONE LOMBARDIA FILM COMMISSION FINALIZZATA A SOSTENERE LE PRODUZIONI CINEMATOGRAFICHE E DELL’AUDIOVISIVO REALIZZATE IN LOMBARDIA</p>",
+    "Veneto",
+    "Digitalizzazione",
+    "Sostegno investimenti",
+    "<p>COMUNE DI VILLAFRANCA PADOVANA</p>",
+    "Impresa",
+    "Impresa - SU/PMI innovativa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "2500"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-12-29T00:00:00Z\"\n                 close-date=\"2024-02-07T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-270\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Sostegno investimenti</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Bando pubblico per l&#039;innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.a - Comune di Villafranca Padovana</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/bando-pubblico-linnovazione-gestionale-delle-imprese-del-commercio-dei-pubblici-esercizi-e\">vai alla scheda <span class=\"visually-hidden\">Bando pubblico per l&amp;#039;innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.a - Comune di Villafranca Padovana</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/bando-pubblico-linnovazione-gestionale-delle-imprese-del-commercio-dei-pubblici-esercizi-e",
+   "zs_body": "Cos'è Il Comune di Villafranca Padovana, quale comune capofila, ed il Comune di Limena nell’ambito dello sviluppo del progetto del Distretto del Commercio finanziato dalla Regione Veneto, con il presente bando intendono supportare e favorire il rilancio, la modernizzazione, l’innovazione e la digitalizzazione dell’offerta commerciale. Con il presente bando si intende pertanto sostenere interventi per la ricostruzione del tessuto imprenditoriale del territorio, delle sue polarità urbane al fine di favorire la ripartenza ed il rilancio delle attività economiche. La finalità specifica del bando è quindi quella di destinare sostegni finanziari a fondo perduto ai privati beneficiari, in relazione al programma presentato sul bando di cui alla D. G. R. n. 1019 del 28 luglio 2021, su due linee d’investimento: - Linea D.1.1.a Interventi di riqualificazione e modernizzazione dei locali e delle strutture ad uso commerciale; - Linea D.1.1.b Sviluppo digitale della gestione aziendale. A chi si rivolge Sono destinatari e potenziali beneficiari del presente bando le imprese del commercio e dei servizi aventi una superficie di vendita inferiore ai 500 mq e dei pubblici esercizi di somministrazione di alimenti e bevande, operanti all’interno del perimetro del Distretto Territoriale del Commercio (come da planimetria di cui all'Allegato A del bando). Sono finanziabili anche interventi realizzati da imprese di nuova costituzione che abbiano effettuato l’iscrizione al Registro imprese della CCIAA in data antecedente alla presentazione della domanda di contributo sul presente bando. Cosa prevede L’entità del contributo erogabile per singola istanza ammessa a contributo è stata fissata nella misura massima del 80% della prevista spesa con un massimo di 2.500,00 € a soggetto beneficiario per la Linea D.1.1.a e di 500 euro per la Linea D.1.1.b.",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Il Comune di Villafranca Padovana, quale comune capofila, ed il Comune di Limena nell’ambito dello sviluppo del progetto del Distretto del Commercio finanziato dalla Regione Veneto, con il presente bando intendono supportare e favorire il rilancio, la modernizzazione, l’innovazione e la digitalizzazione dell’offerta commerciale. Con il presente bando si intende pertanto sostenere interventi per la ricostruzione del tessuto imprenditoriale del territorio, delle sue polarità urbane al fine di favorire la ripartenza ed il rilancio delle attività economiche. La finalità specifica del bando è quindi quella di destinare sostegni finanziari a fondo perduto ai privati beneficiari, in relazione al programma presentato sul bando di cui alla D. G. R. n. 1019 del 28 luglio 2021, su due linee d’investimento:  - Linea D.1.1.a Interventi di riqualificazione e modernizzazione dei locali e delle strutture ad uso commerciale;  - Linea D.1.1.b Sviluppo digitale della gestione aziendale.",
+    "A chi si rivolge",
+    "Sono destinatari e potenziali beneficiari del presente bando le imprese del commercio e dei servizi aventi una superficie di vendita inferiore ai 500 mq e dei pubblici esercizi di somministrazione di alimenti e bevande, operanti all’interno del perimetro del Distretto Territoriale del Commercio (come da planimetria di cui all'Allegato A del bando). Sono finanziabili anche interventi realizzati da imprese di nuova costituzione che abbiano effettuato l’iscrizione al Registro imprese della CCIAA in data antecedente alla presentazione della domanda di contributo sul presente bando.",
+    "Cosa prevede",
+    "L’entità del contributo erogabile per singola istanza ammessa a contributo è stata fissata nella misura massima del 80% della prevista spesa con un massimo di 2.500,00 € a soggetto beneficiario per la Linea D.1.1.a e di 500 euro per la Linea D.1.1.b."
+   ],
+   "zm_field_activity_sector": [
+    "490",
+    "482"
+   ],
+   "zs_field_activity_sector": "490",
+   "zm_field_activity_sector_value": [
+    "Altri servizi",
+    "Commercio"
+   ],
+   "zs_field_activity_sector_value": "Altri servizi",
+   "zs_field_ateco": "47.00; 47.10; 47.11; 47.19; 47.20; 47.21; 47.22; 47.23; 47.24; 47.25; 47.26; 47.29; 47.30; 47.40; 47.41; 47.42; 47.43; 47.50; 47.51; 47.52; 47.53; 47.54; 47.59; 47.60; 47.61; 47.62; 47.63; 47.64; 47.65; 47.70; 47.71; 47.72; 47.73; 47.74; 47.75; 47.76; 47.77; 47.78; 47.79; 47.80; 47.81; 47.82; 47.89; 47.90; 47.91; 47.99;",
+   "zs_field_budget_allocation": "75000",
+   "zs_field_close_date": "2024-02-07T00:00:00",
+   "zs_field_comuni": "Villafranca Padovana",
+   "zs_field_cost_max": "200000",
+   "zs_field_cost_min": "1000",
+   "zm_field_costs": [
+    "1000",
+    "200000"
+   ],
+   "zs_field_costs": "1000",
+   "zm_field_dimensions": [
+    "212",
+    "570",
+    "213"
+   ],
+   "zs_field_dimensions": "212",
+   "zm_field_dimensions_value": [
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Media Impresa",
+   "zm_field_granted_costs": [
+    "289",
+    "216",
+    "215"
+   ],
+   "zs_field_granted_costs": "289",
+   "zm_field_granted_costs_value": [
+    "Fabbricati e terreni",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze"
+   ],
+   "zs_field_granted_costs_value": "Fabbricati e terreni",
+   "zs_field_implementation_ruleset": "Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale. Erogazione di contributi di cui al bando regionale D.G.R. n. 1019 del 28.07.2021",
+   "zs_field_link": "https://servizionline.comune.villafranca.pd.it/c028103/zf/index.php/trasparenza/index/index/categoria/118",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2023-12-29T00:00:00",
+   "zs_field_primary_ruleset": "APPROVAZIONE DELLA CONVENZIONE TRA REGIONE LOMBARDIA E FONDAZIONE LOMBARDIA FILM COMMISSION FINALIZZATA A SOSTENERE LE PRODUZIONI CINEMATOGRAFICHE E DELL’AUDIOVISIVO REALIZZATE IN LOMBARDIA",
+   "zm_field_regions": [
+    "237"
+   ],
+   "zs_field_regions": "237",
+   "zm_field_regions_value": [
+    "Veneto"
+   ],
+   "zs_field_regions_value": "Veneto",
+   "zm_field_scopes": [
+    "265",
+    "270"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione",
+    "Sostegno investimenti"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "COMUNE DI VILLAFRANCA PADOVANA",
+   "zm_field_subject_type": [
+    "238",
+    "239"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa",
+    "Impresa - SU/PMI innovativa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "2500",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "2500"
+   ],
+   "zs_field_support_grant_type_min_max": "2500",
+   "zs_nid": "1304",
+   "zs_title": "Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.a - Comune di Villafranca Padovana",
+   "tum_X3b_it_title_ft": [
+    "Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.a - Comune di Villafranca Padovana"
+   ],
+   "ss_search_api_id": "entity:node/1304:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-03-15T11:03:47Z",
+   "boost_document": 1.0,
+   "_version_": 1860757667454124032,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:34Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1305:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Altri servizi",
+    "Commercio",
+    "47.00; 47.10; 47.11; 47.19; 47.20; 47.21; 47.22; 47.23; 47.24; 47.25; 47.26; 47.29; 47.30; 47.40; 47.41; 47.42; 47.43; 47.50; 47.51; 47.52; 47.53; 47.54; 47.59; 47.60; 47.61; 47.62; 47.63; 47.64; 47.65; 47.70; 47.71; 47.72; 47.73; 47.74; 47.75; 47.76; 47.77; 47.78; 47.79; 47.80; 47.81; 47.82; 47.89; 47.90; 47.91; 47.99;",
+    "<p>10000</p>",
+    "28866",
+    "2024-02-07T00:00:00",
+    "<p>Villafranca Padovana</p>",
+    "750",
+    "200000",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa",
+    "<p>Media Impresa; Microimpresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Fabbricati e terreni",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "<p>Ammortamenti - Costo di strumenti e attrezzature; Immateriali - Licenze; Materiali - Immobili; Materiali - Impianti/Macchinari/Attrezzature</p>",
+    "99697",
+    "<p>Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale. Erogazione di contributi di cui al bando regionale D.G.R. n. 1019 del 28.07.2021</p>",
+    "1710500062",
+    "2023-12-29T00:00:00",
+    "COMUNE DI VILLAFRANCA PADOVANA (Autorità responsabile) || UFFICIO TECNICO (Ufficio gestore della misura)",
+    "<p>APPROVAZIONE DELLA CONVENZIONE TRA REGIONE LOMBARDIA E FONDAZIONE LOMBARDIA FILM COMMISSION FINALIZZATA A SOSTENERE LE PRODUZIONI CINEMATOGRAFICHE E DELL’AUDIOVISIVO REALIZZATE IN LOMBARDIA</p>",
+    "Veneto",
+    "Digitalizzazione",
+    "Sostegno investimenti",
+    "<p>COMUNE DI VILLAFRANCA PADOVANA</p>",
+    "Impresa",
+    "Impresa - SU/PMI innovativa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+    "0",
+    "500"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-12-29T00:00:00Z\"\n                 close-date=\"2024-02-07T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-270\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Sostegno investimenti</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Bando per l’innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.b - Comune di Villafranca Padovana</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/bando-linnovazione-gestionale-delle-imprese-del-commercio-dei-pubblici-esercizi-e-dei\">vai alla scheda <span class=\"visually-hidden\">Bando per l’innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.b - Comune di Villafranca Padovana</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/bando-linnovazione-gestionale-delle-imprese-del-commercio-dei-pubblici-esercizi-e-dei",
+   "zs_body": "Cos'è Il Comune di Villafranca Padovana, quale comune capofila, ed il Comune di Limena nell’ambito dello sviluppo del progetto del Distretto del Commercio finanziato dalla Regione Veneto, con il presente bando intendono supportare e favorire il rilancio, la modernizzazione, l’innovazione e la digitalizzazione dell’offerta commerciale. Con il presente bando si intende pertanto sostenere interventi per la ricostruzione del tessuto imprenditoriale del territorio, delle sue polarità urbane al fine di favorire la ripartenza ed il rilancio delle attività economiche. La finalità specifica del bando è quindi quella di destinare sostegni finanziari a fondo perduto ai privati beneficiari, in relazione al programma presentato sul bando di cui alla D. G. R. n. 1019 del 28 luglio 2021, su due linee d’investimento: - Linea D.1.1.a Interventi di riqualificazione e modernizzazione dei locali e delle strutture ad uso commerciale; - Linea D.1.1.b Sviluppo digitale della gestione aziendale.  A chi si rivolge Sono destinatari e potenziali beneficiari del presente bando le imprese del commercio e dei servizi aventi una superficie di vendita inferiore ai 500 mq e dei pubblici esercizi di somministrazione di alimenti e bevande, operanti all’interno del perimetro del Distretto Territoriale del Commercio (come da planimetria di cui all'Allegato A del bando). Sono finanziabili anche interventi realizzati da imprese di nuova costituzione che abbiano effettuato l’iscrizione al Registro imprese della CCIAA in data antecedente alla presentazione della domanda di contributo sul presente bando. Cosa prevede L’entità del contributo erogabile per singola istanza ammessa a contributo è stata fissata nella misura massima del 80% della prevista spesa con un massimo di 2.500,00 € a soggetto beneficiario per la Linea D.1.1.a e di 500 euro per la Linea D.1.1.b. La dotazione finanziaria, per ciascuna linea, verrà destinata a finanziare, per valore economico, un numero paritario di soggetti beneficiari per ciascun comune. Qualora, anche per una singola linea, non vi siano sufficienti istanze ammesse a contributo in uno dei due comuni, la Stazione Appaltante a suo insindacabile giudizio si riserva di ammettere a contributo le istanze pervenute nell’altro comune.",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Il Comune di Villafranca Padovana, quale comune capofila, ed il Comune di Limena nell’ambito dello sviluppo del progetto del Distretto del Commercio finanziato dalla Regione Veneto, con il presente bando intendono supportare e favorire il rilancio, la modernizzazione, l’innovazione e la digitalizzazione dell’offerta commerciale. Con il presente bando si intende pertanto sostenere interventi per la ricostruzione del tessuto imprenditoriale del territorio, delle sue polarità urbane al fine di favorire la ripartenza ed il rilancio delle attività economiche. La finalità specifica del bando è quindi quella di destinare sostegni finanziari a fondo perduto ai privati beneficiari, in relazione al programma presentato sul bando di cui alla D. G. R. n. 1019 del 28 luglio 2021, su due linee d’investimento:  - Linea D.1.1.a Interventi di riqualificazione e modernizzazione dei locali e delle strutture ad uso commerciale;  - Linea D.1.1.b Sviluppo digitale della gestione aziendale.  ",
+    "A chi si rivolge",
+    "Sono destinatari e potenziali beneficiari del presente bando le imprese del commercio e dei servizi aventi una superficie di vendita inferiore ai 500 mq e dei pubblici esercizi di somministrazione di alimenti e bevande, operanti all’interno del perimetro del Distretto Territoriale del Commercio (come da planimetria di cui all'Allegato A del bando). Sono finanziabili anche interventi realizzati da imprese di nuova costituzione che abbiano effettuato l’iscrizione al Registro imprese della CCIAA in data antecedente alla presentazione della domanda di contributo sul presente bando.",
+    "Cosa prevede",
+    "L’entità del contributo erogabile per singola istanza ammessa a contributo è stata fissata nella misura massima del 80% della prevista spesa con un massimo di 2.500,00 € a soggetto beneficiario per la Linea D.1.1.a e di 500 euro per la Linea D.1.1.b. La dotazione finanziaria, per ciascuna linea, verrà destinata a finanziare, per valore economico, un numero paritario di soggetti beneficiari per ciascun comune. Qualora, anche per una singola linea, non vi siano sufficienti istanze ammesse a contributo in uno dei due comuni, la Stazione Appaltante a suo insindacabile giudizio si riserva di ammettere a contributo le istanze pervenute nell’altro comune."
+   ],
+   "zm_field_activity_sector": [
+    "490",
+    "482"
+   ],
+   "zs_field_activity_sector": "490",
+   "zm_field_activity_sector_value": [
+    "Altri servizi",
+    "Commercio"
+   ],
+   "zs_field_activity_sector_value": "Altri servizi",
+   "zs_field_ateco": "47.00; 47.10; 47.11; 47.19; 47.20; 47.21; 47.22; 47.23; 47.24; 47.25; 47.26; 47.29; 47.30; 47.40; 47.41; 47.42; 47.43; 47.50; 47.51; 47.52; 47.53; 47.54; 47.59; 47.60; 47.61; 47.62; 47.63; 47.64; 47.65; 47.70; 47.71; 47.72; 47.73; 47.74; 47.75; 47.76; 47.77; 47.78; 47.79; 47.80; 47.81; 47.82; 47.89; 47.90; 47.91; 47.99;",
+   "zs_field_budget_allocation": "10000",
+   "zs_field_close_date": "2024-02-07T00:00:00",
+   "zs_field_comuni": "Villafranca Padovana",
+   "zs_field_cost_max": "200000",
+   "zs_field_cost_min": "750",
+   "zm_field_costs": [
+    "750",
+    "200000"
+   ],
+   "zs_field_costs": "750",
+   "zm_field_dimensions": [
+    "212",
+    "570",
+    "213"
+   ],
+   "zs_field_dimensions": "212",
+   "zm_field_dimensions_value": [
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Media Impresa",
+   "zm_field_granted_costs": [
+    "289",
+    "216",
+    "215"
+   ],
+   "zs_field_granted_costs": "289",
+   "zm_field_granted_costs_value": [
+    "Fabbricati e terreni",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze"
+   ],
+   "zs_field_granted_costs_value": "Fabbricati e terreni",
+   "zs_field_implementation_ruleset": "Bando pubblico per l'innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale. Erogazione di contributi di cui al bando regionale D.G.R. n. 1019 del 28.07.2021",
+   "zs_field_link": "https://servizionline.comune.villafranca.pd.it/c028103/zf/index.php/trasparenza/index/index/categoria/118",
+   "zs_field_multibando": "0",
+   "zs_field_open_date": "2023-12-29T00:00:00",
+   "zs_field_primary_ruleset": "APPROVAZIONE DELLA CONVENZIONE TRA REGIONE LOMBARDIA E FONDAZIONE LOMBARDIA FILM COMMISSION FINALIZZATA A SOSTENERE LE PRODUZIONI CINEMATOGRAFICHE E DELL’AUDIOVISIVO REALIZZATE IN LOMBARDIA",
+   "zm_field_regions": [
+    "237"
+   ],
+   "zs_field_regions": "237",
+   "zm_field_regions_value": [
+    "Veneto"
+   ],
+   "zs_field_regions_value": "Veneto",
+   "zm_field_scopes": [
+    "265",
+    "270"
+   ],
+   "zs_field_scopes": "265",
+   "zm_field_scopes_value": [
+    "Digitalizzazione",
+    "Sostegno investimenti"
+   ],
+   "zs_field_scopes_value": "Digitalizzazione",
+   "zs_field_subject_grant": "COMUNE DI VILLAFRANCA PADOVANA",
+   "zm_field_subject_type": [
+    "238",
+    "239"
+   ],
+   "zs_field_subject_type": "238",
+   "zm_field_subject_type_value": [
+    "Impresa",
+    "Impresa - SU/PMI innovativa"
+   ],
+   "zs_field_subject_type_value": "Impresa",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_field_support_grant_type_max": "500",
+   "zs_field_support_grant_type_min": "0",
+   "zm_field_support_grant_type_min_max": [
+    "0",
+    "500"
+   ],
+   "zs_field_support_grant_type_min_max": "500",
+   "zs_nid": "1305",
+   "zs_title": "Bando per l’innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.b - Comune di Villafranca Padovana",
+   "tum_X3b_it_title_ft": [
+    "Bando per l’innovazione gestionale delle imprese del commercio, dei pubblici esercizi e dei servizi sui temi dello sviluppo digitale, della sostenibilità ambientale e sociale Linea D.1.1.b - Comune di Villafranca Padovana"
+   ],
+   "ss_search_api_id": "entity:node/1305:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-03-15T10:54:22Z",
+   "boost_document": 1.0,
+   "_version_": 1860757667455172608,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:34Z",
+   "ss_search_api_language": "it"
+  },
+  {
+   "id": "t9gcjo-incentivi-entity:node/1341:it",
+   "sm_context_tags": [
+    "search_api_X2f_index_X3a_incentivi",
+    "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+    "drupal_X2f_langcode_X3a_it"
+   ],
+   "tum_X3b_it_output": [
+    "Altri servizi",
+    "Artigianato",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "ICT",
+    "Meccanica",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Turismo",
+    "Tutti i settori economici ammissibili a ricevere aiuti;",
+    "<p>34000000</p>",
+    "16554",
+    "2025-12-31T00:00:00",
+    "Grande Impresa",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa",
+    "<p>Grande Impresa; Media Impresa; Microimpresa; Piccola Impresa (escluse Microimprese)</p>",
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri",
+    "<p>Ammortamenti - Costi della ricerca contrattuale, delle conoscenze e dei brevetti acquisiti o ottenuti in licenza da fonti esterne alle normali condizioni di mercato; Ammortamenti - Costo di strumenti e attrezzature; Costi di personale - Costo del personale; Costi generali - Spese generali; Materiali - Progettazione/studi/consulenze; Non individuabili secondo le definizioni di cui ai Regolamenti Comunitari; Servizi - Altri servizi; Servizi - Servizi professionali</p>",
+    "15781",
+    "<p>Regione Puglia - Regolamento Regionale per gli aiuti compatibili con il mercato interno ai sensi del TFUE (Regolamento Regionale della Puglia per gli aiuti in esenzione). Regimi di aiuti a favore delle opere audiovisive.</p>",
+    "1711127309",
+    "<p>34 del 28/03/2019</p>",
+    "2019-03-28T00:00:00",
+    "2023-06-22T00:00:00",
+    "Regione Puglia - Dipartimento Sviluppo Economico (Autorità responsabile) || Regione Puglia - Dipartimento Sviluppo Economico (Ufficio gestore della misura)",
+    "<p>INNOAID - Riapertura - \"</p>",
+    "<p>Regolamento della Puglia per gli aiuti compatibili con il mercato interno ai sensi del TFUE ( Regolamento regionale della Puglia per gli aiuti in esenzione)</p>",
+    "Puglia",
+    "Innovazione e ricerca",
+    "<p>Regione Puglia - Dipartimento Sviluppo Economico</p>",
+    "Consorzio",
+    "Cooperative/Associazioni Non Profit",
+    "Impresa",
+    "Impresa - SU/PMI innovativa",
+    "Impresa - prevalenza femminile",
+    "Impresa - prevalenza giovanile",
+    "Impresa da costituire - Altro",
+    "Impresa da costituire - Femminile",
+    "Impresa da costituire - Giovanile",
+    "Professionista",
+    "Rete d'impresa",
+    "Contributo/Fondo perduto",
+    "<p>Sovvenzione/Contributo in conto interessi - Contributo in c/capitale c/impianti</p>"
+   ],
+   "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-06-22T00:00:00Z\"\n                 close-date=\"2025-12-31T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Sostegno per l&#039;acquisto di servizi per l&#039;innovazione tecnologica, strategica organizzativa e commerciale delle imprese - Regione Puglia</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/sostegno-lacquisto-di-servizi-linnovazione-tecnologica-strategica-organizzativa-e\">vai alla scheda <span class=\"visually-hidden\">Sostegno per l&amp;#039;acquisto di servizi per l&amp;#039;innovazione tecnologica, strategica organizzativa e commerciale delle imprese - Regione Puglia</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+   "zs_url": "/it/catalogo/sostegno-lacquisto-di-servizi-linnovazione-tecnologica-strategica-organizzativa-e",
+   "zs_body": "Cos'è Avviso con procedura valutativa a sportello fino ad esaurimento delle risorse finanziarie a \"Sostegno per l'acquisto di servizi per l'innovazione tecnologica, strategica, organizzativa e commerciale delle imprese\". L'obiettivo è quello di incrementare e supportare la domanda di innovazione da parte delle micro, piccole e medie imprese, attraverso l'acquisizione di servizi tecnologici qualificati per favorire l'implementazione di processi virtuosi e non occasionali.  A chi si rivolge Micro Piccole e Medie Imprese (MPMI), in forma singola o associata, in Consorzio, ATI, Reti di imprese con personalità giuridica ( Reti- soggetto) o Reti senza personalità giuridica ( Reti-contratto). Per i raggruppamenti è necessaria la partecipazione di almeno 3 MPMI. Cosa prevede Tipologia di investimento ammissibile a contributo:Acquisizione di servizi di consulenza in materia di innovazione, acquisizione di servizi di consulenza e supporto all'innovazione e acquisizione di servizi di consulenza legati all'energia e alla sua gestione. A. Servizi di consulenza in materia di innovazione1. Servizi di consulenza per l'innovazione guidata dal design2. Servizi di consulenza per l'innovazione di prodotto/servizio3. Studi di fattibilità B. Servizi di consulenza e supporto all'innovazione Spese ammissibili Sono ammissibili le spese, sostenute dai soggetti beneficiari dell’aiuto, strettamente connesse agli investimenti agevolati, e così classificate:• Acquisizione di servizi di consulenza su specifiche problematiche direttamente afferenti il progetto di investimento presentato• I costi per l’ottenimento, la convalida e la difesa dei brevetti, degli altri diritti di proprietà industriale e intellettuale e altri attivi immateriali• I costi per l’acquisizione di servizi di consulenza e di sostegno dell’innovazione Tali servizi non devono rivestire carattere continuativo o periodico e non devono essere assicurabili dalle professionalità rinvenibili all’interno del soggetto beneficiario. I fornitori dei servizi devono essere titolari di partita IVA , qualificati, tecnicamente organizzati e possedere specifiche competenze nel settore in cui prestano consulenza1. Servizi tecnologici di sperimentazione2. Servizi di supporto alla gestione della proprietà intellettuale e alla certificazione di prodotto C. Servizi di consulenza legati all'energia e alla sua gestione1. Servizi di consulenza per l'adozione di un sistema di gestione dell'energia ISO 500012. Servizi di supporto alla realizzazione di audit e diagnosi energetica ",
+   "tum_X3b_it_body_ft": [
+    "Cos'è",
+    "Avviso con procedura valutativa a sportello fino ad esaurimento delle risorse finanziarie a \"Sostegno per l'acquisto di servizi per l'innovazione tecnologica, strategica, organizzativa e commerciale delle imprese\". L'obiettivo è quello di incrementare e supportare la domanda di innovazione da parte delle micro, piccole e medie imprese, attraverso l'acquisizione di servizi tecnologici qualificati per favorire l'implementazione di processi virtuosi e non occasionali.  ",
+    "A chi si rivolge",
+    "Micro Piccole e Medie Imprese (MPMI), in forma singola o associata, in Consorzio, ATI, Reti di imprese con personalità giuridica ( Reti- soggetto) o Reti senza personalità giuridica ( Reti-contratto). Per i raggruppamenti è necessaria la partecipazione di almeno 3 MPMI.",
+    "Cosa prevede",
+    "Tipologia di investimento ammissibile a contributo: Acquisizione di servizi di consulenza in materia di innovazione, acquisizione di servizi di consulenza e supporto all'innovazione e acquisizione di servizi di consulenza legati all'energia e alla sua gestione. A. Servizi di consulenza in materia di innovazione 1. Servizi di consulenza per l'innovazione guidata dal design 2. Servizi di consulenza per l'innovazione di prodotto/servizio 3. Studi di fattibilità B. Servizi di consulenza e supporto all'innovazione Spese ammissibili Sono ammissibili le spese, sostenute dai soggetti beneficiari dell’aiuto, strettamente connesse agli investimenti agevolati, e così classificate: • Acquisizione di servizi di consulenza su specifiche problematiche direttamente afferenti il progetto di investimento presentato • I costi per l’ottenimento, la convalida e la difesa dei brevetti, degli altri diritti di proprietà industriale e intellettuale e altri attivi immateriali • I costi per l’acquisizione di servizi di consulenza e di sostegno dell’innovazione Tali servizi non devono rivestire carattere continuativo o periodico e non devono essere assicurabili dalle professionalità rinvenibili all’interno del soggetto beneficiario. I fornitori dei servizi devono essere titolari di partita IVA , qualificati, tecnicamente organizzati e possedere specifiche competenze nel settore in cui prestano consulenza 1. Servizi tecnologici di sperimentazione 2. Servizi di supporto alla gestione della proprietà intellettuale e alla certificazione di prodotto C. Servizi di consulenza legati all'energia e alla sua gestione 1. Servizi di consulenza per l'adozione di un sistema di gestione dell'energia ISO 50001 2. Servizi di supporto alla realizzazione di audit e diagnosi energetica  "
+   ],
+   "zm_field_activity_sector": [
+    "490",
+    "260",
+    "476",
+    "482",
+    "487",
+    "249",
+    "478",
+    "486",
+    "479",
+    "475",
+    "485",
+    "488"
+   ],
+   "zs_field_activity_sector": "490",
+   "zm_field_activity_sector_value": [
+    "Altri servizi",
+    "Artigianato",
+    "Chimica e Farmaceutica",
+    "Commercio",
+    "Cultura",
+    "Edilizia",
+    "Elettronica",
+    "ICT",
+    "Meccanica",
+    "Moda e Tessile",
+    "Ristorazione",
+    "Turismo"
+   ],
+   "zs_field_activity_sector_value": "Altri servizi",
+   "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti;",
+   "zs_field_budget_allocation": "34000000",
+   "zs_field_close_date": "2025-12-31T00:00:00",
+   "zm_field_dimensions": [
+    "211",
+    "212",
+    "570",
+    "213"
+   ],
+   "zs_field_dimensions": "211",
+   "zm_field_dimensions_value": [
+    "Grande Impresa",
+    "Media Impresa",
+    "Microimpresa",
+    "Piccola Impresa"
+   ],
+   "zs_field_dimensions_value": "Grande Impresa",
+   "zm_field_granted_costs": [
+    "284",
+    "216",
+    "215",
+    "217"
+   ],
+   "zs_field_granted_costs": "284",
+   "zm_field_granted_costs_value": [
+    "Costo del personale",
+    "Impianti/Macchinari/Attrezzature",
+    "Servizi, brevetti e licenze",
+    "Spese generali/altri oneri"
+   ],
+   "zs_field_granted_costs_value": "Costo del personale",
+   "zs_field_implementation_ruleset": "Regione Puglia - Regolamento Regionale per gli aiuti compatibili con il mercato interno ai sensi del TFUE (Regolamento Regionale della Puglia per gli aiuti in esenzione). Regimi di aiuti a favore delle opere audiovisive.",
+   "zs_field_link": "https://www.sistema.puglia.it/SistemaPuglia/innoaidriapertura",
+   "zs_field_multibando": "0",
+   "zs_field_official_references": "34 del 28/03/2019",
+   "zs_field_open_date": "2023-06-22T00:00:00",
+   "zs_field_other_characteristic": "INNOAID - Riapertura - \"",
+   "zs_field_primary_ruleset": "Regolamento della Puglia per gli aiuti compatibili con il mercato interno ai sensi del TFUE ( Regolamento regionale della Puglia per gli aiuti in esenzione)",
+   "zm_field_regions": [
+    "230"
+   ],
+   "zs_field_regions": "230",
+   "zm_field_regions_value": [
+    "Puglia"
+   ],
+   "zs_field_regions_value": "Puglia",
+   "zm_field_scopes": [
+    "273"
+   ],
+   "zs_field_scopes": "273",
+   "zm_field_scopes_value": [
+    "Innovazione e ricerca"
+   ],
+   "zs_field_scopes_value": "Innovazione e ricerca",
+   "zs_field_subject_grant": "Regione Puglia - Dipartimento Sviluppo Economico",
+   "zm_field_subject_type": [
+    "297",
+    "296",
+    "238",
+    "239",
+    "241",
+    "306",
+    "309",
+    "307",
+    "308",
+    "240",
+    "321"
+   ],
+   "zs_field_subject_type": "297",
+   "zm_field_subject_type_value": [
+    "Consorzio",
+    "Cooperative/Associazioni Non Profit",
+    "Impresa",
+    "Impresa - SU/PMI innovativa",
+    "Impresa - prevalenza femminile",
+    "Impresa - prevalenza giovanile",
+    "Impresa da costituire - Altro",
+    "Impresa da costituire - Femminile",
+    "Impresa da costituire - Giovanile",
+    "Professionista",
+    "Rete d'impresa"
+   ],
+   "zs_field_subject_type_value": "Consorzio",
+   "zm_field_support_form": [
+    "264"
+   ],
+   "zs_field_support_form": "264",
+   "zm_field_support_form_value": [
+    "Contributo/Fondo perduto"
+   ],
+   "zs_field_support_form_value": "Contributo/Fondo perduto",
+   "zs_nid": "1341",
+   "zs_title": "Sostegno per l'acquisto di servizi per l'innovazione tecnologica, strategica organizzativa e commerciale delle imprese - Regione Puglia",
+   "tum_X3b_it_title_ft": [
+    "Sostegno per l'acquisto di servizi per l'innovazione tecnologica, strategica organizzativa e commerciale delle imprese - Regione Puglia"
+   ],
+   "ss_search_api_id": "entity:node/1341:it",
+   "site": "https://www.incentivi.gov.it/it",
+   "ds_last_update": "2024-03-22T17:08:29Z",
+   "boost_document": 1.0,
+   "_version_": 1860757668455514113,
+   "ss_search_api_datasource": "entity:node",
+   "index_id": "incentivi",
+   "hash": "t9gcjo",
+   "timestamp": "2026-03-26T20:26:36Z",
+   "ss_search_api_language": "it"
+  }
+ ]
+}

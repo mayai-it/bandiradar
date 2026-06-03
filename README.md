@@ -77,26 +77,36 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full design.
 
 | Source | What it delivers | Live fetch |
 |---|---|---|
+| **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — public open-data endpoint, no API key. |
 | **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
 ```bash
-uv run bandiradar fetch --source ted --sample      # offline, bundled real capture
+uv run bandiradar fetch --source incentivi --sample   # offline, bundled real capture
+uv run bandiradar match --profile data/profiles/mayai.yaml --source incentivi --sample
 uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
 ```
 
-The TED `--sample` fixture is a **real capture** of Italian IT/software tenders
-(`data/fixtures/ted.json`). Note that TED carries above-threshold contracts —
-often far larger than a micro-SME's range — so a small profile like MayAI
-matches only the few that fit (e.g. an undisclosed-value data-services tender).
-That's exactly why national/regional/incentive sources matter too.
+The `--sample` fixtures are **real captures** (`data/fixtures/{incentivi,ted}.json`).
+`incentivi` exercises the canonical superset on the grant side — no CPV, a funding
+range, and an eligibility text the matcher reads — and is where the MayAI dogfood
+profile finds open national digital-services measures. TED carries above-threshold
+contracts often far larger than a micro-SME's range, so a small profile matches
+only the few that fit — which is exactly why incentive/national/regional sources
+matter too.
+
+> **Attribution (IODL):** incentivi.gov.it data is published by the Ministero
+> delle Imprese e del Made in Italy under the
+> [Italian Open Data License v2.0 (IODL 2.0)](https://www.dati.gov.it/iodl/2.0/),
+> which requires attribution. Source: incentivi.gov.it.
 
 ## Status (honest)
 
 - ✅ **Runs today fully offline** on bundled sample data with **zero secrets** —
   both quickstarts above are real.
-- ✅ **TED has a live, anonymous fetch** (no key) over the EU search API; it is
-  the first real source. `--sample` keeps it offline against a recorded capture.
+- ✅ **Two sources have live, key-less fetch:** `incentivi` (incentivi.gov.it
+  open data) and `ted` (the EU search API). `--sample` keeps both offline against
+  recorded real captures.
 - ⏳ **The live ANAC/PNCP adapter is still pending.** Its mapping
   (`to_opportunities`) is implemented and tested against a recorded fixture, but
   the live `fetch()` is **not wired**: the open-data endpoint must be confirmed

@@ -122,8 +122,12 @@ def _evaluate(
     # Gate 5 — relevance signal (skipped if the profile gives no signal sources).
     if profile.cpv_interests or profile.keywords:
         cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
+        # Keyword scan also covers eligibility_text: incentives have no CPV, so
+        # without this their relevance signal lives only in the requirements text
+        # and they would be dropped before scoring.
+        keyword_text = f"{haystack} {_norm(opp.eligibility_text)}"
         keyword_ok = any(
-            _norm(k) and _norm(k) in haystack for k in profile.keywords
+            _norm(k) and _norm(k) in keyword_text for k in profile.keywords
         )
         if not (cpv_ok or keyword_ok):
             return False, "no CPV match or keyword hit"

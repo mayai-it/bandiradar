@@ -165,6 +165,26 @@ def test_gate5_keyword_hit_keeps():
     assert prefilter([opp], profile, now=NOW)
 
 
+def test_gate5_keyword_hit_in_eligibility_text_keeps():
+    # Incentives have no CPV and a generic title; their relevance signal lives in
+    # the eligibility/requirements text. Gate 5 must scan it (Prompt 11).
+    profile = Profile(name="p", keywords=["digitalizzazione"])
+    opp = make_opp(
+        cpv=[],
+        title="Bando generico",
+        summary="nessun dettaglio rilevante",
+        eligibility_text="Interventi per la digitalizzazione delle microimprese.",
+    )
+    assert prefilter([opp], profile, now=NOW)
+
+
+def test_gate5_no_signal_anywhere_drops():
+    profile = Profile(name="p", keywords=["digitalizzazione"])
+    opp = make_opp(cpv=[], title="Bando", summary="nulla", eligibility_text="nulla")
+    results = prefilter_explain([opp], profile, now=NOW)
+    assert results[0][1] is False and "CPV" in results[0][2]
+
+
 def test_gate5_skipped_when_profile_has_no_signal_sources():
     # No cpv_interests and no keywords -> relevance gate does not run.
     profile = Profile(name="p")
