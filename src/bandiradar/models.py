@@ -28,7 +28,7 @@ import json
 from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 __all__ = [
     "CLOSING_SOON_DAYS",
@@ -50,9 +50,10 @@ Kind = Literal["tender", "grant", "incentive"]
 GeoScope = Literal["national", "regional", "eu", "local"]
 Status = Literal["open", "closing_soon", "closed", "amended"]
 
-# The ONLY fields that feed content_hash. Keep this list in sync with the
-# Prompt 1 spec: title, summary, issuer, value, deadline, eligibility_text.
-# version and updated_at are intentionally absent.
+# The fields that feed content_hash — i.e. the ones whose change makes an
+# opportunity semantically different and so re-notifiable (ARCHITECTURE.md §8).
+# version, updated_at, keywords, and ateco_hints are intentionally absent:
+# they are bookkeeping / derived hints, not the substance of the notice.
 _CONTENT_HASH_FIELDS = (
     "title",
     "summary",
@@ -64,7 +65,22 @@ _CONTENT_HASH_FIELDS = (
     "value_max",
     "deadline",
     "eligibility_text",
+    "kind",
+    "cpv",
+    "region",
+    "geo_scope",
 )
+
+
+def _ensure_utc(dt: datetime | None) -> datetime | None:
+    """Coerce a naive datetime to tz-aware UTC; assume UTC when tzinfo is None.
+
+    Keeps the whole engine on aware datetimes so naive-vs-aware comparisons
+    (e.g. in the prefilter) never raise.
+    """
+    if dt is not None and dt.tzinfo is None:
+        return dt.replace(tzinfo=UTC)
+    return dt
 
 
 def default_status(
@@ -78,12 +94,12 @@ def default_status(
     - otherwise -> ``"open"``
 
     ``now`` defaults to the current UTC time; tests pass an explicit value for
-    determinism. Pass ``deadline`` and ``now`` with consistent tz-awareness.
-    Never returns ``"amended"`` — that status is owned by storage on a
-    content_hash change.
+    determinism. Naive ``now``/``deadline`` are defensively coerced to UTC, so
+    callers cannot trigger a naive-vs-aware crash here. Never returns
+    ``"amended"`` — that status is owned by storage on a content_hash change.
     """
-    if now is None:
-        now = datetime.now(UTC)
+    now = datetime.now(UTC) if now is None else _ensure_utc(now)
+    deadline = _ensure_utc(deadline)
     if deadline is None:
         return "open"
     if deadline < now:
@@ -95,6 +111,8 @@ def default_status(
 
 class Opportunity(BaseModel):
     """A single funding opportunity — the canonical superset (ARCHITECTURE.md §4)."""
+
+    model_config = ConfigDict(extra="forbid")  # a mis-mapped adapter field fails loudly
 
     id: str  # stable, source-prefixed: "anac:<ocid>"
     source: str  # source id, e.g. "anac"
@@ -127,6 +145,11 @@ class Opportunity(BaseModel):
     raw_ref: str  # pointer to stored RawDoc
     content_hash: str = ""  # for change detection; auto-filled if left empty
     version: int = 1
+
+    @field_validator("published_at", "deadline", "updated_at")
+    @classmethod
+    def _coerce_datetimes_to_utc(cls, v: datetime | None) -> datetime | None:
+        return _ensure_utc(v)
 
     @model_validator(mode="after")
     def _validate_and_fill(self) -> Opportunity:
@@ -167,6 +190,13 @@ class RawDoc(BaseModel):
     payload: dict[str, Any]  # the original record, verbatim
     url: str | None = None
 
+    @field_validator("fetched_at")
+    @classmethod
+    def _coerce_fetched_at_to_utc(cls, v: datetime) -> datetime:
+        coerced = _ensure_utc(v)
+        assert coerced is not None  # fetched_at is required, never None
+        return coerced
+
 
 class ValueRange(BaseModel):
     """Inclusive monetary range a profile is interested in."""
@@ -183,6 +213,8 @@ class ValueRange(BaseModel):
 
 class Profile(BaseModel):
     """The company we match opportunities against (ARCHITECTURE.md §7)."""
+
+    model_config = ConfigDict(extra="forbid")  # a stray profile key fails loudly
 
     name: str
     language: str = "it"
@@ -206,9 +238,16 @@ class Profile(BaseModel):
 
 
 class Match(BaseModel):
-    """Stage-2 relevance result for one (opportunity, profile) pair (§6)."""
+    """Stage-2 relevance result for one (opportunity, profile) pair (§6).
+
+    The relevance cache key is ``(profile_version, opportunity_hash)``. Carrying
+    ``opportunity_hash`` (the Opportunity.content_hash at scoring time) lets the
+    cache self-invalidate: when an opportunity is amended its content_hash
+    changes, so the old Match no longer matches the new key and is re-scored.
+    """
 
     opportunity_id: str
+    opportunity_hash: str  # Opportunity.content_hash at scoring time -> cache key part
     profile_version: str  # Profile.version at scoring time -> cache key part
     score: int = Field(ge=0, le=100)
     reasons: list[str] = Field(default_factory=list)

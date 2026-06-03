@@ -115,6 +115,22 @@ class Opportunity(BaseModel):
 `RawDoc` = the untouched payload from a source (for audit + re-mapping).
 `Profile` = the company we match against (see §7).
 
+**Contract invariants (enforced in `models.py`):**
+- **`content_hash`** is a deterministic SHA-256 over the *semantically meaningful*
+  fields only: `title`, `summary`, `issuer_name`, `issuer_region`,
+  `value_*` (amount/currency/min/max), `deadline`, `eligibility_text`, `kind`,
+  `cpv`, `region`, `geo_scope`. It deliberately **excludes** `version`,
+  `updated_at`, `keywords`, and `ateco_hints` (bookkeeping / derived hints) so
+  change detection (§8) fires on substance, not on re-fetch noise.
+- **Datetimes are tz-aware UTC.** All datetime fields (`Opportunity.published_at`
+  / `deadline` / `updated_at`, `RawDoc.fetched_at`) coerce naive inputs to UTC,
+  so downstream comparisons (e.g. the prefilter) never hit naive-vs-aware errors.
+- **`Opportunity` and `Profile` are `extra="forbid"`**: a mis-mapped adapter or
+  profile field fails loudly instead of being silently dropped.
+- **`status` is stored, not computed.** `default_status(deadline, now)` derives a
+  sensible initial value, but storage stays free to set `"amended"` on a
+  content_hash change.
+
 ---
 
 ## 5. Source framework (the extension point)
@@ -161,12 +177,18 @@ matched_capabilities: list[str]
 eligibility_flags: list[str]
 risk_notes: list[str]
 ```
+The persisted `Match` also carries `opportunity_id`, `profile_version`, and
+`opportunity_hash` (the Opportunity.content_hash at scoring time) — the two
+latter form the cache key.
+
 Design rules:
 - **Provider-agnostic client.** Default to a strong model (Anthropic/OpenAI) now;
   swapping to an EU/GDPR-friendly model (Mistral, local) is a config/env change,
   not a refactor.
-- **Cache** by `hash(profile.version + opportunity.content_hash)` → score.
-  Re-runs cost nothing.
+- **Cache** keyed by `(profile_version, opportunity_hash)` → `Match`. Because the
+  key includes the opportunity's `content_hash`, an **amended** opportunity (new
+  hash) misses the cache and is re-scored automatically, while unchanged re-runs
+  cost nothing.
 - **Offline heuristic fallback** (keyword/embedding-lite) when no API key is set,
   so the repo runs in CI and in agent dev loops with **zero secrets**.
 - **Privacy:** send the minimal opportunity text + a compact profile summary,
