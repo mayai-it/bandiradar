@@ -62,6 +62,26 @@ def test_all_ids_are_anac_prefixed(opportunities_by_id):
     assert all(oid.startswith("anac:") for oid in opportunities_by_id)
 
 
+def test_national_tender_uses_coveredby_not_buyer_region(opportunities_by_id):
+    # ocds-bandi-0004 (MEF) has tender.coveredBy == ["national"] with a Lazio buyer.
+    opp = opportunities_by_id["anac:ocds-bandi-0004"]
+    assert opp.geo_scope == "national"
+    assert opp.region == "Lazio"  # region stays populated regardless of scope
+    assert opp.issuer_region == "Lazio"
+
+
+def test_other_releases_are_regional(opportunities_by_id):
+    regional = {
+        "anac:ocds-bandi-0001",
+        "anac:ocds-bandi-0002",
+        "anac:ocds-bandi-0003",
+        "anac:ocds-bandi-0005",
+        "anac:ocds-bandi-0006",
+    }
+    for oid in regional:
+        assert opportunities_by_id[oid].geo_scope == "regional", oid
+
+
 def test_closed_fixture_maps_to_closed_status(opportunities_by_id):
     # ocds-bandi-0003 deadline 2026-05-15 is in the past relative to NOW.
     assert opportunities_by_id["anac:ocds-bandi-0003"].status == "closed"

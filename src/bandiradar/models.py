@@ -73,14 +73,18 @@ _CONTENT_HASH_FIELDS = (
 
 
 def _ensure_utc(dt: datetime | None) -> datetime | None:
-    """Coerce a naive datetime to tz-aware UTC; assume UTC when tzinfo is None.
+    """Normalize a datetime to tz-aware UTC.
 
-    Keeps the whole engine on aware datetimes so naive-vs-aware comparisons
-    (e.g. in the prefilter) never raise.
+    Naive inputs are assumed to be UTC; aware inputs are converted to UTC. This
+    keeps the whole engine on a single, comparable representation: naive-vs-aware
+    comparisons never raise, AND the same instant always serializes identically
+    (so content_hash does not flip just because a source used +02:00 vs Z).
     """
-    if dt is not None and dt.tzinfo is None:
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
         return dt.replace(tzinfo=UTC)
-    return dt
+    return dt.astimezone(UTC)
 
 
 def default_status(

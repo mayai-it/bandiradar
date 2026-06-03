@@ -65,6 +65,23 @@ def _cpv_codes(tender: dict[str, Any]) -> list[str]:
     return codes
 
 
+def _geo_scope(tender: dict[str, Any], region: str | None) -> str:
+    """Derive geo_scope, preferring the explicit OCDS ``coveredBy`` marker.
+
+    A national tender can still have a regional buyer, so we do NOT infer scope
+    from the buyer region alone: ``coveredBy`` wins, then EU markers, then a
+    known region falls back to "regional", else "national" as a last resort.
+    """
+    covered = {str(c).lower() for c in tender.get("coveredBy", [])}
+    if "national" in covered:
+        return "national"
+    if covered & {"eu", "european", "europe"}:
+        return "eu"
+    if region is not None:
+        return "regional"
+    return "national"
+
+
 def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportunity]:
     """PURE mapping from one OCDS release (``raw.payload``) to ``Opportunity``.
 
@@ -92,7 +109,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         cpv=_cpv_codes(tender),
         value_amount=value.get("amount"),
         value_currency=value.get("currency") or "EUR",
-        geo_scope="national" if region is None else "regional",
+        geo_scope=_geo_scope(tender, region),
         region=region,
         published_at=_parse_dt(release.get("date")),
         deadline=deadline,

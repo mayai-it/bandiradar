@@ -7,7 +7,7 @@ Covers:
 - default_status for the open / closing_soon / closed cases.
 """
 
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
@@ -161,6 +161,17 @@ def test_content_hash_changes_when_meaningful_field_changes():
     assert make_opportunity(cpv=["48000000"]).compute_content_hash() != base
     assert make_opportunity(region="Lombardia").compute_content_hash() != base
     assert make_opportunity(geo_scope="national").compute_content_hash() != base
+
+
+def test_content_hash_is_offset_invariant_for_same_instant():
+    # Same instant expressed as +02:00 vs the equivalent Z must hash identically,
+    # otherwise a source's choice of timezone would fake an "amended" change.
+    plus_two = datetime(2026, 9, 15, 12, 0, tzinfo=timezone(timedelta(hours=2)))
+    as_utc = datetime(2026, 9, 15, 10, 0, tzinfo=UTC)
+    assert (
+        make_opportunity(deadline=plus_two).compute_content_hash()
+        == make_opportunity(deadline=as_utc).compute_content_hash()
+    )
 
 
 def test_content_hash_ignores_keywords_and_ateco_hints():
