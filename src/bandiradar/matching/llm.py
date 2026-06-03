@@ -22,9 +22,10 @@ import os
 import re
 from typing import Protocol, runtime_checkable
 
-# Reasonable defaults; overridable via BANDIRADAR_LLM_MODEL. Not exercised in CI.
+# Haiku-class defaults: cheap and fast, the right tier for high-volume relevance
+# scoring. Override via BANDIRADAR_LLM_MODEL. Not exercised in CI.
 DEFAULT_MODELS = {
-    "anthropic": "claude-sonnet-4-6",
+    "anthropic": "claude-haiku-4-5-20251001",
     "openai": "gpt-4o-mini",
 }
 

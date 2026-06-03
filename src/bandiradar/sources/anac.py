@@ -177,5 +177,9 @@ class AnacSource:
     ) -> list[Opportunity]:
         return to_opportunities(raw, now=now)
 
+    def load_fixture(self) -> list[RawDoc]:
+        """Offline RawDocs from the bundled fixture (used by --sample)."""
+        return load_fixture()
+
 
 register(AnacSource())

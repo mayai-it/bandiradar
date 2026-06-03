@@ -29,8 +29,14 @@ class Source(Protocol):
         """Yield raw source payloads, optionally only those changed ``since``."""
         ...
 
-    def to_opportunities(self, raw: RawDoc) -> list[Opportunity]:
-        """PURE mapping from one raw payload to canonical opportunities."""
+    def to_opportunities(
+        self, raw: RawDoc, now: datetime | None = None
+    ) -> list[Opportunity]:
+        """PURE mapping from one raw payload to canonical opportunities.
+
+        ``now`` is the reference time for status derivation (defaults to current
+        UTC inside the adapter).
+        """
         ...
 
 

@@ -4,6 +4,11 @@ name: "Manifattura Esempio S.r.l."
 language: it
 ateco: ["25.62", "28.49"]                  # machining / other machine tools
 cpv_interests: ["42000000", "44500000"]    # industrial machinery / hardware
+# Italian keywords; deliberately specific to manufacturing so they do not match
+# unrelated national tenders (keeps the prefilter keep-set stable).
+keywords:
+  ["macchinari", "lavorazioni meccaniche", "macchine utensili",
+   "componenti industriali", "digitalizzazione 4.0"]
 regions: ["Emilia-Romagna", "Lombardia"]
 value_range: { min: 10000, max: 500000 }
 capabilities: >

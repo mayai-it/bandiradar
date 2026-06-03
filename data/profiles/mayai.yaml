@@ -4,10 +4,15 @@ name: "MayAI"
 language: it
 ateco: ["62.01", "62.02", "63.11"]
 cpv_interests: ["72000000", "48000000"]   # IT services / software
+# Italian keywords so the heuristic overlap signal actually matches IT tenders.
+keywords:
+  ["intelligenza artificiale", "software", "dati", "machine learning",
+   "automazione dei processi", "digitalizzazione", "cloud"]
 # Only sub-national regions here; national/eu scope is handled by geo_scope.
 regions: ["Lazio"]
 value_range: { min: 5000, max: 250000 }
 capabilities: >
-  AI consulting and vertical software for Italian SMEs; data science,
-  ML, process automation, GDPR-compliant EU cloud.
+  Consulenza in intelligenza artificiale e software verticale per le PMI
+  italiane; data science, machine learning, automazione dei processi e cloud
+  europeo conforme al GDPR.
 exclusions: ["construction", "catering"]
