@@ -37,7 +37,7 @@ def _haystack(opp: Opportunity) -> str:
     return f"{opp.title} {opp.summary or ''}".lower()
 
 
-def _cpv_key(code: str) -> str:
+def cpv_key(code: str) -> str:
     """Normalize a CPV code for prefix matching: strip whitespace + trailing zeros.
 
     "72000000" -> "72", "72212000" -> "72212", "44500000" -> "445".
@@ -45,14 +45,26 @@ def _cpv_key(code: str) -> str:
     return code.strip().rstrip("0")
 
 
-def _cpv_match(opp_cpv: list[str], interests: list[str]) -> bool:
-    interest_keys = [k for k in (_cpv_key(i) for i in interests) if k]
-    opp_keys = [k for k in (_cpv_key(c) for c in opp_cpv) if k]
+def cpv_match_depth(opp_cpv: list[str], interests: list[str]) -> int:
+    """Depth of the best CPV prefix match (0 = none).
+
+    Two codes match when one normalized key is a prefix of the other; the depth
+    is the length of the shorter key, so a more specific shared prefix scores
+    higher. This is the single source of truth reused by Stage 2's heuristic.
+    """
+    interest_keys = [k for k in (cpv_key(i) for i in interests) if k]
+    opp_keys = [k for k in (cpv_key(c) for c in opp_cpv) if k]
+    best = 0
     for ik in interest_keys:
         for ok in opp_keys:
             if ik.startswith(ok) or ok.startswith(ik):
-                return True
-    return False
+                best = max(best, min(len(ik), len(ok)))
+    return best
+
+
+def cpv_match(opp_cpv: list[str], interests: list[str]) -> bool:
+    """True when any opportunity CPV prefix-matches any profile interest."""
+    return cpv_match_depth(opp_cpv, interests) > 0
 
 
 def _has_value_info(opp: Opportunity) -> bool:
@@ -109,7 +121,7 @@ def _evaluate(
 
     # Gate 5 — relevance signal (skipped if the profile gives no signal sources).
     if profile.cpv_interests or profile.keywords:
-        cpv_ok = _cpv_match(opp.cpv, profile.cpv_interests)
+        cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
         keyword_ok = any(
             _norm(k) and _norm(k) in haystack for k in profile.keywords
         )
