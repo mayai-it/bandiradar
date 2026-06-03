@@ -165,8 +165,11 @@ Regional adapters = phase 2, community-contributed via the `add-a-source` skill.
 ## 6. Matching engine (two stages)
 
 **Stage 1 — deterministic prefilter (no LLM, pure function, fully tested).**
-Filters on region/geo, `cpv ∩ ateco`, value range, `deadline > now`, keyword
-overlap. Cuts thousands of rows to dozens. Cheap and explainable.
+Filters on region/geo, value range, `deadline > now`, and a relevance signal:
+the opportunity's CPV codes prefix-matched against the profile's `cpv_interests`,
+OR a keyword overlap; plus exclusion terms. (There is no ATECO→CPV mapping; ATECO
+lives on the profile as metadata and is not used as a prefilter gate.) Cuts
+thousands of rows to dozens. Cheap and explainable.
 
 **Stage 2 — LLM relevance.**
 Input: `(profile, opportunity minimal text)`. Structured output:

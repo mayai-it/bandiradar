@@ -18,8 +18,9 @@ company — with reasons and deadlines.
 Matching is **two stages**:
 
 1. **Deterministic prefilter** — a pure, explainable function (region/geo,
-   `cpv ∩ ateco`, value range, deadline, keyword overlap). Cuts thousands of
-   rows to dozens. No LLM, no network.
+   value range, deadline, exclusions, and a relevance signal: the opportunity's
+   CPV codes prefix-matched against the profile's `cpv_interests`, or a keyword
+   overlap). Cuts thousands of rows to dozens. No LLM, no network.
 2. **LLM relevance** — scores the survivors `0–100` with reasons, matched
    capabilities, eligibility flags, and risk notes. It ships with a
    **zero-secrets offline fallback** (a deterministic heuristic) so the whole
@@ -132,9 +133,10 @@ which depends on this package — never the reverse.
 ## Add a source / Contributing
 
 Every source is `fetch` + a pure `to_opportunities`, plus a recorded fixture and
-a test — adding one is a new file, no core changes. The step-by-step playbook is
-in `CLAUDE.md` ("How to add a new Source"); a `CONTRIBUTING.md` with the full
-template is on its way.
+a test — adding one is a new file, no core changes. See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) and the `add-a-source` skill
+(`skills/add-a-source/`) for the full copy-pasteable template; the playbook also
+lives in `CLAUDE.md` ("How to add a new Source").
 
 ## License
 
