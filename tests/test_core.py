@@ -31,7 +31,8 @@ def test_run_fetch_sample_counts_and_dedupe(store):
 
 def test_run_match_mayai_keepset_ranked_desc(store):
     mayai = core.load_profile(PROFILES / "mayai.yaml")
-    ranked = core.run_match(mayai, store, sample=True, now=NOW)
+    # Scope to anac: with TED also registered, an unscoped match would span both.
+    ranked = core.run_match(mayai, store, source_id="anac", sample=True, now=NOW)
 
     ids = {opp.id for opp, _ in ranked}
     assert ids == {

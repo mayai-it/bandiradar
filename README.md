@@ -73,15 +73,35 @@ detection**: a changed `content_hash` bumps the version, marks the row
 `amended`, and makes it re-notifiable (a tender *rettifica* should re-notify).
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full design.
 
+## Sources
+
+| Source | What it delivers | Live fetch |
+|---|---|---|
+| **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
+| **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
+
+```bash
+uv run bandiradar fetch --source ted --sample      # offline, bundled real capture
+uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
+```
+
+The TED `--sample` fixture is a **real capture** of Italian IT/software tenders
+(`data/fixtures/ted.json`). Note that TED carries above-threshold contracts —
+often far larger than a micro-SME's range — so a small profile like MayAI
+matches only the few that fit (e.g. an undisclosed-value data-services tender).
+That's exactly why national/regional/incentive sources matter too.
+
 ## Status (honest)
 
 - ✅ **Runs today fully offline** on bundled sample data with **zero secrets** —
-  the quickstart above is real.
-- ⏳ **The live ANAC/PNCP adapter is the immediate next step.** The mapping
+  both quickstarts above are real.
+- ✅ **TED has a live, anonymous fetch** (no key) over the EU search API; it is
+  the first real source. `--sample` keeps it offline against a recorded capture.
+- ⏳ **The live ANAC/PNCP adapter is still pending.** Its mapping
   (`to_opportunities`) is implemented and tested against a recorded fixture, but
   the live `fetch()` is **not wired**: the open-data endpoint must be confirmed
   against current PNCP/ANAC docs first, so `fetch()` raises `NotImplementedError`
-  until then. The bundled fixture URLs are synthetic placeholders.
+  until then. The ANAC fixture URLs are synthetic placeholders.
 - ⚠️ **The offline scorer is a deterministic heuristic proxy**, not real semantic
   relevance. For real matching, set a provider and key:
   `BANDIRADAR_LLM_PROVIDER=anthropic` (or `openai`) plus the matching API key

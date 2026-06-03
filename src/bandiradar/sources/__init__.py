@@ -11,3 +11,4 @@ bandiradar.sources``.
 """
 
 from bandiradar.sources import anac as anac  # noqa: F401  (registration side effect)
+from bandiradar.sources import ted as ted  # noqa: F401  (registration side effect)

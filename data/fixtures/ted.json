@@ -1,0 +1,1780 @@
+{
+ "_note": "REAL capture from the TED v3 search API (anonymous, no auth). Used for OFFLINE tests/--sample. Notices are verbatim API output. Slice: Italian IT/software tenders (CPV 72*/48*), the MayAI domain.",
+ "_source": "POST https://api.ted.europa.eu/v3/notices/search",
+ "_query": "buyer-country=ITA AND (classification-cpv=72* OR classification-cpv=48*) SORT BY publication-date DESC",
+ "_scope": "ACTIVE",
+ "_captured": "2026-06-04",
+ "_totalNoticeCountAtCapture": 1002,
+ "notices": [
+  {
+   "publication-number": "383667-2026",
+   "estimated-value-lot": [
+    "48000000"
+   ],
+   "classification-cpv": [
+    "48820000",
+    "48820000"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Consip S.p.A."
+    ]
+   },
+   "publication-date": "2026-06-04+02:00",
+   "estimated-value-proc": "48000000",
+   "estimated-value-cur-proc": "EUR",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/383667-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/383667-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/383667-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/383667-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/383667-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/383667-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/383667-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/383667-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/383667-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/383667-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/383667-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/383667-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/383667-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/383667-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/383667-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/383667-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/383667-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/383667-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/383667-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/383667-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/383667-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/383667-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/383667-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/383667-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/383667-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/383667-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/383667-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/383667-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/383667-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/383667-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/383667-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/383667-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/383667-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/383667-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/383667-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/383667-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/383667-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/383667-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/383667-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/383667-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/383667-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/383667-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/383667-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/383667-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/383667-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/383667-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/383667-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/383667-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/383667-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/383667-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/383667-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/383667-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/383667-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/383667-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/383667-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/383667-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/383667-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/383667-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/383667-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/383667-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/383667-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/383667-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/383667-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/383667-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/383667-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/383667-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/383667-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/383667-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/383667-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/383667-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/383667-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/383667-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/383667-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/383667-2026/html"
+    }
+   },
+   "buyer-country": [
+    "ITA"
+   ],
+   "notice-title": {
+    "hun": "Olaszország – Szerverek – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "lav": "Itāija – Serveri – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "swe": "Italien – Servrar – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "gle": "An Iodáil – Servers – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "ell": "Ιταλία – Εξυπηρετητές – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "spa": "Italia – Servidores – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "est": "Itaalia – Serverid – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "nld": "Italië – Servers – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "fin": "Italia – Palvelimet – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "pol": "Włochy – Serwery – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "hrv": "Italija – Poslužitelji – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "ces": "Itálie – Servery – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "dan": "Italien – Servere – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "ron": "Italia – Servere – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "por": "Itália – Servidores – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "slk": "Taliansko – Servery – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "fra": "Italie – Serveurs – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "mlt": "L-Italja – Servres – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "deu": "Italien – Server – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "lit": "Italija – Serveriai – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "ita": "Italia – Server – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "bul": "Итaлия – Сървъри – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "slv": "Italija – Strežniki – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903",
+    "eng": "Italy – Servers – Accordo Quadro per la fornitura di Appliance Nutanix Cloud Platform, di software Nutanix e relativi servizi per Sogei - ID 2903"
+   },
+   "buyer-city": {
+    "mul": [
+     "ROMA"
+    ]
+   }
+  },
+  {
+   "publication-number": "384365-2026",
+   "estimated-value-lot": [
+    "270000",
+    "1425000",
+    "450000",
+    "675000",
+    "150000",
+    "450000",
+    "1275000",
+    "337500",
+    "187500",
+    "75000"
+   ],
+   "classification-cpv": [
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300",
+    "72514300"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "buyer-name": {
+    "ita": [
+     "FONDAZIONE IRCCS POLICLINICO SAN MATTEO"
+    ]
+   },
+   "publication-date": "2026-06-04+02:00",
+   "estimated-value-proc": "7657500",
+   "estimated-value-cur-proc": "EUR",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/384365-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/384365-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/384365-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/384365-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/384365-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/384365-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/384365-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/384365-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/384365-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/384365-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/384365-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/384365-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/384365-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/384365-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/384365-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/384365-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/384365-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/384365-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/384365-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/384365-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/384365-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/384365-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/384365-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/384365-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/384365-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/384365-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/384365-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/384365-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/384365-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/384365-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/384365-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/384365-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/384365-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/384365-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/384365-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/384365-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/384365-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/384365-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/384365-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/384365-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/384365-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/384365-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/384365-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/384365-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/384365-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/384365-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/384365-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/384365-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/384365-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/384365-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/384365-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/384365-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/384365-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/384365-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/384365-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/384365-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/384365-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/384365-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/384365-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/384365-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/384365-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/384365-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/384365-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/384365-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/384365-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/384365-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/384365-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/384365-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/384365-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/384365-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/384365-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/384365-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/384365-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/384365-2026/html"
+    }
+   },
+   "buyer-country": [
+    "ITA"
+   ],
+   "notice-title": {
+    "hun": "Olaszország – Számítógépes rendszerek felügyeletéhez kapcsolódó eszközfelügyelet – PROC_APERTA_SW1",
+    "lav": "Itāija – Pārvaldības pakalpojumi datorsistēmu uzturēšanai – PROC_APERTA_SW1",
+    "swe": "Italien – Drift av dataanläggning för underhåll av datasystem – PROC_APERTA_SW1",
+    "gle": "An Iodáil – Facilities management services for computer systems maintenance – PROC_APERTA_SW1",
+    "ell": "Ιταλία – Υπηρεσίες διαχείρισης εγκαταστάσεων για τη συντήρηση συστημάτων πληροφορικής – PROC_APERTA_SW1",
+    "spa": "Italia – Servicios de gestión de instalaciones para el mantenimiento de sistemas informáticos – PROC_APERTA_SW1",
+    "est": "Itaalia – Arvutuskeskuste arvutisüsteemide hoolduse haldusteenused – PROC_APERTA_SW1",
+    "nld": "Italië – Faciliteitenbeheer voor onderhoud van computersystemen – PROC_APERTA_SW1",
+    "fin": "Italia – Tietojärjestelmien ylläpitoon liittyvät tietokeskuspalvelut – PROC_APERTA_SW1",
+    "pol": "Włochy – Usługi w zakresie konserwacji systemów komputerowych – PROC_APERTA_SW1",
+    "hrv": "Italija – Usluge upravljanja napravama za održavanje računalnih sustava – PROC_APERTA_SW1",
+    "ces": "Itálie – Péče o zařízení pro údržbu počítačových systémů – PROC_APERTA_SW1",
+    "dan": "Italien – Servicebureauvirksomhed i forbindelse med vedligeholdelse af databehandlingssystemer – PROC_APERTA_SW1",
+    "ron": "Italia – Sisteme de gestionare a instalaţiilor pentru întreţinerea sistemelor informatice – PROC_APERTA_SW1",
+    "por": "Itália – Serviços de gestão de instalações para manutenção de sistemas informáticos – PROC_APERTA_SW1",
+    "slk": "Taliansko – Správa výpočtových zariadení na údržbu počítačových systémov – PROC_APERTA_SW1",
+    "fra": "Italie – Services de gestion d'installations pour la maintenance de systèmes informatiques – PROC_APERTA_SW1",
+    "mlt": "L-Italja – Servizzi ta' l-amministrazzjoni tal-faċilitajiet għall-manutenzjoni tas-sistemi tal-kompjuter – PROC_APERTA_SW1",
+    "deu": "Italien – Anlagenverwaltung für die Computersystemwartung – PROC_APERTA_SW1",
+    "lit": "Italija – Įrenginių valdymo paslaugos, susijusios su kompiuterių sistemų priežiūra – PROC_APERTA_SW1",
+    "ita": "Italia – Servizi di gestione di attrezzature informatiche per la manutenzione di sistemi informatici – PROC_APERTA_SW1",
+    "bul": "Итaлия – Услуги по управление на средства за поддръжане на компютърни системи – PROC_APERTA_SW1",
+    "slv": "Italija – Storitve upravljanja naprav za vzdrževanje računalniških sistemov – PROC_APERTA_SW1",
+    "eng": "Italy – Facilities management services for computer systems maintenance – PROC_APERTA_SW1"
+   },
+   "buyer-city": {
+    "mul": [
+     "PAVIA"
+    ]
+   }
+  },
+  {
+   "deadline-receipt-tender-date-lot": [
+    "2026-07-20+02:00"
+   ],
+   "publication-number": "382630-2026",
+   "estimated-value-lot": [
+    "1362509.46"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "deadline-receipt-tender-time-lot": [
+    "10:00:00+02:00"
+   ],
+   "classification-cpv": [
+    "72512000",
+    "72512000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Comune di Siracusa"
+    ]
+   },
+   "publication-date": "2026-06-04+02:00",
+   "estimated-value-proc": "1362509.46",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/382630-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/382630-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/382630-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/382630-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/382630-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/382630-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/382630-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/382630-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/382630-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/382630-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/382630-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/382630-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/382630-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/382630-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/382630-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/382630-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/382630-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/382630-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/382630-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/382630-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/382630-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/382630-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/382630-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/382630-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/382630-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/382630-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/382630-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/382630-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/382630-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/382630-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/382630-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/382630-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/382630-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/382630-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/382630-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/382630-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/382630-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/382630-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/382630-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/382630-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/382630-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/382630-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/382630-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/382630-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/382630-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/382630-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/382630-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/382630-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/382630-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/382630-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/382630-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/382630-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/382630-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/382630-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/382630-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/382630-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/382630-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/382630-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/382630-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/382630-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/382630-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/382630-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/382630-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/382630-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/382630-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/382630-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/382630-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/382630-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/382630-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/382630-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/382630-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/382630-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/382630-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/382630-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Dokumentumkezelési szolgáltatások – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "lav": "Itāija – Dokumentu pārvaldības pakalpojumi – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "swe": "Italien – Dokumenthanteringstjänster – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "gle": "An Iodáil – Document management services – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "ell": "Ιταλία – Υπηρεσίες διαχείρισης εγγράφων – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "spa": "Italia – Servicios de gestión de documentos – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "est": "Itaalia – Dokumendihaldusteenused – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "nld": "Italië – Documentbeheerdiensten – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "fin": "Italia – Asiakirjahallintapalvelut – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "pol": "Włochy – Usługi zarządzania dokumentami – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "hrv": "Italija – Usluge upravljanja dokumentacijom – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "ces": "Itálie – Řízení dokladů – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "dan": "Italien – Forvaltning af dokumenter – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "ron": "Italia – Servicii de gestionare a documentelor – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "por": "Itália – Serviços de gestão de documentos – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "slk": "Taliansko – Správa dokumentov – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "fra": "Italie – Services de gestion de documents – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "mlt": "L-Italja – Servizzi ta' l-amministrazzjoni tad-dokumenti – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "deu": "Italien – Dokumentenmanagement – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "lit": "Italija – Dokumentų tvarkymo paslaugos – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "ita": "Italia – Servizi di gestione documenti – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "bul": "Итaлия – Услуги по управление на документи – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "slv": "Italija – Storitve upravljanja dokumentov – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa",
+    "eng": "Italy – Document management services – Servizio di indicizzazione, digitalizzazione, conservazione e custodia in outsourcing dei documenti cartacei degli archivi del Comune di Siracusa"
+   },
+   "buyer-city": {
+    "mul": [
+     "Siracusa"
+    ]
+   }
+  },
+  {
+   "publication-number": "383168-2026",
+   "estimated-value-lot": [
+    "420000.00"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "classification-cpv": [
+    "48000000",
+    "48200000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Istituto Nazionale di Geofisica e Vulcanologia"
+    ]
+   },
+   "publication-date": "2026-06-04+02:00",
+   "estimated-value-proc": "420000.00",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/383168-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/383168-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/383168-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/383168-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/383168-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/383168-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/383168-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/383168-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/383168-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/383168-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/383168-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/383168-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/383168-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/383168-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/383168-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/383168-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/383168-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/383168-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/383168-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/383168-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/383168-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/383168-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/383168-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/383168-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/383168-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/383168-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/383168-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/383168-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/383168-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/383168-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/383168-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/383168-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/383168-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/383168-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/383168-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/383168-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/383168-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/383168-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/383168-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/383168-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/383168-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/383168-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/383168-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/383168-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/383168-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/383168-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/383168-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/383168-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/383168-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/383168-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/383168-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/383168-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/383168-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/383168-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/383168-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/383168-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/383168-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/383168-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/383168-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/383168-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/383168-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/383168-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/383168-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/383168-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/383168-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/383168-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/383168-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/383168-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/383168-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/383168-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/383168-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/383168-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/383168-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/383168-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Szoftvercsomag és információs rendszerek – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "lav": "Itāija – Programmatūras pakotne un informācijas sistēmas – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "swe": "Italien – Programvara och informationssystem – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "gle": "An Iodáil – Software package and information systems – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "ell": "Ιταλία – Πακέτα λογισμικού και συστήματα πληροφορικής – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "spa": "Italia – Paquetes de software y sistemas de información – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "est": "Itaalia – Tarkvarapaketid ja infosüsteemid – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "nld": "Italië – Software en informatiesystemen – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "fin": "Italia – Ohjelmatuotteet ja tietojärjestelmät – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "pol": "Włochy – Pakiety oprogramowania i systemy informatyczne – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "hrv": "Italija – Programski paketi i informacijski sustavi – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "ces": "Itálie – Balíky programů a informační systémy – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "dan": "Italien – Programpakker og informationssystemer – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "ron": "Italia – Pachete software şi sisteme informatice – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "por": "Itália – Pacotes de software e sistemas de informação – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "slk": "Taliansko – Softvérové balíky a informačné systémy – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "fra": "Italie – Logiciels et systèmes d'information – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "mlt": "L-Italja – Pakketti tas-softwer u sistemi ta' informazzjoni – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "deu": "Italien – Softwarepaket und Informationssysteme – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "lit": "Italija – Programinės įrangos paketai ir informacinės sistemos – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "ita": "Italia – Pacchetti software e sistemi di informazione – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "bul": "Итaлия – Софтуерни пакети и информационни системи – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "slv": "Italija – Programski paketi in informacijski sistemi – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI.",
+    "eng": "Italy – Software package and information systems – PROCEDURA NEGOZIATA SENZA PUBBLICAZIONE DI UN BANDO AI SENSI DELL&#8217;ART. 76, COMMA 2, LETT. B), PUNTO 2 E CO.3 DEL D.LGS. 36/2023, PER L&#8217;AFFIDAMENTO DELLA LICENZA SOFTWARE CAMPUS WIDE SUITE (CWSSMS) DI MATHWORKS PER 36 MESI."
+   },
+   "buyer-city": {
+    "mul": [
+     "Roma"
+    ]
+   }
+  },
+  {
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "publication-number": "376324-2026",
+   "classification-cpv": [
+    "72322000",
+    "79940000",
+    "72322000",
+    "79940000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "CENTRALE UNICA DI COMMITTENZA DEI COMUNI ADERENTI DI CIVITA, SAN BASILE,FRASCINETO, CASSANO ALL'IONIO E TREBISACCE"
+    ]
+   },
+   "publication-date": "2026-06-02+02:00",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/376324-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/376324-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/376324-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/376324-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/376324-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/376324-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/376324-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/376324-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/376324-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/376324-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/376324-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/376324-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/376324-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/376324-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/376324-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/376324-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/376324-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/376324-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/376324-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/376324-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/376324-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/376324-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/376324-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/376324-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/376324-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/376324-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/376324-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/376324-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/376324-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/376324-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/376324-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/376324-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/376324-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/376324-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/376324-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/376324-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/376324-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/376324-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/376324-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/376324-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/376324-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/376324-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/376324-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/376324-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/376324-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/376324-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/376324-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/376324-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/376324-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/376324-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/376324-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/376324-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/376324-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/376324-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/376324-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/376324-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/376324-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/376324-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/376324-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/376324-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/376324-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/376324-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/376324-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/376324-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/376324-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/376324-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/376324-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/376324-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/376324-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/376324-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/376324-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/376324-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/376324-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/376324-2026/html"
+    }
+   },
+   "buyer-country": [
+    "ITA"
+   ],
+   "notice-title": {
+    "hun": "Olaszország – Adatfeldolgozási/adatkezelési szolgáltatások – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "lav": "Itāija – Datu pārvaldīšanas pakalpojumi – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "swe": "Italien – Datahantering – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "gle": "An Iodáil – Data management services – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "ell": "Ιταλία – Υπηρεσίες διαχείρισης δεδομένων – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "spa": "Italia – Servicios de gestión de datos – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "est": "Itaalia – Andmehaldusteenused – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "nld": "Italië – Gegevensbeheerdiensten – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "fin": "Italia – Tiedonhallinta – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "pol": "Włochy – Usługi zarządzania danymi – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "hrv": "Italija – Usluge upravljanja podacima – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "ces": "Itálie – Správa dat – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "dan": "Italien – Dataadministration – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "ron": "Italia – Servicii de gestionare a datelor – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "por": "Itália – Serviços de gestão de dados – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "slk": "Taliansko – Správa údajov – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "fra": "Italie – Services de gestion de données – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "mlt": "L-Italja – Servizzi ta' l-amministrazzjoni tad-data – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "deu": "Italien – Datenverwaltung – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "lit": "Italija – Duomenų valdymo paslaugos – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "ita": "Italia – Servizi di gestione dati – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "bul": "Итaлия – Услуги по управление на данни – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "slv": "Italija – Storitve upravljanja podatkov – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)",
+    "eng": "Italy – Data management services – SERVIZIO DI GESTIONE DI TUTTE LE INFRAZIONI AL CODICE DELLA STRADA DI COMPETENZA DEL COMANDO DI POLIZIA LOCALE, INCLUSA L’ATTIVITÀ DI RISCOSSIONE COATTIVA DELLE SANZIONI NON PAGATE ENTRO I TERMINI DI LEGGE COMUNE DI ROCCA IMPERIALE (CS)"
+   },
+   "buyer-city": {
+    "mul": [
+     "Cassano All'Ionio"
+    ]
+   }
+  },
+  {
+   "publication-number": "377752-2026",
+   "estimated-value-lot": [
+    "30000000"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "classification-cpv": [
+    "72211000",
+    "72211000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Azienda Sanitaria Universitaria Integrata del Trentino"
+    ],
+    "eng": [
+     "Integrated University Health Authority of Trentino"
+    ]
+   },
+   "publication-date": "2026-06-02+02:00",
+   "estimated-value-proc": "30000000",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/377752-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/377752-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/377752-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/377752-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/377752-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/377752-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/377752-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/377752-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/377752-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/377752-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/377752-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/377752-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/377752-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/377752-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/377752-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/377752-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/377752-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/377752-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/377752-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/377752-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/377752-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/377752-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/377752-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/377752-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/377752-2026/pdf"
+    },
+    "pdfs": {
+     "ENG": "https://ted.europa.eu/en/notice/377752-2026/pdfs",
+     "ITA": "https://ted.europa.eu/it/notice/377752-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/377752-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/377752-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/377752-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/377752-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/377752-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/377752-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/377752-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/377752-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/377752-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/377752-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/377752-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/377752-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/377752-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/377752-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/377752-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/377752-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/377752-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/377752-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/377752-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/377752-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/377752-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/377752-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/377752-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/377752-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/377752-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/377752-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/377752-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/377752-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/377752-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/377752-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/377752-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/377752-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/377752-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/377752-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/377752-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/377752-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/377752-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/377752-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/377752-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/377752-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/377752-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/377752-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/377752-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/377752-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/377752-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/377752-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/377752-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/377752-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Rendszer- és felhasználói szoftverek programozási szolgáltatásai – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "lav": "Itāija – Sistēmu un lietotāju programmatūras programmēšanas pakalpojumi – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "swe": "Italien – Programmering av system- och användarprogram – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "gle": "An Iodáil – Programming services of systems and user software – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "ell": "Ιταλία – Υπηρεσίες προγραμματισμού λογισμικών συστήματος και χρήστη – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "spa": "Italia – Servicios de programación de sistemas y software de usuario – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "est": "Itaalia – Süsteemide ja kasutajatarkvara programmeerimine – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "nld": "Italië – Programmering van systeem- en gebruikerssoftware – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "fin": "Italia – Varus- ja käyttäjäohjelmiston ohjelmointipalvelut – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "pol": "Włochy – Usługi programowania oprogramowania systemowego i dla użytkownika – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "hrv": "Italija – Usluge programiranja sustava i korisničke podrške – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "ces": "Itálie – Programování systémového a uživatelského programového vybavení – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "dan": "Italien – Programmeringsservice i forbindelse med systemer og brugerprogrammel – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "ron": "Italia – Servicii de programare de sisteme informatice şi software utilitare – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "por": "Itália – Serviços de programação de sistemas e de software para o utilizador – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "slk": "Taliansko – Programovanie systémového a používateľského softvéru – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "fra": "Italie – Services de programmation de systèmes et de logiciels utilitaires – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "mlt": "L-Italja – Servizzi ta' programmizzar tas-sistemi u tas-software ta' l-utenti – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "deu": "Italien – Programmierung von System- und Anwendersoftware – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "lit": "Italija – Programavimo paslaugos, susijusios su sistemomis ir vartotojo programine įranga – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "ita": "Italia – Servizi di programmazione di software di sistemi e di utente – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "bul": "Итaлия – Услуги по програмиране на системен софтуер и потребителски софтуерни средства – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "slv": "Italija – Storitve programiranja sistemske in uporabniške programske opreme – Fornitura di una soluzione informatica di Enterprise Imaging per l’Azienda Sanitaria Universitaria Integrata del Trentino (ASUIT) e richiesta di un prezzario della medesima soluzione per le strutture convenzionate del Servizio Sanitario Provinciale del Trentino",
+    "eng": "Italy – Programming services of systems and user software – Provision of an Enterprise Imaging IT solution for the Integrated University Health Authority of Trentino (ASUIT) and request for a price list of the same solution for the contracted entities with the Provincial Health Service of Trentino"
+   },
+   "buyer-city": {
+    "mul": [
+     "Trento"
+    ]
+   }
+  },
+  {
+   "publication-number": "376401-2026",
+   "estimated-value-lot": [
+    "263650.00"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "classification-cpv": [
+    "72322000",
+    "72322000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "COMUNE DI ORISTANO"
+    ]
+   },
+   "publication-date": "2026-06-02+02:00",
+   "estimated-value-proc": "263650.00",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/376401-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/376401-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/376401-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/376401-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/376401-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/376401-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/376401-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/376401-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/376401-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/376401-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/376401-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/376401-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/376401-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/376401-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/376401-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/376401-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/376401-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/376401-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/376401-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/376401-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/376401-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/376401-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/376401-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/376401-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/376401-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/376401-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/376401-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/376401-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/376401-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/376401-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/376401-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/376401-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/376401-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/376401-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/376401-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/376401-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/376401-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/376401-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/376401-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/376401-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/376401-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/376401-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/376401-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/376401-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/376401-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/376401-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/376401-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/376401-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/376401-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/376401-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/376401-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/376401-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/376401-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/376401-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/376401-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/376401-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/376401-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/376401-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/376401-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/376401-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/376401-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/376401-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/376401-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/376401-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/376401-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/376401-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/376401-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/376401-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/376401-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/376401-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/376401-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/376401-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/376401-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/376401-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Adatfeldolgozási/adatkezelési szolgáltatások – Senza Titolo",
+    "lav": "Itāija – Datu pārvaldīšanas pakalpojumi – Senza Titolo",
+    "swe": "Italien – Datahantering – Senza Titolo",
+    "gle": "An Iodáil – Data management services – Senza Titolo",
+    "ell": "Ιταλία – Υπηρεσίες διαχείρισης δεδομένων – Senza Titolo",
+    "spa": "Italia – Servicios de gestión de datos – Senza Titolo",
+    "est": "Itaalia – Andmehaldusteenused – Senza Titolo",
+    "nld": "Italië – Gegevensbeheerdiensten – Senza Titolo",
+    "fin": "Italia – Tiedonhallinta – Senza Titolo",
+    "pol": "Włochy – Usługi zarządzania danymi – Senza Titolo",
+    "hrv": "Italija – Usluge upravljanja podacima – Senza Titolo",
+    "ces": "Itálie – Správa dat – Senza Titolo",
+    "dan": "Italien – Dataadministration – Senza Titolo",
+    "ron": "Italia – Servicii de gestionare a datelor – Senza Titolo",
+    "por": "Itália – Serviços de gestão de dados – Senza Titolo",
+    "slk": "Taliansko – Správa údajov – Senza Titolo",
+    "fra": "Italie – Services de gestion de données – Senza Titolo",
+    "mlt": "L-Italja – Servizzi ta' l-amministrazzjoni tad-data – Senza Titolo",
+    "deu": "Italien – Datenverwaltung – Senza Titolo",
+    "lit": "Italija – Duomenų valdymo paslaugos – Senza Titolo",
+    "ita": "Italia – Servizi di gestione dati – Senza Titolo",
+    "bul": "Итaлия – Услуги по управление на данни – Senza Titolo",
+    "slv": "Italija – Storitve upravljanja podatkov – Senza Titolo",
+    "eng": "Italy – Data management services – Senza Titolo"
+   },
+   "buyer-city": {
+    "mul": [
+     "Oristano"
+    ]
+   }
+  },
+  {
+   "deadline-receipt-tender-date-lot": [
+    "2026-06-29+02:00"
+   ],
+   "publication-number": "372600-2026",
+   "estimated-value-lot": [
+    "606000.00"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "deadline-receipt-tender-time-lot": [
+    "12:00:00+02:00"
+   ],
+   "classification-cpv": [
+    "72512000",
+    "72512000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Comune di Nardò"
+    ]
+   },
+   "publication-date": "2026-06-01+02:00",
+   "estimated-value-proc": "606000.00",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/372600-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/372600-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/372600-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/372600-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/372600-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/372600-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/372600-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/372600-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/372600-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/372600-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/372600-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/372600-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/372600-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/372600-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/372600-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/372600-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/372600-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/372600-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/372600-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/372600-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/372600-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/372600-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/372600-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/372600-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/372600-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/372600-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/372600-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/372600-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/372600-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/372600-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/372600-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/372600-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/372600-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/372600-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/372600-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/372600-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/372600-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/372600-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/372600-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/372600-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/372600-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/372600-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/372600-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/372600-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/372600-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/372600-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/372600-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/372600-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/372600-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/372600-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/372600-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/372600-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/372600-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/372600-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/372600-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/372600-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/372600-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/372600-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/372600-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/372600-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/372600-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/372600-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/372600-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/372600-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/372600-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/372600-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/372600-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/372600-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/372600-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/372600-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/372600-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/372600-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/372600-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/372600-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Dokumentumkezelési szolgáltatások – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "lav": "Itāija – Dokumentu pārvaldības pakalpojumi – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "swe": "Italien – Dokumenthanteringstjänster – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "gle": "An Iodáil – Document management services – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "ell": "Ιταλία – Υπηρεσίες διαχείρισης εγγράφων – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "spa": "Italia – Servicios de gestión de documentos – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "est": "Itaalia – Dokumendihaldusteenused – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "nld": "Italië – Documentbeheerdiensten – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "fin": "Italia – Asiakirjahallintapalvelut – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "pol": "Włochy – Usługi zarządzania dokumentami – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "hrv": "Italija – Usluge upravljanja dokumentacijom – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "ces": "Itálie – Řízení dokladů – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "dan": "Italien – Forvaltning af dokumenter – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "ron": "Italia – Servicii de gestionare a documentelor – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "por": "Itália – Serviços de gestão de documentos – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "slk": "Taliansko – Správa dokumentov – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "fra": "Italie – Services de gestion de documents – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "mlt": "L-Italja – Servizzi ta' l-amministrazzjoni tad-dokumenti – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "deu": "Italien – Dokumentenmanagement – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "lit": "Italija – Dokumentų tvarkymo paslaugos – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "ita": "Italia – Servizi di gestione documenti – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "bul": "Итaлия – Услуги по управление на документи – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "slv": "Italija – Storitve upravljanja dokumentov – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;",
+    "eng": "Italy – Document management services – Procedura aperta per l&#8217;affidamento del servizio di Digitalizzazione dell&#8217;archivio di edilizia privata del Comune di Nard&#242;"
+   },
+   "buyer-city": {
+    "mul": [
+     "Nardo'"
+    ]
+   }
+  },
+  {
+   "publication-number": "372712-2026",
+   "estimated-value-lot": [
+    "452625"
+   ],
+   "classification-cpv": [
+    "48900000",
+    "48900000"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Azienda Zero"
+    ]
+   },
+   "publication-date": "2026-06-01+02:00",
+   "estimated-value-proc": "452625",
+   "estimated-value-cur-proc": "EUR",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/372712-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/372712-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/372712-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/372712-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/372712-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/372712-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/372712-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/372712-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/372712-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/372712-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/372712-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/372712-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/372712-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/372712-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/372712-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/372712-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/372712-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/372712-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/372712-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/372712-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/372712-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/372712-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/372712-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/372712-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/372712-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/372712-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/372712-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/372712-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/372712-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/372712-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/372712-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/372712-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/372712-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/372712-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/372712-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/372712-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/372712-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/372712-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/372712-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/372712-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/372712-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/372712-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/372712-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/372712-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/372712-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/372712-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/372712-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/372712-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/372712-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/372712-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/372712-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/372712-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/372712-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/372712-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/372712-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/372712-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/372712-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/372712-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/372712-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/372712-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/372712-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/372712-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/372712-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/372712-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/372712-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/372712-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/372712-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/372712-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/372712-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/372712-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/372712-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/372712-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/372712-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/372712-2026/html"
+    }
+   },
+   "buyer-country": [
+    "ITA"
+   ],
+   "notice-title": {
+    "hun": "Olaszország – Különféle szoftvercsomagok és számítógépes rendszerek – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "lav": "Itāija – Dažādas programmatūras pakotnes un datoru sistēmas – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "swe": "Italien – Diverse programvara och datorsystem – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "gle": "An Iodáil – Miscellaneous software package and computer systems – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "ell": "Ιταλία – Διάφορα πακέτα λογισμικού και συστήματα ηλεκτρονικών υπολογιστών – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "spa": "Italia – Paquetes de software y sistemas informáticos diversos – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "est": "Itaalia – Mitmesugused tarkvarapaketid ja arvutisüsteemid – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "nld": "Italië – Diverse software en computersystemen – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "fin": "Italia – Erilaiset ohjelmatuotteet ja tietokonejärjestelmät – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "pol": "Włochy – Różne pakiety oprogramowania i systemy komputerowe – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "hrv": "Italija – Razni programski paketi i računalni sustavi – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "ces": "Itálie – Různé balíky programů a počítačové systémy – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "dan": "Italien – Diverse programpakker og computersystemer – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "ron": "Italia – Diverse pachete software şi sisteme informatice – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "por": "Itália – Pacote de software e sistemas informáticos diversos – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "slk": "Taliansko – Rôzne softvérové balíky a počítačové systémy – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "fra": "Italie – Logiciels et systèmes informatiques divers – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "mlt": "L-Italja – Pakketti tas-softwer varji u sistemi tal-kompjuter – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "deu": "Italien – Diverse Softwarepakete und Computersysteme – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "lit": "Italija – Įvairūs programinės įrangos paketai ir kompiuterių sistemos – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "ita": "Italia – Pacchetti software e sistemi informatici vari – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "bul": "Итaлия – Други софтуерни пакети и операционни системи – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "slv": "Italija – Razni programski paketi in računalniški sistemi – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi.",
+    "eng": "Italy – Miscellaneous software package and computer systems – Procedura aperta telematica per l’acquisizione della soluzione di backup per il sistema informativo sanitario e relativa manutenzione per un periodo di 24 mesi."
+   },
+   "buyer-city": {
+    "mul": [
+     "Padova"
+    ]
+   }
+  },
+  {
+   "deadline-receipt-tender-date-lot": [
+    "2026-07-06+02:00"
+   ],
+   "publication-number": "373613-2026",
+   "estimated-value-lot": [
+    "891000.00"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "deadline-receipt-tender-time-lot": [
+    "09:00:00+02:00"
+   ],
+   "classification-cpv": [
+    "72268000",
+    "72268000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "Comune di Lecce"
+    ]
+   },
+   "publication-date": "2026-06-01+02:00",
+   "estimated-value-proc": "891000.00",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/373613-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/373613-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/373613-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/373613-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/373613-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/373613-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/373613-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/373613-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/373613-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/373613-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/373613-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/373613-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/373613-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/373613-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/373613-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/373613-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/373613-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/373613-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/373613-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/373613-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/373613-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/373613-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/373613-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/373613-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/373613-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/373613-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/373613-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/373613-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/373613-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/373613-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/373613-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/373613-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/373613-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/373613-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/373613-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/373613-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/373613-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/373613-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/373613-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/373613-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/373613-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/373613-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/373613-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/373613-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/373613-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/373613-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/373613-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/373613-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/373613-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/373613-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/373613-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/373613-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/373613-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/373613-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/373613-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/373613-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/373613-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/373613-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/373613-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/373613-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/373613-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/373613-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/373613-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/373613-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/373613-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/373613-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/373613-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/373613-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/373613-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/373613-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/373613-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/373613-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/373613-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/373613-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Szoftverellátási szolgáltatások – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "lav": "Itāija – Programmatūras piegādes pakalpojumi – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "swe": "Italien – Tillhandahållande av programvara – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "gle": "An Iodáil – Software supply services – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "ell": "Ιταλία – Υπηρεσίες προμήθειας λογισμικού – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "spa": "Italia – Servicios de suministro de software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "est": "Itaalia – Tarkvara tarnimisteenused – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "nld": "Italië – Leveren van software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "fin": "Italia – Ohjelmiston toimituspalvelut – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "pol": "Włochy – Usługi dostawy oprogramowania – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "hrv": "Italija – Usluge dobave programske podrške – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "ces": "Itálie – Dodávka programového vybavení – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "dan": "Italien – Levering af programmel – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "ron": "Italia – Servicii de furnizare de software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "por": "Itália – Serviços de fornecimento de software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "slk": "Taliansko – Dodávky softvéru – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "fra": "Italie – Services de fourniture de logiciels – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "mlt": "L-Italja – Servizzi tal-forniment tas-software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "deu": "Italien – Bereitstellung von Software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "lit": "Italija – Programinės įrangos tiekimo paslaugos – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "ita": "Italia – Servizi di fornitura di software – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "bul": "Итaлия – Услуги по доставка на софтуерни продукти – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "slv": "Italija – Storitve oskrbe s programsko opremo – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006",
+    "eng": "Italy – Software supply services – AFFIDAMENTO DEL SERVIZIO DI &#8220;NOLEGGIO DEL SOFTWARE DI GESTIONE DELLE SANZIONI E DEGLI ATTI RELATIVI ALLE VIOLAZIONI DEL CODICE DELLA STRADA ED ALLE ALTRE SANZIONI AMMINISTRATIVE RELATIVE ALLE ATTIVIT&#192; DI POLIZIA LOCALE, ASSISTENZA E MANUTENZIONE ORDINARIA E STRAORDINARIA, FORMAZIONE ED ATTIVIT&#192; CORRELATE&#8221;. CUI 80008510754202300006"
+   },
+   "buyer-city": {
+    "mul": [
+     "Lecce"
+    ]
+   }
+  },
+  {
+   "deadline-receipt-tender-date-lot": [
+    "2026-06-15+02:00"
+   ],
+   "publication-number": "371438-2026",
+   "estimated-value-lot": [
+    "650000"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "deadline-receipt-tender-time-lot": [
+    "16:00:59+02:00"
+   ],
+   "classification-cpv": [
+    "72000000",
+    "72000000",
+    "48000000",
+    "48730000",
+    "48731000",
+    "48732000",
+    "48800000",
+    "72212730",
+    "72212731",
+    "72212732"
+   ],
+   "buyer-name": {
+    "eng": [
+     "European Commission, DG JRC - Joint Research Centre"
+    ]
+   },
+   "publication-date": "2026-06-01+02:00",
+   "estimated-value-proc": "650000",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/371438-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/371438-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/371438-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/371438-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/371438-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/371438-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/371438-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/371438-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/371438-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/371438-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/371438-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/371438-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/371438-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/371438-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/371438-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/371438-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/371438-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/371438-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/371438-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/371438-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/371438-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/371438-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/371438-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/371438-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/371438-2026/pdf"
+    },
+    "pdfs": {
+     "ENG": "https://ted.europa.eu/en/notice/371438-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/371438-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/371438-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/371438-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/371438-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/371438-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/371438-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/371438-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/371438-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/371438-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/371438-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/371438-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/371438-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/371438-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/371438-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/371438-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/371438-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/371438-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/371438-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/371438-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/371438-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/371438-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/371438-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/371438-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/371438-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/371438-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/371438-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/371438-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/371438-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/371438-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/371438-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/371438-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/371438-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/371438-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/371438-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/371438-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/371438-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/371438-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/371438-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/371438-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/371438-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/371438-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/371438-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/371438-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/371438-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/371438-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/371438-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/371438-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/371438-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – IT-szolgáltatások: tanácsadás, szoftverfejlesztés, internet és támogatás – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "lav": "Itāija – IT pakalpojumi konsultēšana, programmatūras izstrāde, internets un atbalsts – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "swe": "Italien – IT-tjänster: konsultverksamhet, programvaruutveckling, Internet och stöd – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "gle": "An Iodáil – IT services: consulting, software development, Internet and support – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "ell": "Ιταλία – Υπηρεσίες τεχνολογίας των πληροφοριών: παροχή συμβουλών, ανάπτυξη λογισμικού, Διαδίκτυο και υποστήριξη – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "spa": "Italia – Servicios TI: consultoría, desarrollo de software, Internet y apoyo – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "est": "Itaalia – IT-teenused: nõuande-, tarkvaraarendus-, Interneti- ja tugiteenused – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "nld": "Italië – IT-diensten: adviezen, softwareontwikkeling, internet en ondersteuning – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "fin": "Italia – Tietotekniset palvelut: neuvonta, ohjelmistojen kehittäminen, Internet ja tuki – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "pol": "Włochy – Usługi informatyczne: konsultacyjne, opracowywania oprogramowania, internetowe i wsparcia – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "hrv": "Italija – Usluge informacijske tehnologije: savjetovanje, razvoj programske podrške, internet i podrška – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "ces": "Itálie – Informační technologie: poradenství, vývoj programového vybavení, internet a podpora – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "dan": "Italien – It-tjenester: rådgivning, programmeludvikling, internet og support – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "ron": "Italia – Servicii IT: consultanţă, dezvoltare de software, internet şi asistenţă – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "por": "Itália – Serviços de TI: consultoria, desenvolvimento de software, Internet e apoio – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "slk": "Taliansko – Služby informačných technológií: konzultácie, vývoj softvéru, internet a podpora – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "fra": "Italie – Services de technologies de l'information, conseil, développement de logiciels, internet et appui – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "mlt": "L-Italja – Servizzi ta' IT: konsulenza, żvilupp ta' softwer, Internet u appoġġ – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "deu": "Italien – IT-Dienste: Beratung, Software-Entwicklung, Internet und Hilfestellung – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "lit": "Italija – IT paslaugos: konsultavimas, programinės įrangos kūrimas, internetas ir aptarnavimo paslaugos – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "ita": "Italia – Servizi informatici: consulenza, sviluppo di software, Internet e supporto – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "bul": "Итaлия – ИТ услуги: консултации, разработване на софтуер, Интернет и поддръжка – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "slv": "Italija – Storitve informacijske tehnologije: svetovanje, razvoj programske opreme, internet in podpora – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II",
+    "eng": "Italy – IT services: consulting, software development, Internet and support – Cooperative Intelligent Transport System EU root Certification Authority including Enrolment Authority and Authorisation Authority - Phase II"
+   },
+   "buyer-city": {
+    "mul": [
+     "Ispra (VA)"
+    ]
+   }
+  },
+  {
+   "deadline-receipt-tender-date-lot": [
+    "2026-07-02Z"
+   ],
+   "publication-number": "374244-2026",
+   "estimated-value-lot": [
+    "6000000"
+   ],
+   "estimated-value-cur-lot": [
+    "EUR"
+   ],
+   "estimated-value-cur-proc": "EUR",
+   "buyer-country": [
+    "ITA"
+   ],
+   "place-of-performance-country-lot": [
+    "ITA"
+   ],
+   "deadline-receipt-tender-time-lot": [
+    "17:00:00Z"
+   ],
+   "classification-cpv": [
+    "72262000",
+    "72262000"
+   ],
+   "buyer-name": {
+    "ita": [
+     "ACI INFORMATICA SPA"
+    ]
+   },
+   "publication-date": "2026-06-01+02:00",
+   "estimated-value-proc": "6000000",
+   "links": {
+    "xml": {
+     "MUL": "https://ted.europa.eu/en/notice/374244-2026/xml"
+    },
+    "pdf": {
+     "BUL": "https://ted.europa.eu/bg/notice/374244-2026/pdf",
+     "SPA": "https://ted.europa.eu/es/notice/374244-2026/pdf",
+     "CES": "https://ted.europa.eu/cs/notice/374244-2026/pdf",
+     "DAN": "https://ted.europa.eu/da/notice/374244-2026/pdf",
+     "DEU": "https://ted.europa.eu/de/notice/374244-2026/pdf",
+     "EST": "https://ted.europa.eu/et/notice/374244-2026/pdf",
+     "ELL": "https://ted.europa.eu/el/notice/374244-2026/pdf",
+     "ENG": "https://ted.europa.eu/en/notice/374244-2026/pdf",
+     "FRA": "https://ted.europa.eu/fr/notice/374244-2026/pdf",
+     "GLE": "https://ted.europa.eu/ga/notice/374244-2026/pdf",
+     "HRV": "https://ted.europa.eu/hr/notice/374244-2026/pdf",
+     "ITA": "https://ted.europa.eu/it/notice/374244-2026/pdf",
+     "LAV": "https://ted.europa.eu/lv/notice/374244-2026/pdf",
+     "LIT": "https://ted.europa.eu/lt/notice/374244-2026/pdf",
+     "HUN": "https://ted.europa.eu/hu/notice/374244-2026/pdf",
+     "MLT": "https://ted.europa.eu/mt/notice/374244-2026/pdf",
+     "NLD": "https://ted.europa.eu/nl/notice/374244-2026/pdf",
+     "POL": "https://ted.europa.eu/pl/notice/374244-2026/pdf",
+     "POR": "https://ted.europa.eu/pt/notice/374244-2026/pdf",
+     "RON": "https://ted.europa.eu/ro/notice/374244-2026/pdf",
+     "SLK": "https://ted.europa.eu/sk/notice/374244-2026/pdf",
+     "SLV": "https://ted.europa.eu/sl/notice/374244-2026/pdf",
+     "FIN": "https://ted.europa.eu/fi/notice/374244-2026/pdf",
+     "SWE": "https://ted.europa.eu/sv/notice/374244-2026/pdf"
+    },
+    "pdfs": {
+     "ITA": "https://ted.europa.eu/it/notice/374244-2026/pdfs"
+    },
+    "html": {
+     "BUL": "https://ted.europa.eu/bg/notice/-/detail/374244-2026",
+     "SPA": "https://ted.europa.eu/es/notice/-/detail/374244-2026",
+     "CES": "https://ted.europa.eu/cs/notice/-/detail/374244-2026",
+     "DAN": "https://ted.europa.eu/da/notice/-/detail/374244-2026",
+     "DEU": "https://ted.europa.eu/de/notice/-/detail/374244-2026",
+     "EST": "https://ted.europa.eu/et/notice/-/detail/374244-2026",
+     "ELL": "https://ted.europa.eu/el/notice/-/detail/374244-2026",
+     "ENG": "https://ted.europa.eu/en/notice/-/detail/374244-2026",
+     "FRA": "https://ted.europa.eu/fr/notice/-/detail/374244-2026",
+     "GLE": "https://ted.europa.eu/ga/notice/-/detail/374244-2026",
+     "HRV": "https://ted.europa.eu/hr/notice/-/detail/374244-2026",
+     "ITA": "https://ted.europa.eu/it/notice/-/detail/374244-2026",
+     "LAV": "https://ted.europa.eu/lv/notice/-/detail/374244-2026",
+     "LIT": "https://ted.europa.eu/lt/notice/-/detail/374244-2026",
+     "HUN": "https://ted.europa.eu/hu/notice/-/detail/374244-2026",
+     "MLT": "https://ted.europa.eu/mt/notice/-/detail/374244-2026",
+     "NLD": "https://ted.europa.eu/nl/notice/-/detail/374244-2026",
+     "POL": "https://ted.europa.eu/pl/notice/-/detail/374244-2026",
+     "POR": "https://ted.europa.eu/pt/notice/-/detail/374244-2026",
+     "RON": "https://ted.europa.eu/ro/notice/-/detail/374244-2026",
+     "SLK": "https://ted.europa.eu/sk/notice/-/detail/374244-2026",
+     "SLV": "https://ted.europa.eu/sl/notice/-/detail/374244-2026",
+     "FIN": "https://ted.europa.eu/fi/notice/-/detail/374244-2026",
+     "SWE": "https://ted.europa.eu/sv/notice/-/detail/374244-2026"
+    },
+    "htmlDirect": {
+     "BUL": "https://ted.europa.eu/bg/notice/374244-2026/html",
+     "SPA": "https://ted.europa.eu/es/notice/374244-2026/html",
+     "CES": "https://ted.europa.eu/cs/notice/374244-2026/html",
+     "DAN": "https://ted.europa.eu/da/notice/374244-2026/html",
+     "DEU": "https://ted.europa.eu/de/notice/374244-2026/html",
+     "EST": "https://ted.europa.eu/et/notice/374244-2026/html",
+     "ELL": "https://ted.europa.eu/el/notice/374244-2026/html",
+     "ENG": "https://ted.europa.eu/en/notice/374244-2026/html",
+     "FRA": "https://ted.europa.eu/fr/notice/374244-2026/html",
+     "GLE": "https://ted.europa.eu/ga/notice/374244-2026/html",
+     "HRV": "https://ted.europa.eu/hr/notice/374244-2026/html",
+     "ITA": "https://ted.europa.eu/it/notice/374244-2026/html",
+     "LAV": "https://ted.europa.eu/lv/notice/374244-2026/html",
+     "LIT": "https://ted.europa.eu/lt/notice/374244-2026/html",
+     "HUN": "https://ted.europa.eu/hu/notice/374244-2026/html",
+     "MLT": "https://ted.europa.eu/mt/notice/374244-2026/html",
+     "NLD": "https://ted.europa.eu/nl/notice/374244-2026/html",
+     "POL": "https://ted.europa.eu/pl/notice/374244-2026/html",
+     "POR": "https://ted.europa.eu/pt/notice/374244-2026/html",
+     "RON": "https://ted.europa.eu/ro/notice/374244-2026/html",
+     "SLK": "https://ted.europa.eu/sk/notice/374244-2026/html",
+     "SLV": "https://ted.europa.eu/sl/notice/374244-2026/html",
+     "FIN": "https://ted.europa.eu/fi/notice/374244-2026/html",
+     "SWE": "https://ted.europa.eu/sv/notice/374244-2026/html"
+    }
+   },
+   "notice-title": {
+    "hun": "Olaszország – Szoftverfejlesztési szolgáltatások – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "lav": "Itāija – Programmatūras izstrādes pakalpojumi – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "swe": "Italien – Utveckling av programvara – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "gle": "An Iodáil – Software development services – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "ell": "Ιταλία – Υπηρεσίες ανάπτυξης λογισμικού – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "spa": "Italia – Servicios de desarrollo de software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "est": "Itaalia – Tarkvara arendusteenused – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "nld": "Italië – Ontwikkeling van software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "fin": "Italia – Ohjelmiston kehittämispalvelut – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "pol": "Włochy – Usługi rozbudowy oprogramowania – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "hrv": "Italija – Usluge razvoja programske podrške – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "ces": "Itálie – Vývoj programového vybavení – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "dan": "Italien – Programmeludvikling – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "ron": "Italia – Servicii de dezvoltare software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "por": "Itália – Serviços de desenvolvimento de software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "slk": "Taliansko – Vývoj softvéru – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "fra": "Italie – Services de développement de logiciels – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "mlt": "L-Italja – Servizzi ta' l-iżvulupp tas-software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "deu": "Italien – Software-Entwicklung – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "lit": "Italija – Programinės įrangos kūrimo paslaugos – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "ita": "Italia – Servizi di sviluppo di software – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "bul": "Итaлия – Услуги по разработване на софтуер – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "slv": "Italija – Storitve razvoja programske opreme – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023",
+    "eng": "Italy – Software development services – ITZ0014L26 SERVIZIO DI DIGITALIZZAZIONE E AUTOMAZIONE DEI PROCESSI CONTABILI DEGLI ARCHIVI NOTARILI E DI PRESIDIO SISTEMISTICO ON-SITE, SVOLTA TRAMITE GARA EUROPEA A PROCEDURA APERTA TELEMATICA EX ART. 71 D. LGS. 36/ 2023"
+   },
+   "buyer-city": {
+    "mul": [
+     "ROMA"
+    ]
+   }
+  }
+ ]
+}
