@@ -2,15 +2,216 @@
 
 Defines the pydantic v2 models shared across the whole engine:
 
-- ``Opportunity`` — the superset model covering tenders AND grants/incentives.
-- ``RawDoc`` — the untouched payload from a source (audit + re-mapping).
-- ``Profile`` — the company we match opportunities against (ARCHITECTURE.md §7).
-- ``Match`` — the Stage-2 relevance result for an (opportunity, profile) pair.
+- :class:`Opportunity` — the superset model covering tenders AND
+  grants/incentives.
+- :class:`RawDoc` — the untouched payload from a source (audit + re-mapping).
+- :class:`Profile` — the company we match opportunities against (§7).
+- :class:`Match` — the Stage-2 relevance result for an (opportunity, profile)
+  pair.
 
 Do NOT break field names/shape without updating ARCHITECTURE.md and every
 adapter + test in the same change.
 
-TODO(Prompt 1): implement Opportunity, RawDoc, Profile, Match as pydantic v2
-models with full type hints and validators (status derived from deadline;
-content_hash helper).
+Design notes (see the Prompt 1 spec):
+- ``content_hash`` is derived from ONLY the semantically meaningful fields and
+  deliberately EXCLUDES ``version`` and ``updated_at`` — otherwise change
+  detection (ARCHITECTURE.md §8) would fire on every re-fetch.
+- ``status`` is a STORED field, not a pure computed property. ``default_status``
+  derives a sensible initial value, but storage stays free to set ``"amended"``
+  when a ``content_hash`` change is detected.
 """
+
+from __future__ import annotations
+
+import hashlib
+import json
+from datetime import UTC, datetime, timedelta
+from typing import Any, Literal
+
+from pydantic import BaseModel, Field, model_validator
+
+__all__ = [
+    "CLOSING_SOON_DAYS",
+    "Kind",
+    "GeoScope",
+    "Status",
+    "Opportunity",
+    "RawDoc",
+    "ValueRange",
+    "Profile",
+    "Match",
+    "default_status",
+]
+
+# Days-before-deadline window in which an opportunity counts as "closing soon".
+CLOSING_SOON_DAYS = 7
+
+Kind = Literal["tender", "grant", "incentive"]
+GeoScope = Literal["national", "regional", "eu", "local"]
+Status = Literal["open", "closing_soon", "closed", "amended"]
+
+# The ONLY fields that feed content_hash. Keep this list in sync with the
+# Prompt 1 spec: title, summary, issuer, value, deadline, eligibility_text.
+# version and updated_at are intentionally absent.
+_CONTENT_HASH_FIELDS = (
+    "title",
+    "summary",
+    "issuer_name",
+    "issuer_region",
+    "value_amount",
+    "value_currency",
+    "value_min",
+    "value_max",
+    "deadline",
+    "eligibility_text",
+)
+
+
+def default_status(
+    deadline: datetime | None, now: datetime | None = None
+) -> Literal["open", "closing_soon", "closed"]:
+    """Derive an initial status from a deadline.
+
+    - no deadline -> ``"open"``
+    - deadline in the past -> ``"closed"``
+    - deadline within :data:`CLOSING_SOON_DAYS` -> ``"closing_soon"``
+    - otherwise -> ``"open"``
+
+    ``now`` defaults to the current UTC time; tests pass an explicit value for
+    determinism. Pass ``deadline`` and ``now`` with consistent tz-awareness.
+    Never returns ``"amended"`` — that status is owned by storage on a
+    content_hash change.
+    """
+    if now is None:
+        now = datetime.now(UTC)
+    if deadline is None:
+        return "open"
+    if deadline < now:
+        return "closed"
+    if deadline <= now + timedelta(days=CLOSING_SOON_DAYS):
+        return "closing_soon"
+    return "open"
+
+
+class Opportunity(BaseModel):
+    """A single funding opportunity — the canonical superset (ARCHITECTURE.md §4)."""
+
+    id: str  # stable, source-prefixed: "anac:<ocid>"
+    source: str  # source id, e.g. "anac"
+    source_url: str
+    kind: Kind
+
+    title: str
+    summary: str | None = None
+    issuer_name: str | None = None  # buyer / granting body
+    issuer_region: str | None = None
+
+    cpv: list[str] = Field(default_factory=list)  # tender procurement codes
+    ateco_hints: list[str] = Field(default_factory=list)  # mapped/declared codes
+    keywords: list[str] = Field(default_factory=list)
+
+    value_amount: float | None = None
+    value_currency: str = "EUR"
+    value_min: float | None = None
+    value_max: float | None = None
+
+    geo_scope: GeoScope
+    region: str | None = None
+
+    published_at: datetime | None = None
+    deadline: datetime | None = None
+    updated_at: datetime | None = None
+    status: Status  # stored, freely settable (see module docstring)
+
+    eligibility_text: str | None = None  # free text fed to the matcher
+    raw_ref: str  # pointer to stored RawDoc
+    content_hash: str = ""  # for change detection; auto-filled if left empty
+    version: int = 1
+
+    @model_validator(mode="after")
+    def _validate_and_fill(self) -> Opportunity:
+        if (
+            self.value_min is not None
+            and self.value_max is not None
+            and self.value_min > self.value_max
+        ):
+            raise ValueError("value_min must not exceed value_max")
+        # Auto-populate content_hash when a caller did not supply one. Assignment
+        # does not re-trigger validation (validate_assignment is off), so this is
+        # safe and loop-free.
+        if not self.content_hash:
+            self.content_hash = self.compute_content_hash()
+        return self
+
+    def compute_content_hash(self) -> str:
+        """Deterministic SHA-256 over ONLY the semantically meaningful fields.
+
+        Excludes ``version`` and ``updated_at`` by construction (see
+        :data:`_CONTENT_HASH_FIELDS`). Same meaningful content -> same hash
+        across runs and processes.
+        """
+        payload: dict[str, Any] = {}
+        for field in _CONTENT_HASH_FIELDS:
+            value = getattr(self, field)
+            payload[field] = value.isoformat() if isinstance(value, datetime) else value
+        encoded = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+        return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+class RawDoc(BaseModel):
+    """An untouched source payload, kept for audit and re-mapping (§4/§5)."""
+
+    id: str  # stable, source-prefixed (mirrors the Opportunity raw_ref)
+    source: str
+    fetched_at: datetime
+    payload: dict[str, Any]  # the original record, verbatim
+    url: str | None = None
+
+
+class ValueRange(BaseModel):
+    """Inclusive monetary range a profile is interested in."""
+
+    min: float | None = None
+    max: float | None = None
+
+    @model_validator(mode="after")
+    def _check_order(self) -> ValueRange:
+        if self.min is not None and self.max is not None and self.min > self.max:
+            raise ValueError("value_range.min must not exceed value_range.max")
+        return self
+
+
+class Profile(BaseModel):
+    """The company we match opportunities against (ARCHITECTURE.md §7)."""
+
+    name: str
+    language: str = "it"
+    ateco: list[str] = Field(default_factory=list)
+    cpv_interests: list[str] = Field(default_factory=list)
+    regions: list[str] = Field(default_factory=list)
+    value_range: ValueRange = Field(default_factory=ValueRange)
+    capabilities: str = ""  # free text fed to the matcher
+    exclusions: list[str] = Field(default_factory=list)
+
+    @property
+    def version(self) -> str:
+        """Stable content hash of the profile, used as a match-cache key (§6).
+
+        Deterministic across runs; changes iff any profile field changes.
+        """
+        encoded = json.dumps(
+            self.model_dump(mode="json"), sort_keys=True, ensure_ascii=False
+        )
+        return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+class Match(BaseModel):
+    """Stage-2 relevance result for one (opportunity, profile) pair (§6)."""
+
+    opportunity_id: str
+    profile_version: str  # Profile.version at scoring time -> cache key part
+    score: int = Field(ge=0, le=100)
+    reasons: list[str] = Field(default_factory=list)
+    matched_capabilities: list[str] = Field(default_factory=list)
+    eligibility_flags: list[str] = Field(default_factory=list)
+    risk_notes: list[str] = Field(default_factory=list)

@@ -1,0 +1,12 @@
+# Dogfood profile: MayAI itself — an AI studio chasing digitalization/
+# innovation incentives (ARCHITECTURE.md §7).
+name: "MayAI"
+language: it
+ateco: ["62.01", "62.02", "63.11"]
+cpv_interests: ["72000000", "48000000"]   # IT services / software
+regions: ["Lazio", "national"]
+value_range: { min: 5000, max: 250000 }
+capabilities: >
+  AI consulting and vertical software for Italian SMEs; data science,
+  ML, process automation, GDPR-compliant EU cloud.
+exclusions: ["construction", "catering"]
