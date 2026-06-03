@@ -224,6 +224,7 @@ class Profile(BaseModel):
     language: str = "it"
     ateco: list[str] = Field(default_factory=list)
     cpv_interests: list[str] = Field(default_factory=list)
+    keywords: list[str] = Field(default_factory=list)  # free-text match terms
     regions: list[str] = Field(default_factory=list)
     value_range: ValueRange = Field(default_factory=ValueRange)
     capabilities: str = ""  # free text fed to the matcher

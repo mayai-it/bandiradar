@@ -203,13 +203,19 @@ name: "MayAI"
 language: it
 ateco: ["62.01", "62.02", "63.11"]
 cpv_interests: ["72000000", "48000000"]   # IT services / software
-regions: ["Lazio", "national"]
+keywords: []                              # optional free-text match terms
+regions: ["Lazio"]                        # only sub-national regions; national/eu
+                                          # scope is handled by geo_scope, not here
 value_range: { min: 5000, max: 250000 }
 capabilities: >
   AI consulting and vertical software for Italian SMEs; data science,
   ML, process automation, GDPR-compliant EU cloud.
 exclusions: ["construction", "catering"]
 ```
+
+`keywords` is an optional list of free-text terms; the Stage-1 prefilter treats a
+case-insensitive substring hit in an opportunity's title/summary as a relevance
+signal (alongside CPV matching).
 
 **Dogfood example profile = MayAI itself** (an AI studio chasing
 digitalization/innovation incentives) + a generic manufacturing PMI fixture.

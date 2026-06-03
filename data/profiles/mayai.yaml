@@ -4,7 +4,8 @@ name: "MayAI"
 language: it
 ateco: ["62.01", "62.02", "63.11"]
 cpv_interests: ["72000000", "48000000"]   # IT services / software
-regions: ["Lazio", "national"]
+# Only sub-national regions here; national/eu scope is handled by geo_scope.
+regions: ["Lazio"]
 value_range: { min: 5000, max: 250000 }
 capabilities: >
   AI consulting and vertical software for Italian SMEs; data science,
