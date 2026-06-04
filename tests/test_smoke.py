@@ -23,6 +23,7 @@ MODULES = [
     "bandiradar.matching.relevance",
     "bandiradar.matching.llm",
     "bandiradar.matching.prompts",
+    "bandiradar.config",
     "bandiradar.storage",
     "bandiradar.exporters",
     "bandiradar.intelligence",
