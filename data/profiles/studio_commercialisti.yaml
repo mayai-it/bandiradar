@@ -1,0 +1,15 @@
+# Studio professionale di commercialisti (Lazio + nazionale).
+name: "Studio Associato Commercialisti Roma"
+language: it
+ateco: ["69.20", "69.10"]                  # contabilità / attività legali
+cpv_interests: ["79000000", "66170000"]    # servizi alle imprese / consulenza finanziaria
+keywords:
+  ["consulenza fiscale", "contabilità", "servizi amministrativi",
+   "digitalizzazione", "revisione"]
+regions: ["Lazio"]
+value_range: { min: 5000, max: 150000 }
+capabilities: >
+  Servizi di consulenza fiscale, contabile e amministrativa per le PMI;
+  revisione, dichiarazioni, supporto a bandi e incentivi per la
+  digitalizzazione degli studi e dei clienti.
+exclusions: ["construction", "catering"]

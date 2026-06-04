@@ -1,0 +1,13 @@
+# Impresa di costruzioni / edilizia (Lombardia).
+name: "Costruzioni Lombarde S.r.l."
+language: it
+ateco: ["41.20", "43.99"]                  # costruzione edifici / lavori edili specializzati
+cpv_interests: ["45000000"]                # lavori di costruzione
+keywords:
+  ["lavori", "manutenzione", "edilizia", "ristrutturazione", "opere"]
+regions: ["Lombardia"]
+value_range: { min: 20000, max: 2000000 }
+capabilities: >
+  Lavori edili e di costruzione, manutenzione straordinaria, ristrutturazione
+  e opere pubbliche per enti locali e committenti privati.
+exclusions: ["catering"]

@@ -242,6 +242,36 @@ uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --
 Managed delivery (WhatsApp/email/alerts), scheduling SaaS, and multi-tenant
 hosting live in `bandiradar-pro`.
 
+## Works across company types
+
+BandiRadar isn't tuned to one company — it runs any profile against every source.
+`bandiradar batch` runs the bundled profile suite and compares results
+(`--json`/`--csv` for machine output). Real output on `--sample`:
+
+```text
+PROFILE                          #  TOP MATCH (score)                      BY SOURCE
+------------------------------------------------------------------------------------
+Consulenza Strategica S.r.l.     9  Servizi di consulenza organizza… (72)  anac:2 incentivi:6 ted:1
+Costruzioni Lombarde S.r.l.      5  LAVORI DI FORMAZIONE MANUTENZIO… (76)  lombardia:2 ted:3
+Trattoria & Bottega S.r.l.       2  Voucher 3I - Investire in innov… (55)  incentivi:2
+Manifattura Esempio S.r.l.       1  Fornitura di macchinari industr… (76)  anac:1
+MayAI                            5  Fornitura di licenze software e… (76)  anac:3 incentivi:1 ted:1
+MedForniture Lombardia S.r.l.    3  fornitura di cannule nasali per… (76)  lombardia:3
+Studio Associato Commercialis…   3  Fornitura di licenze software e… (60)  anac:1 incentivi:1 ted:1
+```
+
+The suite spans distinct Italian SME segments — AI/software (MayAI),
+manufacturing, medical-devices (Lombardy), accounting, construction,
+hospitality/retail (keyword-driven, no CPV), and consultancy. Counts are real
+matches on the tiny bundled sample; a segment can legitimately show few hits when
+the sample doesn't cover it.
+
+```bash
+uv run bandiradar batch --sample              # human comparison table
+uv run bandiradar batch --sample --json       # machine-readable
+uv run bandiradar batch --sample --csv out.csv
+```
+
 ## Open core vs Pro
 
 Anything a single user can run locally is **open**. Anything *managed*,

@@ -1,0 +1,13 @@
+# Piccola società di consulenza direzionale (nazionale, nessun vincolo regionale).
+name: "Consulenza Strategica S.r.l."
+language: it
+ateco: ["70.22"]                           # consulenza gestionale
+cpv_interests: ["79000000"]                # servizi alle imprese / consulenza
+keywords:
+  ["consulenza", "organizzazione", "processi", "digitalizzazione", "formazione"]
+regions: []                                # opera su tutto il territorio (nessun filtro regionale)
+value_range: { min: 5000, max: 200000 }
+capabilities: >
+  Consulenza direzionale e organizzativa, riorganizzazione dei processi,
+  formazione e supporto alla trasformazione digitale delle PMI.
+exclusions: ["construction", "catering"]

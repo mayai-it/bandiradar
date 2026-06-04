@@ -8,7 +8,9 @@ non-zero.
 
 from __future__ import annotations
 
+import csv
 import json
+from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -366,6 +368,114 @@ def export(
         typer.echo(f"wrote RSS feed: {rss} ({len(ranked)} items)")
     if json_out:
         typer.echo(exporters.to_json(ranked))
+
+
+# --------------------------------------------------------------------------- #
+# batch (profile suite comparison)
+# --------------------------------------------------------------------------- #
+
+
+def _trunc(text: str, width: int) -> str:
+    return text if len(text) <= width else text[: width - 1] + "…"
+
+
+@app.command()
+def batch(
+    profiles_dir: str = typer.Option(
+        "data/profiles", "--profiles-dir", help="Directory of profile YAMLs"
+    ),
+    source: str | None = typer.Option(
+        None, "--source", help="Comma-separated source ids (default: all)"
+    ),
+    sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
+    min_score: int = typer.Option(0, "--min-score", help="Drop matches below N"),
+    top: int | None = typer.Option(None, "--top", help="Keep top K per profile"),
+    with_benchmarks: bool = typer.Option(
+        False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
+    ),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
+    csv_path: str | None = typer.Option(None, "--csv", help="Write CSV to PATH"),
+):
+    """Run every profile in a directory against the sources and compare results."""
+    paths = sorted(Path(profiles_dir).glob("*.yaml"))
+    if not paths:
+        typer.secho(f"No profiles in {profiles_dir!r}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1)
+
+    store = core.Store(db)
+    try:
+        companies = [core.load_profile(p) for p in paths]
+        results = core.run_batch(
+            companies,
+            store,
+            source_ids=_source_ids(source),
+            sample=sample,
+            min_score=min_score,
+            top=top,
+            with_benchmarks=with_benchmarks,
+        )
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+    finally:
+        store.close()
+
+    if json_out:
+        payload = [
+            {
+                "profile": p.name,
+                "matches": len(ranked),
+                "by_source": dict(Counter(o.source for o, _ in ranked)),
+                "top": (
+                    {
+                        "opportunity_id": ranked[0][0].id,
+                        "score": ranked[0][1].score,
+                        "title": ranked[0][0].title,
+                    }
+                    if ranked
+                    else None
+                ),
+                "results": exporters.match_payload(ranked),
+            }
+            for p, ranked in results
+        ]
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+
+    if csv_path is not None:
+        src_ids = sorted(s.id for s in list_sources())
+        with open(csv_path, "w", newline="", encoding="utf-8") as fh:
+            writer = csv.writer(fh)
+            writer.writerow(["profile", "matches", "top_score", "top_title", *src_ids])
+            for p, ranked in results:
+                by = Counter(o.source for o, _ in ranked)
+                top_o = ranked[0] if ranked else None
+                writer.writerow(
+                    [
+                        p.name,
+                        len(ranked),
+                        top_o[1].score if top_o else "",
+                        top_o[0].title if top_o else "",
+                        *[by.get(s, 0) for s in src_ids],
+                    ]
+                )
+        typer.echo(f"wrote CSV: {csv_path} ({len(results)} profiles)")
+
+    if not json_out and csv_path is None:
+        header = f"{'PROFILE':30} {'#':>3}  {'TOP MATCH (score)':38} BY SOURCE"
+        typer.echo(header)
+        typer.echo("-" * len(header))
+        for p, ranked in results:
+            by = Counter(o.source for o, _ in ranked)
+            by_str = " ".join(f"{s}:{n}" for s, n in sorted(by.items())) or "—"
+            if ranked:
+                opp, m = ranked[0]
+                top_str = f"{_trunc(opp.title, 32)} ({m.score})"
+            else:
+                top_str = "—"
+            typer.echo(
+                f"{_trunc(p.name, 30):30} {len(ranked):>3}  {top_str:38} {by_str}"
+            )
 
 
 # --------------------------------------------------------------------------- #

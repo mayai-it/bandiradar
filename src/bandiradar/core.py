@@ -138,6 +138,49 @@ def run_monitor(
     )
 
 
+def run_batch(
+    profiles: list[Profile],
+    store: Store,
+    source_ids: list[str] | None = None,
+    sample: bool = False,
+    client: LLMClient | None = None,
+    min_score: int = 0,
+    top: int | None = None,
+    with_benchmarks: bool = False,
+    now: datetime | None = None,
+) -> list[tuple[Profile, list[tuple[Opportunity, Match]]]]:
+    """Run every profile against the sources; return (profile, ranked) per profile.
+
+    Pure orchestration (no printing). Fetches each requested source once (sample
+    mode) before matching, so the shared opportunity set is built a single time.
+    """
+    if sample:
+        targets = source_ids if source_ids else [s.id for s in list_sources()]
+        for sid in targets:
+            if not store.list_opportunities(source=sid):
+                run_fetch(sid, store, sample=True, now=now)
+
+    results: list[tuple[Profile, list[tuple[Opportunity, Match]]]] = []
+    for profile in profiles:
+        ranked = run_match(
+            profile,
+            store,
+            source_id=None,
+            sample=False,  # sources already ensured above
+            client=client,
+            min_score=min_score,
+            now=now,
+            with_benchmarks=with_benchmarks,
+        )
+        if source_ids:
+            wanted = set(source_ids)
+            ranked = [(o, m) for o, m in ranked if o.source in wanted]
+        if top is not None:
+            ranked = ranked[:top]
+        results.append((profile, ranked))
+    return results
+
+
 def run_watch(
     profile: Profile,
     store: Store,

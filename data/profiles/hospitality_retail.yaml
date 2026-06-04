@@ -1,0 +1,16 @@
+# Piccola attività di ricettività / commercio al dettaglio.
+# Niente CPV: matching guidato da keyword / testo del bando (incentivi).
+name: "Trattoria & Bottega S.r.l."
+language: it
+ateco: ["56.10", "47.11"]                  # ristorazione / commercio al dettaglio
+cpv_interests: []                          # no CPV — keyword/eligibility-driven
+keywords:
+  ["digitalizzazione", "turismo", "commercio", "ristorazione",
+   "vendita al dettaglio", "voucher"]
+regions: ["Lazio"]
+value_range: { min: 1000, max: 50000 }
+capabilities: >
+  Attività di ristorazione e commercio al dettaglio; interesse per contributi
+  alla digitalizzazione e all'innovazione del punto vendita e dei servizi al
+  cliente.
+exclusions: ["construction"]
