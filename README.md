@@ -132,11 +132,38 @@ uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --
   the live `fetch()` is **not wired**: the open-data endpoint must be confirmed
   against current PNCP/ANAC docs first, so `fetch()` raises `NotImplementedError`
   until then. The ANAC fixture URLs are synthetic placeholders.
-- ⚠️ **The offline scorer is a deterministic heuristic proxy**, not real semantic
-  relevance. For real matching, set a provider and key:
-  `BANDIRADAR_LLM_PROVIDER=anthropic` (or `openai`) plus the matching API key
-  (see `.env.example`). With no key, BandiRadar transparently falls back to the
-  heuristic.
+- ✅ **Stage-2 LLM scoring is wired and working** (live, against a real provider
+  API). With no key it transparently uses the deterministic offline heuristic —
+  a proxy, not real semantic relevance. See "Stage 2: real LLM scoring" below.
+
+## Stage 2: real LLM scoring
+
+Stage 2 is **off by default** (zero secrets → deterministic offline heuristic).
+To enable real LLM relevance scoring:
+
+```bash
+uv sync --extra anthropic        # or: --extra openai  (optional SDKs)
+# in .env (gitignored):
+#   BANDIRADAR_LLM_PROVIDER=anthropic        # or openai
+#   ANTHROPIC_API_KEY=sk-ant-...             # or OPENAI_API_KEY=...
+#   BANDIRADAR_LLM_MODEL=...                 # optional; defaults to a cheap Haiku-class model
+```
+
+`.env` is auto-loaded — no manual `export`. With **no key** (or no SDK), the
+engine falls back to the heuristic, so CI and offline runs need nothing. When the
+LLM path is active you'll see a one-time `scoring via anthropic:<model>` on stderr.
+
+The LLM is more discriminating than the heuristic — same prefiltered set, sharper
+scores/ranking (`bandiradar batch --sample`):
+
+```text
+                                  heuristic        LLM (anthropic, Haiku)
+Costruzioni  (real construction)    56               92   ← genuine match promoted
+Costruzioni  (IT doc-digitization)  (kept ~36)       15   ← cross-sector match demoted
+MayAI        top match            software-licenses  ML/data tender (88)
+Studio comm. software-licenses      50               25   ← weak fit penalized
+MedForniture medical devices        76               92   ← strong sector fit held
+```
 
 ## Use it from an AI agent (MCP)
 
