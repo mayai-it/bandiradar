@@ -69,8 +69,14 @@ def run_match(
     min_score: int = 0,
     limit: int | None = None,
     now: datetime | None = None,
+    with_benchmarks: bool = False,
 ) -> list[tuple[Opportunity, Match]]:
-    """Prefilter + score stored opportunities, ranked by score descending."""
+    """Prefilter + score stored opportunities, ranked by score descending.
+
+    ``with_benchmarks`` adds optional ANAC-history enrichment (intelligence
+    track), read from a BenchmarkStore on the same DB. Graceful: an empty
+    benchmarks table simply yields no enrichment, never an error.
+    """
 
     def _stored() -> list[Opportunity]:
         return store.list_opportunities(source=source_id)
@@ -84,7 +90,20 @@ def run_match(
 
     kept = prefilter(opportunities, profile, now=now)
     cache = SqliteScoreCache(store)
-    matches = score_all(kept, profile, client=client, cache=cache, now=now)
+
+    benchmark_store = None
+    if with_benchmarks:
+        from bandiradar.intelligence.store import BenchmarkStore
+
+        benchmark_store = BenchmarkStore(store.db_path)
+    try:
+        matches = score_all(
+            kept, profile, client=client, cache=cache, now=now,
+            benchmarks=benchmark_store,
+        )
+    finally:
+        if benchmark_store is not None:
+            benchmark_store.close()
 
     by_id = {opp.id: opp for opp in kept}
     ranked = [

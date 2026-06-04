@@ -10,12 +10,30 @@ from bandiradar.intelligence.benchmarks import (
     compute_benchmarks,
     lookup,
 )
+from bandiradar.intelligence.enrichment import enrich
 from bandiradar.intelligence.store import BenchmarkStore
+from bandiradar.models import Opportunity
 
 
 def rec(div, region, value, year, supplier):
     return ah.HistoryRecord(
         cpv_division=div, region=region, value=value, year=year, supplier_id=supplier
+    )
+
+
+def bench72(region=None):
+    return Benchmark(
+        cpv_division="72", region=region, count=8, value_median=104326.0,
+        value_p25=71619.0, value_p75=183410.0, value_min=39532.0, value_max=283142.0,
+        by_year={2025: 8}, distinct_suppliers=8,
+    )
+
+
+def opp(cpv, value=None, region=None):
+    return Opportunity(
+        id="x:1", source="x", source_url="https://example.invalid/x", kind="tender",
+        title="t", geo_scope="eu", region=region, status="open", raw_ref="x:1",
+        cpv=cpv, value_amount=value,
     )
 
 
@@ -158,3 +176,42 @@ def test_store_national_and_regional_keys(store):
     )
     assert store.get_benchmark("72", None).value_median == 1.0
     assert store.get_benchmark("72", "Lazio").value_median == 2.0
+
+
+# --------------------------------------------------------------------------- #
+# enrich() — matcher enrichment (Prompt 13)
+# --------------------------------------------------------------------------- #
+
+
+def test_enrich_no_cpv_returns_empty():
+    assert enrich(opp(cpv=[], value=50000.0), [bench72()]) == ([], [])
+
+
+def test_enrich_adds_history_reason():
+    reasons, risk = enrich(opp(cpv=["72322000"]), [bench72()])
+    assert len(reasons) == 1
+    assert "ANAC history (CPV 72, national)" in reasons[0]
+    assert "8 awards" in reasons[0]
+    assert risk == []  # no value -> no value-sanity note
+
+
+def test_enrich_value_sanity_buckets():
+    bench = [bench72()]  # p25 71619, p75 183410, max 283142
+    _, typical = enrich(opp(cpv=["72322000"], value=120000.0), bench)
+    assert "typical" in typical[0]
+    _, low = enrich(opp(cpv=["72322000"], value=10000.0), bench)
+    assert "below the historical p25" in low[0]
+    _, high = enrich(opp(cpv=["72322000"], value=200000.0), bench)
+    assert "above the historical p75" in high[0]
+    _, outlier = enrich(opp(cpv=["72322000"], value=500000.0), bench)
+    assert "exceeds the historical max" in outlier[0] and "outlier" in outlier[0]
+
+
+def test_enrich_unknown_division_returns_empty():
+    assert enrich(opp(cpv=["99999999"]), [bench72()]) == ([], [])
+
+
+def test_enrich_national_fallback_when_region_set():
+    # Only a national (region=None) benchmark exists; a regional opp still matches.
+    reasons, _ = enrich(opp(cpv=["72322000"], region="Lazio"), [bench72()])
+    assert reasons and "national" in reasons[0]

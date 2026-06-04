@@ -27,6 +27,7 @@ MODULES = [
     "bandiradar.intelligence.anac_history",
     "bandiradar.intelligence.benchmarks",
     "bandiradar.intelligence.store",
+    "bandiradar.intelligence.enrichment",
     "bandiradar.core",
     "bandiradar.cli",
     "bandiradar.mcp_server",

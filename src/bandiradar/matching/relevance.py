@@ -208,25 +208,62 @@ def cache_key(opportunity: Opportunity, profile: Profile) -> CacheKey:
     return (profile.version, opportunity.content_hash)
 
 
+def _with_enrichment(match: Match, opportunity: Opportunity, benchmarks) -> Match:
+    """Return a COPY of match with benchmark reasons/risk_notes appended.
+
+    Never mutates ``match`` and never caches the copy — so a cached BARE match
+    can be re-enriched on every hit without double-appending.
+    """
+    if benchmarks is None:
+        return match
+    # Local import avoids a hard intelligence dependency in the matcher core.
+    from bandiradar.intelligence.enrichment import enrich
+
+    reasons, risk_notes = enrich(opportunity, benchmarks)
+    if not reasons and not risk_notes:
+        return match
+    return match.model_copy(
+        update={
+            "reasons": [*match.reasons, *reasons],
+            "risk_notes": [*match.risk_notes, *risk_notes],
+        }
+    )
+
+
 def score(
     opportunity: Opportunity,
     profile: Profile,
     client: LLMClient | None = None,
     cache: ScoreCache | None = None,
     now: datetime | None = None,
+    benchmarks=None,
 ) -> Match:
-    """Score one opportunity: cache-first, then LLM, then offline heuristic."""
+    """Score one opportunity: cache-first, then LLM, then offline heuristic.
+
+    The BARE match (no enrichment) is what gets cached. When ``benchmarks`` is
+    provided, the returned match is an enriched COPY — never cached, so cache
+    hits never double-append.
+    """
     key = cache_key(opportunity, profile)
     if cache is not None:
         cached = cache.get(key)
         if cached is not None:
-            return cached
+            return _with_enrichment(cached, opportunity, benchmarks)
 
     active = client if client is not None else get_client()
     if active is None:
         result = heuristic_fallback(opportunity, profile)
     else:
-        raw = active.score(SCORING_SYSTEM, build_user_prompt(opportunity, profile))
+        # Give a real LLM the historical context to reason about.
+        benchmark = None
+        if benchmarks is not None:
+            from bandiradar.intelligence.enrichment import benchmark_for
+
+            benchmark = benchmark_for(opportunity, benchmarks)
+        raw = active.score(
+            SCORING_SYSTEM,
+            build_user_prompt(opportunity, profile, benchmark=benchmark),
+        )
         result = _coerce_result(raw)
 
     match = Match(
@@ -240,8 +277,8 @@ def score(
         risk_notes=result.risk_notes,
     )
     if cache is not None:
-        cache.set(key, match)
-    return match
+        cache.set(key, match)  # store the BARE match
+    return _with_enrichment(match, opportunity, benchmarks)
 
 
 def score_all(
@@ -250,10 +287,11 @@ def score_all(
     client: LLMClient | None = None,
     cache: ScoreCache | None = None,
     now: datetime | None = None,
+    benchmarks=None,
 ) -> list[Match]:
     """Score many opportunities, sorted by score descending."""
     matches = [
-        score(opp, profile, client=client, cache=cache, now=now)
+        score(opp, profile, client=client, cache=cache, now=now, benchmarks=benchmarks)
         for opp in opportunities
     ]
     return sorted(matches, key=lambda m: m.score, reverse=True)

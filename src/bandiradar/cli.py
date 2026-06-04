@@ -119,6 +119,9 @@ def match(
     sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
     min_score: int = typer.Option(0, "--min-score", help="Drop matches below N"),
     limit: int | None = typer.Option(None, "--limit", help="Keep top N"),
+    with_benchmarks: bool = typer.Option(
+        False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
+    ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
     json_out: bool = typer.Option(False, "--json", help="JSON output"),
 ):
@@ -133,6 +136,7 @@ def match(
             sample=sample,
             min_score=min_score,
             limit=limit,
+            with_benchmarks=with_benchmarks,
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -169,7 +173,9 @@ def match(
         typer.echo(f"#{rank}  score {m.score}  [{opp.status}]  {opp.title}")
         typer.echo(f"     issuer: {issuer} ({region})   deadline: {_fmt_deadline(opp)}")
         if m.reasons:
-            typer.echo(f"     why: {'; '.join(m.reasons[:3])}")
+            typer.echo(f"     why: {'; '.join(m.reasons)}")
+        if m.risk_notes:
+            typer.echo(f"     risk: {'; '.join(m.risk_notes)}")
         typer.echo(f"     {opp.source_url}")
         typer.echo("")
 

@@ -84,7 +84,7 @@ def test_benchmarks_build_and_show(tmp_path):
     db = str(tmp_path / "b.db")
     built = runner.invoke(app, ["benchmarks", "build", "--sample", "--db", db])
     assert built.exit_code == 0
-    assert "records=40" in built.stdout
+    assert "records=48" in built.stdout
     assert "benchmarks=" in built.stdout
 
     shown = runner.invoke(app, ["benchmarks", "show", "--cpv", "45", "--db", db])

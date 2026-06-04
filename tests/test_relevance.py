@@ -132,6 +132,43 @@ def test_amended_opportunity_misses_cache(monkeypatch):
     assert spy.calls == 2
 
 
+def _bench72():
+    from bandiradar.intelligence.benchmarks import Benchmark
+
+    return Benchmark(
+        cpv_division="72", region=None, count=8, value_median=104326.0,
+        value_p25=71619.0, value_p75=183410.0, value_min=39532.0, value_max=283142.0,
+        by_year={2025: 8}, distinct_suppliers=8,
+    )
+
+
+def test_benchmarks_append_enrichment_but_cache_stays_bare():
+    opp = opps_by_id()["anac:ocds-bandi-0001"]  # CPV 72000000 -> division 72
+    mayai = load_profile("mayai.yaml")
+    cache = InMemoryScoreCache()
+    benchmarks = [_bench72()]
+
+    enriched = score(opp, mayai, cache=cache, benchmarks=benchmarks, now=NOW)
+    anac_reasons = [r for r in enriched.reasons if "ANAC history" in r]
+    assert len(anac_reasons) == 1  # benchmark reason appended
+
+    # The CACHED match is bare (no enrichment).
+    cached = cache.get((mayai.version, opp.content_hash))
+    assert not any("ANAC history" in r for r in cached.reasons)
+
+    # A 2nd enriched call does NOT double-append.
+    again = score(opp, mayai, cache=cache, benchmarks=benchmarks, now=NOW)
+    assert again.reasons == enriched.reasons
+    assert len([r for r in again.reasons if "ANAC history" in r]) == 1
+
+
+def test_benchmarks_none_leaves_match_unchanged():
+    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    bare = score(opp, mayai, now=NOW)
+    assert not any("ANAC history" in r for r in bare.reasons)
+
+
 def test_score_all_sorted_desc():
     opps = list(opps_by_id().values())
     mayai = load_profile("mayai.yaml")

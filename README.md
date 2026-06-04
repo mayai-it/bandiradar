@@ -170,6 +170,37 @@ CPV division 45  [national]
 > [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/)
 > (CC BY 4.0). Live ingest streams the gzipped JSONL memory-safely.
 
+### Enrichment: benchmarks in the matcher
+
+The benchmarks are **optional matcher enrichment** (injected like the score
+cache — the matcher works fine without them). Add `--with-benchmarks` to `match`
+and each scored opportunity gets, for its CPV division, a historical-context
+*reason* plus a *value-sanity* risk note when it declares an estimated value:
+
+```bash
+uv run bandiradar benchmarks build --sample
+uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample --with-benchmarks
+```
+
+```text
+#1  score 44  [open]  Italia – Servizi di gestione dati – SERVIZIO DI GESTIONE ... ROCCA IMPERIALE (CS)
+     why: CPV prefix match (depth 2); capability overlap: dati; eu scope; ANAC history (CPV 72, national): 8 awards, median EUR 104,326, p25-p75 EUR 71,619-183,410
+     https://ted.europa.eu/en/notice/-/detail/376324-2026
+```
+
+Value-sanity triggers when the opportunity declares a value — e.g. on the ANAC
+sample (`--source anac --with-benchmarks`):
+
+```text
+#  Servizi di analisi dati e machine learning per la PA centrale
+   why: ...; ANAC history (CPV 72, national): 8 awards, median EUR 104,326, p25-p75 EUR 71,619-183,410
+   risk: estimated value EUR 250,000 is above the historical p75 EUR 183,410 for this category
+```
+
+Enrichment is append-only on a **copy** of the cached match: the cache always
+stores the bare match, so repeated runs never double-append. The
+`search_opportunities` MCP tool takes the same `with_benchmarks` flag.
+
 ## Open core vs Pro
 
 Anything a single user can run locally is **open**. Anything *managed*,

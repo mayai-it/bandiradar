@@ -67,12 +67,21 @@ def opportunity_brief(opportunity: Opportunity) -> str:
     )
 
 
-def build_user_prompt(opportunity: Opportunity, profile: Profile) -> str:
-    """Assemble the user message: compact profile + minimal opportunity brief."""
-    return (
-        "COMPANY PROFILE:\n"
-        + profile_summary(profile)
-        + "\n\nOPPORTUNITY:\n"
-        + opportunity_brief(opportunity)
-        + "\n\nReturn ONLY the JSON object."
-    )
+def build_user_prompt(
+    opportunity: Opportunity, profile: Profile, benchmark=None
+) -> str:
+    """Assemble the user message: compact profile + minimal opportunity brief.
+
+    When a historical ``benchmark`` (intelligence track) is supplied, a compact
+    one-line summary is included so the model can reason about it.
+    """
+    parts = [
+        "COMPANY PROFILE:\n" + profile_summary(profile),
+        "OPPORTUNITY:\n" + opportunity_brief(opportunity),
+    ]
+    if benchmark is not None:
+        from bandiradar.intelligence.enrichment import benchmark_summary
+
+        parts.append("HISTORICAL BENCHMARK:\n" + benchmark_summary(benchmark))
+    parts.append("Return ONLY the JSON object.")
+    return "\n\n".join(parts)
