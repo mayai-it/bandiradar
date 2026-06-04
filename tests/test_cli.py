@@ -80,6 +80,38 @@ def test_match_limit(tmp_path):
     assert len(json.loads(result.stdout)) == 1
 
 
+def test_benchmarks_build_and_show(tmp_path):
+    db = str(tmp_path / "b.db")
+    built = runner.invoke(app, ["benchmarks", "build", "--sample", "--db", db])
+    assert built.exit_code == 0
+    assert "records=40" in built.stdout
+    assert "benchmarks=" in built.stdout
+
+    shown = runner.invoke(app, ["benchmarks", "show", "--cpv", "45", "--db", db])
+    assert shown.exit_code == 0
+    assert "CPV division 45" in shown.stdout
+    assert "national" in shown.stdout
+
+
+def test_benchmarks_show_json(tmp_path):
+    db = str(tmp_path / "bj.db")
+    runner.invoke(app, ["benchmarks", "build", "--sample", "--db", db])
+    res = runner.invoke(
+        app, ["benchmarks", "show", "--cpv", "45", "--json", "--db", db]
+    )
+    assert res.exit_code == 0
+    data = json.loads(res.stdout)
+    assert data["cpv_division"] == "45"
+    assert data["count"] == 22
+
+
+def test_benchmarks_show_missing_exits_nonzero(tmp_path):
+    db = str(tmp_path / "bm.db")
+    runner.invoke(app, ["benchmarks", "build", "--sample", "--db", db])
+    res = runner.invoke(app, ["benchmarks", "show", "--cpv", "99", "--db", db])
+    assert res.exit_code == 1
+
+
 def test_watch_is_stub():
     result = runner.invoke(app, ["watch"])
     assert result.exit_code == 0

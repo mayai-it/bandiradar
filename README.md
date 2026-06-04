@@ -135,6 +135,41 @@ uv run bandiradar mcp
 
 Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
 
+## Intelligence / benchmarks
+
+A **separate** track (not the matcher) ingests ANAC *historical* OCDS data —
+awarded public contracts — and computes compact benchmarks per **CPV-division ×
+region**: award value distribution (median, p25/p75, min/max), volume,
+seasonality (by year), and distinct-supplier counts.
+
+```bash
+uv run bandiradar benchmarks build --sample          # offline, bundled real capture
+uv run bandiradar benchmarks show --cpv 45           # region falls back to national
+```
+
+Real output on the bundled sample:
+
+```text
+CPV division 45  [national]
+  awards (count): 22   distinct suppliers: 21
+  value EUR: median 470,768  p25 121,649  p75 1,594,879
+  range: 68,117 – 11,369,083
+  by year: 2022:22
+```
+
+**Honest data caveats:**
+- The dataset is **retrospective** — *awarded* contracts (> €40k), not open calls.
+- It has awards + suppliers but **no tenderers list**, so we **cannot** derive a
+  "number of bidders". We derive value/volume/seasonality/supplier counts only.
+- The release addresses carry city + postal code but **no region/NUTS**, so
+  benchmarks are **national-only** for now (`region` stays `None`); the model and
+  aggregation already support regional buckets for when a region-bearing source
+  arrives.
+
+> **Attribution (CC BY 4.0):** ANAC public-contracts data, via the
+> [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/)
+> (CC BY 4.0). Live ingest streams the gzipped JSONL memory-safely.
+
 ## Open core vs Pro
 
 Anything a single user can run locally is **open**. Anything *managed*,

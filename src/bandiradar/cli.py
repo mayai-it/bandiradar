@@ -13,6 +13,9 @@ import json
 import typer
 
 from bandiradar import core
+from bandiradar.intelligence import anac_history
+from bandiradar.intelligence import benchmarks as bench
+from bandiradar.intelligence.store import BenchmarkStore
 from bandiradar.sources.base import list_sources
 
 app = typer.Typer(
@@ -22,8 +25,10 @@ app = typer.Typer(
 )
 profile_app = typer.Typer(help="Inspect and validate company profiles.")
 sources_app = typer.Typer(help="Inspect available sources.")
+benchmarks_app = typer.Typer(help="ANAC historical benchmarks (intelligence track).")
 app.add_typer(profile_app, name="profile")
 app.add_typer(sources_app, name="sources")
+app.add_typer(benchmarks_app, name="benchmarks")
 
 _DEADLINE_FMT = "%Y-%m-%d"
 
@@ -167,6 +172,72 @@ def match(
             typer.echo(f"     why: {'; '.join(m.reasons[:3])}")
         typer.echo(f"     {opp.source_url}")
         typer.echo("")
+
+
+# --------------------------------------------------------------------------- #
+# benchmarks (intelligence track)
+# --------------------------------------------------------------------------- #
+
+
+@benchmarks_app.command("build")
+def benchmarks_build(
+    sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
+    year: int = typer.Option(2025, "--year", help="Dataset year (live mode)"),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+):
+    """Ingest ANAC history and write (CPV-division x region) benchmarks."""
+    store = BenchmarkStore(db)
+    try:
+        result = anac_history.build_benchmarks(sample=sample, year=year, store=store)
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+    finally:
+        store.close()
+    typer.echo(
+        f"records={result['records']} benchmarks={result['benchmarks']}"
+    )
+
+
+@benchmarks_app.command("show")
+def benchmarks_show(
+    cpv: str = typer.Option(..., "--cpv", help="CPV division (2 digits, e.g. 72)"),
+    region: str | None = typer.Option(
+        None, "--region", help="Region (falls back to national)"
+    ),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    json_out: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Show a benchmark for a CPV division (region falls back to national)."""
+    store = BenchmarkStore(db)
+    try:
+        result = bench.lookup(store, cpv, region)
+    finally:
+        store.close()
+
+    if result is None:
+        typer.echo(f"No benchmark for CPV division {cpv!r}.")
+        raise typer.Exit(1)
+
+    if json_out:
+        typer.echo(
+            json.dumps(result.model_dump(mode="json"), ensure_ascii=False, indent=2)
+        )
+        return
+
+    scope = result.region or "national"
+    typer.echo(f"CPV division {result.cpv_division}  [{scope}]")
+    typer.echo(
+        f"  awards (count): {result.count}   "
+        f"distinct suppliers: {result.distinct_suppliers}"
+    )
+    typer.echo(
+        f"  value EUR: median {result.value_median:,.0f}  "
+        f"p25 {result.value_p25:,.0f}  p75 {result.value_p75:,.0f}"
+    )
+    typer.echo(f"  range: {result.value_min:,.0f} – {result.value_max:,.0f}")
+    by_year = "  ".join(f"{y}:{n}" for y, n in sorted(result.by_year.items()))
+    typer.echo(f"  by year: {by_year}")
 
 
 # --------------------------------------------------------------------------- #
