@@ -8,25 +8,40 @@
 > (public tenders, grants, incentives), normalizes them into **one canonical
 > model**, and ranks them against a company profile with a two-stage matcher.
 
-## What it is
+**Runs offline, zero secrets · 3 live key-less sources · optional LLM Stage-2 · MIT**
 
-Italian public funding is scattered across dozens of fragmented sources.
-BandiRadar pulls opportunities from those sources, maps each one into a single
-canonical `Opportunity` model, and surfaces the few that matter for a given
-company — with reasons and deadlines.
+## Features
 
-Matching is **two stages**:
+- **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
+  a **zero-secrets offline heuristic fallback** (the LLM is optional).
+- **3 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
+  Lombardia (regional); plus a bundled ANAC OCDS mapper.
+- **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
+  CPV division, optionally attached to matches.
+- **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
+- **CLI + MCP server** — drive it from a shell or from an AI agent.
+- **Fully offline on `--sample`** — every demo and the whole test suite run with
+  no network and no secrets.
 
-1. **Deterministic prefilter** — a pure, explainable function (region/geo,
-   value range, deadline, exclusions, and a relevance signal: the opportunity's
-   CPV codes prefix-matched against the profile's `cpv_interests`, or a keyword
-   overlap). Cuts thousands of rows to dozens. No LLM, no network.
-2. **LLM relevance** — scores the survivors `0–100` with reasons, matched
-   capabilities, eligibility flags, and risk notes. It ships with a
-   **zero-secrets offline fallback** (a deterministic heuristic) so the whole
-   thing runs in CI and in agent dev loops without any API key.
+## Table of contents
 
-## 30-second quickstart (offline, no keys)
+- [Quickstart](#quickstart)
+- [Works across company types](#works-across-company-types)
+- [How it works](#how-it-works)
+- [Stage 2: LLM scoring](#stage-2-llm-scoring)
+- [Sources](#sources)
+- [Intelligence and benchmarks](#intelligence-and-benchmarks)
+- [Watch and export](#watch-and-export)
+- [AI agents (MCP)](#ai-agents-mcp)
+- [Status](#status)
+- [Open core vs Pro](#open-core-vs-pro)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license) · [Data and licenses](#data-and-licenses)
+
+## Quickstart
+
+30 seconds, offline, no keys:
 
 ```bash
 uv sync
@@ -54,8 +69,43 @@ Real output on the bundled sample data:
      https://example.invalid/anac/notice/ocds-bandi-0001
 ```
 
-Add `--json` for machine-readable output. The sample URLs are synthetic
-(`example.invalid`) — see "Status" below.
+Add `--json` for machine-readable output. These ANAC sample URLs are synthetic
+(`example.invalid`) — see [Status](#status).
+
+## Works across company types
+
+BandiRadar isn't tuned to one company — it runs any profile against every source.
+`bandiradar batch` runs the bundled profile suite and compares results. Real
+output on `--sample` (offline heuristic):
+
+```text
+PROFILE                          #  TOP MATCH (score)                      BY SOURCE
+------------------------------------------------------------------------------------
+Consulenza Strategica S.r.l.     8  Servizi di consulenza organizza… (72)  anac:2 incentivi:5 ted:1
+Costruzioni Lombarde S.r.l.      2  LAVORI DI FORMAZIONE MANUTENZIO… (56)  lombardia:1 ted:1
+Trattoria & Bottega S.r.l.       2  Manifestazione d'interesse per … (55)  incentivi:2
+Manifattura Esempio S.r.l.       3  Fornitura di macchinari industr… (76)  anac:1 incentivi:2
+MayAI                            5  Fornitura di licenze software e… (76)  anac:3 incentivi:1 ted:1
+MedForniture Lombardia S.r.l.    3  FORNITURA DI DISPOSITIVI PER EN… (76)  lombardia:3
+Studio Associato Commercialis…   4  Fornitura di licenze software e… (50)  anac:1 incentivi:2 ted:1
+```
+
+The suite spans distinct Italian SME segments — AI/software (MayAI),
+manufacturing, medical-devices (Lombardy), accounting, construction,
+hospitality/retail (keyword-driven, no CPV), and consultancy. Counts are real
+matches on the tiny bundled sample; a segment can legitimately show few hits when
+the sample doesn't cover it. Keyword/capability overlap ignores a curated list of
+generic procurement filler (`lavori`, `servizi`, `fornitura`, `manutenzione`, …),
+so matches reflect *sector-bearing* terms rather than boilerplate.
+
+```bash
+uv run bandiradar batch --sample              # human comparison table
+uv run bandiradar batch --sample --json       # machine-readable
+uv run bandiradar batch --sample --csv out.csv
+```
+
+With an LLM key the same table gets sharper scores and ranking — see
+[Stage 2: LLM scoring](#stage-2-llm-scoring).
 
 ## How it works
 
@@ -67,76 +117,27 @@ Add `--json` for machine-readable output. The sample URLs are synthetic
                                          + dedupe                  (dashboard=pro)
 ```
 
+Italian public funding is scattered across dozens of fragmented sources.
+BandiRadar pulls opportunities from those sources, maps each into a single
+canonical `Opportunity` model, and surfaces the few that matter for a given
+company — with reasons and deadlines. Matching is **two stages**:
+
+1. **Deterministic prefilter** — a pure, explainable function (region/geo, value
+   range, deadline, exclusions, and a relevance signal: the opportunity's CPV
+   codes prefix-matched against the profile's `cpv_interests`, or a keyword
+   overlap). Cuts thousands of rows to dozens. No LLM, no network.
+2. **LLM relevance** — scores the survivors `0–100` with reasons, matched
+   capabilities, eligibility flags, and risk notes. It ships with a **zero-secrets
+   offline fallback** (a deterministic heuristic), so the whole thing runs in CI
+   and in agent dev loops without any API key.
+
 A thin `core` service layer orchestrates the pipeline; the CLI and MCP server are
 shells over it with no business logic. Storage is stdlib SQLite with **change
 detection**: a changed `content_hash` bumps the version, marks the row
 `amended`, and makes it re-notifiable (a tender *rettifica* should re-notify).
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full design.
 
-## Sources
-
-| Source | What it delivers | Live fetch |
-|---|---|---|
-| **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — the official IODL open-data export, no API key. |
-| **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
-| **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). The first regional source; carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
-| **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
-
-```bash
-uv run bandiradar fetch --source incentivi --sample   # offline, bundled real capture
-uv run bandiradar match --profile data/profiles/mayai.yaml --source incentivi --sample
-uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
-```
-
-The `--sample` fixtures are **real captures** (`data/fixtures/{incentivi,ted}.json`).
-`incentivi` exercises the canonical superset on the grant side — no CPV, a funding
-range, and an eligibility text the matcher reads — and is where the MayAI dogfood
-profile finds open national digital-services measures. TED carries above-threshold
-contracts often far larger than a micro-SME's range, so a small profile matches
-only the few that fit — which is exactly why incentive/national/regional sources
-matter too.
-
-A regional example (`data/profiles/medtech_lombardia.yaml`, a Lombardy
-medical-devices distributor) matches open Lombardy tenders, while the Lazio-only
-MayAI profile correctly drops them — regional filtering in action:
-
-```bash
-uv run bandiradar match --profile data/profiles/medtech_lombardia.yaml --source lombardia --sample
-# -> 3 open medical-device tenders (region match, CPV 33*, within value range)
-uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --sample
-# -> No matching opportunities (Lazio profile, Lombardy bandi dropped on region)
-```
-
-> **Attribution (IODL):** incentivi.gov.it data is published by the Ministero
-> delle Imprese e del Made in Italy under the
-> [Italian Open Data License v2.0 (IODL 2.0)](https://www.dati.gov.it/iodl/2.0/),
-> which requires attribution. Source: incentivi.gov.it. The live `incentivi`
-> fetch hits the same open-data export endpoint the portal's own "Scarica
-> dataset" button uses (there is no separate static file; the download is built
-> client-side from that endpoint).
->
-> **Attribution (CC0):** Regione Lombardia open data (dataset `k6cb-4hbm`,
-> *Bandi di gara — Osservatorio Regionale*), via the dati.lombardia.it Socrata
-> SODA API, released under CC0 1.0.
-
-## Status (honest)
-
-- ✅ **Runs today fully offline** on bundled sample data with **zero secrets** —
-  both quickstarts above are real.
-- ✅ **Three sources have live, key-less fetch:** `incentivi` (incentivi.gov.it),
-  `ted` (the EU search API), and `lombardia` (the first regional source, via the
-  dati.lombardia.it Socrata SODA API). `--sample` keeps all offline against
-  recorded real captures.
-- ⏳ **The live ANAC/PNCP adapter is still pending.** Its mapping
-  (`to_opportunities`) is implemented and tested against a recorded fixture, but
-  the live `fetch()` is **not wired**: the open-data endpoint must be confirmed
-  against current PNCP/ANAC docs first, so `fetch()` raises `NotImplementedError`
-  until then. The ANAC fixture URLs are synthetic placeholders.
-- ✅ **Stage-2 LLM scoring is wired and working** (live, against a real provider
-  API). With no key it transparently uses the deterministic offline heuristic —
-  a proxy, not real semantic relevance. See "Stage 2: real LLM scoring" below.
-
-## Stage 2: real LLM scoring
+## Stage 2: LLM scoring
 
 Stage 2 is **off by default** (zero secrets → deterministic offline heuristic).
 To enable real LLM relevance scoring:
@@ -165,21 +166,41 @@ Studio comm. software-licenses      50               25   ← weak fit penalized
 MedForniture medical devices        76               92   ← strong sector fit held
 ```
 
-## Use it from an AI agent (MCP)
+## Sources
 
-BandiRadar ships a thin [MCP](https://modelcontextprotocol.io) server (FastMCP),
-so you can drive it from Claude. Six tools:
-
-`list_sources` · `fetch_opportunities` · `search_opportunities` ·
-`score_opportunity` · `get_matches` · `get_profile`
+| Source | What it delivers | Live fetch |
+|---|---|---|
+| **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — the official IODL open-data export, no API key. |
+| **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
+| **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). The first regional source; carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
+| **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
 ```bash
-uv run bandiradar mcp
+uv run bandiradar fetch --source incentivi --sample   # offline, bundled real capture
+uv run bandiradar match --profile data/profiles/mayai.yaml --source incentivi --sample
+uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
 ```
 
-Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
+The `--sample` fixtures are **real captures** (`data/fixtures/*.json`).
+`incentivi` exercises the canonical superset on the grant side — no CPV, a funding
+range, and an eligibility text the matcher reads. TED carries above-threshold
+contracts often far larger than a micro-SME's range, so a small profile matches
+only the few that fit — which is why incentive/national/regional sources matter too.
 
-## Intelligence / benchmarks
+A regional example (`data/profiles/medtech_lombardia.yaml`, a Lombardy
+medical-devices distributor) matches open Lombardy tenders, while the Lazio-only
+MayAI profile correctly drops them — regional filtering in action:
+
+```bash
+uv run bandiradar match --profile data/profiles/medtech_lombardia.yaml --source lombardia --sample
+# -> 3 open medical-device tenders (region match, CPV 33*, within value range)
+uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --sample
+# -> No matching opportunities (Lazio profile, Lombardy bandi dropped on region)
+```
+
+Source data licensing is consolidated under [Data and licenses](#data-and-licenses).
+
+## Intelligence and benchmarks
 
 A **separate** track (not the matcher) ingests ANAC *historical* OCDS data —
 awarded public contracts — and computes compact benchmarks per **CPV-division ×
@@ -210,10 +231,6 @@ CPV division 45  [national]
   aggregation already support regional buckets for when a region-bearing source
   arrives.
 
-> **Attribution (CC BY 4.0):** ANAC public-contracts data, via the
-> [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/)
-> (CC BY 4.0). Live ingest streams the gzipped JSONL memory-safely.
-
 ### Enrichment: benchmarks in the matcher
 
 The benchmarks are **optional matcher enrichment** (injected like the score
@@ -243,9 +260,10 @@ sample (`--source anac --with-benchmarks`):
 
 Enrichment is append-only on a **copy** of the cached match: the cache always
 stores the bare match, so repeated runs never double-append. The
-`search_opportunities` MCP tool takes the same `with_benchmarks` flag.
+`search_opportunities` MCP tool takes the same `with_benchmarks` flag. ANAC data
+licensing is under [Data and licenses](#data-and-licenses).
 
-## Watch & export
+## Watch and export
 
 `watch` is a monitor loop: it fetches, applies the storage change-detection, and
 reports **only** matches whose opportunity is **new or amended** since the last
@@ -269,38 +287,31 @@ uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --
 Managed delivery (WhatsApp/email/alerts), scheduling SaaS, and multi-tenant
 hosting live in `bandiradar-pro`.
 
-## Works across company types
+## AI agents (MCP)
 
-BandiRadar isn't tuned to one company — it runs any profile against every source.
-`bandiradar batch` runs the bundled profile suite and compares results
-(`--json`/`--csv` for machine output). Real output on `--sample`:
+BandiRadar ships a thin [MCP](https://modelcontextprotocol.io) server (FastMCP),
+so you can drive it from Claude. Six tools:
 
-```text
-PROFILE                          #  TOP MATCH (score)                      BY SOURCE
-------------------------------------------------------------------------------------
-Consulenza Strategica S.r.l.     8  Servizi di consulenza organizza… (72)  anac:2 incentivi:5 ted:1
-Costruzioni Lombarde S.r.l.      2  LAVORI DI FORMAZIONE MANUTENZIO… (56)  lombardia:1 ted:1
-Trattoria & Bottega S.r.l.       2  Manifestazione d'interesse per … (55)  incentivi:2
-Manifattura Esempio S.r.l.       3  Fornitura di macchinari industr… (76)  anac:1 incentivi:2
-MayAI                            5  Fornitura di licenze software e… (76)  anac:3 incentivi:1 ted:1
-MedForniture Lombardia S.r.l.    3  FORNITURA DI DISPOSITIVI PER EN… (76)  lombardia:3
-Studio Associato Commercialis…   4  Fornitura di licenze software e… (50)  anac:1 incentivi:2 ted:1
-```
-
-The suite spans distinct Italian SME segments — AI/software (MayAI),
-manufacturing, medical-devices (Lombardy), accounting, construction,
-hospitality/retail (keyword-driven, no CPV), and consultancy. Counts are real
-matches on the tiny bundled sample; a segment can legitimately show few hits when
-the sample doesn't cover it. Keyword/capability overlap ignores a curated list of
-generic procurement filler (`lavori`, `servizi`, `fornitura`, `manutenzione`, …),
-so matches reflect *sector-bearing* terms rather than boilerplate — e.g. a
-construction profile no longer matches IT tenders on "lavori".
+`list_sources` · `fetch_opportunities` · `search_opportunities` ·
+`score_opportunity` · `get_matches` · `get_profile`
 
 ```bash
-uv run bandiradar batch --sample              # human comparison table
-uv run bandiradar batch --sample --json       # machine-readable
-uv run bandiradar batch --sample --csv out.csv
+uv run bandiradar mcp
 ```
+
+Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
+
+## Status
+
+- ✅ **Offline, zero-secret** — every demo above and the whole test suite run with
+  no network and no API key.
+- ✅ **3 live key-less sources** — `incentivi`, `ted`, `lombardia`. `--sample`
+  keeps them offline against recorded real captures.
+- ✅ **Stage-2 LLM scoring is wired and working** (optional); with no key it
+  transparently uses the offline heuristic — a proxy, not real semantic relevance.
+- ⏳ **Live ANAC/PNCP fetch is pending** — the mapper + fixture are done and
+  tested, but `fetch()` raises `NotImplementedError` until the open-data endpoint
+  is confirmed against current docs. The ANAC sample URLs are synthetic.
 
 ## Open core vs Pro
 
@@ -340,7 +351,7 @@ which depends on this package — never the reverse.
 - `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
   SaaS, multi-tenant hosting.
 
-## Add a source / Contributing
+## Contributing
 
 Every source is `fetch` + a pure `to_opportunities`, plus a recorded fixture and
 a test — adding one is a new file, no core changes. See
@@ -351,3 +362,20 @@ lives in `CLAUDE.md` ("How to add a new Source").
 ## License
 
 MIT © MayAI — see [`LICENSE`](LICENSE).
+
+## Data and licenses
+
+BandiRadar consumes public open data; each source keeps its own licence, which
+its operator requires you to honor:
+
+- **incentivi.gov.it (IODL 2.0)** — published by the Ministero delle Imprese e del
+  Made in Italy under the
+  [Italian Open Data License v2.0](https://www.dati.gov.it/iodl/2.0/) (attribution
+  required). The live `incentivi` fetch hits the same open-data export endpoint the
+  portal's own "Scarica dataset" button uses (no separate static file; the download
+  is built client-side from that endpoint).
+- **Regione Lombardia (CC0 1.0)** — dataset `k6cb-4hbm` (*Bandi di gara —
+  Osservatorio Regionale*), via the dati.lombardia.it Socrata SODA API.
+- **ANAC public contracts (CC BY 4.0)** — via the
+  [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/);
+  the intelligence track streams the gzipped JSONL memory-safely.
