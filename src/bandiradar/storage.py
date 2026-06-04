@@ -65,6 +65,11 @@ CREATE TABLE IF NOT EXISTS runs (
     "new"       INTEGER,
     amended     INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS watch_state (
+    profile_version TEXT PRIMARY KEY,
+    last_watch      TEXT NOT NULL
+);
 """
 
 
@@ -311,6 +316,23 @@ class Store:
     def get_run(self, run_id: int) -> dict | None:
         row = self.conn.execute("SELECT * FROM runs WHERE id=?", (run_id,)).fetchone()
         return dict(row) if row else None
+
+    # ------------------------------------------------------------- watch state
+    def get_watch_marker(self, profile_version: str) -> datetime | None:
+        """The last watch timestamp for this profile, or None (never watched)."""
+        row = self.conn.execute(
+            "SELECT last_watch FROM watch_state WHERE profile_version=?",
+            (profile_version,),
+        ).fetchone()
+        return datetime.fromisoformat(row["last_watch"]) if row else None
+
+    def set_watch_marker(self, profile_version: str, when: datetime) -> None:
+        self.conn.execute(
+            "INSERT INTO watch_state (profile_version, last_watch) VALUES (?, ?) "
+            "ON CONFLICT(profile_version) DO UPDATE SET last_watch=excluded.last_watch",
+            (profile_version, _to_text(when)),
+        )
+        self.conn.commit()
 
 
 class SqliteScoreCache:

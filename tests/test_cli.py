@@ -112,7 +112,52 @@ def test_benchmarks_show_missing_exits_nonzero(tmp_path):
     assert res.exit_code == 1
 
 
-def test_watch_is_stub():
-    result = runner.invoke(app, ["watch"])
-    assert result.exit_code == 0
-    assert "Phase-1" in result.stdout or "not wired" in result.stdout
+def test_watch_first_then_none(tmp_path):
+    db = str(tmp_path / "w.db")
+    args = [
+        "watch", "--profile", MAYAI, "--source", "incentivi", "--sample", "--db", db
+    ]
+    first = runner.invoke(app, args)
+    assert first.exit_code == 0
+    assert "new/amended" in first.stdout
+    assert "#1" in first.stdout
+
+    second = runner.invoke(app, args)
+    assert second.exit_code == 0
+    assert "No new or amended matches" in second.stdout
+
+
+def test_watch_rss_writes_file(tmp_path):
+    db = str(tmp_path / "wr.db")
+    feed = str(tmp_path / "feed.xml")
+    res = runner.invoke(
+        app,
+        ["watch", "--profile", MAYAI, "--source", "incentivi", "--sample",
+         "--rss", feed, "--db", db],
+    )
+    assert res.exit_code == 0
+    assert "wrote RSS feed" in res.stdout
+    import xml.etree.ElementTree as ET
+
+    root = ET.parse(feed).getroot()
+    assert root.tag == "rss"
+    assert root.find("./channel/item") is not None
+
+
+def test_export_requires_output(tmp_path):
+    db = str(tmp_path / "e.db")
+    res = runner.invoke(app, ["export", "--profile", MAYAI, "--sample", "--db", db])
+    assert res.exit_code == 1
+
+
+def test_export_json(tmp_path):
+    db = str(tmp_path / "ej.db")
+    res = runner.invoke(
+        app,
+        ["export", "--profile", MAYAI, "--source", "incentivi", "--sample",
+         "--json", "--db", db],
+    )
+    assert res.exit_code == 0
+    data = json.loads(res.stdout)
+    assert isinstance(data, list)
+    assert all(set(d.keys()) == JSON_KEYS for d in data)

@@ -9,10 +9,12 @@ non-zero.
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
+from pathlib import Path
 
 import typer
 
-from bandiradar import core
+from bandiradar import core, exporters
 from bandiradar.intelligence import anac_history
 from bandiradar.intelligence import benchmarks as bench
 from bandiradar.intelligence.store import BenchmarkStore
@@ -35,6 +37,21 @@ _DEADLINE_FMT = "%Y-%m-%d"
 
 def _fmt_deadline(opp) -> str:
     return opp.deadline.strftime(_DEADLINE_FMT) if opp.deadline else "—"
+
+
+def _print_ranked(ranked) -> None:
+    """Human-readable ranked match list (shared by `match` and `watch`)."""
+    for rank, (opp, m) in enumerate(ranked, start=1):
+        issuer = opp.issuer_name or "—"
+        region = opp.region or opp.issuer_region or "—"
+        typer.echo(f"#{rank}  score {m.score}  [{opp.status}]  {opp.title}")
+        typer.echo(f"     issuer: {issuer} ({region})   deadline: {_fmt_deadline(opp)}")
+        if m.reasons:
+            typer.echo(f"     why: {'; '.join(m.reasons)}")
+        if m.risk_notes:
+            typer.echo(f"     risk: {'; '.join(m.risk_notes)}")
+        typer.echo(f"     {opp.source_url}")
+        typer.echo("")
 
 
 # --------------------------------------------------------------------------- #
@@ -145,20 +162,7 @@ def match(
         store.close()
 
     if json_out:
-        payload = [
-            {
-                "opportunity_id": opp.id,
-                "score": m.score,
-                "status": opp.status,
-                "title": opp.title,
-                "deadline": opp.deadline.isoformat() if opp.deadline else None,
-                "reasons": m.reasons,
-                "matched_capabilities": m.matched_capabilities,
-                "source_url": opp.source_url,
-            }
-            for opp, m in ranked
-        ]
-        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        typer.echo(exporters.to_json(ranked))
         return
 
     if not ranked:
@@ -167,17 +171,7 @@ def match(
 
     noun = "opportunity" if len(ranked) == 1 else "opportunities"
     typer.echo(f"{len(ranked)} matching {noun} for '{company.name}':\n")
-    for rank, (opp, m) in enumerate(ranked, start=1):
-        issuer = opp.issuer_name or "—"
-        region = opp.region or opp.issuer_region or "—"
-        typer.echo(f"#{rank}  score {m.score}  [{opp.status}]  {opp.title}")
-        typer.echo(f"     issuer: {issuer} ({region})   deadline: {_fmt_deadline(opp)}")
-        if m.reasons:
-            typer.echo(f"     why: {'; '.join(m.reasons)}")
-        if m.risk_notes:
-            typer.echo(f"     risk: {'; '.join(m.risk_notes)}")
-        typer.echo(f"     {opp.source_url}")
-        typer.echo("")
+    _print_ranked(ranked)
 
 
 # --------------------------------------------------------------------------- #
@@ -247,19 +241,136 @@ def benchmarks_show(
 
 
 # --------------------------------------------------------------------------- #
-# watch / mcp
+# watch / export
 # --------------------------------------------------------------------------- #
 
 
+def _source_ids(source: str | None) -> list[str] | None:
+    return [s.strip() for s in source.split(",") if s.strip()] if source else None
+
+
+def _parse_since(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise typer.BadParameter(
+            f"--since must be ISO date/datetime: {value!r}"
+        ) from exc
+    return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=UTC)
+
+
+def _filter_sources(ranked, source_ids):
+    if not source_ids:
+        return ranked
+    wanted = set(source_ids)
+    return [(o, m) for o, m in ranked if o.source in wanted]
+
+
 @app.command()
-def watch():
-    """(Phase 1) Scheduled monitoring — not wired in the open core yet."""
-    typer.secho(
-        "watch is a Phase-1 feature and is not wired in the open core. "
-        "For now, run `bandiradar fetch` then `bandiradar match` on a schedule "
-        "(scheduling/delivery live in bandiradar-pro).",
-        fg=typer.colors.YELLOW,
-    )
+def watch(
+    profile: str = typer.Option(..., "--profile", help="Path to a profile YAML"),
+    source: str | None = typer.Option(
+        None, "--source", help="Comma-separated source ids (default: all)"
+    ),
+    sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
+    since: str | None = typer.Option(
+        None, "--since", help="Override marker: only items changed after this date"
+    ),
+    with_benchmarks: bool = typer.Option(
+        False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
+    ),
+    json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
+    rss: str | None = typer.Option(None, "--rss", help="Write RSS feed to PATH"),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+):
+    """Show NEW or AMENDED matches since the last watch run (a monitor loop).
+
+    Scheduling is your cron, e.g.:
+        0 8 * * *  bandiradar watch --profile mine.yaml --rss ~/feed.xml
+    Managed delivery (WhatsApp/email/alerts) lives in bandiradar-pro.
+    """
+    store = core.Store(db)
+    try:
+        company = core.load_profile(profile)
+        delta = core.run_watch(
+            company,
+            store,
+            source_ids=_source_ids(source),
+            sample=sample,
+            since=_parse_since(since),
+            with_benchmarks=with_benchmarks,
+        )
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+    finally:
+        store.close()
+
+    if rss is not None:
+        Path(rss).write_text(exporters.to_rss(delta), encoding="utf-8")
+        typer.echo(f"wrote RSS feed: {rss} ({len(delta)} items)")
+    if json_out:
+        typer.echo(exporters.to_json(delta))
+    if not rss and not json_out:
+        if not delta:
+            typer.echo("No new or amended matches since the last watch.")
+        else:
+            noun = "match" if len(delta) == 1 else "matches"
+            typer.echo(f"{len(delta)} new/amended {noun} for '{company.name}':\n")
+            _print_ranked(delta)
+
+
+@app.command()
+def export(
+    profile: str = typer.Option(..., "--profile", help="Path to a profile YAML"),
+    source: str | None = typer.Option(
+        None, "--source", help="Comma-separated source ids (default: all)"
+    ),
+    sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
+    with_benchmarks: bool = typer.Option(
+        False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
+    ),
+    json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
+    rss: str | None = typer.Option(None, "--rss", help="Write RSS feed to PATH"),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+):
+    """Full (non-delta) export of the current matches as JSON or RSS."""
+    if not json_out and rss is None:
+        typer.secho(
+            "Choose an output: --json or --rss PATH", fg=typer.colors.RED, err=True
+        )
+        raise typer.Exit(1)
+
+    source_ids = _source_ids(source)
+    store = core.Store(db)
+    try:
+        company = core.load_profile(profile)
+        ranked = core.run_match(
+            company,
+            store,
+            source_id=source_ids[0] if source_ids and len(source_ids) == 1 else None,
+            sample=sample,
+            with_benchmarks=with_benchmarks,
+        )
+        ranked = _filter_sources(ranked, source_ids)
+    except Exception as exc:  # noqa: BLE001
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+    finally:
+        store.close()
+
+    if rss is not None:
+        Path(rss).write_text(exporters.to_rss(ranked), encoding="utf-8")
+        typer.echo(f"wrote RSS feed: {rss} ({len(ranked)} items)")
+    if json_out:
+        typer.echo(exporters.to_json(ranked))
+
+
+# --------------------------------------------------------------------------- #
+# mcp
+# --------------------------------------------------------------------------- #
 
 
 @app.command()

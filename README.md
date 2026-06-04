@@ -201,6 +201,30 @@ Enrichment is append-only on a **copy** of the cached match: the cache always
 stores the bare match, so repeated runs never double-append. The
 `search_opportunities` MCP tool takes the same `with_benchmarks` flag.
 
+## Watch & export
+
+`watch` is a monitor loop: it fetches, applies the storage change-detection, and
+reports **only** matches whose opportunity is **new or amended** since the last
+watch run (a per-profile marker is persisted; `--since` overrides it).
+
+```bash
+# 1st run: all current matches are "new"; a 2nd run reports nothing new
+uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --sample
+# write a feed instead of printing
+uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --sample --rss ~/feed.xml
+```
+
+`export` is the full, non-delta dump of current matches (`--json` or `--rss PATH`).
+
+**Scheduling is your cron** — this is open-core (single-user/local). For example:
+
+```cron
+0 8 * * *  cd /path/to/bandiradar && uv run bandiradar watch --profile mine.yaml --rss ~/feed.xml
+```
+
+Managed delivery (WhatsApp/email/alerts), scheduling SaaS, and multi-tenant
+hosting live in `bandiradar-pro`.
+
 ## Open core vs Pro
 
 Anything a single user can run locally is **open**. Anything *managed*,
@@ -221,13 +245,22 @@ which depends on this package — never the reverse.
 
 ## Roadmap
 
-- **Phase 0 — v1 spine (this build):** canonical model + Source framework + ANAC
-  adapter (sample today, live next) + two-stage matcher with offline fallback +
-  SQLite + CLI + MCP + tests. Runs end-to-end on sample data with zero secrets.
-- **Phase 1:** `incentivi.gov.it` adapter, `watch`/scheduling, JSON/RSS export,
-  embeddings-based prefilter.
-- **Phase 2:** community regional adapters (via the `Source` framework) +
-  `bandiradar-pro` (dashboard, WhatsApp/email delivery, multi-tenant, hosting).
+**Shipped**
+- Canonical model + `Source` framework + two-stage matcher (deterministic
+  prefilter + LLM relevance with a zero-secrets offline fallback) + SQLite with
+  change-detection + CLI + MCP server.
+- Live sources: **TED** (EU open tenders) and **incentivi.gov.it** (national
+  incentives), both key-less; ANAC OCDS mapper bundled.
+- **Intelligence track:** ANAC historical benchmarks + optional matcher
+  enrichment (`--with-benchmarks`).
+- **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
+
+**Upcoming**
+- Live **ANAC/PNCP** fetch (confirm the open-data endpoint first).
+- Embeddings-based prefilter; more community/regional source adapters (via the
+  `Source` framework).
+- `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
+  SaaS, multi-tenant hosting.
 
 ## Add a source / Contributing
 

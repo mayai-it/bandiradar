@@ -7,7 +7,7 @@ business logic. This module contains NO presentation/printing.
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -136,3 +136,51 @@ def run_monitor(
         limit=limit,
         now=now,
     )
+
+
+def run_watch(
+    profile: Profile,
+    store: Store,
+    source_ids: list[str] | None = None,
+    sample: bool = False,
+    since: datetime | None = None,
+    client: LLMClient | None = None,
+    with_benchmarks: bool = False,
+    now: datetime | None = None,
+) -> list[tuple[Opportunity, Match]]:
+    """Monitor loop: fetch + dedupe/change-detect, then return ONLY matches whose
+    opportunity is NEW or AMENDED since the last watch run for this profile.
+
+    Reuses storage change-detection (``upsert_opportunity`` + ``list_new``) and the
+    existing matcher. A per-profile watch marker is persisted; ``since`` overrides
+    it. Deterministic given a fixed ``now``.
+    """
+    moment = now if now is not None else datetime.now(UTC)
+    marker = since if since is not None else store.get_watch_marker(profile.version)
+
+    # Stamp this run's fetch/upserts AND the marker with the same `moment`, so the
+    # next run's `since` (== this marker) excludes exactly what we saw this run.
+    targets = source_ids if source_ids else [s.id for s in list_sources()]
+    for sid in targets:
+        run_fetch(sid, store, sample=sample, now=moment)
+
+    # Opportunities the store saw change (insert/amend) after the marker.
+    changed = store.list_new(marker)
+    if source_ids:
+        wanted = set(source_ids)
+        changed = [o for o in changed if o.source in wanted]
+    changed_ids = {o.id for o in changed}
+
+    ranked = run_match(
+        profile,
+        store,
+        source_id=None,
+        sample=False,  # already fetched above
+        client=client,
+        now=moment,
+        with_benchmarks=with_benchmarks,
+    )
+    delta = [(opp, match) for opp, match in ranked if opp.id in changed_ids]
+
+    store.set_watch_marker(profile.version, moment)
+    return delta
