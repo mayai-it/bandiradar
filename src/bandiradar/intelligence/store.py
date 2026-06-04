@@ -71,9 +71,7 @@ class BenchmarkStore:
         )
         self.conn.commit()
 
-    def get_benchmark(
-        self, cpv_division: str, region: str | None
-    ) -> Benchmark | None:
+    def get_benchmark(self, cpv_division: str, region: str | None) -> Benchmark | None:
         row = self.conn.execute(
             "SELECT data FROM benchmarks WHERE cpv_division=? AND region=?",
             (cpv_division, _region_key(region)),

@@ -307,8 +307,7 @@ class Store:
         finished_at: datetime | None = None,
     ) -> None:
         self.conn.execute(
-            'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=? '
-            "WHERE id=?",
+            'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=? WHERE id=?',
             (_to_text(_now(finished_at)), fetched, new, amended, run_id),
         )
         self.conn.commit()

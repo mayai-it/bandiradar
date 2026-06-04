@@ -41,23 +41,87 @@ _TOKEN_RE = re.compile(r"[a-zA-Z]{4,}")
 STOPWORDS = frozenset(
     {
         # Italian — procurement/process filler
-        "lavori", "lavoro", "servizio", "servizi", "fornitura", "forniture",
-        "manutenzione", "gestione", "appalto", "appalti", "acquisto", "acquisti",
-        "contratto", "contratti", "progetto", "progetti", "sistema", "sistemi",
-        "realizzazione", "affidamento", "affidamenti", "procedura", "procedure",
-        "intervento", "interventi", "attivita", "attivit", "bando", "bandi",
-        "offerta", "offerte", "importo", "importi", "oggetto", "annuale",
-        "triennale", "mediante", "ulteriori", "presentazione", "domande",
+        "lavori",
+        "lavoro",
+        "servizio",
+        "servizi",
+        "fornitura",
+        "forniture",
+        "manutenzione",
+        "gestione",
+        "appalto",
+        "appalti",
+        "acquisto",
+        "acquisti",
+        "contratto",
+        "contratti",
+        "progetto",
+        "progetti",
+        "sistema",
+        "sistemi",
+        "realizzazione",
+        "affidamento",
+        "affidamenti",
+        "procedura",
+        "procedure",
+        "intervento",
+        "interventi",
+        "attivita",
+        "attivit",
+        "bando",
+        "bandi",
+        "offerta",
+        "offerte",
+        "importo",
+        "importi",
+        "oggetto",
+        "annuale",
+        "triennale",
+        "mediante",
+        "ulteriori",
+        "presentazione",
+        "domande",
         # generic "process(es)" — the sector signal is the term beside it
-        "processo", "processi",
+        "processo",
+        "processi",
         # Italian — generic entities/geo (carry no sector signal)
-        "pubblico", "pubblica", "pubblici", "pubbliche", "comune", "comunale",
-        "comuni", "regione", "regionale", "azienda", "aziende", "ente", "enti",
+        "pubblico",
+        "pubblica",
+        "pubblici",
+        "pubbliche",
+        "comune",
+        "comunale",
+        "comuni",
+        "regione",
+        "regionale",
+        "azienda",
+        "aziende",
+        "ente",
+        "enti",
         # English — generic
-        "works", "service", "services", "supply", "supplies", "maintenance",
-        "management", "contract", "contracts", "procurement", "system", "systems",
-        "project", "projects", "public", "tender", "tenders", "activity",
-        "provision", "award", "awards", "company", "companies",
+        "works",
+        "service",
+        "services",
+        "supply",
+        "supplies",
+        "maintenance",
+        "management",
+        "contract",
+        "contracts",
+        "procurement",
+        "system",
+        "systems",
+        "project",
+        "projects",
+        "public",
+        "tender",
+        "tenders",
+        "activity",
+        "provision",
+        "award",
+        "awards",
+        "company",
+        "companies",
     }
 )
 
@@ -132,9 +196,7 @@ def _opp_interval(opp: Opportunity) -> tuple[float, float]:
     return opp.value_amount, opp.value_amount  # type: ignore[return-value]
 
 
-def _evaluate(
-    opp: Opportunity, profile: Profile, now: datetime
-) -> tuple[bool, str]:
+def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, str]:
     """Return (kept, reason). ``reason`` is the first failing gate, else ""."""
 
     # Gate 1 — open.
@@ -215,7 +277,5 @@ def prefilter(
 ) -> list[Opportunity]:
     """Return the opportunities that survive every Stage-1 gate (order-preserving)."""
     return [
-        opp
-        for opp, kept, _ in prefilter_explain(opportunities, profile, now)
-        if kept
+        opp for opp, kept, _ in prefilter_explain(opportunities, profile, now) if kept
     ]

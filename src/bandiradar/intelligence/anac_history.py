@@ -140,9 +140,7 @@ def load_fixture(path: Path | None = None) -> list[HistoryRecord]:
     return list(stream_records(text.splitlines()))
 
 
-def build_benchmarks(
-    sample: bool, year: int, store: BenchmarkStore
-) -> dict[str, int]:
+def build_benchmarks(sample: bool, year: int, store: BenchmarkStore) -> dict[str, int]:
     """Orchestrate fetch -> parse -> aggregate -> save. Returns counts."""
     from bandiradar.intelligence.benchmarks import compute_benchmarks
 

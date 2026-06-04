@@ -23,17 +23,32 @@ def rec(div, region, value, year, supplier):
 
 def bench72(region=None):
     return Benchmark(
-        cpv_division="72", region=region, count=8, value_median=104326.0,
-        value_p25=71619.0, value_p75=183410.0, value_min=39532.0, value_max=283142.0,
-        by_year={2025: 8}, distinct_suppliers=8,
+        cpv_division="72",
+        region=region,
+        count=8,
+        value_median=104326.0,
+        value_p25=71619.0,
+        value_p75=183410.0,
+        value_min=39532.0,
+        value_max=283142.0,
+        by_year={2025: 8},
+        distinct_suppliers=8,
     )
 
 
 def opp(cpv, value=None, region=None):
     return Opportunity(
-        id="x:1", source="x", source_url="https://example.invalid/x", kind="tender",
-        title="t", geo_scope="eu", region=region, status="open", raw_ref="x:1",
-        cpv=cpv, value_amount=value,
+        id="x:1",
+        source="x",
+        source_url="https://example.invalid/x",
+        kind="tender",
+        title="t",
+        geo_scope="eu",
+        region=region,
+        status="open",
+        raw_ref="x:1",
+        cpv=cpv,
+        value_amount=value,
     )
 
 
@@ -163,14 +178,28 @@ def test_store_national_and_regional_keys(store):
     store.save_benchmarks(
         [
             Benchmark(
-                cpv_division="72", region=None, count=1, value_median=1.0,
-                value_p25=1.0, value_p75=1.0, value_min=1.0, value_max=1.0,
-                by_year={2024: 1}, distinct_suppliers=1,
+                cpv_division="72",
+                region=None,
+                count=1,
+                value_median=1.0,
+                value_p25=1.0,
+                value_p75=1.0,
+                value_min=1.0,
+                value_max=1.0,
+                by_year={2024: 1},
+                distinct_suppliers=1,
             ),
             Benchmark(
-                cpv_division="72", region="Lazio", count=1, value_median=2.0,
-                value_p25=2.0, value_p75=2.0, value_min=2.0, value_max=2.0,
-                by_year={2024: 1}, distinct_suppliers=1,
+                cpv_division="72",
+                region="Lazio",
+                count=1,
+                value_median=2.0,
+                value_p25=2.0,
+                value_p75=2.0,
+                value_min=2.0,
+                value_max=2.0,
+                by_year={2024: 1},
+                distinct_suppliers=1,
             ),
         ]
     )

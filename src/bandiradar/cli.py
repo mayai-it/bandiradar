@@ -196,9 +196,7 @@ def benchmarks_build(
         raise typer.Exit(1) from exc
     finally:
         store.close()
-    typer.echo(
-        f"records={result['records']} benchmarks={result['benchmarks']}"
-    )
+    typer.echo(f"records={result['records']} benchmarks={result['benchmarks']}")
 
 
 @benchmarks_app.command("show")

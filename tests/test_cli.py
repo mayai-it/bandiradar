@@ -49,9 +49,7 @@ def test_fetch_sample(tmp_path):
 
 def test_match_human(tmp_path):
     db = str(tmp_path / "m.db")
-    result = runner.invoke(
-        app, ["match", "--profile", MAYAI, "--sample", "--db", db]
-    )
+    result = runner.invoke(app, ["match", "--profile", MAYAI, "--sample", "--db", db])
     assert result.exit_code == 0
     assert "MayAI" in result.stdout
     assert "score" in result.stdout
@@ -115,7 +113,14 @@ def test_benchmarks_show_missing_exits_nonzero(tmp_path):
 def test_watch_first_then_none(tmp_path):
     db = str(tmp_path / "w.db")
     args = [
-        "watch", "--profile", MAYAI, "--source", "incentivi", "--sample", "--db", db
+        "watch",
+        "--profile",
+        MAYAI,
+        "--source",
+        "incentivi",
+        "--sample",
+        "--db",
+        db,
     ]
     first = runner.invoke(app, args)
     assert first.exit_code == 0
@@ -132,8 +137,18 @@ def test_watch_rss_writes_file(tmp_path):
     feed = str(tmp_path / "feed.xml")
     res = runner.invoke(
         app,
-        ["watch", "--profile", MAYAI, "--source", "incentivi", "--sample",
-         "--rss", feed, "--db", db],
+        [
+            "watch",
+            "--profile",
+            MAYAI,
+            "--source",
+            "incentivi",
+            "--sample",
+            "--rss",
+            feed,
+            "--db",
+            db,
+        ],
     )
     assert res.exit_code == 0
     assert "wrote RSS feed" in res.stdout
@@ -154,8 +169,17 @@ def test_export_json(tmp_path):
     db = str(tmp_path / "ej.db")
     res = runner.invoke(
         app,
-        ["export", "--profile", MAYAI, "--source", "incentivi", "--sample",
-         "--json", "--db", db],
+        [
+            "export",
+            "--profile",
+            MAYAI,
+            "--source",
+            "incentivi",
+            "--sample",
+            "--json",
+            "--db",
+            db,
+        ],
     )
     assert res.exit_code == 0
     data = json.loads(res.stdout)

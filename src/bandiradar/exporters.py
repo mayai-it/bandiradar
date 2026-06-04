@@ -58,9 +58,9 @@ def to_rss(
     channel = ET.SubElement(rss, "channel")
     ET.SubElement(channel, "title").text = title
     ET.SubElement(channel, "link").text = link
-    ET.SubElement(channel, "description").text = (
-        "Italian public funding opportunities matched to a company profile."
-    )
+    ET.SubElement(
+        channel, "description"
+    ).text = "Italian public funding opportunities matched to a company profile."
 
     for opp, match in matches:
         item = ET.SubElement(channel, "item")

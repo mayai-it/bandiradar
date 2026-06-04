@@ -98,7 +98,11 @@ def run_match(
         benchmark_store = BenchmarkStore(store.db_path)
     try:
         matches = score_all(
-            kept, profile, client=client, cache=cache, now=now,
+            kept,
+            profile,
+            client=client,
+            cache=cache,
+            now=now,
             benchmarks=benchmark_store,
         )
     finally:
@@ -106,9 +110,7 @@ def run_match(
             benchmark_store.close()
 
     by_id = {opp.id: opp for opp in kept}
-    ranked = [
-        (by_id[m.opportunity_id], m) for m in matches if m.score >= min_score
-    ]
+    ranked = [(by_id[m.opportunity_id], m) for m in matches if m.score >= min_score]
     if limit is not None:
         ranked = ranked[:limit]
     return ranked

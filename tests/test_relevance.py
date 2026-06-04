@@ -136,9 +136,16 @@ def _bench72():
     from bandiradar.intelligence.benchmarks import Benchmark
 
     return Benchmark(
-        cpv_division="72", region=None, count=8, value_median=104326.0,
-        value_p25=71619.0, value_p75=183410.0, value_min=39532.0, value_max=283142.0,
-        by_year={2025: 8}, distinct_suppliers=8,
+        cpv_division="72",
+        region=None,
+        count=8,
+        value_median=104326.0,
+        value_p25=71619.0,
+        value_p75=183410.0,
+        value_min=39532.0,
+        value_max=283142.0,
+        by_year={2025: 8},
+        distinct_suppliers=8,
     )
 
 

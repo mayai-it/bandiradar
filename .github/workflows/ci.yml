@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      # Default extras only — anthropic/openai are optional and NOT installed,
+      # so the suite runs with zero secrets (offline by design).
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint (ruff check)
+        run: uv run ruff check .
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check .
+
+      - name: Tests (pytest)
+        run: uv run pytest

@@ -51,9 +51,7 @@ TED_BASE_QUERY = "buyer-country=ITA"
 _PAGE_LIMIT = 100  # notices per page (API allows up to 250)
 _MAX_NOTICES = 15000  # PAGE_NUMBER mode ceiling
 
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "ted.json"
-)
+FIXTURE_PATH = Path(__file__).resolve().parents[3] / "data" / "fixtures" / "ted.json"
 
 
 # --------------------------------------------------------------------------- #

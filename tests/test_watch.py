@@ -59,9 +59,10 @@ def test_amended_record_reappears(tmp_path, monkeypatch, store):
     monkeypatch.setattr(incentivi, "FIXTURE_PATH", fixture)
 
     core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)
-    assert core.run_watch(
-        mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
-    ) == []
+    assert (
+        core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)
+        == []
+    )
 
     # Mutate the matched record's title (changes content_hash -> amended).
     data = json.loads(fixture.read_text(encoding="utf-8"))

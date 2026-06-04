@@ -1,8 +1,8 @@
 # BandiRadar
 
+[![CI](https://github.com/mayai-it/bandiradar/actions/workflows/ci.yml/badge.svg)](https://github.com/mayai-it/bandiradar/actions/workflows/ci.yml)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![tests](https://img.shields.io/badge/tests-pytest-brightgreen.svg)](tests/)
 
 > Open-source engine that monitors Italian public funding opportunities
 > (public tenders, grants, incentives), normalizes them into **one canonical

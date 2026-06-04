@@ -68,8 +68,15 @@ def test_cli_batch_table_lists_every_profile(tmp_path):
     db = str(tmp_path / "b.db")
     res = runner.invoke(app, ["batch", "--sample", "--db", db])
     assert res.exit_code == 0
-    for token in ["MayAI", "Manifattura", "MedForniture", "Costruzioni",
-                  "Trattoria", "Consulenza", "Studio"]:
+    for token in [
+        "MayAI",
+        "Manifattura",
+        "MedForniture",
+        "Costruzioni",
+        "Trattoria",
+        "Consulenza",
+        "Studio",
+    ]:
         assert token in res.stdout
 
 
@@ -103,14 +110,29 @@ _ATECO = ["62.01", "41.20", "69.20", "56.10", "70.22", "25.62", "47.11"]
 _CPV = ["72000000", "45000000", "79000000", "33000000", "48000000", "42000000"]
 _REGIONS = ["Lazio", "Lombardia", "Campania", "Emilia-Romagna", "Puglia"]
 _KEYWORDS = [
-    "digitalizzazione", "software", "lavori", "consulenza", "macchinari",
-    "intelligenza artificiale", "turismo", "manutenzione", "dispositivi",
+    "digitalizzazione",
+    "software",
+    "lavori",
+    "consulenza",
+    "macchinari",
+    "intelligenza artificiale",
+    "turismo",
+    "manutenzione",
+    "dispositivi",
 ]
 _RANGES = [
-    (None, None), (1000, 100000), (50000, 5000000), (None, 250000), (10000, None),
+    (None, None),
+    (1000, 100000),
+    (50000, 5000000),
+    (None, 250000),
+    (10000, None),
 ]
-_CAPS = ["", "consulenza e software per le PMI", "lavori edili e manutenzione",
-         "dispositivi medici e forniture sanitarie"]
+_CAPS = [
+    "",
+    "consulenza e software per le PMI",
+    "lavori edili e manutenzione",
+    "dispositivi medici e forniture sanitarie",
+]
 
 
 def _rand_profile(rng: random.Random, i: int) -> Profile:
