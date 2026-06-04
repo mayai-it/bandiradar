@@ -21,11 +21,58 @@ Gates, evaluated in order (the first failing gate's reason is reported):
 from __future__ import annotations
 
 import math
+import re
 from datetime import UTC, datetime
 
 from bandiradar.models import Opportunity, Profile
 
 _BYPASS_GEO = {"national", "eu"}
+
+# Tokenizer for keyword/capability overlap: runs of >=4 ASCII letters, lowercased.
+_TOKEN_RE = re.compile(r"[a-zA-Z]{4,}")
+
+# Generic Italian/English procurement & business filler. These words appear in
+# almost any tender/grant regardless of sector, so they must NOT create
+# keyword/capability overlap across unrelated sectors (e.g. a construction
+# profile matching IT tenders on "lavori"/"manutenzione"). They are removed from
+# BOTH the profile terms and the opportunity tokens before intersecting. Kept
+# deliberately narrow: only sector-AGNOSTIC words — domain terms like
+# "lavorazioni", "macchine", "software", "dispositivi" are intentionally absent.
+STOPWORDS = frozenset(
+    {
+        # Italian — procurement/process filler
+        "lavori", "lavoro", "servizio", "servizi", "fornitura", "forniture",
+        "manutenzione", "gestione", "appalto", "appalti", "acquisto", "acquisti",
+        "contratto", "contratti", "progetto", "progetti", "sistema", "sistemi",
+        "realizzazione", "affidamento", "affidamenti", "procedura", "procedure",
+        "intervento", "interventi", "attivita", "attivit", "bando", "bandi",
+        "offerta", "offerte", "importo", "importi", "oggetto", "annuale",
+        "triennale", "mediante", "ulteriori", "presentazione", "domande",
+        # generic "process(es)" — the sector signal is the term beside it
+        "processo", "processi",
+        # Italian — generic entities/geo (carry no sector signal)
+        "pubblico", "pubblica", "pubblici", "pubbliche", "comune", "comunale",
+        "comuni", "regione", "regionale", "azienda", "aziende", "ente", "enti",
+        # English — generic
+        "works", "service", "services", "supply", "supplies", "maintenance",
+        "management", "contract", "contracts", "procurement", "system", "systems",
+        "project", "projects", "public", "tender", "tenders", "activity",
+        "provision", "award", "awards", "company", "companies",
+    }
+)
+
+
+def meaningful_tokens(text: str | None) -> set[str]:
+    """Sector-bearing tokens of ``text``: >=4-letter words minus :data:`STOPWORDS`.
+
+    The single tokenizer shared by the prefilter keyword gate and the Stage-2
+    heuristic, so both judge keyword overlap the same way.
+    """
+    return {
+        token
+        for token in (m.group(0).lower() for m in _TOKEN_RE.finditer(text or ""))
+        if token not in STOPWORDS
+    }
 
 
 def _norm(text: str | None) -> str:
@@ -122,13 +169,13 @@ def _evaluate(
     # Gate 5 — relevance signal (skipped if the profile gives no signal sources).
     if profile.cpv_interests or profile.keywords:
         cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
-        # Keyword scan also covers eligibility_text: incentives have no CPV, so
-        # without this their relevance signal lives only in the requirements text
-        # and they would be dropped before scoring.
-        keyword_text = f"{haystack} {_norm(opp.eligibility_text)}"
-        keyword_ok = any(
-            _norm(k) and _norm(k) in keyword_text for k in profile.keywords
-        )
+        # Keyword overlap on MEANINGFUL tokens only (stopwords stripped from both
+        # sides), so generic procurement words don't create cross-sector hits.
+        # Also covers eligibility_text: CPV-less incentives carry their signal
+        # there and must not be dropped before scoring.
+        profile_tokens = meaningful_tokens(" ".join(profile.keywords))
+        opp_tokens = meaningful_tokens(f"{haystack} {_norm(opp.eligibility_text)}")
+        keyword_ok = bool(profile_tokens & opp_tokens)
         if not (cpv_ok or keyword_ok):
             return False, "no CPV match or keyword hit"
 

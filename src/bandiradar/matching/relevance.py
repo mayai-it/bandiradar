@@ -9,20 +9,21 @@ grades continuously from the same signals the prefilter gates on.
 from __future__ import annotations
 
 import math
-import re
 from datetime import datetime
 from typing import Protocol, runtime_checkable
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from bandiradar.matching.llm import LLMClient, get_client
-from bandiradar.matching.prefilter import cpv_match, cpv_match_depth
+from bandiradar.matching.prefilter import (
+    cpv_match,
+    cpv_match_depth,
+    meaningful_tokens,
+)
 from bandiradar.matching.prompts import SCORING_SYSTEM, build_user_prompt
 from bandiradar.models import Match, Opportunity, Profile
 
 CacheKey = tuple[str, str]  # (profile.version, opportunity.content_hash)
-
-_TOKEN_RE = re.compile(r"[a-zA-Z]{4,}")
 
 
 class RelevanceResult(BaseModel):
@@ -95,10 +96,6 @@ def _coerce_result(data: object) -> RelevanceResult:
 # --------------------------------------------------------------------------- #
 
 
-def _tokens(text: str | None) -> set[str]:
-    return {m.group(0).lower() for m in _TOKEN_RE.finditer(text or "")}
-
-
 def _value_fit(opp: Opportunity, profile: Profile) -> float:
     """1.0 overlap, 0.0 no overlap, 0.5 when not comparable (missing data)."""
     vr = profile.value_range
@@ -142,9 +139,9 @@ def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceR
     depth = cpv_match_depth(opportunity.cpv, profile.cpv_interests)
     cpv_component = min(depth / 5.0, 1.0)
 
-    profile_terms = _tokens(profile.capabilities) | {
-        token for kw in profile.keywords for token in _tokens(kw)
-    }
+    profile_terms = meaningful_tokens(profile.capabilities) | meaningful_tokens(
+        " ".join(profile.keywords)
+    )
     opp_text = " ".join(
         part
         for part in (
@@ -154,7 +151,7 @@ def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceR
         )
         if part
     )
-    overlap = sorted(profile_terms & _tokens(opp_text))
+    overlap = sorted(profile_terms & meaningful_tokens(opp_text))
     overlap_component = min(len(overlap) / 3.0, 1.0)
 
     value_component = _value_fit(opportunity, profile)

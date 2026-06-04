@@ -251,20 +251,23 @@ BandiRadar isn't tuned to one company — it runs any profile against every sour
 ```text
 PROFILE                          #  TOP MATCH (score)                      BY SOURCE
 ------------------------------------------------------------------------------------
-Consulenza Strategica S.r.l.     9  Servizi di consulenza organizza… (72)  anac:2 incentivi:6 ted:1
-Costruzioni Lombarde S.r.l.      5  LAVORI DI FORMAZIONE MANUTENZIO… (76)  lombardia:2 ted:3
-Trattoria & Bottega S.r.l.       2  Voucher 3I - Investire in innov… (55)  incentivi:2
-Manifattura Esempio S.r.l.       1  Fornitura di macchinari industr… (76)  anac:1
+Consulenza Strategica S.r.l.     8  Servizi di consulenza organizza… (72)  anac:2 incentivi:5 ted:1
+Costruzioni Lombarde S.r.l.      2  LAVORI DI FORMAZIONE MANUTENZIO… (56)  lombardia:1 ted:1
+Trattoria & Bottega S.r.l.       2  Manifestazione d'interesse per … (55)  incentivi:2
+Manifattura Esempio S.r.l.       3  Fornitura di macchinari industr… (76)  anac:1 incentivi:2
 MayAI                            5  Fornitura di licenze software e… (76)  anac:3 incentivi:1 ted:1
-MedForniture Lombardia S.r.l.    3  fornitura di cannule nasali per… (76)  lombardia:3
-Studio Associato Commercialis…   3  Fornitura di licenze software e… (60)  anac:1 incentivi:1 ted:1
+MedForniture Lombardia S.r.l.    3  FORNITURA DI DISPOSITIVI PER EN… (76)  lombardia:3
+Studio Associato Commercialis…   4  Fornitura di licenze software e… (50)  anac:1 incentivi:2 ted:1
 ```
 
 The suite spans distinct Italian SME segments — AI/software (MayAI),
 manufacturing, medical-devices (Lombardy), accounting, construction,
 hospitality/retail (keyword-driven, no CPV), and consultancy. Counts are real
 matches on the tiny bundled sample; a segment can legitimately show few hits when
-the sample doesn't cover it.
+the sample doesn't cover it. Keyword/capability overlap ignores a curated list of
+generic procurement filler (`lavori`, `servizi`, `fornitura`, `manutenzione`, …),
+so matches reflect *sector-bearing* terms rather than boilerplate — e.g. a
+construction profile no longer matches IT tenders on "lavori".
 
 ```bash
 uv run bandiradar batch --sample              # human comparison table
