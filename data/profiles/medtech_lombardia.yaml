@@ -1,0 +1,15 @@
+# Lombardy-based example profile: a medical-devices distributor in Lombardy.
+# Demonstrates regional matching — it keeps Lombardy bandi that the Lazio-only
+# MayAI profile correctly drops.
+name: "MedForniture Lombardia S.r.l."
+language: it
+ateco: ["46.46", "47.74"]                  # wholesale/retail of medical goods
+cpv_interests: ["33000000"]                # medical equipment & supplies
+keywords:
+  ["dispositivi medici", "forniture sanitarie", "endoscopia", "ossigenoterapia"]
+regions: ["Lombardia"]
+value_range: { min: 50000, max: 3000000 }
+capabilities: >
+  Distribuzione e fornitura di dispositivi medici e materiale sanitario per
+  strutture ospedaliere e ASST: endoscopia, monitoraggio, ossigenoterapia.
+exclusions: ["construction", "catering"]

@@ -79,6 +79,7 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full design.
 |---|---|---|
 | **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — the official IODL open-data export, no API key. |
 | **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
+| **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). The first regional source; carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
 ```bash
@@ -95,6 +96,17 @@ contracts often far larger than a micro-SME's range, so a small profile matches
 only the few that fit — which is exactly why incentive/national/regional sources
 matter too.
 
+A regional example (`data/profiles/medtech_lombardia.yaml`, a Lombardy
+medical-devices distributor) matches open Lombardy tenders, while the Lazio-only
+MayAI profile correctly drops them — regional filtering in action:
+
+```bash
+uv run bandiradar match --profile data/profiles/medtech_lombardia.yaml --source lombardia --sample
+# -> 3 open medical-device tenders (region match, CPV 33*, within value range)
+uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --sample
+# -> No matching opportunities (Lazio profile, Lombardy bandi dropped on region)
+```
+
 > **Attribution (IODL):** incentivi.gov.it data is published by the Ministero
 > delle Imprese e del Made in Italy under the
 > [Italian Open Data License v2.0 (IODL 2.0)](https://www.dati.gov.it/iodl/2.0/),
@@ -102,13 +114,18 @@ matter too.
 > fetch hits the same open-data export endpoint the portal's own "Scarica
 > dataset" button uses (there is no separate static file; the download is built
 > client-side from that endpoint).
+>
+> **Attribution (CC0):** Regione Lombardia open data (dataset `k6cb-4hbm`,
+> *Bandi di gara — Osservatorio Regionale*), via the dati.lombardia.it Socrata
+> SODA API, released under CC0 1.0.
 
 ## Status (honest)
 
 - ✅ **Runs today fully offline** on bundled sample data with **zero secrets** —
   both quickstarts above are real.
-- ✅ **Two sources have live, key-less fetch:** `incentivi` (incentivi.gov.it
-  open data) and `ted` (the EU search API). `--sample` keeps both offline against
+- ✅ **Three sources have live, key-less fetch:** `incentivi` (incentivi.gov.it),
+  `ted` (the EU search API), and `lombardia` (the first regional source, via the
+  dati.lombardia.it Socrata SODA API). `--sample` keeps all offline against
   recorded real captures.
 - ⏳ **The live ANAC/PNCP adapter is still pending.** Its mapping
   (`to_opportunities`) is implemented and tested against a recorded fixture, but
@@ -249,8 +266,9 @@ which depends on this package — never the reverse.
 - Canonical model + `Source` framework + two-stage matcher (deterministic
   prefilter + LLM relevance with a zero-secrets offline fallback) + SQLite with
   change-detection + CLI + MCP server.
-- Live sources: **TED** (EU open tenders) and **incentivi.gov.it** (national
-  incentives), both key-less; ANAC OCDS mapper bundled.
+- Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
+  incentives), and **Regione Lombardia** (first regional source), all key-less;
+  ANAC OCDS mapper bundled.
 - **Intelligence track:** ANAC historical benchmarks + optional matcher
   enrichment (`--with-benchmarks`).
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
@@ -258,7 +276,7 @@ which depends on this package — never the reverse.
 **Upcoming**
 - Live **ANAC/PNCP** fetch (confirm the open-data endpoint first).
 - Embeddings-based prefilter; more community/regional source adapters (via the
-  `Source` framework).
+  `Source` framework — Lombardy is the first; other regions welcome).
 - `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
   SaaS, multi-tenant hosting.
 
