@@ -77,7 +77,7 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full design.
 
 | Source | What it delivers | Live fetch |
 |---|---|---|
-| **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — public open-data endpoint, no API key. |
+| **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — the official IODL open-data export, no API key. |
 | **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
@@ -98,7 +98,10 @@ matter too.
 > **Attribution (IODL):** incentivi.gov.it data is published by the Ministero
 > delle Imprese e del Made in Italy under the
 > [Italian Open Data License v2.0 (IODL 2.0)](https://www.dati.gov.it/iodl/2.0/),
-> which requires attribution. Source: incentivi.gov.it.
+> which requires attribution. Source: incentivi.gov.it. The live `incentivi`
+> fetch hits the same open-data export endpoint the portal's own "Scarica
+> dataset" button uses (there is no separate static file; the download is built
+> client-side from that endpoint).
 
 ## Status (honest)
 

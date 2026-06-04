@@ -2,14 +2,24 @@
 
 The first grant/incentive source (``kind="incentive"``), exercising the canonical
 superset (grants have no CPV, carry a funding range and an eligibility/benefit
-text the matcher relies on). The portal publishes open data under the Italian
-Open Data License v2.0 (IODL 2.0 — attribution required); the data is served by
-a public Solr export endpoint.
+text the matcher relies on). incentivi.gov.it publishes its catalogue as open
+data under the Italian Open Data License v2.0 (IODL 2.0 — attribution required:
+Ministero delle Imprese e del Made in Italy).
+
+Live source = the OFFICIAL open-data export. Note (verified by tracing the
+open-data page's own download button in its theme JS): incentivi.gov.it does NOT
+serve a separate static IODL file — its "Scarica dataset" button builds the
+JSON/CSV download client-side from the export endpoint below (Solr index
+``incentivi``, ``fl=*``, ``fq=index_id:incentivi``). So this endpoint IS the
+official open-data export, not an internal search hack; we query it the same way
+the page does. (dati.gov.it carries no MIMIT incentivi resource to point at
+instead.)
 
 ``to_opportunities`` maps one incentive record AS IT APPEARS in the recorded
-fixture (``data/fixtures/incentivi.json``, a real capture). National measures
-(granted by a Ministero / national agency) map to ``geo_scope="national"``;
-those granted by a Regione/Provincia/Camera di Commercio map to ``"regional"``.
+fixture (``data/fixtures/incentivi.json``, a real capture from this export).
+National measures (granted by a Ministero / national agency) map to
+``geo_scope="national"``; those granted by a Regione/Provincia/Camera di
+Commercio map to ``"regional"``.
 """
 
 from __future__ import annotations
@@ -17,7 +27,7 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Iterable, Iterator
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +39,9 @@ from bandiradar.sources.base import register
 SOURCE_ID = "incentivi"
 SOURCE_KIND: Kind = "incentive"
 
-# Public Solr export behind incentivi.gov.it/it/open-data (index "incentivi").
+# Official incentivi.gov.it open-data export endpoint (IODL 2.0). This is exactly
+# what the open-data page's download button queries (index "incentivi", fl=*);
+# there is no separate static file to fetch instead.
 INCENTIVI_DATA_URL = "https://www.incentivi.gov.it/solr/coredrupal/select"
 _PAGE_ROWS = 200
 
@@ -61,12 +73,14 @@ def _to_float(value: Any) -> float | None:
 
 
 def _parse_dt(value: Any) -> datetime | None:
+    """Parse an ISO timestamp; naive values are assumed to be UTC (tz-aware out)."""
     if not isinstance(value, str) or not value:
         return None
     try:
-        return datetime.fromisoformat(value)
+        parsed = datetime.fromisoformat(value)
     except ValueError:
         return None
+    return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=UTC)
 
 
 def _node_id(record: dict[str, Any]) -> str:
@@ -168,12 +182,18 @@ class IncentiviSource:
         return self._fetch_pages(since)
 
     def _fetch_pages(self, since: datetime | None) -> Iterator[RawDoc]:
+        if since is not None and since.tzinfo is None:
+            since = since.replace(tzinfo=UTC)
         start = 0
         with httpx.Client(timeout=60.0) as client:
             while True:
+                # Same parameters the open-data page uses for its official export
+                # (fl=* full records, fq restricts to the incentives index).
                 params = {
                     "q": "*:*",
+                    "q.op": "OR",
                     "fq": "index_id:incentivi",
+                    "fl": "*",
                     "rows": _PAGE_ROWS,
                     "start": start,
                     "wt": "json",

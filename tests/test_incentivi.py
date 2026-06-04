@@ -80,3 +80,63 @@ def test_incentivi_is_registered():
     assert source.id == "incentivi"
     assert source.kind == "incentive"
     assert "incentivi" in {s.id for s in list_sources()}
+
+
+# --------------------------------------------------------------------------- #
+# fetch() against the official export — mocked HTTP client (no network)
+# --------------------------------------------------------------------------- #
+
+
+class _FakeResponse:
+    def __init__(self, payload):
+        self._payload = payload
+
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return self._payload
+
+
+class _FakeClient:
+    def __init__(self, payload, calls):
+        self._payload = payload
+        self._calls = calls
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def get(self, url, params=None):
+        self._calls.append((url, params))
+        return _FakeResponse(self._payload)
+
+
+def test_fetch_queries_official_export_endpoint(monkeypatch):
+    docs = [r.payload for r in incentivi.load_fixture()[:2]]
+    payload = {"response": {"docs": docs, "numFound": len(docs)}}
+    calls: list = []
+    monkeypatch.setattr(
+        incentivi.httpx, "Client", lambda *a, **k: _FakeClient(payload, calls)
+    )
+
+    raws = list(incentivi.IncentiviSource().fetch())
+    assert len(raws) == 2
+    assert all(r.id.startswith("incentivi:") for r in raws)
+
+    url, params = calls[0]
+    assert url == incentivi.INCENTIVI_DATA_URL  # the official open-data export
+    assert params["fq"] == "index_id:incentivi"
+    assert params["fl"] == "*"
+
+
+def test_fetch_since_filters_by_open_date(monkeypatch):
+    docs = [r.payload for r in incentivi.load_fixture()[:1]]
+    payload = {"response": {"docs": docs, "numFound": 1}}
+    monkeypatch.setattr(
+        incentivi.httpx, "Client", lambda *a, **k: _FakeClient(payload, [])
+    )
+    future = datetime(2099, 1, 1, tzinfo=UTC)
+    assert list(incentivi.IncentiviSource().fetch(since=future)) == []
