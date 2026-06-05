@@ -8,14 +8,14 @@
 > (public tenders, grants, incentives), normalizes them into **one canonical
 > model**, and ranks them against a company profile with a two-stage matcher.
 
-**Runs offline, zero secrets · 3 live key-less sources · optional LLM Stage-2 · MIT**
+**Runs offline, zero secrets · 4 live key-less sources · optional LLM Stage-2 · MIT**
 
 ## Features
 
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
   a **zero-secrets offline heuristic fallback** (the LLM is optional).
-- **3 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
-  Lombardia (regional); plus a bundled ANAC OCDS mapper.
+- **4 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
+  Lombardia and Regione Lazio (regional); plus a bundled ANAC OCDS mapper.
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the
@@ -175,7 +175,8 @@ MedForniture medical devices        76               92   ← strong sector fit 
 |---|---|---|
 | **`incentivi`** | incentivi.gov.it (MIMIT) — the national catalogue of **business incentives / grants** (`kind="incentive"`), national and regional. The grant side, and the source a digital SME profile actually matches. | ✅ Wired — the official IODL open-data export, no API key. |
 | **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
-| **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). The first regional source; carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
+| **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). Carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
+| **`lazio`** | Regione Lazio — **regional business incentives** (`kind="incentive"`), from the LazioInnova bandi portal (WordPress REST API). The source the MayAI dogfood profile matches. | ✅ Wired — WP REST, no API key. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
 ```bash
@@ -199,6 +200,15 @@ uv run bandiradar match --profile data/profiles/medtech_lombardia.yaml --source 
 # -> 3 open medical-device tenders (region match, CPV 33*, within value range)
 uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --sample
 # -> No matching opportunities (Lazio profile, Lombardy bandi dropped on region)
+```
+
+And the dogfood closes the loop — MayAI **is** a Lazio company, and `lazio`
+(LazioInnova) is where it finally matches its own region:
+
+```bash
+uv run bandiradar match --profile data/profiles/mayai.yaml --source lazio --sample
+# -> Voucher Digitalizzazione PMI 2025 (52), Donne e Impresa 2026 (42, closing soon)
+#    region match: Lazio; overlap: digitalizzazione, software, cloud, dati
 ```
 
 Source data licensing is consolidated under [Data and licenses](#data-and-licenses).
@@ -336,7 +346,7 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
 
 - ✅ **Offline, zero-secret** — every demo above and the whole test suite run with
   no network and no API key.
-- ✅ **3 live key-less sources** — `incentivi`, `ted`, `lombardia`. `--sample`
+- ✅ **4 live key-less sources** — `incentivi`, `ted`, `lombardia`, `lazio`. `--sample`
   keeps them offline against recorded real captures.
 - ✅ **Stage-2 LLM scoring is wired and working** (optional); with no key it
   transparently uses the offline heuristic — a proxy, not real semantic relevance.
@@ -369,8 +379,8 @@ which depends on this package — never the reverse.
   prefilter + LLM relevance with a zero-secrets offline fallback) + SQLite with
   change-detection + CLI + MCP server.
 - Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
-  incentives), and **Regione Lombardia** (first regional source), all key-less;
-  ANAC OCDS mapper bundled.
+  incentives), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione Lazio**
+  (LazioInnova incentives), all key-less; ANAC OCDS mapper bundled.
 - **Intelligence track:** ANAC historical benchmarks + optional matcher
   enrichment (`--with-benchmarks`).
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
@@ -407,6 +417,10 @@ its operator requires you to honor:
   is built client-side from that endpoint).
 - **Regione Lombardia (CC0 1.0)** — dataset `k6cb-4hbm` (*Bandi di gara —
   Osservatorio Regionale*), via the dati.lombardia.it Socrata SODA API.
+- **Regione Lazio / LazioInnova** — bandi published by LazioInnova (the regional
+  development agency) and read via its WordPress REST API
+  (`lazioinnova.it/wp-json`). Source: LazioInnova / Regione Lazio; attribute the
+  source when reusing.
 - **ANAC public contracts (CC BY 4.0)** — via the
   [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/);
   the intelligence track streams the gzipped JSONL memory-safely.
