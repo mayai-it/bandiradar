@@ -107,6 +107,8 @@ class Opportunity(BaseModel):
     status: Literal["open", "closing_soon", "closed", "amended"]
 
     eligibility_text: str | None # free text fed to the matcher
+    document_urls: list[str] = []  # attachment/doc links (disciplinare/bando PDFs)
+    document_text: str | None    # text extracted from those docs (optional enrichment)
     raw_ref: str                 # pointer to stored RawDoc
     content_hash: str            # for change detection
     version: int = 1
@@ -120,8 +122,9 @@ class Opportunity(BaseModel):
   fields only: `title`, `summary`, `issuer_name`, `issuer_region`,
   `value_*` (amount/currency/min/max), `deadline`, `eligibility_text`, `kind`,
   `cpv`, `region`, `geo_scope`. It deliberately **excludes** `version`,
-  `updated_at`, `keywords`, and `ateco_hints` (bookkeeping / derived hints) so
-  change detection (§8) fires on substance, not on re-fetch noise.
+  `updated_at`, `keywords`, and `ateco_hints` (bookkeeping / derived hints), and
+  also `document_urls` / `document_text` (optional downstream enrichment — see §6),
+  so change detection (§8) fires on substance, not on re-fetch noise or enrichment.
 - **Datetimes are tz-aware UTC.** All datetime fields (`Opportunity.published_at`
   / `deadline` / `updated_at`, `RawDoc.fetched_at`) coerce naive inputs to UTC,
   so downstream comparisons (e.g. the prefilter) never hit naive-vs-aware errors.
@@ -196,6 +199,13 @@ Design rules:
   so the repo runs in CI and in agent dev loops with **zero secrets**.
 - **Privacy:** send the minimal opportunity text + a compact profile summary,
   never raw dumps. (Tender data is public; the profile may not be.)
+- **Optional document enrichment.** When enabled, attachment PDFs
+  (`Opportunity.document_urls`) are fetched and their extracted text
+  (`document_text`) is folded into every matcher input — the Stage-1 keyword gate,
+  the heuristic overlap, and the LLM brief — so requirements that live only in the
+  *disciplinare* still drive matching. Injected/cached like the score cache;
+  `document_text` is excluded from `content_hash` (§4) so enrichment never fakes an
+  *amended*. OCR (scanned PDFs) is an optional extra.
 
 ---
 

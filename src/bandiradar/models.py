@@ -54,6 +54,9 @@ Status = Literal["open", "closing_soon", "closed", "amended"]
 # opportunity semantically different and so re-notifiable (ARCHITECTURE.md §8).
 # version, updated_at, keywords, and ateco_hints are intentionally absent:
 # they are bookkeeping / derived hints, not the substance of the notice.
+# document_urls / document_text are also absent ON PURPOSE: they are optional
+# downstream enrichment (fetched attachment text), not source-of-truth content —
+# including them would flip the hash to "amended" just because we ran enrichment.
 _CONTENT_HASH_FIELDS = (
     "title",
     "summary",
@@ -146,6 +149,8 @@ class Opportunity(BaseModel):
     status: Status  # stored, freely settable (see module docstring)
 
     eligibility_text: str | None = None  # free text fed to the matcher
+    document_urls: list[str] = Field(default_factory=list)  # attachment/doc links
+    document_text: str | None = None  # text extracted from those docs (enrichment)
     raw_ref: str  # pointer to stored RawDoc
     content_hash: str = ""  # for change detection; auto-filled if left empty
     version: int = 1

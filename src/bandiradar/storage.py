@@ -12,6 +12,7 @@ acknowledging it is a later delivery concern.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import sqlite3
@@ -69,6 +70,12 @@ CREATE TABLE IF NOT EXISTS runs (
 CREATE TABLE IF NOT EXISTS watch_state (
     profile_version TEXT PRIMARY KEY,
     last_watch      TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS documents (
+    url_hash TEXT PRIMARY KEY,   -- sha256(url)
+    url      TEXT NOT NULL,
+    text     TEXT NOT NULL
 );
 """
 
@@ -354,3 +361,33 @@ class SqliteScoreCache:
 
     def set(self, key: tuple[str, str], match: Match) -> None:
         self.store.save_match(match)
+
+
+class SqliteDocumentCache:
+    """SQLite-backed DocumentCache (documents.DocumentCache Protocol).
+
+    Persists extracted PDF text keyed by sha256(url), so attachment PDFs are not
+    re-downloaded across runs. Empty text is cached too (a failed/non-PDF fetch
+    is not retried).
+    """
+
+    def __init__(self, store: Store) -> None:
+        self.store = store
+
+    @staticmethod
+    def _key(url: str) -> str:
+        return hashlib.sha256(url.encode("utf-8")).hexdigest()
+
+    def get(self, url: str) -> str | None:
+        row = self.store.conn.execute(
+            "SELECT text FROM documents WHERE url_hash=?", (self._key(url),)
+        ).fetchone()
+        return row["text"] if row else None
+
+    def set(self, url: str, text: str) -> None:
+        self.store.conn.execute(
+            "INSERT INTO documents (url_hash, url, text) VALUES (?, ?, ?) "
+            "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, text=excluded.text",
+            (self._key(url), url, text),
+        )
+        self.store.conn.commit()

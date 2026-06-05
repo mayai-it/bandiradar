@@ -18,6 +18,8 @@
   Lombardia (regional); plus a bundled ANAC OCDS mapper.
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
+- **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the
+  matcher so it reads the real requirements, not just title + CPV.
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
 - **CLI + MCP server** — drive it from a shell or from an AI agent.
 - **Fully offline on `--sample`** — every demo and the whole test suite run with
@@ -31,6 +33,7 @@
 - [Stage 2: LLM scoring](#stage-2-llm-scoring)
 - [Sources](#sources)
 - [Intelligence and benchmarks](#intelligence-and-benchmarks)
+- [Document enrichment (PDF/OCR)](#document-enrichment-pdfocr)
 - [Watch and export](#watch-and-export)
 - [AI agents (MCP)](#ai-agents-mcp)
 - [Status](#status)
@@ -262,6 +265,34 @@ Enrichment is append-only on a **copy** of the cached match: the cache always
 stores the bare match, so repeated runs never double-append. The
 `search_opportunities` MCP tool takes the same `with_benchmarks` flag. ANAC data
 licensing is under [Data and licenses](#data-and-licenses).
+
+## Document enrichment (PDF/OCR)
+
+Most of a tender's real requirements live in attachment PDFs (the
+*disciplinare*/*bando*), not in the title or CPV. With `--with-documents`, the
+matcher fetches an opportunity's `document_urls`, extracts the text, and folds it
+into **every** matching input — the prefilter keyword gate, the offline
+heuristic's overlap, and the LLM prompt — so requirements that exist only in the
+attachments can still drive (or sink) a match. Extracted text is cached per URL
+(SQLite), so PDFs aren't re-downloaded.
+
+```bash
+uv run bandiradar match --profile mine.yaml --source ted --sample --with-documents
+```
+
+- **Optional and injected** — like the score/benchmark caches; off by default.
+  The default install only needs `pypdf`.
+- **OCR for scanned PDFs** is the optional `ocr` extra:
+  `uv sync --extra ocr` plus the system binaries `tesseract` and `poppler`. When
+  absent, OCR is skipped cleanly (text-based PDFs still work). Enrichment never
+  raises into the matcher — a failed fetch/parse degrades to no added text.
+- **Honest source coverage:** only `ted` currently carries a per-notice document
+  link (the notice PDF). `lombardia`, `incentivi`, and `anac` expose no per-document
+  attachment URL in their data, so `document_urls` is empty for them (no faking) —
+  until those links are wired, `--with-documents` is a no-op there.
+
+> `--with-documents` fetches PDFs over the network, so (unlike the default
+> `--sample` flow) it is **not** offline.
 
 ## Watch and export
 

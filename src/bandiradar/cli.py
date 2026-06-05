@@ -141,6 +141,9 @@ def match(
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
     ),
+    with_documents: bool = typer.Option(
+        False, "--with-documents", help="Fetch attachment PDFs into the matcher"
+    ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
     json_out: bool = typer.Option(False, "--json", help="JSON output"),
 ):
@@ -156,6 +159,7 @@ def match(
             min_score=min_score,
             limit=limit,
             with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -281,6 +285,9 @@ def watch(
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
     ),
+    with_documents: bool = typer.Option(
+        False, "--with-documents", help="Fetch attachment PDFs into the matcher"
+    ),
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     rss: str | None = typer.Option(None, "--rss", help="Write RSS feed to PATH"),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
@@ -301,6 +308,7 @@ def watch(
             sample=sample,
             since=_parse_since(since),
             with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -391,6 +399,9 @@ def batch(
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
     ),
+    with_documents: bool = typer.Option(
+        False, "--with-documents", help="Fetch attachment PDFs into the matcher"
+    ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     csv_path: str | None = typer.Option(None, "--csv", help="Write CSV to PATH"),
@@ -412,6 +423,7 @@ def batch(
             min_score=min_score,
             top=top,
             with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)

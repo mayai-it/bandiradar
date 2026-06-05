@@ -78,13 +78,14 @@ def search_opportunities(
     min_score: int = 0,
     limit: int | None = None,
     with_benchmarks: bool = False,
+    with_documents: bool = False,
     db: str | None = None,
 ) -> list[dict[str, Any]]:
     """Rank opportunities for a profile (offline in sample mode).
 
     Accepts EITHER ``profile_path`` OR an inline ``profile`` dict. Returns ranked
     canonical views — no raw payloads. ``with_benchmarks`` adds ANAC historical
-    benchmark notes (intelligence track).
+    benchmark notes; ``with_documents`` folds attachment-PDF text into matching.
     """
     company = _resolve_profile(profile_path, profile)
     store = Store(db)
@@ -97,6 +98,7 @@ def search_opportunities(
             min_score=min_score,
             limit=limit,
             with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
         )
         return [_opportunity_view(opp, m) for opp, m in ranked]
     finally:

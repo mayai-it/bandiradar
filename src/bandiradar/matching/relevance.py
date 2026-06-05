@@ -148,6 +148,7 @@ def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceR
             opportunity.title,
             opportunity.summary,
             opportunity.eligibility_text,
+            opportunity.document_text,  # PDF enrichment, when present
         )
         if part
     )

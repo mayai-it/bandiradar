@@ -124,6 +124,14 @@ def _notice_url(record: dict[str, Any], pub_number: str) -> str:
     return f"https://ted.europa.eu/en/notice/-/detail/{pub_number}"
 
 
+def _document_urls(record: dict[str, Any]) -> list[str]:
+    """The notice PDF link TED exposes (English preferred) — fed to enrichment."""
+    pdf = record.get("links", {}).get("pdf", {})
+    if isinstance(pdf, dict) and pdf:
+        return [pdf.get("ENG") or next(iter(pdf.values()))]
+    return []
+
+
 def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportunity]:
     """PURE mapping from one TED notice (``raw.payload``) to an Opportunity."""
     record: dict[str, Any] = raw.payload
@@ -158,6 +166,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         deadline=deadline,
         status=default_status(deadline, now),
         eligibility_text=None,
+        document_urls=_document_urls(record),
         raw_ref=raw.id,
         # content_hash auto-fills.
     )

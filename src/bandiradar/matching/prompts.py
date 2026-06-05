@@ -48,11 +48,23 @@ def profile_summary(profile: Profile) -> str:
     )
 
 
+# Cap the document excerpt fed to the LLM so attachment text can't blow up the
+# prompt (extracted PDFs can be long).
+_MAX_DOC_CHARS = 6000
+
+
 def opportunity_brief(opportunity: Opportunity) -> str:
     """Minimal opportunity brief — only the fields the matcher needs."""
     o = opportunity
     value = "—" if o.value_amount is None else f"{o.value_amount} {o.value_currency}"
     deadline = o.deadline.isoformat() if o.deadline else "—"
+    # Eligibility/requirements text includes extracted document_text (PDF
+    # enrichment), so the model reads the real requirements, not just title+CPV.
+    eligibility = " ".join(
+        part for part in (o.eligibility_text, o.document_text) if part
+    ).strip()
+    if len(eligibility) > _MAX_DOC_CHARS:
+        eligibility = eligibility[:_MAX_DOC_CHARS] + " …[truncated]"
     return "\n".join(
         [
             f"Title: {o.title}",
@@ -62,7 +74,7 @@ def opportunity_brief(opportunity: Opportunity) -> str:
             f"CPV: {_join(o.cpv)}",
             f"Value: {value}",
             f"Deadline: {deadline}",
-            f"Eligibility: {o.eligibility_text or '—'}",
+            f"Eligibility: {eligibility or '—'}",
         ]
     )
 

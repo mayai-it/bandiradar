@@ -233,10 +233,11 @@ def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, 
         cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
         # Keyword overlap on MEANINGFUL tokens only (stopwords stripped from both
         # sides), so generic procurement words don't create cross-sector hits.
-        # Also covers eligibility_text: CPV-less incentives carry their signal
-        # there and must not be dropped before scoring.
+        # Covers eligibility_text AND extracted document_text (PDF enrichment), so
+        # requirements that live only in the attachments still drive a match.
         profile_tokens = meaningful_tokens(" ".join(profile.keywords))
-        opp_tokens = meaningful_tokens(f"{haystack} {_norm(opp.eligibility_text)}")
+        elig = f"{_norm(opp.eligibility_text)} {_norm(opp.document_text)}"
+        opp_tokens = meaningful_tokens(f"{haystack} {elig}")
         keyword_ok = bool(profile_tokens & opp_tokens)
         if not (cpv_ok or keyword_ok):
             return False, "no CPV match or keyword hit"

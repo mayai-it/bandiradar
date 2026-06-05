@@ -17,7 +17,7 @@ from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
 from bandiradar.models import Match, Opportunity, Profile
 from bandiradar.sources.base import Source, get, list_sources
-from bandiradar.storage import SqliteScoreCache, Store
+from bandiradar.storage import SqliteDocumentCache, SqliteScoreCache, Store
 
 
 def load_profile(path: str | Path) -> Profile:
@@ -70,12 +70,15 @@ def run_match(
     limit: int | None = None,
     now: datetime | None = None,
     with_benchmarks: bool = False,
+    with_documents: bool = False,
 ) -> list[tuple[Opportunity, Match]]:
     """Prefilter + score stored opportunities, ranked by score descending.
 
     ``with_benchmarks`` adds optional ANAC-history enrichment (intelligence
-    track), read from a BenchmarkStore on the same DB. Graceful: an empty
-    benchmarks table simply yields no enrichment, never an error.
+    track), read from a BenchmarkStore on the same DB. ``with_documents`` fetches
+    each prefiltered opportunity's attachment PDFs and folds their text into the
+    matcher input (cached per URL). Both are graceful no-ops when there's nothing
+    to add.
     """
 
     def _stored() -> list[Opportunity]:
@@ -89,6 +92,13 @@ def run_match(
         opportunities = _stored()
 
     kept = prefilter(opportunities, profile, now=now)
+
+    if with_documents:
+        from bandiradar.documents import enrich as enrich_documents
+
+        doc_cache = SqliteDocumentCache(store)
+        kept = [enrich_documents(opp, cache=doc_cache) for opp in kept]
+
     cache = SqliteScoreCache(store)
 
     benchmark_store = None
@@ -149,6 +159,7 @@ def run_batch(
     min_score: int = 0,
     top: int | None = None,
     with_benchmarks: bool = False,
+    with_documents: bool = False,
     now: datetime | None = None,
 ) -> list[tuple[Profile, list[tuple[Opportunity, Match]]]]:
     """Run every profile against the sources; return (profile, ranked) per profile.
@@ -173,6 +184,7 @@ def run_batch(
             min_score=min_score,
             now=now,
             with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
         )
         if source_ids:
             wanted = set(source_ids)
@@ -191,6 +203,7 @@ def run_watch(
     since: datetime | None = None,
     client: LLMClient | None = None,
     with_benchmarks: bool = False,
+    with_documents: bool = False,
     now: datetime | None = None,
 ) -> list[tuple[Opportunity, Match]]:
     """Monitor loop: fetch + dedupe/change-detect, then return ONLY matches whose
@@ -224,6 +237,7 @@ def run_watch(
         client=client,
         now=moment,
         with_benchmarks=with_benchmarks,
+        with_documents=with_documents,
     )
     delta = [(opp, match) for opp, match in ranked if opp.id in changed_ids]
 
