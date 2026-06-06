@@ -20,6 +20,8 @@ MODULES = [
     "bandiradar.sources.incentivi",
     "bandiradar.sources.lombardia",
     "bandiradar.sources.lazio",
+    "bandiradar.sources.toscana",
+    "bandiradar.sources.llm_scraper",
     "bandiradar.matching",
     "bandiradar.matching.prefilter",
     "bandiradar.matching.relevance",

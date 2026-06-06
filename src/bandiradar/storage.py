@@ -77,6 +77,12 @@ CREATE TABLE IF NOT EXISTS documents (
     url      TEXT NOT NULL,
     text     TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS extractions (
+    url_hash TEXT PRIMARY KEY,   -- sha256(detail url)
+    url      TEXT NOT NULL,
+    data     TEXT NOT NULL       -- JSON of the LLM-extracted bando fields
+);
 """
 
 
@@ -389,5 +395,33 @@ class SqliteDocumentCache:
             "INSERT INTO documents (url_hash, url, text) VALUES (?, ?, ?) "
             "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, text=excluded.text",
             (self._key(url), url, text),
+        )
+        self.store.conn.commit()
+
+
+class SqliteExtractionCache:
+    """SQLite-backed cache of LLM-extracted bando fields, keyed by sha256(url).
+
+    Lets the LLM-assisted scraper avoid re-paying for extraction across runs.
+    """
+
+    def __init__(self, store: Store) -> None:
+        self.store = store
+
+    @staticmethod
+    def _key(url: str) -> str:
+        return hashlib.sha256(url.encode("utf-8")).hexdigest()
+
+    def get(self, url: str) -> dict | None:
+        row = self.store.conn.execute(
+            "SELECT data FROM extractions WHERE url_hash=?", (self._key(url),)
+        ).fetchone()
+        return json.loads(row["data"]) if row else None
+
+    def set(self, url: str, data: dict) -> None:
+        self.store.conn.execute(
+            "INSERT INTO extractions (url_hash, url, data) VALUES (?, ?, ?) "
+            "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, data=excluded.data",
+            (self._key(url), url, json.dumps(data, ensure_ascii=False)),
         )
         self.store.conn.commit()

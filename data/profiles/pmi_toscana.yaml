@@ -1,0 +1,14 @@
+# Tuscan SME investing in digital/energy transition — matches Toscana bandi.
+name: "Innova Toscana S.r.l."
+language: it
+ateco: ["62.01", "28.29"]                  # software / industrial machinery
+cpv_interests: []                          # incentives, no CPV — keyword-driven
+keywords:
+  ["transizione digitale", "efficientamento energetico", "innovazione",
+   "investimenti", "digitalizzazione"]
+regions: ["Toscana"]
+value_range: { min: 5000, max: 5000000 }
+capabilities: >
+  PMI toscana che investe in transizione digitale ed efficientamento energetico
+  dei processi produttivi; innovazione e investimenti produttivi.
+exclusions: ["catering"]

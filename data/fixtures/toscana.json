@@ -1,0 +1,259 @@
+{
+ "_note": "RECORDED LLM extractions of Sviluppo Toscana bandi (one per detail page). OFFLINE tests/--sample read these; they never call the LLM.",
+ "_source": "https://www.sviluppo.toscana.it/bando/<...> via LLM extraction",
+ "_captured": "2026-06-06",
+ "records": [
+  {
+   "title": "Azione 2.4.1.2 a \"Studio, indagine e monitoraggio sul rischio sismico\"",
+   "summary": "Sostegno alla realizzazione di studi di pericolosità sismica locale mediante indagini avanzate di Microzonazione Sismica di livello 4 (MS4) per i Comuni toscani",
+   "eligibility_text": "Possono presentare domanda i Comuni che già dispongono, alla data di pubblicazione sul BURT del presente bando, di studi di Microzonazione Sismica di livello 3 redatti in conformità con le normative nazionali e regionali in materia ed approvati dagli uffici regionali competenti",
+   "value_amount": 1000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-27",
+   "keywords": [
+    "rischio sismico",
+    "microzonazione sismica",
+    "pericolosità sismica",
+    "transizione ecologica",
+    "resilienza",
+    "prevenzione del rischio",
+    "studi geologici"
+   ],
+   "kind": "incentive",
+   "_post_id": 12084,
+   "_url": "https://www.sviluppo.toscana.it/bando/azione-2-4-1-2-a-studio-indagine-e-monitoraggio-sul-rischio-sismico/",
+   "_listing_title": "Azione 2.4.1.2 a  “Studio, indagine e monitoraggio sul rischio sismico”"
+  },
+  {
+   "title": "Bando Energia Immobili Imprese ex Azione 2.1.3 e 2.1.2 PR FESR 2021-2027 (Rendicontazione)",
+   "summary": "Bando progetti di efficientamento energetico degli immobili sedi di imprese secondo le Azioni 2.1.3 (Efficientamento energetico delle imprese - immobili sedi di imprese) e 2.1.2 (Efficientamento energetico nelle RSA - private)",
+   "eligibility_text": "PMI",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "efficientamento energetico",
+    "immobili",
+    "imprese",
+    "energia",
+    "FESR"
+   ],
+   "kind": "incentive",
+   "_post_id": 11907,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-energia-immobili-imprese-ex-azione-2-1-3-e-2-1-2-pr-fesr-2021-2027-rendicontazione/",
+   "_listing_title": "Bando Energia Immobili Imprese ex Azione 2.1.3 e 2.1.2 PR FESR 2021-2027 (Rendicontazione)"
+  },
+  {
+   "title": "Bando Energia Imprese processi produttivi ex Azione 2.1.3 (rendicontazione)",
+   "summary": "Bando per progetti di efficientamento energetico dei processi produttivi delle imprese finanziato da FESR 2021-2027",
+   "eligibility_text": "PMI",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "energia",
+    "efficientamento energetico",
+    "processi produttivi",
+    "PMI",
+    "FESR"
+   ],
+   "kind": "incentive",
+   "_post_id": 11787,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-energia-imprese-processi-produttivi-ex-azione-2-1-3-rendicontazione/",
+   "_listing_title": "Bando Energia Imprese processi produttivi ex Azione 2.1.3 (rendicontazione)"
+  },
+  {
+   "title": "Bando OCM Vino 2026",
+   "summary": "Avviso per la concessione di contributi per lo svolgimento di azioni di promozione del vino sui mercati dei Paesi terzi (extra UE). Obiettivo è far conoscere e promuovere il vino toscano nei Paesi non europei.",
+   "eligibility_text": "Possono presentare domanda: organizzazioni professionali con scopi di promozione dei prodotti agricoli; organizzazioni di produttori di vino; associazioni di organizzazioni di produttori di vino; organizzazioni interprofessionali; consorzi di tutela riconosciuti e loro associazioni/federazioni; produttori di vino; soggetti pubblici con comprovata esperienza nel settore vino e promozione; associazioni temporanee di impresa e di scopo; consorzi, associazioni, federazioni e società cooperative con partecipanti tra i soggetti proponenti; reti di impresa composte da produttori di vino.",
+   "value_amount": 13000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "vino",
+    "promozione",
+    "mercati paesi terzi",
+    "OCM",
+    "settore vitivinicolo",
+    "sviluppo impresa"
+   ],
+   "kind": "incentive",
+   "_post_id": 11731,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-ocm-vino-2026/",
+   "_listing_title": "Bando OCM Vino 2026"
+  },
+  {
+   "title": "Avviso Aree interne sub-azione 5.2.1.5",
+   "summary": "Rafforzamento della capacità amministrativa dei Capofila delle Aree interne della Toscana nell'ambito della Strategia regionale per le Aree interne e nell'attuazione degli Investimenti Territoriali Integrati (ITI)",
+   "eligibility_text": "Possono presentare domanda esclusivamente i soggetti Capofila delle sei Aree interne della Toscana: Comune di Volterra; Unione dei Comuni Montani Amiata Grossetana; Unione dei Comuni Valdichiana Senese; Unione dei Comuni Montani del Casentino; Unione dei Comuni Garfagnana; Unione dei Comuni Valdarno e Valdisieve.",
+   "value_amount": 1466850.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-12",
+   "keywords": [
+    "aree interne",
+    "capacità amministrativa",
+    "sviluppo territoriale",
+    "coesione territoriale",
+    "investimenti territoriali integrati",
+    "governance",
+    "FESR 2021-2027"
+   ],
+   "kind": "incentive",
+   "_post_id": 11526,
+   "_url": "https://www.sviluppo.toscana.it/bando/avviso-aree-interne-sub-azione-5-2-1-5/",
+   "_listing_title": "Avviso Aree interne sub-azione 5.2.1.5"
+  },
+  {
+   "title": "Bando 1.3.2 - Sostegno alle PMI (BEI) - ed. 2026",
+   "summary": "Sostegno alle PMI attraverso sovvenzioni per l'abbattimento degli interessi e dei costi di garanzia sui finanziamenti della BEI, finalizzato a investimenti produttivi di ampliamento, diversificazione, consolidamento e transizione tecnologica, digitale ed ecologica",
+   "eligibility_text": "MPMI e liberi professionisti come definite dall'allegato 1 del Reg. (UE) n. 651/2014. Devono operare nei settori ammissibili secondo la delibera di G.R. 704/2025 e il Fondo di Garanzia per le PMI di cui alla L. 662/1996. Esclusi: settori non ammissibili secondo i codici NACE della BEI, settori esclusi dal FESR, settori esclusi dal GBER e dal Regolamento de minimis.",
+   "value_amount": 1706276.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "PMI",
+    "investimenti produttivi",
+    "transizione digitale",
+    "transizione ecologica",
+    "competitività",
+    "finanziamenti",
+    "sovvenzioni",
+    "FESR",
+    "BEI"
+   ],
+   "kind": "incentive",
+   "_post_id": 11481,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-1-3-2-sostegno-alle-pmi-bei-ed-2026/",
+   "_listing_title": "Bando 1.3.2 &#8211; Sostegno alle PMI (BEI) &#8211; ed. 2026"
+  },
+  {
+   "title": "Bando 1.3.2 - Sostegno alle PMI (fino a 50.000 €) - ed. 2026",
+   "summary": "Sovvenzioni per l'abbattimento degli interessi e delle commissioni di garanzia su finanziamenti fino a 50.000 euro destinati a PMI, liberi professionisti e startup per investimenti produttivi",
+   "eligibility_text": "Liberi professionisti, PMI, Startup. Tre linee: LINEA A1 - Creazione di impresa giovanile, femminile o destinataria di ammortizzatori sociali; LINEA A2 - PMI costituite da non oltre 36 mesi precedenti la data di presentazione della domanda, che abbiano rilevato o intendano rilevare l'attività di uno stabilimento chiuso; LINEA B - PMI già costituite. Progetti localizzati sul territorio della Regione Toscana.",
+   "value_amount": 803114.53,
+   "value_min": null,
+   "value_max": 50000.0,
+   "deadline": "2026-05-11",
+   "keywords": [
+    "PMI",
+    "investimenti produttivi",
+    "agevolazioni",
+    "FESR 2021-2027",
+    "transizione digitale",
+    "transizione ecologica",
+    "competitività",
+    "ampliamento imprese",
+    "giovani imprenditori",
+    "imprese femminili"
+   ],
+   "kind": "incentive",
+   "_post_id": 11456,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-1-3-2-sostegno-alle-pmi-fino-a-50-000-e-ed-2026/",
+   "_listing_title": "Bando 1.3.2 &#8211; Sostegno alle PMI (fino a 50.000 €) &#8211; ed. 2026"
+  },
+  {
+   "title": "Natura e Biodiversità Aree Interne (Varianti/Esecutivi)",
+   "summary": "Modifiche/Varianti e presentazione di progetti esecutivi per interventi finanziati nell'ambito delle Strategie di Area interna - Investimento Territoriale Integrato Azione 2.7.2",
+   "eligibility_text": "Beneficiari degli interventi ammessi e approvati all'interno delle Strategie Area interna – Investimento Territoriale Integrato Azione 2.7.2 aree interne Natura e Biodiversità, nel rispetto della normativa in materia di contratti pubblici applicabile",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "transizione ecologica",
+    "biodiversità",
+    "aree interne",
+    "coesione territoriale",
+    "sviluppo locale integrato",
+    "natura"
+   ],
+   "kind": "incentive",
+   "_post_id": 11338,
+   "_url": "https://www.sviluppo.toscana.it/bando/11338-2/",
+   "_listing_title": "Natura e Biodiversità Aree Interne (Varianti/Esecutivi)"
+  },
+  {
+   "title": "BANDO FUNT 2025 parte corrente (rendicontazione)",
+   "summary": "Fondo Unico Nazionale del Turismo di parte corrente 2025 per rendicontazione di finanziamenti destinato a ETS, Grandi imprese, PA e PMI",
+   "eligibility_text": "Destinatari: ETS, Grande impresa, PA, PMI. Beneficiari di precedenti finanziamenti FUNT 2025 che devono rendicontare le spese sostenute",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "Turismo",
+    "Fondo Unico Nazionale del Turismo",
+    "Rendicontazione",
+    "Finanziamenti"
+   ],
+   "kind": "incentive",
+   "_post_id": 11210,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando-funt-2025-parte-corrente-rendicontazione/",
+   "_listing_title": "BANDO FUNT 2025 parte corrente (rendicontazione)"
+  },
+  {
+   "title": "Bando Energia Pubblico 2.1.1 e 2.1.2",
+   "summary": "Bando di Progetti di efficientamento energetico degli immobili pubblici e RSA - PR Toscana FESR 2021-2027 Obiettivo specifico 2 — Azione 2.1.1 e Azione 2.1.2",
+   "eligibility_text": "Destinatari: PA (Pubbliche Amministrazioni)",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "Energia",
+    "Transizione Ecologica",
+    "Efficientamento energetico",
+    "Edifici pubblici",
+    "RSA",
+    "FESR 2021-2027"
+   ],
+   "kind": "incentive",
+   "_post_id": 10144,
+   "_url": "https://www.sviluppo.toscana.it/bando/energiapubblico211212_rend/",
+   "_listing_title": "Bando Energia Pubblico 2.1.1 e 2.1.2"
+  },
+  {
+   "title": "Bando FER imprese ex Azione 2.2.2 e 2.2.3 PR-FESR 2021-2027 (rendicontazione)",
+   "summary": "Bando per la realizzazione di impianti di produzione di energia termica ed elettrica da fonti rinnovabili per gli immobili sedi di imprese e RSA",
+   "eligibility_text": "PMI - Destinatari: imprese e RSA (Residenze Sanitarie Assistenziali)",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "fonti rinnovabili",
+    "energia",
+    "impianti di produzione energetica",
+    "FESR 2021-2027"
+   ],
+   "kind": "incentive",
+   "_post_id": 10136,
+   "_url": "https://www.sviluppo.toscana.it/bando/bando_energia_beif_rend/",
+   "_listing_title": "Bando FER imprese ex Azione 2.2.2 e 2.2.3 PR- FESR 2021- 2027 (rendicontazione)"
+  },
+  {
+   "title": "Bandi Energia Imprese",
+   "summary": "Bando FER imprese",
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "energia",
+    "fonti energetiche rinnovabili",
+    "imprese"
+   ],
+   "kind": "incentive",
+   "_post_id": 10135,
+   "_url": "https://www.sviluppo.toscana.it/bando/bandi_energia_imprese_rend/",
+   "_listing_title": "Bandi Energia Imprese"
+  }
+ ]
+}

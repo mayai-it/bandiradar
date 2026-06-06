@@ -21,7 +21,7 @@ than faked.
 | Region | Portal probed | API | Status |
 |---|---|---|---|
 | **Lazio** | lazioinnova.it | WP-REST `bandi` (content-rich, parseable scadenza) | ✅ **Built** (`lazio`) |
-| Toscana | sviluppo.toscana.it | WP-REST `bando` exists | ⏳ **Candidate** — REST `content` is empty + no deadline exposed; needs per-bando HTML detail scraping (a new pattern, not a WP config entry) |
+| **Toscana** | sviluppo.toscana.it | WP-REST `bando` (links only) + HTML detail pages | ✅ **Built** (`toscana`) — REST `content` is empty + no deadline, so this is the first **LLM-assisted scraper**: fields are LLM-extracted from each bando's HTML page (live fetch needs an LLM key; `--sample` replays a recorded extraction) |
 | Sicilia | irfis.it | WordPress (Avada theme) | ⏭️ Skip — no bandi post type; bandi are pages/PDFs |
 | Marche | regione.marche.it | reachable, not WP-REST | ⏭️ Skip — bespoke CMS, no clean bandi API |
 | Piemonte | finpiemonte.it | not WordPress (404 `/wp-json`) | ⏭️ Skip — no clean API found |

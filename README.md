@@ -8,14 +8,16 @@
 > (public tenders, grants, incentives), normalizes them into **one canonical
 > model**, and ranks them against a company profile with a two-stage matcher.
 
-**Runs offline, zero secrets · 4 live key-less sources · optional LLM Stage-2 · MIT**
+**Runs offline, zero secrets · 4 live key-less sources + 1 LLM-assisted scraper · optional LLM Stage-2 · MIT**
 
 ## Features
 
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
   a **zero-secrets offline heuristic fallback** (the LLM is optional).
 - **4 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
-  Lombardia and Regione Lazio (regional); plus a bundled ANAC OCDS mapper.
+  Lombardia and Regione Lazio (regional); plus a bundled ANAC OCDS mapper. A 5th,
+  Regione Toscana, is an **LLM-assisted scraper** (live fetch needs an LLM key;
+  `--sample` replays a recorded extraction offline).
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the
@@ -177,6 +179,7 @@ MedForniture medical devices        76               92   ← strong sector fit 
 | **`ted`** | TED — Tenders Electronic Daily, the EU's portal for **above-threshold, OPEN, biddable tenders** (includes large Italian public tenders). | ✅ Wired — anonymous, no API key. |
 | **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). Carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
 | **`lazio`** | Regione Lazio — **regional business incentives** (`kind="incentive"`), from the LazioInnova bandi portal (WordPress REST API). The source the MayAI dogfood profile matches. | ✅ Wired — WP REST, no API key. |
+| **`toscana`** | Regione Toscana — **regional business incentives** (`kind="incentive"`), from the Sviluppo Toscana bandi portal. First **LLM-assisted scraper**: the portal has no field API, so an LLM extracts the canonical fields from each bando page. | ⚠️ Wired — live `fetch()` **needs an LLM key**; fields are extracted from the portal's HTML bando pages. `--sample` replays a recorded extraction offline. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
 
 ```bash
@@ -227,6 +230,20 @@ rather than a one-line config. We don't ship half-working adapters: a portal
 that's unreachable, retrospective-only, or API-less is skipped, not faked. The
 per-region status (what's been checked, where coverage is needed) lives in
 [`docs/regions.md`](docs/regions.md) — **regional contributions are very welcome.**
+
+For those API-less portals, `toscana` is the reference **LLM-assisted scraper**:
+`fetch()` lists each bando's detail page, fetches the HTML, and an LLM extracts the
+canonical fields (title, deadline, eligibility, amounts, keywords), cached per URL.
+That extraction is I/O, so it lives in `fetch()` and **needs an LLM key** —
+`to_opportunities` stays pure, and `--sample` replays a recorded extraction with
+**zero secrets**:
+
+```bash
+uv run bandiradar fetch --source toscana --sample   # offline, recorded extraction
+uv run bandiradar match --profile data/profiles/pmi_toscana.yaml --source toscana --sample
+# -> Bando Energia Imprese (92), Bando 1.3.2 Sostegno alle PMI/BEI (82),
+#    Bando Energia Immobili Imprese (78); public-only Energia Pubblico dropped to 15
+```
 
 ## Intelligence and benchmarks
 
@@ -363,6 +380,9 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
   no network and no API key.
 - ✅ **4 live key-less sources** — `incentivi`, `ted`, `lombardia`, `lazio`. `--sample`
   keeps them offline against recorded real captures.
+- ✅ **1 LLM-assisted scraper** — `toscana`: live `fetch()` extracts fields from the
+  portal's HTML bando pages with an LLM (needs a key); `--sample` replays a recorded
+  extraction with zero secrets.
 - ✅ **Stage-2 LLM scoring is wired and working** (optional); with no key it
   transparently uses the offline heuristic — a proxy, not real semantic relevance.
 - ⏳ **Live ANAC/PNCP fetch is pending** — the mapper + fixture are done and
@@ -396,6 +416,8 @@ which depends on this package — never the reverse.
 - Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
   incentives), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione Lazio**
   (LazioInnova incentives), all key-less; ANAC OCDS mapper bundled.
+- **LLM-assisted scraper** for API-less regional portals — **Regione Toscana**
+  (Sviluppo Toscana) is the first instance (live fetch needs an LLM key).
 - **Intelligence track:** ANAC historical benchmarks + optional matcher
   enrichment (`--with-benchmarks`).
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
@@ -436,6 +458,10 @@ its operator requires you to honor:
   development agency) and read via its WordPress REST API
   (`lazioinnova.it/wp-json`). Source: LazioInnova / Regione Lazio; attribute the
   source when reusing.
+- **Regione Toscana / Sviluppo Toscana** — bandi published on the Sviluppo Toscana
+  portal (`sviluppo.toscana.it`); detail-page links come from its WP REST listing
+  and the fields are LLM-extracted from each public bando page. Source: Sviluppo
+  Toscana / Regione Toscana; attribute the source when reusing.
 - **ANAC public contracts (CC BY 4.0)** — via the
   [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/);
   the intelligence track streams the gzipped JSONL memory-safely.
