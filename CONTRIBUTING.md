@@ -79,6 +79,29 @@ The full suite must pass **without any API keys or network**. The LLM matcher
 has a deterministic offline fallback precisely so CI and contributors never need
 secrets.
 
+## Contract tests & the live drift check
+
+Each live source has a **contract test** (`tests/test_contracts.py`) that drives
+its real `fetch()` against a recorded HTTP response *cassette* in
+`tests/cassettes/` — envelope included (the pagination wrapper, not just inner
+records) — via an `httpx.MockTransport`. These run **offline, in CI**, and pin our
+fetch+parse to the real response shape.
+
+An **opt-in live drift check** (`tests/test_live.py`, marked `@pytest.mark.live`)
+hits each key-less source's real endpoint and asserts the shape we parse still
+holds. It's **deselected by default** (`addopts = -m "not live"`) so normal runs
+and CI never touch the network. Run it on demand:
+
+```bash
+uv run pytest -m live        # hits the real endpoints (network required)
+```
+
+**When a source's API changes** (a live check fails, or you're updating an
+adapter): re-record its cassette under `tests/cassettes/<source>.<ext>` from a
+real response — keep the **envelope** (e.g. TED `{"notices": […], …}`, incentivi
+`{"response": {"docs": […]}}`, Socrata/WP a bare JSON array, the OCP mirror a
+gzipped JSONL) — then update the parser and the contract test together in one PR.
+
 ## Commit & PR conventions
 
 - **Branch** off `main`; keep a PR focused on one source / one change.

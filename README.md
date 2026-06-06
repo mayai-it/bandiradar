@@ -465,6 +465,11 @@ a test — adding one is a new file, no core changes. See
 (`skills/add-a-source/`) for the full copy-pasteable template; the playbook also
 lives in `CLAUDE.md` ("How to add a new Source").
 
+Each source also has an offline **contract test** against a recorded real response
+(`tests/cassettes/`), plus an **opt-in live drift check** that runs only with
+`uv run pytest -m live` (never in CI). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for
+how to run it and re-record a cassette when an API changes.
+
 ## License
 
 MIT © MayAI — see [`LICENSE`](LICENSE).

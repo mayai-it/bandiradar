@@ -79,6 +79,11 @@ quote-style = "double"
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-ra"
+# Deselect the opt-in live drift checks by default (they hit the network). Run
+# them explicitly with `uv run pytest -m live`.
+addopts = '-ra -m "not live"'
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "live: hits a real source endpoint over the network (opt-in; not run in CI)",
+]

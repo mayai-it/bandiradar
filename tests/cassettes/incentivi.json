@@ -1,0 +1,251 @@
+{
+ "responseHeader": {
+  "status": 0,
+  "QTime": 1
+ },
+ "response": {
+  "numFound": 1,
+  "start": 0,
+  "docs": [
+   {
+    "id": "t9gcjo-incentivi-entity:node/3400:it",
+    "sm_context_tags": [
+     "search_api_X2f_index_X3a_incentivi",
+     "search_api_solr_X2f_site_hash_X3a_t9gcjo",
+     "drupal_X2f_langcode_X3a_it"
+    ],
+    "tum_X3b_it_output": [
+     "Agricoltura, silvicoltura e pesca",
+     "Agroalimentare",
+     "Altri servizi",
+     "Alberghiero",
+     "Artigianato",
+     "Autoveicoli e altri mezzi di trasporto",
+     "Chimica e Farmaceutica",
+     "Commercio",
+     "Cultura",
+     "Edilizia",
+     "Elettronica",
+     "Fornitura Energia, Acqua e gestione Rifiuti",
+     "ICT",
+     "Meccanica",
+     "Metallurgia",
+     "Mobili, Legno e Carta",
+     "Moda e Tessile",
+     "Ristorazione",
+     "Salute",
+     "Turismo",
+     "Servizi di trasporto",
+     "Tutti i settori economici ammissibili a ricevere aiuti",
+     "<p>2066866</p>",
+     "25835",
+     "2026-06-30T00:00:00",
+     "0",
+     "1000000",
+     "Microimpresa",
+     "Media Impresa",
+     "Grande Impresa",
+     "Non classificabile/classificato",
+     "Piccola Impresa",
+     "<p>Non classificabile (Soggetto Pubblico); Piccola Impresa (escluse Microimprese); Grande Impresa; Microimpresa; Media Impresa</p>",
+     "Formazione Professionale",
+     "Costo del personale",
+     "Materie prime, di consumo e merci",
+     "Servizi, brevetti e licenze",
+     "Spese generali/altri oneri",
+     "Impianti/Macchinari/Attrezzature",
+     "Fabbricati e terreni",
+     "<p>Immateriali - Know-How; Immateriali - Marchi; Materiali - Progettazione/studi/consulenze; Oneri diversi di gestione; Oneri finanziari; Servizi - Servizi professionali; Costi di personale - Costo del personale; Immateriali - Diritti Di Brevetto; Costi generali - Spese generali; Immateriali - Licenze; Materiali - Impianti/Macchinari/Attrezzature; Materie prime, di consumo e merci; Servizi - Altri servizi; Costi di personale - Formazione Professionale; Immateriali - Conoscenze Tecniche Non Brevettate; Ammortamenti - Costo dei fabbricati e dei terreni; Ammortamenti - Costi della ricerca contrattuale, delle conoscenze e dei brevetti acquisiti o ottenuti in licenza da fonti esterne alle normali condizioni di mercato; Ammortamenti - Costo di strumenti e attrezzature</p>",
+     "105173",
+     "<p>Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR</p>",
+     "1734521555",
+     "2023-03-10T00:00:00",
+     "Ministero delle Imprese e del Made in Italy - Dipartimento per le politiche per le imprese - Direzione generale per la politica industriale, la riconversione e la crisi industriale, l’innovazione, le PMI e il made in Italy (Autorità responsabile) Dipartimento per le politiche per le imprese - DGIND - Divisione II - Politiche per la digitalizzazione delle imprese, l’innovazione e l’analisi dei settori produttivi (Unità Organizzativa)",
+     "<p>Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR</p>",
+     "Campania",
+     "Puglia",
+     "Digitalizzazione",
+     "Innovazione e ricerca",
+     "Start up/Sviluppo d'impresa",
+     "<p>Ministero delle Imprese e del Made in Italy</p>",
+     "Impresa",
+     "Contributo/Fondo perduto",
+     "<p>Sovvenzione/Contributo in conto interessi - Contributo diretto alla spesa</p>",
+     "0",
+     "300000"
+    ],
+    "zs_rendered_item": "\n<article class=\"node node--type-incentivo node--view-mode-teaser clearfix incentivo\">\n    \n    \n    <div class=\"node__content clearfix\">\n        <div class=\"teaser-card\">\n            <div class=\"area-container\" open-date=\"2023-03-10T00:00:00Z\"\n                 close-date=\"2026-06-30T00:00:00Z\">\n                <div class=\"tag open d-none\">Attivo</div>\n                <div class=\"tag closed d-none\">Chiuso</div>\n                <div class=\"tag scheduled d-none\">In Arrivo</div>\n                \n    <div tabindex=\"-1\"  id=\"taxonomy-term-265\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Digitalizzazione</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-273\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Innovazione e ricerca</div>\n      \n    </div>\n</div>\n\n    <div tabindex=\"-1\"  id=\"taxonomy-term-580\" class=\"taxonomy-term vocabulary-scopes\" >\n    \n    \n    <div class=\"area\">\n        \n            <div class=\"field field--name-name field--type-string field--label-hidden field__item\">Start up/Sviluppo d&#039;impresa</div>\n      \n    </div>\n</div>\n\n\n            </div>\n            <div class=\"title\">\n            <div class=\"field field--name-field-page-title field--type-text-long field--label-hidden field__item\"><p>Manifestazione d&#039;interesse per l&#039;accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH</p>\n</div>\n      </div>\n            <div class=\"btn-container\">\n                <div\n                    class=\"notification-status\">Notifiche via email:\n                    <span\n                        class=\"active\">Attive</span>\n                    <span\n                        class=\"inactive\">Disattivate</span>\n                </div>\n\n                <div class=\"toggle-space d-none\">\n                    <div class=\"title-switch\">\n                        Notifiche via email\n                    </div>\n                    <label class=\"switch\">\n                        <label for=\"newsletterCheckbox\"></label>\n                        <input type=\"checkbox\" id=\"newsletterCheckbox\" data-make-me-accessible>\n                        <span class=\"slider round\" aria-label=\"Sottoscrivi Newsletter\" ></span>\n                    </label>\n                </div>\n\n                <div class=\"buttons\">\n                    <div class=\"btn url\" data-open-full-page data-make-me-accessible role=\"button\">\n                        <a tabIndex=\"-1\" href=\"/it/catalogo/manifestazione-dinteresse-laccesso-ai-servizi-la-digitalizzazione-forniti-da-soe-ap-edih\">vai alla scheda <span class=\"visually-hidden\">Manifestazione d&amp;#039;interesse per l&amp;#039;accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH</span></a>\n                    </div>\n                    <div class=\"icons\">\n                        <div class=\"tooltip\">\n                            <div class=\"text\">Non è possibile aggiungere altri incentivi al confronto</div>\n                            <div class=\"flag\"></div>\n                        </div>\n                        <button class=\"wrapper-icn compare\" aria-label=\"Aggiungi l'incentivo al tool di confronto\"><i class=\"icn icn-compare\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn d-none compare\" aria-label=\"Rimuovi l'incentivo dal tool di confronto\"><i class=\"icn icn-compare-selected d-none\" data-make-me-accessible aria-hidden=\"true\" title=\"confronta\"></i></button>\n                        <button class=\"wrapper-icn\"><i class=\"icn icn-saved\" data-make-me-accessible aria-hidden=\"true\" title=\"aggiungi ai preferiti\" aria-haspopup=\"true\" aria-label=\"Aggiungi l'incentivo ai preferiti\"><div class=\"spinner hearth\"></div></i></button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n</article>\n",
+    "zs_url": "/it/catalogo/manifestazione-dinteresse-laccesso-ai-servizi-la-digitalizzazione-forniti-da-soe-ap-edih",
+    "zs_body": "Cos'è Il So E AP-EDIH (Apulian European Digital Innovation Hub) è un centro di innovazione digitale localizzato in Puglia e Campania nato per supportare le PMI regionali nella transizione digitale. Si occupa di fornire servizi avanzati in ambiti come Intelligenza Artificiale e Cybersecurity, con focus su settori strategici come manifattura, agroalimentare, sanità, energia.  A chi si rivolge I servizi sono rivolti alle PMI Pugliesi e Campane.  Cosa prevede AP-EDIH offre servizi integrati di assessment tecnologico, test prima dell’investimento, formazione, supporto agli investimenti e networking, collaborando anche con altri hub italiani ed europei per rafforzare la leadership digitale a livello UE. ",
+    "tum_X3b_it_body_ft": [
+     "Cos'è",
+     "Il So E AP-EDIH (Apulian European Digital Innovation Hub) è un centro di innovazione digitale localizzato in Puglia e Campania nato per supportare le PMI regionali nella transizione digitale. Si occupa di fornire servizi avanzati in ambiti come Intelligenza Artificiale e Cybersecurity, con focus su settori strategici come manifattura, agroalimentare, sanità, energia.  ",
+     "A chi si rivolge",
+     "I servizi sono rivolti alle PMI Pugliesi e Campane.  ",
+     "Cosa prevede",
+     "AP-EDIH offre servizi integrati di assessment tecnologico, test prima dell’investimento, formazione, supporto agli investimenti e networking, collaborando anche con altri hub italiani ed europei per rafforzare la leadership digitale a livello UE.  "
+    ],
+    "zm_field_activity_sector": [
+     "586",
+     "474",
+     "490",
+     "484",
+     "260",
+     "480",
+     "476",
+     "482",
+     "487",
+     "249",
+     "478",
+     "250",
+     "486",
+     "479",
+     "477",
+     "481",
+     "475",
+     "485",
+     "489",
+     "488",
+     "483"
+    ],
+    "zs_field_activity_sector": "586",
+    "zm_field_activity_sector_value": [
+     "Agricoltura, silvicoltura e pesca",
+     "Agroalimentare",
+     "Altri servizi",
+     "Alberghiero",
+     "Artigianato",
+     "Autoveicoli e altri mezzi di trasporto",
+     "Chimica e Farmaceutica",
+     "Commercio",
+     "Cultura",
+     "Edilizia",
+     "Elettronica",
+     "Fornitura Energia, Acqua e gestione Rifiuti",
+     "ICT",
+     "Meccanica",
+     "Metallurgia",
+     "Mobili, Legno e Carta",
+     "Moda e Tessile",
+     "Ristorazione",
+     "Salute",
+     "Turismo",
+     "Servizi di trasporto"
+    ],
+    "zs_field_activity_sector_value": "Agricoltura, silvicoltura e pesca",
+    "zs_field_ateco": "Tutti i settori economici ammissibili a ricevere aiuti",
+    "zs_field_budget_allocation": "2066866",
+    "zs_field_close_date": "2026-06-30T00:00:00",
+    "zs_field_cost_max": "1000000",
+    "zs_field_cost_min": "0",
+    "zm_field_costs": [
+     "0",
+     "1000000"
+    ],
+    "zs_field_costs": "1000000",
+    "zm_field_dimensions": [
+     "570",
+     "212",
+     "211",
+     "263",
+     "213"
+    ],
+    "zs_field_dimensions": "570",
+    "zm_field_dimensions_value": [
+     "Microimpresa",
+     "Media Impresa",
+     "Grande Impresa",
+     "Non classificabile/classificato",
+     "Piccola Impresa"
+    ],
+    "zs_field_dimensions_value": "Microimpresa",
+    "zm_field_granted_costs": [
+     "299",
+     "284",
+     "285",
+     "215",
+     "217",
+     "216",
+     "289"
+    ],
+    "zs_field_granted_costs": "299",
+    "zm_field_granted_costs_value": [
+     "Formazione Professionale",
+     "Costo del personale",
+     "Materie prime, di consumo e merci",
+     "Servizi, brevetti e licenze",
+     "Spese generali/altri oneri",
+     "Impianti/Macchinari/Attrezzature",
+     "Fabbricati e terreni"
+    ],
+    "zs_field_granted_costs_value": "Formazione Professionale",
+    "zs_field_implementation_ruleset": "Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR",
+    "zs_field_link": "https://www.medisdih.it/wp/",
+    "zs_field_multibando": "0",
+    "zs_field_open_date": "2023-03-10T00:00:00",
+    "zs_field_primary_ruleset": "Misure urgenti rafforzamento della capacità amministrativa delle PAs...funzionale alPNRR",
+    "zm_field_regions": [
+     "221",
+     "230"
+    ],
+    "zs_field_regions": "221",
+    "zm_field_regions_value": [
+     "Campania",
+     "Puglia"
+    ],
+    "zs_field_regions_value": "Campania",
+    "zm_field_scopes": [
+     "265",
+     "273",
+     "580"
+    ],
+    "zs_field_scopes": "265",
+    "zm_field_scopes_value": [
+     "Digitalizzazione",
+     "Innovazione e ricerca",
+     "Start up/Sviluppo d'impresa"
+    ],
+    "zs_field_scopes_value": "Digitalizzazione",
+    "zs_field_subject_grant": "Ministero delle Imprese e del Made in Italy",
+    "zm_field_subject_type": [
+     "238"
+    ],
+    "zs_field_subject_type": "238",
+    "zm_field_subject_type_value": [
+     "Impresa"
+    ],
+    "zs_field_subject_type_value": "Impresa",
+    "zm_field_support_form": [
+     "264"
+    ],
+    "zs_field_support_form": "264",
+    "zm_field_support_form_value": [
+     "Contributo/Fondo perduto"
+    ],
+    "zs_field_support_form_value": "Contributo/Fondo perduto",
+    "zs_field_support_grant_type_max": "300000",
+    "zs_field_support_grant_type_min": "0",
+    "zm_field_support_grant_type_min_max": [
+     "0",
+     "300000"
+    ],
+    "zs_field_support_grant_type_min_max": "300000",
+    "zs_nid": "3400",
+    "zs_title": "Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH",
+    "tum_X3b_it_title_ft": [
+     "Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH"
+    ],
+    "ss_search_api_id": "entity:node/3400:it",
+    "site": "https://www.incentivi.gov.it/it",
+    "ds_last_update": "2024-12-18T11:32:35Z",
+    "boost_document": 1.0,
+    "_version_": 1860757702984073216,
+    "ss_search_api_datasource": "entity:node",
+    "index_id": "incentivi",
+    "hash": "t9gcjo",
+    "timestamp": "2026-03-26T20:27:09Z",
+    "ss_search_api_language": "it"
+   }
+  ]
+ }
+}
