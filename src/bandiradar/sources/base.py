@@ -11,11 +11,14 @@ package, which imports the bundled ones) populates the registry.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime
 from typing import Protocol, runtime_checkable
 
 from bandiradar.models import Kind, Opportunity, RawDoc
+
+# A progress sink: live fetches call it per page (e.g. "ted: page 3, 280 fetched").
+ProgressFn = Callable[[str], None]
 
 
 @runtime_checkable
@@ -25,8 +28,20 @@ class Source(Protocol):
     id: str
     kind: Kind
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
-        """Yield raw source payloads, optionally only those changed ``since``."""
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+    ) -> Iterable[RawDoc]:
+        """Yield raw source payloads LAZILY (paginating as it goes).
+
+        ``limit`` caps the number of records, ``max_pages`` the number of pages
+        (both safety bounds); ``progress`` receives a short status line per page.
+        Yielding lazily lets the caller save progressively and stop early.
+        """
         ...
 
     def to_opportunities(

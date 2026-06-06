@@ -33,7 +33,7 @@ from typing import Any
 
 import httpx
 
-from bandiradar import resources
+from bandiradar import http, resources
 from bandiradar.models import (
     Kind,
     Opportunity,
@@ -41,7 +41,7 @@ from bandiradar.models import (
     default_status,
     sanitize_value_bounds,
 )
-from bandiradar.sources.base import register
+from bandiradar.sources.base import ProgressFn, register
 
 SOURCE_ID = "incentivi"
 SOURCE_KIND: Kind = "incentive"
@@ -51,6 +51,7 @@ SOURCE_KIND: Kind = "incentive"
 # there is no separate static file to fetch instead.
 INCENTIVI_DATA_URL = "https://www.incentivi.gov.it/solr/coredrupal/select"
 _PAGE_ROWS = 200
+_MAX_RECORDS = 20000  # safety ceiling when no explicit limit is given
 
 # Granting bodies that make a measure national in scope (geo bypass), even though
 # every record is also tagged to a region.
@@ -185,20 +186,37 @@ class IncentiviSource:
     id = SOURCE_ID
     kind: Kind = SOURCE_KIND
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
-        """Live, paginated download of the public incentives dataset.
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+    ) -> Iterable[RawDoc]:
+        """Live, paginated download of the public incentives dataset, LAZILY.
 
-        Filters by publication (open) date >= ``since`` when provided. Raises a
-        clear error on HTTP failure.
+        Filters by publication (open) date >= ``since`` when provided. Retries
+        transient HTTP failures; raises a clear error if a page still fails.
         """
-        return self._fetch_pages(since)
+        return self._fetch_pages(since, limit, max_pages, progress)
 
-    def _fetch_pages(self, since: datetime | None) -> Iterator[RawDoc]:
+    def _fetch_pages(
+        self,
+        since: datetime | None,
+        limit: int | None,
+        max_pages: int | None,
+        progress: ProgressFn | None,
+    ) -> Iterator[RawDoc]:
         if since is not None and since.tzinfo is None:
             since = since.replace(tzinfo=UTC)
+        cap = limit if limit is not None else _MAX_RECORDS
         start = 0
-        with httpx.Client(timeout=60.0) as client:
-            while True:
+        page = 0
+        seen = 0
+        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+            while seen < cap and (max_pages is None or page < max_pages):
+                page += 1
                 # Same parameters the open-data page uses for its official export
                 # (fl=* full records, fq restricts to the incentives index).
                 params = {
@@ -210,8 +228,11 @@ class IncentiviSource:
                     "start": start,
                     "wt": "json",
                 }
+                response = http.with_retry(
+                    lambda params=params: client.get(INCENTIVI_DATA_URL, params=params),
+                    what="incentivi.gov.it download",
+                )
                 try:
-                    response = client.get(INCENTIVI_DATA_URL, params=params)
                     response.raise_for_status()
                 except httpx.HTTPError as exc:
                     raise RuntimeError(
@@ -223,10 +244,13 @@ class IncentiviSource:
                 if not docs:
                     break
                 for doc in docs:
+                    if seen >= cap:
+                        break
                     if since is not None:
                         opened = _parse_dt(_first(doc.get("zs_field_open_date")))
                         if opened is not None and opened < since:
                             continue
+                    seen += 1
                     yield RawDoc(
                         id=f"incentivi:{_node_id(doc)}",
                         source=SOURCE_ID,
@@ -234,6 +258,8 @@ class IncentiviSource:
                         payload=doc,
                         url=_first(doc.get("zs_field_link")),
                     )
+                if progress is not None:
+                    progress(f"incentivi: page {page}, {seen} fetched")
                 start += _PAGE_ROWS
                 if start >= payload.get("numFound", 0):
                     break

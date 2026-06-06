@@ -19,9 +19,9 @@ from typing import Any
 
 import httpx
 
-from bandiradar import resources
+from bandiradar import http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
-from bandiradar.sources.base import register
+from bandiradar.sources.base import ProgressFn, register
 
 SOURCE_ID = "ted"
 SOURCE_KIND: Kind = "tender"
@@ -213,19 +213,34 @@ class TedSource:
     id = SOURCE_ID
     kind: Kind = SOURCE_KIND
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+    ) -> Iterable[RawDoc]:
         """Live, anonymous, paginated search of TED for Italian notices.
 
-        Yields one RawDoc per notice. Raises a clear error on HTTP failure.
+        Yields one RawDoc per notice, LAZILY (a page at a time). Retries transient
+        HTTP failures; raises a clear error if a page still fails.
         """
-        return self._fetch_pages(since)
+        return self._fetch_pages(since, limit, max_pages, progress)
 
-    def _fetch_pages(self, since: datetime | None) -> Iterator[RawDoc]:
+    def _fetch_pages(
+        self,
+        since: datetime | None,
+        limit: int | None,
+        max_pages: int | None,
+        progress: ProgressFn | None,
+    ) -> Iterator[RawDoc]:
         query = _build_query(since)
+        cap = limit if limit is not None else _MAX_NOTICES
         page = 1
         seen = 0
-        with httpx.Client(timeout=60.0) as client:
-            while seen < _MAX_NOTICES:
+        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+            while seen < cap and (max_pages is None or page <= max_pages):
                 body = {
                     "query": query,
                     "fields": TED_FIELDS,
@@ -234,12 +249,15 @@ class TedSource:
                     "scope": "ACTIVE",
                     "paginationMode": "PAGE_NUMBER",
                 }
-                try:
-                    response = client.post(
+                response = http.with_retry(
+                    lambda body=body: client.post(
                         TED_SEARCH_URL,
                         json=body,
                         headers={"Accept": "application/json"},
-                    )
+                    ),
+                    what="TED search",
+                )
+                try:
                     response.raise_for_status()
                 except httpx.HTTPError as exc:
                     raise RuntimeError(f"TED search failed: {exc}") from exc
@@ -249,6 +267,8 @@ class TedSource:
                 if not notices:
                     break
                 for notice in notices:
+                    if seen >= cap:
+                        break
                     pub_number = notice["publication-number"]
                     seen += 1
                     yield RawDoc(
@@ -258,6 +278,8 @@ class TedSource:
                         payload=notice,
                         url=_notice_url(notice, pub_number),
                     )
+                if progress is not None:
+                    progress(f"ted: page {page}, {seen} fetched")
                 if len(notices) < _PAGE_LIMIT:
                     break
                 page += 1

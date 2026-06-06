@@ -15,7 +15,7 @@ import zlib
 from collections.abc import Iterable, Iterator
 from typing import Any
 
-import httpx
+from bandiradar import http
 
 # Open Contracting mirror of ANAC OCDS (CC BY 4.0, no auth). One compiled release
 # per line, gzipped JSONL, one file per year.
@@ -40,10 +40,21 @@ def iter_gz_lines(byte_chunks: Iterable[bytes]) -> Iterator[bytes]:
 
 def stream_releases(year: int, *, timeout: float = 120.0) -> Iterator[dict[str, Any]]:
     """Stream the OCP ANAC dataset for ``year``, yielding one OCDS release dict
-    per line. Streams + gunzips incrementally — never holds the file in RAM."""
+    per line. Streams + gunzips incrementally — never holds the file in RAM.
+
+    The connection + initial status are retried with backoff (429/5xx/timeouts);
+    a clear error is raised if it still fails."""
     url = OCP_ANAC_URL_TEMPLATE.format(year=year)
+    import httpx
+
     try:
-        with httpx.stream("GET", url, timeout=timeout, follow_redirects=True) as resp:
+        with http.stream_with_retry(
+            "GET",
+            url,
+            what=f"ANAC OCDS download ({year})",
+            timeout=timeout,
+            follow_redirects=True,
+        ) as resp:
             resp.raise_for_status()
             for line in iter_gz_lines(resp.iter_bytes()):
                 if line and line.strip():

@@ -18,7 +18,7 @@ from typing import Any
 
 import httpx
 
-from bandiradar import resources
+from bandiradar import http, resources
 from bandiradar.matching.llm import LLMClient, get_client
 from bandiradar.models import (
     Kind,
@@ -27,7 +27,7 @@ from bandiradar.models import (
     default_status,
     sanitize_value_bounds,
 )
-from bandiradar.sources.base import register
+from bandiradar.sources.base import ProgressFn, register
 from bandiradar.sources.llm_scraper import (
     ExtractionCache,
     extract_bando_fields,
@@ -128,10 +128,15 @@ class ToscanaSource:
     kind: Kind = "incentive"
 
     def _list_details(self) -> list[DetailRef]:
-        with httpx.Client(timeout=60.0, follow_redirects=True) as client:
-            resp = client.get(
-                TOSCANA_LIST_URL,
-                params={"per_page": _MAX_ITEMS, "_fields": "id,link,title"},
+        with httpx.Client(
+            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
+        ) as client:
+            resp = http.with_retry(
+                lambda: client.get(
+                    TOSCANA_LIST_URL,
+                    params={"per_page": _MAX_ITEMS, "_fields": "id,link,title"},
+                ),
+                what="Toscana listing",
             )
             resp.raise_for_status()
             out: list[DetailRef] = []
@@ -141,8 +146,12 @@ class ToscanaSource:
             return out
 
     def _fetch_text(self, url: str) -> str:
-        with httpx.Client(timeout=60.0, follow_redirects=True) as client:
-            resp = client.get(url)
+        with httpx.Client(
+            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
+        ) as client:
+            resp = http.with_retry(
+                lambda: client.get(url), what=f"Toscana detail {url}"
+            )
             resp.raise_for_status()
             return html_to_text(resp.text)
 
@@ -150,6 +159,9 @@ class ToscanaSource:
         self,
         since: datetime | None = None,
         *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
         client: LLMClient | None = None,
         cache: ExtractionCache | None = None,
         list_details=None,
@@ -159,7 +171,7 @@ class ToscanaSource:
         """LIVE: list bando URLs, fetch each page, LLM-extract fields (cached per URL).
 
         Requires an LLM provider + key (live only). ``--sample`` uses
-        ``load_fixture`` and never calls this.
+        ``load_fixture`` and never calls this. Yields LAZILY (one bando at a time).
         """
         client = client if client is not None else get_client()
         if client is None:
@@ -168,6 +180,7 @@ class ToscanaSource:
                 "BANDIRADAR_LLM_PROVIDER and the API key (see .env.example). "
                 "Use --sample to run offline against the recorded fixture."
             )
+        cap = limit if limit is not None else max_items
         # When we open our own extraction-cache Store, we OWN it and must close it
         # once the generator is done (avoids a leaked SQLite connection).
         own_store = Store(None) if cache is None else None
@@ -177,13 +190,21 @@ class ToscanaSource:
         fetch_text = fetch_text or self._fetch_text
 
         return self._scrape(
-            client, cache, list_details, fetch_text, max_items, own_store
+            client, cache, list_details, fetch_text, cap, progress, own_store
         )
 
     def _scrape(
-        self, client, cache, list_details, fetch_text, max_items, own_store=None
+        self,
+        client,
+        cache,
+        list_details,
+        fetch_text,
+        max_items,
+        progress,
+        own_store=None,
     ) -> Iterator[RawDoc]:
         try:
+            count = 0
             for post_id, url, listing_title in list_details()[:max_items]:
                 record = cache.get(url)
                 if record is None:
@@ -202,6 +223,9 @@ class ToscanaSource:
                     payload=payload,
                     url=url,
                 )
+                count += 1
+                if progress is not None:
+                    progress(f"toscana: {count} fetched")
         finally:
             if own_store is not None:
                 own_store.close()

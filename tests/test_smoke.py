@@ -28,6 +28,7 @@ MODULES = [
     "bandiradar.matching.llm",
     "bandiradar.matching.prompts",
     "bandiradar.config",
+    "bandiradar.http",
     "bandiradar.ocp",
     "bandiradar.documents",
     "bandiradar.storage",

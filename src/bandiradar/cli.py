@@ -106,19 +106,36 @@ def sources_list(json_out: bool = typer.Option(False, "--json", help="JSON outpu
 # --------------------------------------------------------------------------- #
 
 
+def _stderr_progress(quiet: bool = False):
+    """A progress sink that writes a per-page line to stderr (None when quiet)."""
+    if quiet:
+        return None
+    return lambda msg: typer.echo(msg, err=True)
+
+
 @app.command()
 def fetch(
     source: str = typer.Option("anac", "--source", help="Source id"),
     sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
+    limit: int | None = typer.Option(
+        None, "--limit", help="Max records to fetch (live; default safety cap)"
+    ),
+    max_pages: int | None = typer.Option(
+        None, "--max-pages", help="Max pages to fetch (live safety bound)"
+    ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
 ):
-    """Fetch a source into the store and print counts."""
+    """Fetch a source into the store and print counts (progress on stderr)."""
     store = core.Store(db)
     try:
-        counts = core.run_fetch(source, store, sample=sample)
-    except NotImplementedError as exc:
-        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
-        raise typer.Exit(1) from exc
+        counts = core.run_fetch(
+            source,
+            store,
+            sample=sample,
+            limit=limit,
+            max_pages=max_pages,
+            progress=_stderr_progress(),
+        )
     finally:
         store.close()
     line = (
@@ -127,6 +144,14 @@ def fetch(
     if counts.get("skipped_invalid"):
         line += f" skipped_invalid={counts['skipped_invalid']}"
     typer.echo(line)
+    if not counts["completed"]:
+        typer.secho(
+            f"PARTIAL: fetch stopped before completing — {counts['error']}. "
+            f"Saved {counts['new']} new / {counts['amended']} amended so far.",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(1)
 
 
 # --------------------------------------------------------------------------- #
@@ -291,6 +316,12 @@ def watch(
     with_documents: bool = typer.Option(
         False, "--with-documents", help="Fetch attachment PDFs into the matcher"
     ),
+    limit: int | None = typer.Option(
+        None, "--limit", help="Max records to fetch per source (live safety cap)"
+    ),
+    max_pages: int | None = typer.Option(
+        None, "--max-pages", help="Max pages to fetch per source (live safety bound)"
+    ),
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     rss: str | None = typer.Option(None, "--rss", help="Write RSS feed to PATH"),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
@@ -302,6 +333,7 @@ def watch(
     Managed delivery (WhatsApp/email/alerts) lives in bandiradar-pro.
     """
     store = core.Store(db)
+    quiet = json_out or rss is not None
     try:
         company = core.load_profile(profile)
         delta = core.run_watch(
@@ -312,6 +344,9 @@ def watch(
             since=_parse_since(since),
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
+            fetch_limit=limit,
+            max_pages=max_pages,
+            progress=_stderr_progress(quiet),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -407,6 +442,12 @@ def batch(
     with_documents: bool = typer.Option(
         False, "--with-documents", help="Fetch attachment PDFs into the matcher"
     ),
+    limit: int | None = typer.Option(
+        None, "--limit", help="Max records to fetch per source (live safety cap)"
+    ),
+    max_pages: int | None = typer.Option(
+        None, "--max-pages", help="Max pages to fetch per source (live safety bound)"
+    ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     csv_path: str | None = typer.Option(None, "--csv", help="Write CSV to PATH"),
@@ -436,6 +477,9 @@ def batch(
             top=top,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
+            fetch_limit=limit,
+            max_pages=max_pages,
+            progress=_stderr_progress(json_out or csv_path is not None),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)

@@ -57,10 +57,12 @@ def list_sources() -> list[dict[str, str]]:
 @mcp.tool()
 def fetch_opportunities(
     source: str = "anac", sample: bool = True, db: str | None = None
-) -> dict[str, int]:
-    """Ingest a source into the store. Returns {fetched, new, amended}.
+) -> dict[str, Any]:
+    """Ingest a source into the store, saving progressively.
 
-    ``sample`` defaults to True so it is usable offline with zero secrets.
+    Returns counts: fetched / mapped / new / amended / skipped_invalid, plus
+    ``completed`` (False if the live fetch stopped early) and ``error``. ``sample``
+    defaults to True so it is usable offline with zero secrets.
     """
     store = Store(db)
     try:

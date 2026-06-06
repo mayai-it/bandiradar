@@ -25,6 +25,8 @@ def test_run_fetch_sample_counts_and_dedupe(store):
         "new": 6,
         "amended": 0,
         "skipped_invalid": 0,
+        "completed": True,
+        "error": None,
     }
 
     second = core.run_fetch("synthetic", store, sample=True, now=NOW)

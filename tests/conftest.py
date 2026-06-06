@@ -21,3 +21,14 @@ def _force_offline(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("BANDIRADAR_LLM_MODEL", raising=False)
+
+
+@pytest.fixture(autouse=True)
+def _no_real_sleep(monkeypatch):
+    """Never sleep for real in the suite — retry backoff is patched to a no-op.
+
+    Tests that assert backoff timing override this with their own recorder.
+    """
+    import bandiradar.http as _http
+
+    monkeypatch.setattr(_http, "_sleep", lambda *_a, **_k: None)

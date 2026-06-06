@@ -27,8 +27,9 @@ from typing import Any
 
 import httpx
 
-from bandiradar import resources
+from bandiradar import http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
+from bandiradar.sources.base import ProgressFn
 
 _MONTHS = {
     "gennaio": 1,
@@ -98,25 +99,35 @@ def _parse_scadenza(text: str) -> datetime | None:
 
 
 def _wp_pages(
-    client: httpx.Client, data_url: str, per_page: int, since: datetime | None
-) -> Iterator[list[dict[str, Any]]]:
-    """Yield successive pages of WP posts (reusable WP-REST pagination)."""
+    client: httpx.Client,
+    data_url: str,
+    per_page: int,
+    since: datetime | None,
+    max_pages: int | None = None,
+) -> Iterator[tuple[int, list[dict[str, Any]]]]:
+    """Yield ``(page_number, posts)`` pages of WP posts (reusable WP-REST paging).
+
+    Retries transient HTTP failures with backoff; a 400 means "past the last page".
+    """
     page = 1
-    while True:
+    while max_pages is None or page <= max_pages:
         params: dict[str, Any] = {"per_page": per_page, "page": page}
         if since is not None:
             params["after"] = since.astimezone(UTC).isoformat()
+        response = http.with_retry(
+            lambda params=params: client.get(data_url, params=params),
+            what=f"WordPress fetch for {data_url}",
+        )
+        if response.status_code == 400:  # WP returns 400 past the last page
+            break
         try:
-            response = client.get(data_url, params=params)
-            if response.status_code == 400:  # WP returns 400 past the last page
-                break
             response.raise_for_status()
         except httpx.HTTPError as exc:
             raise RuntimeError(f"WordPress fetch failed for {data_url}: {exc}") from exc
         posts = response.json()
         if not posts:
             break
-        yield posts
+        yield page, posts
         if len(posts) < per_page:
             break
         page += 1
@@ -190,13 +201,37 @@ class WordPressBandiSource:
             for post in package.get("posts", [])
         ]
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
-        return self._fetch(since)
+    _MAX_RECORDS = 20000  # safety ceiling when no explicit limit is given
 
-    def _fetch(self, since: datetime | None) -> Iterator[RawDoc]:
-        with httpx.Client(timeout=60.0, follow_redirects=True) as client:
-            for posts in _wp_pages(client, self.data_url, self.per_page, since):
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+    ) -> Iterable[RawDoc]:
+        return self._fetch(since, limit, max_pages, progress)
+
+    def _fetch(
+        self,
+        since: datetime | None,
+        limit: int | None,
+        max_pages: int | None,
+        progress: ProgressFn | None,
+    ) -> Iterator[RawDoc]:
+        cap = limit if limit is not None else self._MAX_RECORDS
+        seen = 0
+        with httpx.Client(
+            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
+        ) as client:
+            for page, posts in _wp_pages(
+                client, self.data_url, self.per_page, since, max_pages
+            ):
                 for post in posts:
+                    if seen >= cap:
+                        return
+                    seen += 1
                     yield RawDoc(
                         id=f"{self.id}:{post['id']}",
                         source=self.id,
@@ -204,3 +239,5 @@ class WordPressBandiSource:
                         payload=post,
                         url=post.get("link"),
                     )
+                if progress is not None:
+                    progress(f"{self.id}: page {page}, {seen} fetched")

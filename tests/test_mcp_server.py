@@ -39,6 +39,8 @@ def test_fetch_then_search_offline(tmp_path):
         "new": 6,
         "amended": 0,
         "skipped_invalid": 0,
+        "completed": True,
+        "error": None,
     }
 
     ranked = mcp_server.search_opportunities(

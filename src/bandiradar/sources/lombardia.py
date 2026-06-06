@@ -21,9 +21,9 @@ from typing import Any
 
 import httpx
 
-from bandiradar import resources
+from bandiradar import http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
-from bandiradar.sources.base import register
+from bandiradar.sources.base import ProgressFn, register
 
 SOURCE_ID = "lombardia"
 SOURCE_KIND: Kind = "tender"  # procurement calls (appalti)
@@ -31,6 +31,7 @@ SOURCE_KIND: Kind = "tender"  # procurement calls (appalti)
 # Socrata SODA endpoint (no auth). Dataset k6cb-4hbm = regional tender observatory.
 LOMBARDIA_DATA_URL = "https://dati.lombardia.it/resource/k6cb-4hbm.json"
 _PAGE_LIMIT = 1000
+_MAX_RECORDS = 20000  # safety ceiling when no explicit limit is given
 
 FIXTURE_PATH = resources.fixture("lombardia.json")
 
@@ -109,15 +110,32 @@ class LombardiaSource:
     id = SOURCE_ID
     kind: Kind = SOURCE_KIND
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
-        """Paginated SODA GET (no auth). Deduped by codice_bando (skips lotti)."""
-        return self._fetch_pages(since)
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+    ) -> Iterable[RawDoc]:
+        """Paginated SODA GET (no auth), yielded LAZILY. Deduped by codice_bando
+        (skips lotti). Retries transient HTTP failures with backoff."""
+        return self._fetch_pages(since, limit, max_pages, progress)
 
-    def _fetch_pages(self, since: datetime | None) -> Iterator[RawDoc]:
+    def _fetch_pages(
+        self,
+        since: datetime | None,
+        limit: int | None,
+        max_pages: int | None,
+        progress: ProgressFn | None,
+    ) -> Iterator[RawDoc]:
+        cap = limit if limit is not None else _MAX_RECORDS
         offset = 0
+        page = 0
         seen: set[str] = set()
-        with httpx.Client(timeout=60.0) as client:
-            while True:
+        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+            while len(seen) < cap and (max_pages is None or page < max_pages):
+                page += 1
                 params = {
                     "$order": "data_pubblicazione DESC",
                     "$limit": _PAGE_LIMIT,
@@ -126,8 +144,11 @@ class LombardiaSource:
                 if since is not None:
                     iso = since.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%S")
                     params["$where"] = f"data_pubblicazione > '{iso}'"
+                response = http.with_retry(
+                    lambda params=params: client.get(LOMBARDIA_DATA_URL, params=params),
+                    what="Lombardia SODA fetch",
+                )
                 try:
-                    response = client.get(LOMBARDIA_DATA_URL, params=params)
                     response.raise_for_status()
                 except httpx.HTTPError as exc:
                     raise RuntimeError(f"Lombardia SODA fetch failed: {exc}") from exc
@@ -136,6 +157,8 @@ class LombardiaSource:
                 if not rows:
                     break
                 for rec in rows:
+                    if len(seen) >= cap:
+                        break
                     code = rec.get("codice_bando")
                     if not code or code in seen:
                         continue  # one Opportunity per bando, not per lotto
@@ -146,6 +169,8 @@ class LombardiaSource:
                         fetched_at=datetime.now(tz=UTC),
                         payload=rec,
                     )
+                if progress is not None:
+                    progress(f"lombardia: page {page}, {len(seen)} fetched")
                 if len(rows) < _PAGE_LIMIT:
                     break
                 offset += _PAGE_LIMIT

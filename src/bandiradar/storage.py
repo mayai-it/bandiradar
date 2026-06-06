@@ -65,7 +65,9 @@ CREATE TABLE IF NOT EXISTS runs (
     finished_at TEXT,
     fetched     INTEGER,
     "new"       INTEGER,
-    amended     INTEGER
+    amended     INTEGER,
+    status      TEXT,   -- 'running' | 'completed' | 'partial'
+    error       TEXT    -- operational error message when status='partial'
 );
 
 CREATE TABLE IF NOT EXISTS watch_state (
@@ -133,6 +135,14 @@ class Store:
                 "CREATE INDEX IF NOT EXISTS idx_matches_cache_key "
                 "ON matches (cache_key)"
             )
+        run_cols = {
+            row["name"]
+            for row in self.conn.execute("PRAGMA table_info(runs)").fetchall()
+        }
+        if "status" not in run_cols:
+            self.conn.execute("ALTER TABLE runs ADD COLUMN status TEXT")
+        if "error" not in run_cols:
+            self.conn.execute("ALTER TABLE runs ADD COLUMN error TEXT")
 
     def close(self) -> None:
         self.conn.close()
@@ -329,8 +339,8 @@ class Store:
     # -------------------------------------------------------------------- runs
     def start_run(self, source: str | None, started_at: datetime | None = None) -> int:
         cur = self.conn.execute(
-            'INSERT INTO runs (source, started_at, fetched, "new", amended) '
-            "VALUES (?, ?, 0, 0, 0)",
+            'INSERT INTO runs (source, started_at, fetched, "new", amended, status) '
+            "VALUES (?, ?, 0, 0, 0, 'running')",
             (source, _to_text(_now(started_at))),
         )
         self.conn.commit()
@@ -343,10 +353,13 @@ class Store:
         new: int,
         amended: int,
         finished_at: datetime | None = None,
+        status: str = "completed",
+        error: str | None = None,
     ) -> None:
         self.conn.execute(
-            'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=? WHERE id=?',
-            (_to_text(_now(finished_at)), fetched, new, amended, run_id),
+            'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=?, '
+            "status=?, error=? WHERE id=?",
+            (_to_text(_now(finished_at)), fetched, new, amended, status, error, run_id),
         )
         self.conn.commit()
 

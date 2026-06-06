@@ -26,7 +26,7 @@ from typing import Any
 from bandiradar import resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.ocp import stream_releases
-from bandiradar.sources.base import register
+from bandiradar.sources.base import ProgressFn, register
 
 SOURCE_ID = "anac"
 SOURCE_KIND: Kind = "tender"
@@ -186,26 +186,32 @@ class AnacSource:
         self,
         since: datetime | None = None,
         *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
         max_items: int = MAX_ITEMS,
         year: int | None = None,
         streamer: ReleaseStreamer | None = None,
     ) -> Iterable[RawDoc]:
         """Stream live ANAC OCDS releases (capped). Historical data — mostly closed.
 
-        Caps at ``max_items`` so we never ingest the whole retrospective dataset.
-        With ``since`` set, releases published before it are skipped. ``streamer``
-        is injectable for tests; live it is the shared memory-safe OCP reader.
+        Caps at ``limit`` (else ``max_items``) so we never ingest the whole
+        retrospective dataset. With ``since`` set, releases published before it are
+        skipped. ``streamer`` is injectable for tests; live it is the shared
+        memory-safe OCP reader (which retries transient HTTP failures).
         """
         streamer = streamer if streamer is not None else stream_releases
         target_year = year if year is not None else datetime.now(tz=UTC).year
+        cap = limit if limit is not None else max_items
         releases = _resolve_stream(streamer, target_year)
-        return self._scrape(releases, since, max_items)
+        return self._scrape(releases, since, cap, progress)
 
     def _scrape(
         self,
         releases: Iterable[dict[str, Any]],
         since: datetime | None,
         max_items: int,
+        progress: ProgressFn | None = None,
     ) -> Iterator[RawDoc]:
         count = 0
         for release in releases:
@@ -223,6 +229,8 @@ class AnacSource:
                 url=release.get("url"),
             )
             count += 1
+            if progress is not None and count % 100 == 0:
+                progress(f"anac: {count} fetched")
             if count >= max_items:
                 break
 
