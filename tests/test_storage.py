@@ -1,18 +1,18 @@
 """SQLite storage tests (ARCHITECTURE.md §8 / Prompt 5). Offline, tmp db."""
 
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 
 import pytest
 import yaml
 
 import synthetic_source as synthetic
+from bandiradar import resources
 from bandiradar.matching import relevance
 from bandiradar.models import Match, Profile
 from bandiradar.storage import SqliteScoreCache, Store
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
-PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
+PROFILES = resources.profiles_dir()
 
 
 @pytest.fixture

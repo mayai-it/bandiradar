@@ -41,6 +41,7 @@ __all__ = [
     "Profile",
     "Match",
     "default_status",
+    "sanitize_value_bounds",
 ]
 
 # Days-before-deadline window in which an opportunity counts as "closing soon".
@@ -88,6 +89,22 @@ def _ensure_utc(dt: datetime | None) -> datetime | None:
     if dt.tzinfo is None:
         return dt.replace(tzinfo=UTC)
     return dt.astimezone(UTC)
+
+
+def sanitize_value_bounds(
+    value_min: float | None, value_max: float | None
+) -> tuple[float | None, float | None]:
+    """Repair an obviously transposed min/max pair before model construction.
+
+    :class:`Opportunity` rejects ``value_min > value_max`` (fail-loud contract).
+    Real sources occasionally emit the two swapped, which is dirty data, not a
+    bug in our model — so mappers call this to swap a transposed pair instead of
+    letting one bad record abort the whole ingestion. Anything else (a single
+    bound, ``None``s, already-ordered values) passes through untouched.
+    """
+    if value_min is not None and value_max is not None and value_min > value_max:
+        return value_max, value_min
+    return value_min, value_max
 
 
 def default_status(

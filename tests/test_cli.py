@@ -7,7 +7,9 @@ from typer.testing import CliRunner
 from bandiradar.cli import app
 
 runner = CliRunner()
-MAYAI = "data/profiles/mayai.yaml"
+# A bundled example profile NAME (resolved from the package) — proves the
+# installed-wheel path, not a checkout-relative file.
+MAYAI = "mayai"
 
 JSON_KEYS = {
     "opportunity_id",

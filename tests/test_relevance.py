@@ -5,23 +5,24 @@ the deterministic heuristic, and the LLM SDKs are never imported.
 """
 
 from datetime import UTC, datetime
-from pathlib import Path
 
 import pytest
 import yaml
 
 import synthetic_source as synthetic
+from bandiradar import resources
 from bandiradar.matching import relevance
 from bandiradar.matching.llm import get_client
 from bandiradar.matching.relevance import (
     InMemoryScoreCache,
+    cache_key,
     heuristic_fallback,
     score,
 )
 from bandiradar.models import Profile
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
-PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
+PROFILES = resources.profiles_dir()
 
 
 @pytest.fixture(autouse=True)
@@ -160,7 +161,7 @@ def test_benchmarks_append_enrichment_but_cache_stays_bare():
     assert len(anac_reasons) == 1  # benchmark reason appended
 
     # The CACHED match is bare (no enrichment).
-    cached = cache.get((mayai.version, opp.content_hash))
+    cached = cache.get(cache_key(opp, mayai, "heuristic"))
     assert not any("ANAC history" in r for r in cached.reasons)
 
     # A 2nd enriched call does NOT double-append.
@@ -182,3 +183,49 @@ def test_score_all_sorted_desc():
     matches = relevance.score_all(opps, mayai, now=NOW)
     scores = [m.score for m in matches]
     assert scores == sorted(scores, reverse=True)
+
+
+# --------------------------------------------------------------------------- #
+# cache-key correctness (no false reuse across different scoring inputs)
+# --------------------------------------------------------------------------- #
+
+
+def test_cache_key_differs_with_vs_without_documents():
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    with_docs = opp.model_copy(update={"document_text": "requisiti dal disciplinare"})
+    # Same opportunity + profile + backend, but document text folded in -> the key
+    # MUST differ, so a --with-documents score never reuses a bare one.
+    assert cache_key(opp, mayai, "heuristic") != cache_key(
+        with_docs, mayai, "heuristic"
+    )
+
+
+def test_cache_key_differs_by_backend_model():
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    assert cache_key(opp, mayai, "heuristic") != cache_key(
+        opp, mayai, "anthropic:claude-haiku-4-5-20251001"
+    )
+
+
+def test_distinct_opportunities_do_not_collide():
+    mayai = load_profile("mayai.yaml")
+    a = opps_by_id()["synthetic:ocds-bandi-0001"]
+    b = opps_by_id()["synthetic:ocds-bandi-0002"]
+    assert cache_key(a, mayai, "heuristic") != cache_key(b, mayai, "heuristic")
+
+
+def test_documents_run_does_not_reuse_bare_score():
+    # A bare score is cached; a later --with-documents score of the SAME opp must
+    # MISS (different input) and recompute, not reuse the bare result.
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    cache = InMemoryScoreCache()
+    spy = _SpyClient()
+
+    score(opp, mayai, client=spy, cache=cache, now=NOW)
+    assert spy.calls == 1
+    with_docs = opp.model_copy(update={"document_text": "extra requirements text"})
+    score(with_docs, mayai, client=spy, cache=cache, now=NOW)
+    assert spy.calls == 2  # no false reuse of the bare score

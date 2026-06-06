@@ -6,16 +6,16 @@ opportunities/profiles to isolate one gate at a time.
 """
 
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 
 import yaml
 
 import synthetic_source as synthetic
+from bandiradar import resources
 from bandiradar.matching.prefilter import prefilter, prefilter_explain
 from bandiradar.models import Opportunity, Profile, ValueRange
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
-PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
+PROFILES = resources.profiles_dir()
 
 
 def load_profile(name: str) -> Profile:

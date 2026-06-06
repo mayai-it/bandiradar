@@ -6,3 +6,7 @@ __pycache__/
 .DS_Store
 *.gif
 *.mp4
+# build artifacts
+dist/
+build/
+*.egg-info/

@@ -21,6 +21,7 @@ from typing import Any
 
 import httpx
 
+from bandiradar import resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import register
 
@@ -31,9 +32,7 @@ SOURCE_KIND: Kind = "tender"  # procurement calls (appalti)
 LOMBARDIA_DATA_URL = "https://dati.lombardia.it/resource/k6cb-4hbm.json"
 _PAGE_LIMIT = 1000
 
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "lombardia.json"
-)
+FIXTURE_PATH = resources.fixture("lombardia.json")
 
 
 def _parse_dt(value: Any) -> datetime | None:

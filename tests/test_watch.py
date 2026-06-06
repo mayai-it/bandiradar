@@ -1,31 +1,21 @@
 """watch monitor loop + exporters tests (Prompt 14). Offline, tmp db, fixed now."""
 
 import json
-import shutil
 import xml.etree.ElementTree as ET
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 
 import pytest
-import yaml
 
-from bandiradar import core, exporters
+from bandiradar import core, exporters, resources
 from bandiradar.sources import incentivi
 from bandiradar.storage import Store
 
 NOW = datetime(2026, 6, 4, 0, 0, tzinfo=UTC)
 LATER = NOW + timedelta(days=1)
-PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
-INCENTIVI_FIXTURE = (
-    Path(__file__).resolve().parents[1] / "data" / "fixtures" / "incentivi.json"
-)
 
 
 def mayai():
-    data = yaml.safe_load((PROFILES / "mayai.yaml").read_text(encoding="utf-8"))
-    from bandiradar.models import Profile
-
-    return Profile(**data)
+    return core.load_profile("mayai")
 
 
 @pytest.fixture
@@ -55,7 +45,7 @@ def test_first_run_all_new_second_run_none(store):
 def test_amended_record_reappears(tmp_path, monkeypatch, store):
     # Use a temp copy of the fixture so we can mutate it between runs.
     fixture = tmp_path / "incentivi.json"
-    shutil.copy(INCENTIVI_FIXTURE, fixture)
+    fixture.write_bytes(resources.fixture("incentivi.json").read_bytes())
     monkeypatch.setattr(incentivi, "FIXTURE_PATH", fixture)
 
     core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)

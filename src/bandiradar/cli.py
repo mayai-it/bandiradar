@@ -121,9 +121,12 @@ def fetch(
         raise typer.Exit(1) from exc
     finally:
         store.close()
-    typer.echo(
+    line = (
         f"fetched={counts['fetched']} new={counts['new']} amended={counts['amended']}"
     )
+    if counts.get("skipped_invalid"):
+        line += f" skipped_invalid={counts['skipped_invalid']}"
+    typer.echo(line)
 
 
 # --------------------------------------------------------------------------- #
@@ -387,8 +390,10 @@ def _trunc(text: str, width: int) -> str:
 
 @app.command()
 def batch(
-    profiles_dir: str = typer.Option(
-        "data/profiles", "--profiles-dir", help="Directory of profile YAMLs"
+    profiles_dir: str | None = typer.Option(
+        None,
+        "--profiles-dir",
+        help="Directory of profile YAMLs (default: the bundled example profiles)",
     ),
     source: str | None = typer.Option(
         None, "--source", help="Comma-separated source ids (default: all)"
@@ -407,14 +412,21 @@ def batch(
     csv_path: str | None = typer.Option(None, "--csv", help="Write CSV to PATH"),
 ):
     """Run every profile in a directory against the sources and compare results."""
-    paths = sorted(Path(profiles_dir).glob("*.yaml"))
-    if not paths:
-        typer.secho(f"No profiles in {profiles_dir!r}", fg=typer.colors.RED, err=True)
-        raise typer.Exit(1)
+    if profiles_dir is not None:
+        paths = sorted(Path(profiles_dir).glob("*.yaml"))
+        if not paths:
+            typer.secho(
+                f"No profiles in {profiles_dir!r}", fg=typer.colors.RED, err=True
+            )
+            raise typer.Exit(1)
+        profile_args: list = list(paths)
+    else:
+        # Installed/checkout default: the bundled example profiles.
+        profile_args = list(core.resources.profile_names())
 
     store = core.Store(db)
     try:
-        companies = [core.load_profile(p) for p in paths]
+        companies = [core.load_profile(p) for p in profile_args]
         results = core.run_batch(
             companies,
             store,

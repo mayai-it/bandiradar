@@ -33,7 +33,14 @@ from typing import Any
 
 import httpx
 
-from bandiradar.models import Kind, Opportunity, RawDoc, default_status
+from bandiradar import resources
+from bandiradar.models import (
+    Kind,
+    Opportunity,
+    RawDoc,
+    default_status,
+    sanitize_value_bounds,
+)
 from bandiradar.sources.base import register
 
 SOURCE_ID = "incentivi"
@@ -56,9 +63,7 @@ _NATIONAL_GRANTOR_MARKERS = (
     "presidenza del consiglio",
 )
 
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "incentivi.json"
-)
+FIXTURE_PATH = resources.fixture("incentivi.json")
 
 
 def _first(value: Any) -> Any:
@@ -121,6 +126,13 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     ]
     summary = "; ".join(b for b in summary_bits if b) or None
 
+    # Real records sometimes carry a transposed cost_min/cost_max; sanitize so one
+    # dirty row can't fail the whole ingestion (the mapper stays pure).
+    value_min, value_max = sanitize_value_bounds(
+        _to_float(_first(record.get("zs_field_cost_min"))),
+        _to_float(_first(record.get("zs_field_cost_max"))),
+    )
+
     opportunity = Opportunity(
         id=f"incentivi:{_node_id(record)}",
         source=SOURCE_ID,
@@ -132,8 +144,8 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         issuer_region=region_value,
         cpv=[],  # incentives carry no CPV
         keywords=keywords,
-        value_min=_to_float(_first(record.get("zs_field_cost_min"))),
-        value_max=_to_float(_first(record.get("zs_field_cost_max"))),
+        value_min=value_min,
+        value_max=value_max,
         value_currency="EUR",
         geo_scope="national" if national else "regional",
         region=None if national else region_value,

@@ -23,6 +23,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from bandiradar import resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.ocp import stream_releases
 from bandiradar.sources.base import register
@@ -35,9 +36,7 @@ SOURCE_KIND: Kind = "tender"
 MAX_ITEMS = 500
 
 # Bundled offline fixture: real OCDS releases recorded from the OCP mirror.
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "anac_sample.json"
-)
+FIXTURE_PATH = resources.fixture("anac_sample.json")
 
 ReleaseStreamer = Callable[[int], Iterable[dict[str, Any]]]
 

@@ -4,12 +4,11 @@ import csv
 import json
 import random
 from datetime import UTC, datetime
-from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
 
-from bandiradar import core
+from bandiradar import core, resources
 from bandiradar.cli import app
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
@@ -18,7 +17,6 @@ from bandiradar.sources.base import list_sources
 from bandiradar.storage import Store
 
 NOW = datetime(2026, 6, 4, 0, 0, tzinfo=UTC)
-PROFILES_DIR = Path(__file__).resolve().parents[1] / "data" / "profiles"
 runner = CliRunner()
 
 
@@ -30,7 +28,7 @@ def store(tmp_path):
 
 
 def all_profiles() -> list[Profile]:
-    return [core.load_profile(p) for p in sorted(PROFILES_DIR.glob("*.yaml"))]
+    return [core.load_profile(name) for name in resources.profile_names()]
 
 
 # --------------------------------------------------------------------------- #

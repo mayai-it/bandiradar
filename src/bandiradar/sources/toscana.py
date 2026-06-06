@@ -18,8 +18,15 @@ from typing import Any
 
 import httpx
 
+from bandiradar import resources
 from bandiradar.matching.llm import LLMClient, get_client
-from bandiradar.models import Kind, Opportunity, RawDoc, default_status
+from bandiradar.models import (
+    Kind,
+    Opportunity,
+    RawDoc,
+    default_status,
+    sanitize_value_bounds,
+)
 from bandiradar.sources.base import register
 from bandiradar.sources.llm_scraper import (
     ExtractionCache,
@@ -35,9 +42,7 @@ ISSUER = "Sviluppo Toscana"
 TOSCANA_LIST_URL = "https://www.sviluppo.toscana.it/wp-json/wp/v2/bando"
 _MAX_ITEMS = 20
 
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "toscana.json"
-)
+FIXTURE_PATH = resources.fixture("toscana.json")
 
 DetailRef = tuple[Any, str, str]  # (post_id, detail_url, listing_title)
 
@@ -69,6 +74,10 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         part for part in (p.get("eligibility_text"), " ".join(keywords)) if part
     ).strip()
 
+    # LLM-extracted amounts can be transposed/garbage; sanitize the bounds so a
+    # dirty extraction can't fail validation.
+    value_min, value_max = sanitize_value_bounds(p.get("value_min"), p.get("value_max"))
+
     return [
         Opportunity(
             id=f"{SOURCE_ID}:{p['_post_id']}",
@@ -82,8 +91,8 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
             cpv=[],
             keywords=keywords,
             value_amount=p.get("value_amount"),
-            value_min=p.get("value_min"),
-            value_max=p.get("value_max"),
+            value_min=value_min,
+            value_max=value_max,
             geo_scope="regional",
             region=REGION,
             deadline=deadline,
@@ -159,34 +168,43 @@ class ToscanaSource:
                 "BANDIRADAR_LLM_PROVIDER and the API key (see .env.example). "
                 "Use --sample to run offline against the recorded fixture."
             )
+        # When we open our own extraction-cache Store, we OWN it and must close it
+        # once the generator is done (avoids a leaked SQLite connection).
+        own_store = Store(None) if cache is None else None
         if cache is None:
-            cache = SqliteExtractionCache(Store(None))  # persist on the default DB
+            cache = SqliteExtractionCache(own_store)  # persist on the default DB
         list_details = list_details or self._list_details
         fetch_text = fetch_text or self._fetch_text
 
-        return self._scrape(client, cache, list_details, fetch_text, max_items)
+        return self._scrape(
+            client, cache, list_details, fetch_text, max_items, own_store
+        )
 
     def _scrape(
-        self, client, cache, list_details, fetch_text, max_items
+        self, client, cache, list_details, fetch_text, max_items, own_store=None
     ) -> Iterator[RawDoc]:
-        for post_id, url, listing_title in list_details()[:max_items]:
-            record = cache.get(url)
-            if record is None:
-                record = extract_bando_fields(fetch_text(url), REGION, client)
-                cache.set(url, record)
-            payload = {
-                **record,
-                "_post_id": post_id,
-                "_url": url,
-                "_listing_title": listing_title,
-            }
-            yield RawDoc(
-                id=f"{SOURCE_ID}:{post_id}",
-                source=SOURCE_ID,
-                fetched_at=datetime.now(tz=UTC),
-                payload=payload,
-                url=url,
-            )
+        try:
+            for post_id, url, listing_title in list_details()[:max_items]:
+                record = cache.get(url)
+                if record is None:
+                    record = extract_bando_fields(fetch_text(url), REGION, client)
+                    cache.set(url, record)
+                payload = {
+                    **record,
+                    "_post_id": post_id,
+                    "_url": url,
+                    "_listing_title": listing_title,
+                }
+                yield RawDoc(
+                    id=f"{SOURCE_ID}:{post_id}",
+                    source=SOURCE_ID,
+                    fetched_at=datetime.now(tz=UTC),
+                    payload=payload,
+                    url=url,
+                )
+        finally:
+            if own_store is not None:
+                own_store.close()
 
     def to_opportunities(
         self, raw: RawDoc, now: datetime | None = None

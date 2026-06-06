@@ -27,9 +27,8 @@ from typing import Any
 
 import httpx
 
+from bandiradar import resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
-
-_FIXTURE_DIR = Path(__file__).resolve().parents[3] / "data" / "fixtures"
 
 _MONTHS = {
     "gennaio": 1,
@@ -136,8 +135,8 @@ class WordPressBandiSource:
     per_page: int = 100
     fixture_name: str = ""
 
-    def _fixture_path(self) -> Path:
-        return _FIXTURE_DIR / (self.fixture_name or f"{self.id}.json")
+    def _fixture_path(self):
+        return resources.fixture(self.fixture_name or f"{self.id}.json")
 
     def to_opportunities(
         self, raw: RawDoc, now: datetime | None = None

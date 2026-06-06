@@ -48,14 +48,15 @@ CREATE TABLE IF NOT EXISTS matches (
     opportunity_id   TEXT NOT NULL,
     profile_version  TEXT NOT NULL,
     opportunity_hash TEXT NOT NULL,
+    cache_key        TEXT NOT NULL DEFAULT '',
     score            INTEGER NOT NULL,
     data             TEXT NOT NULL,
     created_at       TEXT NOT NULL,
     PRIMARY KEY (opportunity_id, profile_version)
 );
 
-CREATE INDEX IF NOT EXISTS idx_matches_cache
-    ON matches (profile_version, opportunity_hash);
+CREATE INDEX IF NOT EXISTS idx_matches_cache_key
+    ON matches (cache_key);
 
 CREATE TABLE IF NOT EXISTS runs (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -113,7 +114,25 @@ class Store:
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(_SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Forward-compatible column adds for DBs created by older versions."""
+        cols = {
+            row["name"]
+            for row in self.conn.execute("PRAGMA table_info(matches)").fetchall()
+        }
+        if "cache_key" not in cols:
+            # Older matches rows: leave cache_key blank so they simply miss the
+            # (now richer) score-cache key and get re-scored — never a false hit.
+            self.conn.execute(
+                "ALTER TABLE matches ADD COLUMN cache_key TEXT NOT NULL DEFAULT ''"
+            )
+            self.conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_matches_cache_key "
+                "ON matches (cache_key)"
+            )
 
     def close(self) -> None:
         self.conn.close()
@@ -262,19 +281,25 @@ class Store:
         return [opp for _, opp in out]
 
     # ----------------------------------------------------------------- matches
-    def save_match(self, match: Match) -> None:
-        """Upsert a match by (opportunity_id, profile_version)."""
+    def save_match(self, match: Match, cache_key: str = "") -> None:
+        """Upsert a match by (opportunity_id, profile_version).
+
+        ``cache_key`` is the full relevance-cache fingerprint (backend + document
+        state + content); :class:`SqliteScoreCache` looks rows up by it so a
+        differently-scored input never reuses this row.
+        """
         self.conn.execute(
             "INSERT INTO matches "
-            "(opportunity_id, profile_version, opportunity_hash, score, "
-            " data, created_at) VALUES (?, ?, ?, ?, ?, ?) "
+            "(opportunity_id, profile_version, opportunity_hash, cache_key, score, "
+            " data, created_at) VALUES (?, ?, ?, ?, ?, ?, ?) "
             "ON CONFLICT(opportunity_id, profile_version) DO UPDATE SET "
-            "opportunity_hash=excluded.opportunity_hash, score=excluded.score, "
-            "data=excluded.data, created_at=excluded.created_at",
+            "opportunity_hash=excluded.opportunity_hash, cache_key=excluded.cache_key, "
+            "score=excluded.score, data=excluded.data, created_at=excluded.created_at",
             (
                 match.opportunity_id,
                 match.profile_version,
                 match.opportunity_hash,
+                cache_key,
                 match.score,
                 match.model_dump_json(),
                 _to_text(_now(None)),
@@ -350,23 +375,28 @@ class Store:
 class SqliteScoreCache:
     """SQLite-backed ScoreCache (matching.relevance.ScoreCache Protocol).
 
-    Looks matches up by (profile_version, opportunity_hash). An amended
-    opportunity has a fresh content_hash, so it naturally misses and is re-scored.
+    Looks matches up by the full relevance ``cache_key`` (profile, opportunity id,
+    content_hash, backend + document-state fingerprint). So an amended opportunity
+    (fresh content_hash), a ``--with-documents`` run, a different model, or a
+    different opportunity all miss and are re-scored — never a false reuse.
     """
 
     def __init__(self, store: Store) -> None:
         self.store = store
 
-    def get(self, key: tuple[str, str]) -> Match | None:
-        profile_version, opportunity_hash = key
+    @staticmethod
+    def _serialize(key: tuple[str, ...]) -> str:
+        return "\x1f".join(key)
+
+    def get(self, key: tuple[str, ...]) -> Match | None:
         row = self.store.conn.execute(
-            "SELECT data FROM matches WHERE profile_version=? AND opportunity_hash=?",
-            (profile_version, opportunity_hash),
+            "SELECT data FROM matches WHERE cache_key=?",
+            (self._serialize(key),),
         ).fetchone()
         return Match.model_validate_json(row["data"]) if row else None
 
-    def set(self, key: tuple[str, str], match: Match) -> None:
-        self.store.save_match(match)
+    def set(self, key: tuple[str, ...], match: Match) -> None:
+        self.store.save_match(match, cache_key=self._serialize(key))
 
 
 class SqliteDocumentCache:

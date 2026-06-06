@@ -12,6 +12,7 @@ from pathlib import Path
 
 import yaml
 
+from bandiradar import resources
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
@@ -20,10 +21,28 @@ from bandiradar.sources.base import Source, get, list_sources
 from bandiradar.storage import SqliteDocumentCache, SqliteScoreCache, Store
 
 
-def load_profile(path: str | Path) -> Profile:
-    """Load a company Profile from a YAML file."""
-    data = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
-    return Profile(**data)
+def load_profile(path_or_name: str | Path) -> Profile:
+    """Load a company Profile from a filesystem path OR a bundled example name.
+
+    Resolution order: an existing filesystem path wins; otherwise the string is
+    treated as a bundled example profile name (``mayai``, ``medtech_lombardia``,
+    ``pmi_toscana``, …, with or without ``.yaml``) so demos run from a
+    pip-installed wheel too. An unresolvable name raises a clear error listing the
+    available examples.
+    """
+    fs_path = Path(path_or_name)
+    if fs_path.exists():
+        text = fs_path.read_text(encoding="utf-8")
+    else:
+        bundled = resources.resolve_profile(str(path_or_name))
+        if bundled is None:
+            available = ", ".join(resources.profile_names())
+            raise FileNotFoundError(
+                f"Profile not found: {path_or_name!r}. Pass a YAML path or a "
+                f"bundled example name (one of: {available})."
+            )
+        text = bundled.read_text(encoding="utf-8")
+    return Profile(**yaml.safe_load(text))
 
 
 def _fetch_raw(source: Source, sample: bool):
@@ -39,16 +58,31 @@ def run_fetch(
     sample: bool = False,
     now: datetime | None = None,
 ) -> dict[str, int]:
-    """Ingest one source into the store; returns {fetched, new, amended}."""
+    """Ingest one source into the store.
+
+    Robust to dirty data: a single raw record that fails to map/validate is
+    QUARANTINED (skipped + counted), never fatal — one bad row must not abort the
+    whole ingestion. Returns counts: ``fetched`` (raw docs), ``mapped``
+    (opportunities produced), ``new``/``amended`` (store outcomes), and
+    ``skipped_invalid`` (records that raised).
+    """
     source = get(source_id)
     run_id = store.start_run(source_id)
     raws = _fetch_raw(source, sample)
 
+    mapped = 0
     new = 0
     amended = 0
+    skipped_invalid = 0
     for raw in raws:
         store.save_raw_doc(raw)
-        for opp in source.to_opportunities(raw, now=now):
+        try:
+            opportunities = source.to_opportunities(raw, now=now)
+        except Exception:  # noqa: BLE001 — quarantine a dirty record, keep ingesting
+            skipped_invalid += 1
+            continue
+        for opp in opportunities:
+            mapped += 1
             result = store.upsert_opportunity(opp, now=now)
             if result == "new":
                 new += 1
@@ -57,7 +91,13 @@ def run_fetch(
 
     fetched = len(raws)
     store.finish_run(run_id, fetched=fetched, new=new, amended=amended)
-    return {"fetched": fetched, "new": new, "amended": amended}
+    return {
+        "fetched": fetched,
+        "mapped": mapped,
+        "new": new,
+        "amended": amended,
+        "skipped_invalid": skipped_invalid,
+    }
 
 
 def run_match(

@@ -57,9 +57,9 @@ For the profile, pass **either** `profile_path` (a YAML path) **or** an inline
 
 ```text
 > fetch_opportunities(source="lazio", sample=true)
-{ "fetched": 15, "new": 15, "amended": 0 }
+{ "fetched": 15, "mapped": 15, "new": 15, "amended": 0, "skipped_invalid": 0 }
 
-> search_opportunities(profile_path="data/profiles/mayai.yaml", source="lazio", sample=true)
+> search_opportunities(profile_path="mayai", source="lazio", sample=true)
 [
   { "opportunity_id": "lazio:48841", "score": 52, "status": "open",
     "title": "Voucher Digitalizzazione PMI 2025", ... },

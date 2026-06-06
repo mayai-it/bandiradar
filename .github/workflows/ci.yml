@@ -33,3 +33,33 @@ jobs:
 
       - name: Tests (pytest)
         run: uv run pytest
+
+  # Prove that `--sample` works from a pip-installed WHEEL (data is packaged),
+  # not just from the source checkout. Builds the wheel, installs it into a CLEAN
+  # venv, and runs an end-to-end offline match from OUTSIDE the repo.
+  wheel-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      - name: Build the wheel
+        run: uv build --wheel
+
+      - name: Install the wheel into a clean venv and run --sample
+        env:
+          BANDIRADAR_LLM_PROVIDER: none
+        run: |
+          set -euo pipefail
+          python3 -m venv /tmp/wheelenv
+          /tmp/wheelenv/bin/pip install dist/*.whl
+          # Run from /tmp so there is NO source checkout / data dir on the path.
+          cd /tmp
+          /tmp/wheelenv/bin/bandiradar match --profile mayai --sample --db /tmp/ci.db

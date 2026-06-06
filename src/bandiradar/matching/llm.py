@@ -70,6 +70,11 @@ class AnthropicClient:
     def __init__(self, model: str) -> None:
         self.model = model
 
+    @property
+    def cache_id(self) -> str:
+        """Stable identity of this scoring backend (part of the relevance cache key)."""
+        return f"anthropic:{self.model}"
+
     def score(self, system: str, user: str) -> dict:
         import anthropic  # lazy: only needed when a key/provider is configured
 
@@ -97,6 +102,11 @@ class OpenAIClient:
 
     def __init__(self, model: str) -> None:
         self.model = model
+
+    @property
+    def cache_id(self) -> str:
+        """Stable identity of this scoring backend (part of the relevance cache key)."""
+        return f"openai:{self.model}"
 
     def score(self, system: str, user: str) -> dict:
         import openai  # lazy: only needed when a key/provider is configured

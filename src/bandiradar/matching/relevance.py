@@ -8,6 +8,7 @@ grades continuously from the same signals the prefilter gates on.
 
 from __future__ import annotations
 
+import hashlib
 import math
 from datetime import datetime
 from typing import Protocol, runtime_checkable
@@ -21,9 +22,15 @@ from bandiradar.matching.prefilter import (
     meaningful_tokens,
 )
 from bandiradar.matching.prompts import SCORING_SYSTEM, build_user_prompt
-from bandiradar.models import Match, Opportunity, Profile
+from bandiradar.models import Match, Opportunity, Profile, default_status
 
-CacheKey = tuple[str, str]  # (profile.version, opportunity.content_hash)
+# A relevance score depends on MORE than (profile, opportunity-content): it also
+# depends on whether document text was folded in (--with-documents) and on WHICH
+# backend scored (heuristic vs a specific LLM). The cache key carries all of it so
+# a doc-enriched score never reuses a bare one, and distinct opportunities (same
+# content_hash) can't collide:
+#   (profile.version, opportunity.id, content_hash, "<backend>:<doc_text_hash>")
+CacheKey = tuple[str, str, str, str]
 
 
 class RelevanceResult(BaseModel):
@@ -134,8 +141,15 @@ def _geo_reason(opp: Opportunity, profile: Profile, fit: float) -> str:
     return f"region mismatch: {opp.region or '—'}"
 
 
-def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceResult:
-    """Deterministic, network-free relevance grade in [0, 100]."""
+def heuristic_fallback(
+    opportunity: Opportunity, profile: Profile, now: datetime | None = None
+) -> RelevanceResult:
+    """Deterministic, network-free relevance grade in [0, 100].
+
+    ``now`` is used to derive the deadline-proximity risk note at evaluation time
+    (so a "closing soon"/"closed" note reflects when scoring runs, not only the
+    status stamped at ingestion).
+    """
     depth = cpv_match_depth(opportunity.cpv, profile.cpv_interests)
     cpv_component = min(depth / 5.0, 1.0)
 
@@ -183,9 +197,10 @@ def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceR
     reasons.append(_geo_reason(opportunity, profile, geo_component))
 
     risk_notes: list[str] = []
-    if opportunity.status == "closing_soon":
+    live_status = default_status(opportunity.deadline, now)
+    if live_status == "closing_soon":
         risk_notes.append("deadline closing soon")
-    elif opportunity.status == "closed":
+    elif live_status == "closed":
         risk_notes.append("deadline already passed")
 
     return RelevanceResult(
@@ -202,8 +217,35 @@ def heuristic_fallback(opportunity: Opportunity, profile: Profile) -> RelevanceR
 # --------------------------------------------------------------------------- #
 
 
-def cache_key(opportunity: Opportunity, profile: Profile) -> CacheKey:
-    return (profile.version, opportunity.content_hash)
+def _model_id(client: LLMClient | None) -> str:
+    """Stable identity of the scoring backend, for the cache key.
+
+    ``None`` -> the deterministic offline heuristic; a real client exposes
+    ``cache_id`` (provider:model); an injected test double falls back to its
+    class name.
+    """
+    if client is None:
+        return "heuristic"
+    return getattr(client, "cache_id", None) or type(client).__name__
+
+
+def cache_key(
+    opportunity: Opportunity, profile: Profile, model_id: str = "heuristic"
+) -> CacheKey:
+    """The relevance cache key (see :data:`CacheKey`).
+
+    Includes a hash of ``document_text`` so a ``--with-documents`` score (which
+    folds attachment text into the matcher input) never reuses a bare score, and
+    the backend ``model_id`` so a heuristic score is never reused for an LLM run.
+    """
+    doc_text = opportunity.document_text or ""
+    doc_fp = hashlib.sha256(doc_text.encode("utf-8")).hexdigest() if doc_text else "-"
+    return (
+        profile.version,
+        opportunity.id,
+        opportunity.content_hash,
+        f"{model_id}:{doc_fp}",
+    )
 
 
 def _with_enrichment(match: Match, opportunity: Opportunity, benchmarks) -> Match:
@@ -242,15 +284,18 @@ def score(
     provided, the returned match is an enriched COPY — never cached, so cache
     hits never double-append.
     """
-    key = cache_key(opportunity, profile)
+    # Resolve the backend BEFORE the cache lookup: its identity (and whether
+    # document text is present) is part of the cache key, so different scoring
+    # inputs can never reuse each other's result.
+    active = client if client is not None else get_client()
+    key = cache_key(opportunity, profile, _model_id(active))
     if cache is not None:
         cached = cache.get(key)
         if cached is not None:
             return _with_enrichment(cached, opportunity, benchmarks)
 
-    active = client if client is not None else get_client()
     if active is None:
-        result = heuristic_fallback(opportunity, profile)
+        result = heuristic_fallback(opportunity, profile, now=now)
     else:
         # Give a real LLM the historical context to reason about.
         benchmark = None

@@ -75,6 +75,27 @@ def test_open_and_closed_mix_present():
     assert statuses.count("closed") == 7
 
 
+def test_inverted_cost_bounds_are_sanitized():
+    # Real incentivi records sometimes carry a TRANSPOSED cost_min/cost_max.
+    # The mapper must repair it (swap) so one dirty row can't fail validation
+    # and abort the whole ingestion.
+    raw = RawDoc(
+        id="incentivi:99999",
+        source="incentivi",
+        fetched_at=NOW,
+        payload={
+            "ss_search_api_id": "entity:node/99999:it",
+            "tum_X3b_it_title_ft": "Bando con importi invertiti",
+            "zs_field_cost_min": ["500000"],  # min > max (transposed)
+            "zs_field_cost_max": ["10000"],
+            "zs_field_subject_grant": ["Ministero X"],
+        },
+    )
+    [opp] = incentivi.to_opportunities(raw, now=NOW)
+    assert opp.value_min == 10000.0  # swapped back into order
+    assert opp.value_max == 500000.0
+
+
 def test_incentivi_is_registered():
     source = get("incentivi")
     assert source.id == "incentivi"

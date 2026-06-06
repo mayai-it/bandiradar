@@ -1,19 +1,15 @@
 """Document-enrichment tests — OFFLINE, no network, no tesseract required."""
 
 from datetime import UTC, datetime
-from pathlib import Path
 
-from bandiradar import documents
+from bandiradar import documents, resources
 from bandiradar.documents import InMemoryDocumentCache, enrich, extract_pdf_text
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.models import Opportunity, Profile
 from bandiradar.storage import SqliteDocumentCache, Store
 
 NOW = datetime(2026, 6, 4, 0, 0, tzinfo=UTC)
-SAMPLE_PDF = (
-    Path(__file__).resolve().parents[1] / "data" / "fixtures" / "sample_bando.pdf"
-)
-PDF_BYTES = SAMPLE_PDF.read_bytes()
+PDF_BYTES = resources.fixture("sample_bando.pdf").read_bytes()
 
 
 def opp(**overrides) -> Opportunity:

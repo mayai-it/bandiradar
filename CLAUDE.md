@@ -32,11 +32,15 @@ src/bandiradar/
   core.py          # service layer that orchestrates the pipeline
   cli.py           # Typer CLI (thin)
   mcp_server.py    # FastMCP server (thin)
-data/
-  fixtures/        # recorded source payloads for offline tests
-  profiles/        # example profiles (mayai.yaml, manifattura.yaml)
+  resources.py     # importlib.resources access to packaged data (below)
+  data/            # PACKAGED runtime data (ships in the wheel)
+    fixtures/      # recorded source payloads for offline tests / --sample
+    profiles/      # example profiles (mayai.yaml, manifattura.yaml, …)
 tests/
 ```
+Runtime data lives INSIDE the package and is reached via `bandiradar.resources`
+(importlib.resources) — never `Path(__file__).parents[...]` — so `--sample` and the
+bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
@@ -51,7 +55,7 @@ uv sync                      # install
 uv run pytest                # tests (must pass offline, no secrets)
 uv run ruff check . && uv run ruff format .
 uv run bandiradar fetch --source anac --sample   # offline sample run
-uv run bandiradar match --profile data/profiles/mayai.yaml --sample
+uv run bandiradar match --profile mayai --sample # --profile: bundled name OR path
 uv run bandiradar mcp        # start MCP server
 ```
 
@@ -78,7 +82,8 @@ uv run bandiradar mcp        # start MCP server
 1. Create `src/bandiradar/sources/<name>.py` implementing the `Source` Protocol.
 2. `fetch()` returns `RawDoc`s (HTTP/feed/API). `to_opportunities()` maps raw →
    `Opportunity` (pure).
-3. Record a real payload into `data/fixtures/<name>.json`.
+3. Record a real payload into `src/bandiradar/data/fixtures/<name>.json` (access it
+   via `resources.fixture("<name>.json")`, not a `__file__`-relative path).
 4. Add `tests/test_<name>.py` asserting the mapper output against the fixture.
 5. Register the source in `sources/base.py` registry.
 6. Run `uv run pytest` — green before stopping.

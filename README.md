@@ -51,7 +51,7 @@
 
 ```bash
 uv sync
-uv run bandiradar match --profile data/profiles/mayai.yaml --sample
+uv run bandiradar match --profile mayai --sample
 ```
 
 Real output on the bundled sample data:
@@ -80,6 +80,10 @@ Real output on the bundled sample data:
      risk: deadline closing soon
      https://www.lazioinnova.it/bandi/donne-e-impresa-2026/
 ```
+
+`--profile` accepts either a **bundled example name** (`mayai`,
+`medtech_lombardia`, `pmi_toscana`, … — packaged in the wheel, so the demos work
+from a `pip install` too) or a **path** to your own profile YAML.
 
 Add `--json` for machine-readable output. Live opportunities come from the
 key-less sources (incentivi, TED, Lombardia, Lazio); `anac` adds historical
@@ -193,8 +197,8 @@ MedForniture medical devices        76               92   ← strong sector fit 
 
 ```bash
 uv run bandiradar fetch --source incentivi --sample   # offline, bundled real capture
-uv run bandiradar match --profile data/profiles/mayai.yaml --source incentivi --sample
-uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
+uv run bandiradar match --profile mayai --source incentivi --sample
+uv run bandiradar match --profile mayai --source ted --sample
 ```
 
 The `--sample` fixtures are **real captures** (`data/fixtures/*.json`).
@@ -203,14 +207,14 @@ range, and an eligibility text the matcher reads. TED carries above-threshold
 contracts often far larger than a micro-SME's range, so a small profile matches
 only the few that fit — which is why incentive/national/regional sources matter too.
 
-A regional example (`data/profiles/medtech_lombardia.yaml`, a Lombardy
+A regional example (the bundled `medtech_lombardia` example profile, a Lombardy
 medical-devices distributor) matches open Lombardy tenders, while the Lazio-only
 MayAI profile correctly drops them — regional filtering in action:
 
 ```bash
-uv run bandiradar match --profile data/profiles/medtech_lombardia.yaml --source lombardia --sample
+uv run bandiradar match --profile medtech_lombardia --source lombardia --sample
 # -> 3 open medical-device tenders (region match, CPV 33*, within value range)
-uv run bandiradar match --profile data/profiles/mayai.yaml --source lombardia --sample
+uv run bandiradar match --profile mayai --source lombardia --sample
 # -> No matching opportunities (Lazio profile, Lombardy bandi dropped on region)
 ```
 
@@ -218,7 +222,7 @@ And the dogfood closes the loop — MayAI **is** a Lazio company, and `lazio`
 (LazioInnova) is where it finally matches its own region:
 
 ```bash
-uv run bandiradar match --profile data/profiles/mayai.yaml --source lazio --sample
+uv run bandiradar match --profile mayai --source lazio --sample
 # -> Voucher Digitalizzazione PMI 2025 (52), Donne e Impresa 2026 (42, closing soon)
 #    region match: Lazio; overlap: digitalizzazione, software, cloud, dati
 ```
@@ -249,7 +253,7 @@ That extraction is I/O, so it lives in `fetch()` and **needs an LLM key** —
 
 ```bash
 uv run bandiradar fetch --source toscana --sample   # offline, recorded extraction
-uv run bandiradar match --profile data/profiles/pmi_toscana.yaml --source toscana --sample
+uv run bandiradar match --profile pmi_toscana --source toscana --sample
 # -> Bando Energia Imprese (92), Bando 1.3.2 Sostegno alle PMI/BEI (82),
 #    Bando Energia Immobili Imprese (78); public-only Energia Pubblico dropped to 15
 ```
@@ -294,7 +298,7 @@ and each scored opportunity gets, for its CPV division, a historical-context
 
 ```bash
 uv run bandiradar benchmarks build --sample
-uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample --with-benchmarks
+uv run bandiradar match --profile mayai --source ted --sample --with-benchmarks
 ```
 
 ```text
@@ -304,7 +308,7 @@ uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
 ```
 
 Value-sanity triggers when the opportunity declares a value — e.g. a Lombardy
-medical-devices tender (`--profile data/profiles/medtech_lombardia.yaml --source
+medical-devices tender (`--profile medtech_lombardia --source
 lombardia --sample --with-benchmarks`):
 
 ```text
@@ -354,9 +358,9 @@ watch run (a per-profile marker is persisted; `--since` overrides it).
 
 ```bash
 # 1st run: all current matches are "new"; a 2nd run reports nothing new
-uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --sample
+uv run bandiradar watch --profile mayai --source incentivi --sample
 # write a feed instead of printing
-uv run bandiradar watch --profile data/profiles/mayai.yaml --source incentivi --sample --rss ~/feed.xml
+uv run bandiradar watch --profile mayai --source incentivi --sample --rss ~/feed.xml
 ```
 
 `export` is the full, non-delta dump of current matches (`--json` or `--rss PATH`).
@@ -399,6 +403,11 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
   (key-less), capped at 500 releases/run. The data is **retrospective** (awarded
   contracts), so it surfaces mostly-closed opportunities — useful for history /
   market analysis, not as a feed of open calls.
+- ⏳ **Honest limitation:** the offline/`--sample` path and the canonical model are
+  the solid core. Live-fetch *robustness* — retries/backoff, pagination of very
+  large sources, partial-failure handling — is deliberately minimal today and is
+  the hardening focus for **0.2.x**. (Dirty single records are already tolerated:
+  they're quarantined per-record, never fatal.)
 
 ## Open core vs Pro
 
@@ -457,6 +466,10 @@ MIT © MayAI — see [`LICENSE`](LICENSE).
 BandiRadar consumes public open data; each source keeps its own licence, which
 its operator requires you to honor:
 
+- **TED — Tenders Electronic Daily (EU)** — the EU's public procurement journal
+  (Publications Office of the EU). Notice data is reusable under the Commission's
+  open-data reuse policy; the live `ted` fetch uses the anonymous public
+  `api.ted.europa.eu` search API (no key). Attribute TED / the Publications Office.
 - **incentivi.gov.it (IODL 2.0)** — published by the Ministero delle Imprese e del
   Made in Italy under the
   [Italian Open Data License v2.0](https://www.dati.gov.it/iodl/2.0/) (attribution

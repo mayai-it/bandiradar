@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel
 
+from bandiradar import resources
 from bandiradar.ocp import OCP_ANAC_URL_TEMPLATE, stream_releases
 
 if TYPE_CHECKING:
@@ -27,9 +28,7 @@ if TYPE_CHECKING:
 # OCP mirror URL template lives in bandiradar.ocp (re-exported for callers).
 __all__ = ["OCP_ANAC_URL_TEMPLATE"]
 
-FIXTURE_PATH = (
-    Path(__file__).resolve().parents[3] / "data" / "fixtures" / "anac_history.jsonl"
-)
+FIXTURE_PATH = resources.fixture("anac_history.jsonl")
 
 
 class HistoryRecord(BaseModel):
