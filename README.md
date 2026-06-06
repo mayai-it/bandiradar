@@ -213,6 +213,21 @@ uv run bandiradar match --profile data/profiles/mayai.yaml --source lazio --samp
 
 Source data licensing is consolidated under [Data and licenses](#data-and-licenses).
 
+### Regional coverage
+
+WordPress-based regional portals (like LazioInnova) are **config-only** to add:
+`WordPressBandiSource` (`sources/wordpress.py`) captures the whole WP-REST pattern
+(fetch, pagination, scadenza parsing, taxonomy→keywords), so a new such region is
+a config entry + a fixture + a test, not new code.
+
+Honestly, though, that clean pattern is **rare** — most Italian regional agency
+portals are bespoke sites with no public open-bandi API, so each new region
+usually needs its own adapter (CKAN/Socrata like `lombardia`, or HTML scraping)
+rather than a one-line config. We don't ship half-working adapters: a portal
+that's unreachable, retrospective-only, or API-less is skipped, not faked. The
+per-region status (what's been checked, where coverage is needed) lives in
+[`docs/regions.md`](docs/regions.md) — **regional contributions are very welcome.**
+
 ## Intelligence and benchmarks
 
 A **separate** track (not the matcher) ingests ANAC *historical* OCDS data —

@@ -163,6 +163,16 @@ of regional bandi can be crowdsourced by the community against this interface.
 
 Regional adapters = phase 2, community-contributed via the `add-a-source` skill.
 
+**Reusable WordPress base.** Many regional agencies run WordPress and expose
+their bandi as a custom post type over the WP REST API. `WordPressBandiSource`
+(`sources/wordpress.py`) captures that whole pattern — fetch/pagination, HTML
+stripping, scadenza parsing, taxonomy→keywords — so such a region is a **config
+entry**, not a new module: `WordPressBandiSource(id, region, data_url,
+issuer_name, kind, keyword_taxonomies)` + a fixture + a test. `sources/lazio.py`
+(LazioInnova) is the reference config. In practice this clean pattern is rare —
+most regional portals are bespoke and need a dedicated adapter (CKAN/Socrata like
+`lombardia`, or HTML scraping); see `docs/regions.md` for the coverage map.
+
 ---
 
 ## 6. Matching engine (two stages)

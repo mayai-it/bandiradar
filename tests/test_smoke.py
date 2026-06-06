@@ -14,6 +14,7 @@ MODULES = [
     "bandiradar.models",
     "bandiradar.sources",
     "bandiradar.sources.base",
+    "bandiradar.sources.wordpress",
     "bandiradar.sources.anac",
     "bandiradar.sources.ted",
     "bandiradar.sources.incentivi",

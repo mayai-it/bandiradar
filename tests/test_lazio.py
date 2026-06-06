@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import lazio
+from bandiradar.sources import wordpress as wp
 from bandiradar.sources.base import get, list_sources
 
 NOW = datetime(2026, 6, 6, 0, 0, tzinfo=UTC)
@@ -123,10 +124,9 @@ class _FakeClient:
 def test_fetch_yields_rawdocs_via_mocked_client(monkeypatch):
     posts = [r.payload for r in lazio.load_fixture()]
     calls: list = []
-    monkeypatch.setattr(
-        lazio.httpx, "Client", lambda *a, **k: _FakeClient(posts, calls)
-    )
-    raws = list(lazio.LazioSource().fetch())
+    # fetch/pagination live in the shared WordPress base now.
+    monkeypatch.setattr(wp.httpx, "Client", lambda *a, **k: _FakeClient(posts, calls))
+    raws = list(get("lazio").fetch())
     assert len(raws) == len(posts)
     assert all(r.id.startswith("lazio:") for r in raws)
     url, _params = calls[0]

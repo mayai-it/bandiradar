@@ -44,6 +44,15 @@ Every adapter PR must ship:
 adapter, the fixture format, and the test. If you use an AI coding agent, point
 it at that skill. The same playbook is summarized in `CLAUDE.md`.
 
+### Regional coverage — where help is most needed
+
+[`docs/regions.md`](docs/regions.md) is the live map of which regional bandi
+portals have been checked and which still need an adapter. If a region's agency
+runs WordPress with a bandi REST endpoint, it's a **config-only** entry on
+`WordPressBandiSource` (see the example in that doc). Otherwise it needs a small
+dedicated adapter (CKAN/Socrata or HTML scraping). Either way: **real fixture +
+offline test, no fabricated data.**
+
 ## What belongs here vs. `bandiradar-pro`
 
 This repo is the **open (MIT) engine**. The boundary (ARCHITECTURE.md §2):
