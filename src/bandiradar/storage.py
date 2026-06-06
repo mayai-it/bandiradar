@@ -55,9 +55,6 @@ CREATE TABLE IF NOT EXISTS matches (
     PRIMARY KEY (opportunity_id, profile_version)
 );
 
-CREATE INDEX IF NOT EXISTS idx_matches_cache_key
-    ON matches (cache_key);
-
 CREATE TABLE IF NOT EXISTS runs (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     source      TEXT,
@@ -88,6 +85,21 @@ CREATE TABLE IF NOT EXISTS extractions (
 );
 """
 
+# Columns added AFTER a table's original release. ``_migrate`` introspects each
+# table and ALTERs in any that are missing, so an old-schema DB upgrades cleanly
+# (a fresh DB already has them from _SCHEMA, so the ALTERs are skipped). Keep each
+# declaration ALTER-compatible: a NOT NULL column must carry a DEFAULT.
+_EXPECTED_COLUMNS: dict[str, dict[str, str]] = {
+    "matches": {"cache_key": "TEXT NOT NULL DEFAULT ''"},
+    "runs": {"status": "TEXT", "error": "TEXT"},
+}
+
+# Indexes that reference possibly-migrated columns. Created ONLY AFTER the columns
+# are guaranteed to exist (so they never run against an un-upgraded table).
+_MIGRATION_INDEXES: tuple[str, ...] = (
+    "CREATE INDEX IF NOT EXISTS idx_matches_cache_key ON matches (cache_key)",
+)
+
 
 def _default_db_path() -> str:
     env = os.environ.get("BANDIRADAR_DB")
@@ -115,34 +127,33 @@ class Store:
             Path(self.db_path).expanduser().parent.mkdir(parents=True, exist_ok=True)
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
+        # Order matters for the upgrade path (see _migrate): (a) create base tables,
+        # (b) add any missing columns, (c) ONLY THEN create indexes that reference
+        # them. Nothing here may touch a column before _migrate guarantees it.
         self.conn.executescript(_SCHEMA)
         self._migrate()
         self.conn.commit()
 
     def _migrate(self) -> None:
-        """Forward-compatible column adds for DBs created by older versions."""
-        cols = {
-            row["name"]
-            for row in self.conn.execute("PRAGMA table_info(matches)").fetchall()
-        }
-        if "cache_key" not in cols:
-            # Older matches rows: leave cache_key blank so they simply miss the
-            # (now richer) score-cache key and get re-scored — never a false hit.
-            self.conn.execute(
-                "ALTER TABLE matches ADD COLUMN cache_key TEXT NOT NULL DEFAULT ''"
-            )
-            self.conn.execute(
-                "CREATE INDEX IF NOT EXISTS idx_matches_cache_key "
-                "ON matches (cache_key)"
-            )
-        run_cols = {
-            row["name"]
-            for row in self.conn.execute("PRAGMA table_info(runs)").fetchall()
-        }
-        if "status" not in run_cols:
-            self.conn.execute("ALTER TABLE runs ADD COLUMN status TEXT")
-        if "error" not in run_cols:
-            self.conn.execute("ALTER TABLE runs ADD COLUMN error TEXT")
+        """Bring an existing DB up to the current schema (idempotent).
+
+        Introspects each table with ``PRAGMA table_info`` and ALTERs in every
+        expected-but-missing column, then (re)creates indexes that reference those
+        columns. Safe to run on a fresh DB (all columns already present -> no-op)
+        and on any older DB (no schema-version assumption).
+        """
+        for table, columns in _EXPECTED_COLUMNS.items():
+            existing = {
+                row["name"]
+                for row in self.conn.execute(f"PRAGMA table_info({table})").fetchall()
+            }
+            for name, decl in columns.items():
+                if name not in existing:
+                    # e.g. old `matches` rows get cache_key='' -> they simply miss
+                    # the richer score-cache key and are re-scored, never a false hit.
+                    self.conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
+        for ddl in _MIGRATION_INDEXES:
+            self.conn.execute(ddl)
 
     def close(self) -> None:
         self.conn.close()

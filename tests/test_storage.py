@@ -1,5 +1,6 @@
 """SQLite storage tests (ARCHITECTURE.md §8 / Prompt 5). Offline, tmp db."""
 
+import sqlite3
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -8,7 +9,7 @@ import yaml
 import synthetic_source as synthetic
 from bandiradar import resources
 from bandiradar.matching import relevance
-from bandiradar.models import Match, Profile
+from bandiradar.models import Match, Opportunity, Profile
 from bandiradar.storage import SqliteScoreCache, Store
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
@@ -158,3 +159,146 @@ def test_run_lifecycle(store):
     assert run["source"] == "anac"
     assert (run["fetched"], run["new"], run["amended"]) == (6, 5, 1)
     assert run["finished_at"] is not None
+
+
+# --------------------------------------------------------------------------- #
+# schema upgrade path (pre-credibility-batch DB -> current schema)
+# --------------------------------------------------------------------------- #
+
+
+# The PREVIOUS on-disk schema: `matches` WITHOUT cache_key (and its old index),
+# `runs` WITHOUT status/error. Opening such a DB used to crash with
+# "no such column: cache_key" because the cache_key index ran before _migrate.
+_OLD_SCHEMA = """
+CREATE TABLE opportunities (
+    id TEXT PRIMARY KEY, source TEXT NOT NULL, content_hash TEXT NOT NULL,
+    version INTEGER NOT NULL, status TEXT NOT NULL, deadline TEXT,
+    updated_at TEXT, inserted_at TEXT NOT NULL, data TEXT NOT NULL
+);
+CREATE TABLE matches (
+    opportunity_id TEXT NOT NULL, profile_version TEXT NOT NULL,
+    opportunity_hash TEXT NOT NULL, score INTEGER NOT NULL,
+    data TEXT NOT NULL, created_at TEXT NOT NULL,
+    PRIMARY KEY (opportunity_id, profile_version)
+);
+CREATE INDEX idx_matches_cache ON matches (profile_version, opportunity_hash);
+CREATE TABLE runs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, source TEXT, started_at TEXT,
+    finished_at TEXT, fetched INTEGER, "new" INTEGER, amended INTEGER
+);
+"""
+
+
+def _legacy_db(path: str) -> tuple[Opportunity, Match]:
+    """Create a DB with the OLD schema + a couple of rows; return the seeded objects."""
+    opp = Opportunity(
+        id="anac:legacy-1",
+        source="anac",
+        source_url="https://example.invalid/legacy-1",
+        kind="tender",
+        title="Legacy bando",
+        geo_scope="national",
+        status="open",
+        raw_ref="anac:legacy-1",
+    )
+    match = Match(
+        opportunity_id=opp.id,
+        opportunity_hash=opp.content_hash,
+        profile_version="pv-legacy",
+        score=42,
+    )
+    conn = sqlite3.connect(path)
+    conn.executescript(_OLD_SCHEMA)
+    conn.execute(
+        "INSERT INTO opportunities (id, source, content_hash, version, status, "
+        "deadline, updated_at, inserted_at, data) VALUES (?,?,?,?,?,?,?,?,?)",
+        (
+            opp.id,
+            opp.source,
+            opp.content_hash,
+            opp.version,
+            opp.status,
+            None,
+            None,
+            NOW.isoformat(),
+            opp.model_dump_json(),
+        ),
+    )
+    conn.execute(
+        "INSERT INTO matches (opportunity_id, profile_version, opportunity_hash, "
+        "score, data, created_at) VALUES (?,?,?,?,?,?)",
+        (
+            match.opportunity_id,
+            match.profile_version,
+            match.opportunity_hash,
+            match.score,
+            match.model_dump_json(),
+            NOW.isoformat(),
+        ),
+    )
+    conn.execute(
+        'INSERT INTO runs (source, started_at, fetched, "new", amended) '
+        "VALUES (?,?,?,?,?)",
+        ("anac", NOW.isoformat(), 1, 1, 0),
+    )
+    conn.commit()
+    conn.close()
+    return opp, match
+
+
+def test_opening_old_schema_db_upgrades_cleanly(tmp_path):
+    db = str(tmp_path / "legacy.db")
+    opp, match = _legacy_db(db)
+
+    # Used to raise OperationalError: no such column: cache_key.
+    store = Store(db)
+    try:
+        # New columns now exist.
+        match_cols = {
+            r["name"] for r in store.conn.execute("PRAGMA table_info(matches)")
+        }
+        run_cols = {r["name"] for r in store.conn.execute("PRAGMA table_info(runs)")}
+        assert "cache_key" in match_cols
+        assert {"status", "error"} <= run_cols
+
+        # Existing rows survived the upgrade and read back.
+        assert store.get_opportunity(opp.id) == opp
+        assert store.get_match(opp.id, "pv-legacy") == match
+
+        # New inserts/queries work on the upgraded DB.
+        opp2 = opp.model_copy(update={"id": "anac:legacy-2"})
+        opp2.content_hash = opp2.compute_content_hash()
+        assert store.upsert_opportunity(opp2, now=NOW) == "new"
+
+        cache = SqliteScoreCache(store)
+        key = ("pv-new", "opp-2", opp2.content_hash, "heuristic:-")
+        new_match = Match(
+            opportunity_id=opp2.id,
+            opportunity_hash=opp2.content_hash,
+            profile_version="pv-new",
+            score=77,
+        )
+        cache.set(key, new_match)
+        assert cache.get(key) == new_match
+
+        run_id = store.start_run("anac")
+        store.finish_run(
+            run_id, fetched=2, new=1, amended=0, status="partial", error="boom"
+        )
+        run = store.get_run(run_id)
+        assert run["status"] == "partial" and run["error"] == "boom"
+    finally:
+        store.close()
+
+
+def test_migrate_is_idempotent(tmp_path):
+    db = str(tmp_path / "idem.db")
+    _legacy_db(db)
+    Store(db).close()  # first upgrade
+    # Re-opening (now current-schema) must not raise or duplicate-add columns.
+    store = Store(db)
+    try:
+        cols = {r["name"] for r in store.conn.execute("PRAGMA table_info(matches)")}
+        assert "cache_key" in cols
+    finally:
+        store.close()
