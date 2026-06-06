@@ -1,116 +1,130 @@
-"""ANAC / PNCP (OCDS) reference adapter (ARCHITECTURE.md §5).
+"""ANAC / PNCP (OCDS) source — historical / awarded contracts (ARCHITECTURE.md §5).
 
-The backbone source: real, structured, free open-contracting data. Maps an
-ANAC/OCDS *release* (the shape in ``data/fixtures/anac_sample.json``) to
-``Opportunity`` objects with a PURE :func:`to_opportunities`, and exposes
-:func:`load_fixture` so offline use and tests need no network or secrets.
+**Honest scope:** the ANAC OCDS feed on the Open Contracting mirror is
+**retrospective** — awarded public contracts (> €40k, refreshed monthly), with no
+future application deadlines. So this source surfaces **mostly-CLOSED**
+opportunities; the matcher correctly drops them. Its real value is
+historical / market analysis (see the intelligence benchmark track). **Open**
+tenders come from TED and the regional sources.
 
-The live :meth:`AnacSource.fetch` is intentionally not wired: the real PNCP/ANAC
-open-data endpoint must be confirmed against current docs first (see
-:data:`ANAC_OPENDATA_URL`).
+``to_opportunities`` is a PURE map of one OCDS compiled release to an
+``Opportunity``. ``fetch`` streams the live mirror via the shared memory-safe
+reader (:mod:`bandiradar.ocp`) with a HARD CAP so we never ingest the whole
+retrospective dataset. ``load_fixture`` replays recorded real releases offline.
 """
 
 from __future__ import annotations
 
+import itertools
 import json
-from collections.abc import Iterable
-from datetime import datetime
+import re
+from collections.abc import Callable, Iterable, Iterator
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
+from bandiradar.ocp import stream_releases
 from bandiradar.sources.base import register
 
 SOURCE_ID = "anac"
 SOURCE_KIND: Kind = "tender"
 
-# TODO: confirm the current PNCP/ANAC open-data endpoint against live docs before
-# wiring the live fetch. Do NOT invent a URL — leave empty until verified.
-ANAC_OPENDATA_URL = ""
+# Hard cap: the per-year OCDS file holds thousands of releases; never ingest the
+# whole retrospective dataset into the opportunity store.
+MAX_ITEMS = 500
 
-# Bundled offline fixture (an OCDS release package). Resolved relative to the
-# repo layout (src/bandiradar/sources/anac.py -> <repo>/data/fixtures/...).
+# Bundled offline fixture: real OCDS releases recorded from the OCP mirror.
 FIXTURE_PATH = (
     Path(__file__).resolve().parents[3] / "data" / "fixtures" / "anac_sample.json"
 )
 
+ReleaseStreamer = Callable[[int], Iterable[dict[str, Any]]]
 
-def _parse_dt(value: str | None) -> datetime | None:
-    """Parse an OCDS ISO-8601 timestamp; ``None``/empty -> ``None``.
+_DATE_RE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
 
-    The model coerces any naive result to UTC, so we keep parsing simple here.
+
+def _parse_dt(value: Any) -> datetime | None:
+    """Parse an OCDS timestamp, tolerant of the mirror's malformed ``date`` field.
+
+    Clean ISO values (e.g. the tenderPeriod ``endDate`` ``2022-02-18T12:00:00Z``)
+    parse directly; the compiled-release ``date`` arrives malformed (e.g.
+    ``2025-01-08 17:31:38.793T12:00:00Z``), so we fall back to its leading
+    ``YYYY-MM-DD`` at UTC midnight. The model coerces any naive result to UTC.
     """
-    if not value:
+    if not isinstance(value, str) or not value:
         return None
-    return datetime.fromisoformat(value)
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        match = _DATE_RE.match(value.strip())
+        if not match:
+            return None
+        parsed = datetime(int(match[1]), int(match[2]), int(match[3]))
+    return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=UTC)
 
 
-def _buyer_region(release: dict[str, Any]) -> str | None:
-    """Region from the buyer party's address (None if absent)."""
-    buyer_id = release.get("buyer", {}).get("id")
-    for party in release.get("parties", []):
-        if party.get("id") == buyer_id or "buyer" in party.get("roles", []):
-            return party.get("address", {}).get("region")
-    return None
-
-
-def _cpv_codes(tender: dict[str, Any]) -> list[str]:
-    """CPV ids from each item's classification (scheme == CPV)."""
+def _cpv_from_items(items: Any) -> list[str]:
+    """CPV ids from an OCDS items list (classification scheme == CPV)."""
     codes: list[str] = []
-    for item in tender.get("items", []):
-        classification = item.get("classification", {})
-        is_cpv = str(classification.get("scheme", "")).upper() == "CPV"
-        if is_cpv and classification.get("id"):
+    for item in items or []:
+        classification = item.get("classification") or {}
+        scheme = str(classification.get("scheme", "")).upper()
+        if scheme == "CPV" and classification.get("id"):
             codes.append(str(classification["id"]))
     return codes
 
 
-def _geo_scope(tender: dict[str, Any], region: str | None) -> str:
-    """Derive geo_scope, preferring the explicit OCDS ``coveredBy`` marker.
+def _cpv_codes(release: dict[str, Any]) -> list[str]:
+    """CPV from the tender items, falling back to the award items."""
+    codes = _cpv_from_items((release.get("tender") or {}).get("items"))
+    if codes:
+        return codes
+    for award in release.get("awards") or []:
+        codes = _cpv_from_items(award.get("items"))
+        if codes:
+            return codes
+    return []
 
-    A national tender can still have a regional buyer, so we do NOT infer scope
-    from the buyer region alone: ``coveredBy`` wins, then EU markers, then a
-    known region falls back to "regional", else "national" as a last resort.
-    """
-    covered = {str(c).lower() for c in tender.get("coveredBy", [])}
-    if "national" in covered:
-        return "national"
-    if covered & {"eu", "european", "europe"}:
-        return "eu"
-    if region is not None:
-        return "regional"
-    return "national"
+
+def _value(release: dict[str, Any]) -> dict[str, Any]:
+    """Value preferring the award amount, falling back to the tender value."""
+    for award in release.get("awards") or []:
+        value = award.get("value") or {}
+        if value.get("amount") is not None:
+            return value
+    return (release.get("tender") or {}).get("value") or {}
 
 
 def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportunity]:
-    """PURE mapping from one OCDS release (``raw.payload``) to ``Opportunity``.
+    """PURE mapping from one OCDS compiled release (``raw.payload``) to ``Opportunity``.
 
-    No I/O. ``now`` is forwarded to :func:`default_status` so tests can pin the
-    derived status deterministically.
+    No I/O. The OCP/ANAC address carries no region/NUTS field, so ``region`` is
+    ``None`` and ``geo_scope`` is ``"national"``. ``now`` is forwarded to
+    :func:`default_status` so tests can pin the derived status.
     """
     release: dict[str, Any] = raw.payload
     ocid = release["ocid"]
-    tender: dict[str, Any] = release.get("tender", {})
-    value: dict[str, Any] = tender.get("value") or {}
+    tender: dict[str, Any] = release.get("tender") or {}
+    value = _value(release)
 
-    region = _buyer_region(release)
-    deadline = _parse_dt(tender.get("tenderPeriod", {}).get("endDate"))
+    deadline = _parse_dt((tender.get("tenderPeriod") or {}).get("endDate"))
     description = tender.get("description")
 
     opportunity = Opportunity(
-        id=f"anac:{ocid}",
+        id=f"{SOURCE_ID}:{ocid}",
         source=SOURCE_ID,
         source_url=release.get("url") or raw.url or "",
         kind=SOURCE_KIND,
-        title=tender.get("title") or ocid,
+        title=tender.get("title") or description or ocid,
         summary=description,
-        issuer_name=release.get("buyer", {}).get("name"),
-        issuer_region=region,
-        cpv=_cpv_codes(tender),
+        issuer_name=(release.get("buyer") or {}).get("name"),
+        issuer_region=None,  # absent in OCP/ANAC data
+        cpv=_cpv_codes(release),
         value_amount=value.get("amount"),
         value_currency=value.get("currency") or "EUR",
-        geo_scope=_geo_scope(tender, region),
-        region=region,
+        geo_scope="national",  # no region in the data
+        region=None,
         published_at=_parse_dt(release.get("date")),
         deadline=deadline,
         status=default_status(deadline, now),
@@ -122,15 +136,9 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
 
 
 def load_fixture(path: Path | None = None) -> list[RawDoc]:
-    """Read the bundled OCDS release package into ``RawDoc``s (offline).
-
-    Each OCDS release becomes one ``RawDoc`` whose ``id`` is the source-prefixed
-    ocid (mirroring the Opportunity ``raw_ref``) and whose ``payload`` is the
-    untouched release.
-    """
-    fixture_path = path or FIXTURE_PATH
-    package = json.loads(fixture_path.read_text(encoding="utf-8"))
-    fetched_at = _parse_dt(package.get("publishedDate")) or datetime.fromisoformat(
+    """Read recorded real OCDS releases into ``RawDoc``s (offline, no network)."""
+    package = json.loads((path or FIXTURE_PATH).read_text(encoding="utf-8"))
+    fetched_at = _parse_dt(package.get("_captured")) or datetime.fromisoformat(
         "1970-01-01T00:00:00+00:00"
     )
     raws: list[RawDoc] = []
@@ -138,7 +146,7 @@ def load_fixture(path: Path | None = None) -> list[RawDoc]:
         ocid = release["ocid"]
         raws.append(
             RawDoc(
-                id=f"anac:{ocid}",
+                id=f"{SOURCE_ID}:{ocid}",
                 source=SOURCE_ID,
                 fetched_at=fetched_at,
                 payload=release,
@@ -148,29 +156,76 @@ def load_fixture(path: Path | None = None) -> list[RawDoc]:
     return raws
 
 
+def _resolve_stream(streamer: ReleaseStreamer, year: int) -> Iterator[dict[str, Any]]:
+    """Yield releases for the first reachable year, trying ``year`` then ``year-1``.
+
+    The current year's file may not be published yet (404). We force the HTTP
+    connect by pulling the first release, falling back to the previous year on a
+    download error.
+    """
+    last_error: RuntimeError | None = None
+    for candidate in (year, year - 1):
+        try:
+            iterator = iter(streamer(candidate))
+            first = next(iterator)
+        except StopIteration:
+            return iter(())  # reachable but empty
+        except RuntimeError as exc:  # download failed -> try the previous year
+            last_error = exc
+            continue
+        return itertools.chain([first], iterator)
+    raise last_error if last_error else RuntimeError("ANAC OCDS: no reachable year")
+
+
 class AnacSource:
-    """ANAC/PNCP source. Offline via :func:`load_fixture`; live fetch is TODO."""
+    """ANAC/PNCP OCDS source — historical/awarded contracts (mostly closed)."""
 
     id = SOURCE_ID
     kind: Kind = SOURCE_KIND
 
-    def fetch(self, since: datetime | None = None) -> Iterable[RawDoc]:
-        """Live fetch from PNCP/ANAC open data — not yet wired.
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        max_items: int = MAX_ITEMS,
+        year: int | None = None,
+        streamer: ReleaseStreamer | None = None,
+    ) -> Iterable[RawDoc]:
+        """Stream live ANAC OCDS releases (capped). Historical data — mostly closed.
 
-        The endpoint must be confirmed against current docs (see
-        :data:`ANAC_OPENDATA_URL`). For offline use, call :func:`load_fixture`
-        (the CLI ``--sample`` mode does this).
+        Caps at ``max_items`` so we never ingest the whole retrospective dataset.
+        With ``since`` set, releases published before it are skipped. ``streamer``
+        is injectable for tests; live it is the shared memory-safe OCP reader.
         """
-        if not ANAC_OPENDATA_URL:
-            raise NotImplementedError(
-                "Live ANAC/PNCP fetch is not wired yet: confirm the current "
-                "open-data endpoint against PNCP/ANAC docs and set "
-                "ANAC_OPENDATA_URL. For offline use call load_fixture() "
-                "(CLI: `bandiradar fetch --source anac --sample`)."
+        streamer = streamer if streamer is not None else stream_releases
+        target_year = year if year is not None else datetime.now(tz=UTC).year
+        releases = _resolve_stream(streamer, target_year)
+        return self._scrape(releases, since, max_items)
+
+    def _scrape(
+        self,
+        releases: Iterable[dict[str, Any]],
+        since: datetime | None,
+        max_items: int,
+    ) -> Iterator[RawDoc]:
+        count = 0
+        for release in releases:
+            ocid = release.get("ocid")
+            if not ocid:
+                continue
+            published = _parse_dt(release.get("date"))
+            if since is not None and published is not None and published < since:
+                continue
+            yield RawDoc(
+                id=f"{SOURCE_ID}:{ocid}",
+                source=SOURCE_ID,
+                fetched_at=datetime.now(tz=UTC),
+                payload=release,
+                url=release.get("url"),
             )
-        # TODO: implement the live OCDS fetch (httpx) against ANAC_OPENDATA_URL,
-        # honoring `since`, once the endpoint is verified.
-        raise NotImplementedError("Live ANAC/PNCP fetch not implemented yet.")
+            count += 1
+            if count >= max_items:
+                break
 
     def to_opportunities(
         self, raw: RawDoc, now: datetime | None = None
@@ -178,7 +233,7 @@ class AnacSource:
         return to_opportunities(raw, now=now)
 
     def load_fixture(self) -> list[RawDoc]:
-        """Offline RawDocs from the bundled fixture (used by --sample)."""
+        """Offline RawDocs from the bundled real-release fixture (used by --sample)."""
         return load_fixture()
 
 

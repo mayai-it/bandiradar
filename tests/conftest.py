@@ -9,6 +9,11 @@ never the network.
 
 import pytest
 
+# Register the test-only synthetic OCDS source (id "synthetic") for the whole
+# suite — the matcher/storage/CLI/MCP tests use it as their region-aware corpus
+# now that `anac` is wired to real (regionless, historical) live data.
+import synthetic_source  # noqa: F401,E402  (registration side effect)
+
 
 @pytest.fixture(autouse=True)
 def _force_offline(monkeypatch):

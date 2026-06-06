@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+import synthetic_source as synthetic
 from bandiradar.matching import relevance
 from bandiradar.matching.llm import get_client
 from bandiradar.matching.relevance import (
@@ -18,7 +19,6 @@ from bandiradar.matching.relevance import (
     score,
 )
 from bandiradar.models import Profile
-from bandiradar.sources import anac
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
 PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
@@ -38,8 +38,8 @@ def load_profile(name: str) -> Profile:
 
 def opps_by_id() -> dict:
     out = {}
-    for raw in anac.load_fixture():
-        for opp in anac.to_opportunities(raw, now=NOW):
+    for raw in synthetic.load_fixture():
+        for opp in synthetic.to_opportunities(raw, now=NOW):
             out[opp.id] = opp
     return out
 
@@ -54,7 +54,7 @@ def test_get_client_is_none_when_provider_unset(monkeypatch):
 
 
 def test_score_is_deterministic_and_bounded():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     a = score(opp, mayai, now=NOW)
     b = score(opp, mayai, now=NOW)
@@ -65,20 +65,20 @@ def test_score_is_deterministic_and_bounded():
 def test_strong_match_outranks_weak_match():
     opps = opps_by_id()
     mayai = load_profile("mayai.yaml")
-    strong = score(opps["anac:ocds-bandi-0001"], mayai, now=NOW)  # software, Lazio
-    weak = score(opps["anac:ocds-bandi-0006"], mayai, now=NOW)  # machinery, ER
+    strong = score(opps["synthetic:ocds-bandi-0001"], mayai, now=NOW)  # software, Lazio
+    weak = score(opps["synthetic:ocds-bandi-0006"], mayai, now=NOW)  # machinery, ER
     assert strong.score > weak.score
 
 
 def test_matched_capabilities_non_empty_for_strong_match():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     result = heuristic_fallback(opp, mayai)
     assert result.matched_capabilities
 
 
 def test_match_carries_cache_key_parts():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     match = score(opp, mayai, now=NOW)
     assert match.opportunity_id == opp.id
@@ -104,7 +104,7 @@ class _SpyClient:
 
 
 def test_cache_avoids_recompute_and_returns_equal_match():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     cache = InMemoryScoreCache()
     spy = _SpyClient()
@@ -119,7 +119,7 @@ def test_cache_avoids_recompute_and_returns_equal_match():
 
 def test_amended_opportunity_misses_cache(monkeypatch):
     # Changing a meaningful field changes content_hash -> new cache key -> recompute.
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     cache = InMemoryScoreCache()
     spy = _SpyClient()
@@ -150,7 +150,7 @@ def _bench72():
 
 
 def test_benchmarks_append_enrichment_but_cache_stays_bare():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]  # CPV 72000000 -> division 72
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]  # CPV 72000000 -> division 72
     mayai = load_profile("mayai.yaml")
     cache = InMemoryScoreCache()
     benchmarks = [_bench72()]
@@ -170,7 +170,7 @@ def test_benchmarks_append_enrichment_but_cache_stays_bare():
 
 
 def test_benchmarks_none_leaves_match_unchanged():
-    opp = opps_by_id()["anac:ocds-bandi-0001"]
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
     mayai = load_profile("mayai.yaml")
     bare = score(opp, mayai, now=NOW)
     assert not any("ANAC history" in r for r in bare.reasons)

@@ -1,0 +1,214 @@
+{
+  "version": "1.1",
+  "publisher": { "name": "ANAC", "uri": "https://www.anticorruzione.it" },
+  "publishedDate": "2026-06-01T00:00:00+02:00",
+  "uri": "https://example.invalid/anac/sample-package.json",
+  "_note": "OCDS-style ANAC/PNCP sample for OFFLINE tests. Reference 'now' for the dataset is ~2026-06-03: ocds-bandi-0003 is already closed and ocds-bandi-0002 closes within 7 days. Synthetic data, not real notices.",
+  "releases": [
+    {
+      "ocid": "ocds-bandi-0001",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0001",
+      "id": "ocds-bandi-0001-2026-05-20",
+      "date": "2026-05-20T09:00:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-c_h501", "name": "Comune di Roma Capitale" },
+      "parties": [
+        {
+          "id": "ipa-c_h501",
+          "name": "Comune di Roma Capitale",
+          "roles": ["buyer"],
+          "address": { "region": "Lazio", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0001",
+        "title": "Servizi di sviluppo e manutenzione software gestionale comunale",
+        "description": "Affidamento dei servizi di progettazione, sviluppo e manutenzione di una piattaforma software gestionale per i servizi al cittadino, inclusa integrazione dati e supporto.",
+        "status": "active",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "services",
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "72000000", "description": "Servizi IT: consulenza, sviluppo software, Internet e supporto" }
+          }
+        ],
+        "value": { "amount": 120000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-09-15T12:00:00+02:00" }
+      }
+    },
+    {
+      "ocid": "ocds-bandi-0002",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0002",
+      "id": "ocds-bandi-0002-2026-05-22",
+      "date": "2026-05-22T10:30:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-r_lazio", "name": "Regione Lazio" },
+      "parties": [
+        {
+          "id": "ipa-r_lazio",
+          "name": "Regione Lazio",
+          "roles": ["buyer"],
+          "address": { "region": "Lazio", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0002",
+        "title": "Fornitura di licenze software e servizi cloud GDPR-compliant",
+        "description": "Acquisizione di licenze software applicativo e servizi cloud conformi al GDPR per la digitalizzazione dei processi amministrativi regionali.",
+        "status": "active",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "goods",
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "48000000", "description": "Pacchetti software e sistemi di informazione" }
+          }
+        ],
+        "value": { "amount": 80000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-06-08T12:00:00+02:00" }
+      }
+    },
+    {
+      "ocid": "ocds-bandi-0003",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0003",
+      "id": "ocds-bandi-0003-2026-04-10",
+      "date": "2026-04-10T08:00:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-c_f205", "name": "Comune di Milano" },
+      "parties": [
+        {
+          "id": "ipa-c_f205",
+          "name": "Comune di Milano",
+          "roles": ["buyer"],
+          "address": { "region": "Lombardia", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0003",
+        "title": "Lavori di riqualificazione edilizia di un edificio scolastico",
+        "description": "Esecuzione dei lavori di ristrutturazione e riqualificazione energetica di un plesso scolastico comunale.",
+        "status": "complete",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "works",
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "45000000", "description": "Lavori di costruzione" }
+          }
+        ],
+        "value": { "amount": 2000000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-05-15T12:00:00+02:00" }
+      }
+    },
+    {
+      "ocid": "ocds-bandi-0004",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0004",
+      "id": "ocds-bandi-0004-2026-05-28",
+      "date": "2026-05-28T11:00:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-m_mef", "name": "Ministero dell'Economia e delle Finanze" },
+      "parties": [
+        {
+          "id": "ipa-m_mef",
+          "name": "Ministero dell'Economia e delle Finanze",
+          "roles": ["buyer"],
+          "address": { "region": "Lazio", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0004",
+        "title": "Servizi di analisi dati e machine learning per la PA centrale",
+        "description": "Servizi di data science, sviluppo di modelli di machine learning e automazione dei processi a supporto delle amministrazioni centrali. Appalto a rilevanza nazionale.",
+        "status": "active",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "services",
+        "coveredBy": ["national"],
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "72000000", "description": "Servizi IT: consulenza, sviluppo software, Internet e supporto" }
+          }
+        ],
+        "value": { "amount": 250000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-12-01T12:00:00+01:00" }
+      }
+    },
+    {
+      "ocid": "ocds-bandi-0005",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0005",
+      "id": "ocds-bandi-0005-2026-05-30",
+      "date": "2026-05-30T09:45:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-c_a509", "name": "Comune di Napoli" },
+      "parties": [
+        {
+          "id": "ipa-c_a509",
+          "name": "Comune di Napoli",
+          "roles": ["buyer"],
+          "address": { "region": "Campania", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0005",
+        "title": "Servizi di consulenza organizzativa e di processo",
+        "description": "Servizi di consulenza per la riorganizzazione dei processi interni e l'efficientamento amministrativo dell'ente.",
+        "status": "active",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "services",
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "79000000", "description": "Servizi per le imprese: servizi giuridici, di marketing, di consulenza" }
+          }
+        ],
+        "value": { "amount": 45000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-07-30T12:00:00+02:00" }
+      }
+    },
+    {
+      "ocid": "ocds-bandi-0006",
+      "url": "https://example.invalid/anac/notice/ocds-bandi-0006",
+      "id": "ocds-bandi-0006-2026-06-01",
+      "date": "2026-06-01T14:15:00+02:00",
+      "tag": ["tender"],
+      "initiationType": "tender",
+      "language": "it",
+      "buyer": { "id": "ipa-r_emr", "name": "Regione Emilia-Romagna" },
+      "parties": [
+        {
+          "id": "ipa-r_emr",
+          "name": "Regione Emilia-Romagna",
+          "roles": ["buyer"],
+          "address": { "region": "Emilia-Romagna", "countryName": "Italia" }
+        }
+      ],
+      "tender": {
+        "id": "tender-0006",
+        "title": "Fornitura di macchinari industriali per laboratorio meccanico",
+        "description": "Fornitura e installazione di macchinari per lavorazioni meccaniche di precisione a supporto di un polo manifatturiero, con servizi di automazione di linea.",
+        "status": "active",
+        "procurementMethod": "open",
+        "mainProcurementCategory": "goods",
+        "items": [
+          {
+            "id": "1",
+            "classification": { "scheme": "CPV", "id": "42000000", "description": "Macchine industriali" }
+          }
+        ],
+        "value": { "amount": 180000, "currency": "EUR" },
+        "tenderPeriod": { "endDate": "2026-08-20T12:00:00+02:00" }
+      }
+    }
+  ]
+}

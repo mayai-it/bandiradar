@@ -20,10 +20,10 @@ def store(tmp_path):
 
 
 def test_run_fetch_sample_counts_and_dedupe(store):
-    first = core.run_fetch("anac", store, sample=True, now=NOW)
+    first = core.run_fetch("synthetic", store, sample=True, now=NOW)
     assert first == {"fetched": 6, "new": 6, "amended": 0}
 
-    second = core.run_fetch("anac", store, sample=True, now=NOW)
+    second = core.run_fetch("synthetic", store, sample=True, now=NOW)
     assert second["new"] == 0
     assert second["amended"] == 0
     assert len(store.list_opportunities()) == 6
@@ -31,14 +31,14 @@ def test_run_fetch_sample_counts_and_dedupe(store):
 
 def test_run_match_mayai_keepset_ranked_desc(store):
     mayai = core.load_profile(PROFILES / "mayai.yaml")
-    # Scope to anac: with TED also registered, an unscoped match would span both.
-    ranked = core.run_match(mayai, store, source_id="anac", sample=True, now=NOW)
+    # Scope to synthetic: with TED also registered, an unscoped match would span both.
+    ranked = core.run_match(mayai, store, source_id="synthetic", sample=True, now=NOW)
 
     ids = {opp.id for opp, _ in ranked}
     assert ids == {
-        "anac:ocds-bandi-0001",
-        "anac:ocds-bandi-0002",
-        "anac:ocds-bandi-0004",
+        "synthetic:ocds-bandi-0001",
+        "synthetic:ocds-bandi-0002",
+        "synthetic:ocds-bandi-0004",
     }
     scores = [m.score for _, m in ranked]
     assert scores == sorted(scores, reverse=True)
@@ -61,9 +61,9 @@ def test_run_match_min_score_and_limit(store):
 
 def test_run_monitor_fetches_then_matches(store):
     mayai = core.load_profile(PROFILES / "mayai.yaml")
-    ranked = core.run_monitor(mayai, "anac", store, sample=True, now=NOW)
+    ranked = core.run_monitor(mayai, "synthetic", store, sample=True, now=NOW)
     assert {opp.id for opp, _ in ranked} == {
-        "anac:ocds-bandi-0001",
-        "anac:ocds-bandi-0002",
-        "anac:ocds-bandi-0004",
+        "synthetic:ocds-bandi-0001",
+        "synthetic:ocds-bandi-0002",
+        "synthetic:ocds-bandi-0004",
     }

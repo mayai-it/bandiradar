@@ -32,17 +32,17 @@ def test_expected_tools_registered():
 def test_fetch_then_search_offline(tmp_path):
     db = str(tmp_path / "mcp.db")
 
-    counts = mcp_server.fetch_opportunities(sample=True, db=db)
+    counts = mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
     assert counts == {"fetched": 6, "new": 6, "amended": 0}
 
     ranked = mcp_server.search_opportunities(
-        profile_path="data/profiles/mayai.yaml", sample=True, db=db
+        profile_path="data/profiles/mayai.yaml", source="synthetic", sample=True, db=db
     )
     ids = {row["opportunity_id"] for row in ranked}
     assert ids == {
-        "anac:ocds-bandi-0001",
-        "anac:ocds-bandi-0002",
-        "anac:ocds-bandi-0004",
+        "synthetic:ocds-bandi-0001",
+        "synthetic:ocds-bandi-0002",
+        "synthetic:ocds-bandi-0004",
     }
     scores = [row["score"] for row in ranked]
     assert scores == sorted(scores, reverse=True)
@@ -69,16 +69,16 @@ def test_list_sources_and_get_profile():
 
 def test_score_and_get_matches(tmp_path):
     db = str(tmp_path / "s.db")
-    mcp_server.fetch_opportunities(sample=True, db=db)
+    mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
 
     match = mcp_server.score_opportunity(
-        "anac:ocds-bandi-0001", profile_path="data/profiles/mayai.yaml", db=db
+        "synthetic:ocds-bandi-0001", profile_path="data/profiles/mayai.yaml", db=db
     )
-    assert match["opportunity_id"] == "anac:ocds-bandi-0001"
+    assert match["opportunity_id"] == "synthetic:ocds-bandi-0001"
     assert 0 <= match["score"] <= 100
 
     persisted = mcp_server.get_matches(profile_path="data/profiles/mayai.yaml", db=db)
-    assert any(m["opportunity_id"] == "anac:ocds-bandi-0001" for m in persisted)
+    assert any(m["opportunity_id"] == "synthetic:ocds-bandi-0001" for m in persisted)
 
 
 def test_profile_arg_validation(tmp_path):
@@ -98,7 +98,7 @@ def test_profile_arg_validation(tmp_path):
 
 def test_score_opportunity_missing_is_error(tmp_path):
     db = str(tmp_path / "missing.db")
-    mcp_server.fetch_opportunities(sample=True, db=db)
+    mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
     with pytest.raises(ValueError):
         mcp_server.score_opportunity(
             "anac:does-not-exist", profile_path="data/profiles/mayai.yaml", db=db

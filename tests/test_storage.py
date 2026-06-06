@@ -6,9 +6,9 @@ from pathlib import Path
 import pytest
 import yaml
 
+import synthetic_source as synthetic
 from bandiradar.matching import relevance
 from bandiradar.models import Match, Profile
-from bandiradar.sources import anac
 from bandiradar.storage import SqliteScoreCache, Store
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
@@ -27,8 +27,8 @@ def load_profile(name: str) -> Profile:
 
 
 def first_opp():
-    raw = anac.load_fixture()[0]  # ocds-bandi-0001
-    return anac.to_opportunities(raw, now=NOW)[0]
+    raw = synthetic.load_fixture()[0]  # ocds-bandi-0001
+    return synthetic.to_opportunities(raw, now=NOW)[0]
 
 
 # --------------------------------------------------------------------------- #
@@ -65,14 +65,14 @@ def test_get_and_list_roundtrip(store):
     got = store.get_opportunity(opp.id)
     assert got == opp  # faithful round-trip
 
-    assert store.list_opportunities(source="anac")
+    assert store.list_opportunities(source="synthetic")
     assert store.list_opportunities(status="open") == [opp]
     assert store.list_opportunities(status="closed") == []
     assert store.get_opportunity("missing") is None
 
 
 def test_save_and_get_raw_doc_roundtrip(store):
-    raw = anac.load_fixture()[0]
+    raw = synthetic.load_fixture()[0]
     store.save_raw_doc(raw)
     got = store.get_raw_doc(raw.id)
     assert got.id == raw.id
@@ -81,7 +81,7 @@ def test_save_and_get_raw_doc_roundtrip(store):
 
 def test_list_new_filters_by_since(store):
     a = first_opp()
-    b = anac.to_opportunities(anac.load_fixture()[3], now=NOW)[0]  # ocds-bandi-0004
+    b = synthetic.to_opportunities(synthetic.load_fixture()[3], now=NOW)[0]  # 0004
 
     store.upsert_opportunity(a, now=NOW)
     store.upsert_opportunity(b, now=NOW + timedelta(days=2))

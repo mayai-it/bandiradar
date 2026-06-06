@@ -15,9 +15,10 @@
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
   a **zero-secrets offline heuristic fallback** (the LLM is optional).
 - **4 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
-  Lombardia and Regione Lazio (regional); plus a bundled ANAC OCDS mapper. A 5th,
-  Regione Toscana, is an **LLM-assisted scraper** (live fetch needs an LLM key;
-  `--sample` replays a recorded extraction offline).
+  Lombardia and Regione Lazio (regional); plus ANAC OCDS as a key-less **historical
+  / awarded-contracts** feed (analysis, not open calls). Regione Toscana is an
+  **LLM-assisted scraper** (live fetch needs an LLM key; `--sample` replays a
+  recorded extraction offline).
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the
@@ -56,26 +57,33 @@ uv run bandiradar match --profile data/profiles/mayai.yaml --sample
 Real output on the bundled sample data:
 
 ```text
-3 matching opportunities for 'MayAI':
+4 matching opportunities for 'MayAI':
 
-#1  score 76  [closing_soon]  Fornitura di licenze software e servizi cloud GDPR-compliant
-     issuer: Regione Lazio (Lazio)   deadline: 2026-06-08
-     why: CPV prefix match (depth 2); capability overlap: cloud, digitalizzazione, gdpr, processi, software; within profile value range
-     https://example.invalid/anac/notice/ocds-bandi-0002
+#1  score 55  [open]  Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH
+     issuer: Ministero delle Imprese e del Made in Italy (Campania)   deadline: 2026-06-30
+     why: capability overlap: artificiale, digitalizzazione, intelligenza; within profile value range; national scope
+     https://www.medisdih.it/wp/
 
-#2  score 72  [open]  Servizi di analisi dati e machine learning per la PA centrale
-     issuer: Ministero dell'Economia e delle Finanze (Lazio)   deadline: 2026-12-01
-     why: CPV prefix match (depth 2); capability overlap: automazione, data, dati, learning, machine; within profile value range
-     https://example.invalid/anac/notice/ocds-bandi-0004
+#2  score 52  [open]  Voucher Digitalizzazione PMI 2025
+     issuer: LazioInnova (Lazio)   deadline: —
+     why: capability overlap: cloud, conforme, dati, digitalizzazione, machine; region match: Lazio
+     https://www.lazioinnova.it/bandi/voucher-digitalizzazione-pmi-2025/
 
-#3  score 66  [open]  Servizi di sviluppo e manutenzione software gestionale comunale
-     issuer: Comune di Roma Capitale (Lazio)   deadline: 2026-09-15
-     why: CPV prefix match (depth 2); capability overlap: dati, software; within profile value range
-     https://example.invalid/anac/notice/ocds-bandi-0001
+#3  score 44  [open]  Italia – Servizi di gestione dati – SERVIZIO DI GESTIONE … COMUNE DI ROCCA IMPERIALE (CS)
+     issuer: CENTRALE UNICA DI COMMITTENZA … CASSANO ALL'IONIO E TREBISACCE (—)   deadline: —
+     why: CPV prefix match (depth 2); capability overlap: dati; eu scope
+     https://ted.europa.eu/en/notice/-/detail/376324-2026
+
+#4  score 42  [closing_soon]  Donne e Impresa 2026
+     issuer: LazioInnova (Lazio)   deadline: 2026-06-10
+     why: capability overlap: data, software; region match: Lazio
+     risk: deadline closing soon
+     https://www.lazioinnova.it/bandi/donne-e-impresa-2026/
 ```
 
-Add `--json` for machine-readable output. These ANAC sample URLs are synthetic
-(`example.invalid`) — see [Status](#status).
+Add `--json` for machine-readable output. Live opportunities come from the
+key-less sources (incentivi, TED, Lombardia, Lazio); `anac` adds historical
+awarded-contract data (see [Sources](#sources) and [Status](#status)).
 
 ## Works across company types
 
@@ -86,13 +94,14 @@ output on `--sample` (offline heuristic):
 ```text
 PROFILE                          #  TOP MATCH (score)                      BY SOURCE
 ------------------------------------------------------------------------------------
-Consulenza Strategica S.r.l.     8  Servizi di consulenza organizza… (72)  anac:2 incentivi:5 ted:1
+Consulenza Strategica S.r.l.    11  Avviso Trasformazioni - Servizi… (55)  incentivi:5 lazio:5 ted:1
 Costruzioni Lombarde S.r.l.      2  LAVORI DI FORMAZIONE MANUTENZIO… (56)  lombardia:1 ted:1
-Trattoria & Bottega S.r.l.       2  Manifestazione d'interesse per … (55)  incentivi:2
-Manifattura Esempio S.r.l.       3  Fornitura di macchinari industr… (76)  anac:1 incentivi:2
-MayAI                            5  Fornitura di licenze software e… (76)  anac:3 incentivi:1 ted:1
-MedForniture Lombardia S.r.l.    3  FORNITURA DI DISPOSITIVI PER EN… (76)  lombardia:3
-Studio Associato Commercialis…   4  Fornitura di licenze software e… (50)  anac:1 incentivi:2 ted:1
+Trattoria & Bottega S.r.l.       4  Manifestazione d'interesse per … (55)  incentivi:2 lazio:2
+Manifattura Esempio S.r.l.       2  Voucher 3I - Investire in innov… (36)  incentivi:2
+MayAI                            4  Manifestazione d'interesse per … (55)  incentivi:1 lazio:2 ted:1
+MedForniture Lombardia S.r.l.    2  FORNITURA DI DISPOSITIVI PER EN… (76)  lombardia:2
+Innova Toscana S.r.l.           12  Bando 1.3.2 - Sostegno alle PMI… (60)  incentivi:3 ted:2 toscana:7
+Studio Associato Commercialis…   8  Efficienza energetica e rinnova… (52)  incentivi:2 lazio:5 ted:1
 ```
 
 The suite spans distinct Italian SME segments — AI/software (MayAI),
@@ -180,7 +189,7 @@ MedForniture medical devices        76               92   ← strong sector fit 
 | **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). Carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
 | **`lazio`** | Regione Lazio — **regional business incentives** (`kind="incentive"`), from the LazioInnova bandi portal (WordPress REST API). The source the MayAI dogfood profile matches. | ✅ Wired — WP REST, no API key. |
 | **`toscana`** | Regione Toscana — **regional business incentives** (`kind="incentive"`), from the Sviluppo Toscana bandi portal. First **LLM-assisted scraper**: the portal has no field API, so an LLM extracts the canonical fields from each bando page. | ⚠️ Wired — live `fetch()` **needs an LLM key**; fields are extracted from the portal's HTML bando pages. `--sample` replays a recorded extraction offline. |
-| **`anac`** | ANAC / PNCP open-contracting (OCDS) data — primarily **historical / award records**, a separate analytics track rather than open calls. | ⏳ Mapper + fixture done; live `fetch()` not wired. |
+| **`anac`** | ANAC / PNCP open-contracting (OCDS) data — **historical / awarded contracts** (> €40k, monthly), not open calls. Surfaces mostly-**closed** opportunities (the matcher drops them); its value is market/history analysis. Region is absent in the data → `national`. | ✅ Wired — streams the Open Contracting mirror (CC BY 4.0, no API key), **capped** at 500 releases/run. |
 
 ```bash
 uv run bandiradar fetch --source incentivi --sample   # offline, bundled real capture
@@ -294,13 +303,14 @@ uv run bandiradar match --profile data/profiles/mayai.yaml --source ted --sample
      https://ted.europa.eu/en/notice/-/detail/376324-2026
 ```
 
-Value-sanity triggers when the opportunity declares a value — e.g. on the ANAC
-sample (`--source anac --with-benchmarks`):
+Value-sanity triggers when the opportunity declares a value — e.g. a Lombardy
+medical-devices tender (`--profile data/profiles/medtech_lombardia.yaml --source
+lombardia --sample --with-benchmarks`):
 
 ```text
-#  Servizi di analisi dati e machine learning per la PA centrale
-   why: ...; ANAC history (CPV 72, national): 8 awards, median EUR 104,326, p25-p75 EUR 71,619-183,410
-   risk: estimated value EUR 250,000 is above the historical p75 EUR 183,410 for this category
+#1  score 76  [open]  FORNITURA DI DISPOSITIVI PER ENDOSCOPIA DIGESTIVA … ASST LODI …
+    why: ...; ANAC history (CPV 33, national): 7 awards, median EUR 1,183,540, p25-p75 EUR 104,190-1,640,000
+    risk: estimated value EUR 2,133,178 is above the historical p75 EUR 1,640,000 for this category
 ```
 
 Enrichment is append-only on a **copy** of the cached match: the cache always
@@ -385,9 +395,10 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
   extraction with zero secrets.
 - ✅ **Stage-2 LLM scoring is wired and working** (optional); with no key it
   transparently uses the offline heuristic — a proxy, not real semantic relevance.
-- ⏳ **Live ANAC/PNCP fetch is pending** — the mapper + fixture are done and
-  tested, but `fetch()` raises `NotImplementedError` until the open-data endpoint
-  is confirmed against current docs. The ANAC sample URLs are synthetic.
+- ✅ **Live ANAC/PNCP fetch is wired** — streams the Open Contracting OCDS mirror
+  (key-less), capped at 500 releases/run. The data is **retrospective** (awarded
+  contracts), so it surfaces mostly-closed opportunities — useful for history /
+  market analysis, not as a feed of open calls.
 
 ## Open core vs Pro
 
@@ -415,7 +426,8 @@ which depends on this package — never the reverse.
   change-detection + CLI + MCP server.
 - Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
   incentives), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione Lazio**
-  (LazioInnova incentives), all key-less; ANAC OCDS mapper bundled.
+  (LazioInnova incentives), all key-less; **ANAC OCDS** wired as a capped, key-less
+  historical / awarded-contracts feed (analysis, not open calls).
 - **LLM-assisted scraper** for API-less regional portals — **Regione Toscana**
   (Sviluppo Toscana) is the first instance (live fetch needs an LLM key).
 - **Intelligence track:** ANAC historical benchmarks + optional matcher
@@ -423,7 +435,6 @@ which depends on this package — never the reverse.
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
 
 **Upcoming**
-- Live **ANAC/PNCP** fetch (confirm the open-data endpoint first).
 - Embeddings-based prefilter; more community/regional source adapters (via the
   `Source` framework — Lombardy is the first; other regions welcome).
 - `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
@@ -464,4 +475,5 @@ its operator requires you to honor:
   Toscana / Regione Toscana; attribute the source when reusing.
 - **ANAC public contracts (CC BY 4.0)** — via the
   [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/);
-  the intelligence track streams the gzipped JSONL memory-safely.
+  both the `anac` source and the intelligence track stream the gzipped JSONL
+  memory-safely (line by line) through the shared reader in `bandiradar/ocp.py`.

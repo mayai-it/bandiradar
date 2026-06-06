@@ -56,14 +56,18 @@ For the profile, pass **either** `profile_path` (a YAML path) **or** an inline
 ## Example session (offline)
 
 ```text
-> fetch_opportunities(sample=true)
-{ "fetched": 6, "new": 6, "amended": 0 }
+> fetch_opportunities(source="lazio", sample=true)
+{ "fetched": 15, "new": 15, "amended": 0 }
 
-> search_opportunities(profile_path="data/profiles/mayai.yaml", sample=true)
+> search_opportunities(profile_path="data/profiles/mayai.yaml", source="lazio", sample=true)
 [
-  { "opportunity_id": "anac:ocds-bandi-0002", "score": 76, "status": "closing_soon",
-    "title": "Fornitura di licenze software e servizi cloud GDPR-compliant", ... },
-  { "opportunity_id": "anac:ocds-bandi-0004", "score": 72, "status": "open", ... },
-  { "opportunity_id": "anac:ocds-bandi-0001", "score": 66, "status": "open", ... }
+  { "opportunity_id": "lazio:48841", "score": 52, "status": "open",
+    "title": "Voucher Digitalizzazione PMI 2025", ... },
+  { "opportunity_id": "lazio:58887", "score": 42, "status": "closing_soon",
+    "title": "Donne e Impresa 2026", ... }
 ]
 ```
+
+(`fetch_opportunities` defaults to `source="anac"`, which is historical / awarded
+contracts — mostly closed; pass a key-less source like `lazio` or `incentivi` for
+open opportunities.)

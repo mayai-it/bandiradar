@@ -1,8 +1,9 @@
-"""Offline tests for the ANAC/OCDS adapter (ARCHITECTURE.md §5 / Prompt 2).
+"""Offline tests for the ANAC/OCDS adapter (ARCHITECTURE.md §5).
 
-No network, no secrets: drives ``load_fixture()`` -> ``to_opportunities()`` with
-a FIXED ``now`` and asserts the field mapping, the derived status for the
-closed / closing-soon fixtures, and registry wiring.
+No network, no secrets: drives ``load_fixture()`` -> ``to_opportunities()`` over
+RECORDED REAL OCDS releases, and exercises ``fetch()`` with a MOCKED release
+stream (no network). The data is retrospective (awarded contracts), so every
+opportunity maps to ``status="closed"`` — that's correct.
 """
 
 from datetime import UTC, datetime
@@ -13,8 +14,7 @@ from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import anac
 from bandiradar.sources.base import get, list_sources
 
-# The fixture is a snapshot as of ~2026-06-03 (see anac_sample.json _note).
-NOW = datetime(2026, 6, 3, 12, 0, tzinfo=UTC)
+NOW = datetime(2026, 6, 6, 12, 0, tzinfo=UTC)
 
 
 @pytest.fixture
@@ -28,68 +28,49 @@ def opportunities_by_id() -> dict[str, Opportunity]:
 
 def test_load_fixture_returns_prefixed_rawdocs():
     raws = anac.load_fixture()
-    assert len(raws) == 6
+    assert len(raws) == 12
     assert all(isinstance(r, RawDoc) for r in raws)
     assert all(r.id.startswith("anac:") for r in raws)
     assert all(r.source == "anac" for r in raws)
-    # tz-aware (model coerces naive -> UTC, but keeps already-aware zones as-is).
     assert raws[0].fetched_at.tzinfo is not None
 
 
 def test_field_mapping_for_first_release(opportunities_by_id):
-    opp = opportunities_by_id["anac:ocds-bandi-0001"]
+    opp = opportunities_by_id["anac:ocds-hu01ve-8114164"]
     assert opp.source == "anac"
     assert opp.kind == "tender"
-    assert opp.source_url == "https://example.invalid/anac/notice/ocds-bandi-0001"
-    assert opp.title.startswith("Servizi di sviluppo")
-    assert opp.summary and "piattaforma software" in opp.summary
-    assert opp.issuer_name == "Comune di Roma Capitale"
-    assert opp.issuer_region == "Lazio"
-    assert opp.region == "Lazio"
-    assert opp.geo_scope == "regional"
-    assert opp.cpv == ["72000000"]
-    assert opp.value_amount == 120000
-    assert opp.value_currency == "EUR"
-    assert opp.deadline == datetime(2026, 9, 15, 10, 0, tzinfo=UTC)  # 12:00+02:00
-    assert opp.published_at == datetime(2026, 5, 20, 7, 0, tzinfo=UTC)  # 09:00+02:00
-    assert opp.raw_ref == "anac:ocds-bandi-0001"
-    assert opp.content_hash  # auto-filled
-    assert opp.status == "open"
-
-
-def test_all_ids_are_anac_prefixed(opportunities_by_id):
-    assert opportunities_by_id  # non-empty
-    assert all(oid.startswith("anac:") for oid in opportunities_by_id)
-
-
-def test_national_tender_uses_coveredby_not_buyer_region(opportunities_by_id):
-    # ocds-bandi-0004 (MEF) has tender.coveredBy == ["national"] with a Lazio buyer.
-    opp = opportunities_by_id["anac:ocds-bandi-0004"]
+    assert opp.issuer_name == "COMUNE DI TRANI"
+    # No region/NUTS in OCP/ANAC data -> region None, national scope.
+    assert opp.region is None
+    assert opp.issuer_region is None
     assert opp.geo_scope == "national"
-    assert opp.region == "Lazio"  # region stays populated regardless of scope
-    assert opp.issuer_region == "Lazio"
+    assert opp.cpv == ["72322000-8"]
+    assert opp.value_amount == 196721.31
+    assert opp.value_currency == "EUR"
+    # tender.title is null in the real data -> falls back to the description.
+    assert opp.title.startswith("SERVIZIO TRIENNALE")
+    assert opp.summary and "SERVIZIO TRIENNALE" in opp.summary
+    # endDate 2022-02-18T12:00:00Z -> deadline in the past.
+    assert opp.deadline == datetime(2022, 2, 18, 12, 0, tzinfo=UTC)
+    # Malformed compiled `date` -> parsed to its leading date at UTC midnight.
+    assert opp.published_at == datetime(2025, 1, 8, 0, 0, tzinfo=UTC)
+    assert opp.raw_ref == "anac:ocds-hu01ve-8114164"
+    assert opp.content_hash
+    assert opp.status == "closed"
 
 
-def test_other_releases_are_regional(opportunities_by_id):
-    regional = {
-        "anac:ocds-bandi-0001",
-        "anac:ocds-bandi-0002",
-        "anac:ocds-bandi-0003",
-        "anac:ocds-bandi-0005",
-        "anac:ocds-bandi-0006",
-    }
-    for oid in regional:
-        assert opportunities_by_id[oid].geo_scope == "regional", oid
+def test_value_prefers_award_over_tender(opportunities_by_id):
+    # ocds-hu01ve-8315069: award value 811537.41 (tender value is 820417.76).
+    assert opportunities_by_id["anac:ocds-hu01ve-8315069"].value_amount == 811537.41
 
 
-def test_closed_fixture_maps_to_closed_status(opportunities_by_id):
-    # ocds-bandi-0003 deadline 2026-05-15 is in the past relative to NOW.
-    assert opportunities_by_id["anac:ocds-bandi-0003"].status == "closed"
-
-
-def test_closing_soon_fixture_maps_to_closing_soon_status(opportunities_by_id):
-    # ocds-bandi-0002 deadline 2026-06-08 is within 7 days of NOW.
-    assert opportunities_by_id["anac:ocds-bandi-0002"].status == "closing_soon"
+def test_all_releases_are_historical_closed(opportunities_by_id):
+    assert opportunities_by_id  # non-empty
+    for opp in opportunities_by_id.values():
+        assert opp.status == "closed"  # retrospective awarded contracts
+        assert opp.region is None
+        assert opp.geo_scope == "national"
+        assert opp.id.startswith("anac:")
 
 
 def test_to_opportunities_is_deterministic():
@@ -99,13 +80,71 @@ def test_to_opportunities_is_deterministic():
     assert a.content_hash == b.content_hash
 
 
+# --------------------------------------------------------------------------- #
+# fetch() — mocked release stream (no network)
+# --------------------------------------------------------------------------- #
+
+
+def _fake_releases(n: int, date: str = "2025-03-01T00:00:00Z"):
+    return [{"ocid": f"ocds-test-{i}", "date": date, "tender": {}} for i in range(n)]
+
+
+def test_fetch_caps_at_max_items():
+    raws = list(
+        anac.AnacSource().fetch(
+            max_items=3,
+            year=2025,
+            streamer=lambda _year: _fake_releases(10),
+        )
+    )
+    assert len(raws) == 3
+    assert [r.id for r in raws] == [
+        "anac:ocds-test-0",
+        "anac:ocds-test-1",
+        "anac:ocds-test-2",
+    ]
+
+
+def test_fetch_filters_by_since():
+    releases = [
+        {"ocid": "old", "date": "2025-01-01T00:00:00Z", "tender": {}},
+        {"ocid": "new", "date": "2025-12-01T00:00:00Z", "tender": {}},
+    ]
+    raws = list(
+        anac.AnacSource().fetch(
+            since=datetime(2025, 6, 1, tzinfo=UTC),
+            year=2025,
+            streamer=lambda _year: list(releases),
+        )
+    )
+    assert [r.id for r in raws] == ["anac:new"]
+
+
+def test_fetch_falls_back_to_previous_year_on_error():
+    def streamer(year: int):
+        if year == 2026:
+            raise RuntimeError("ANAC OCDS download failed (2026): 404")
+        return _fake_releases(2)
+
+    raws = list(anac.AnacSource().fetch(year=2026, streamer=streamer))
+    assert len(raws) == 2  # fell back to 2025
+
+
+def test_fetch_is_memory_safe_lazy():
+    # The streamer yields lazily; fetch must not exhaust it beyond max_items.
+    pulled = []
+
+    def streamer(_year: int):
+        for i in range(1000):
+            pulled.append(i)
+            yield {"ocid": f"ocds-{i}", "date": "2025-03-01T00:00:00Z", "tender": {}}
+
+    list(anac.AnacSource().fetch(max_items=5, year=2025, streamer=streamer))
+    assert len(pulled) == 5  # only 5 releases were ever generated
+
+
 def test_anac_is_registered():
     source = get("anac")
     assert source.id == "anac"
     assert source.kind == "tender"
     assert "anac" in {s.id for s in list_sources()}
-
-
-def test_live_fetch_raises_until_endpoint_confirmed():
-    with pytest.raises(NotImplementedError):
-        list(anac.AnacSource().fetch())

@@ -1,214 +1,2858 @@
 {
-  "version": "1.1",
-  "publisher": { "name": "ANAC", "uri": "https://www.anticorruzione.it" },
-  "publishedDate": "2026-06-01T00:00:00+02:00",
-  "uri": "https://example.invalid/anac/sample-package.json",
-  "_note": "OCDS-style ANAC/PNCP sample for OFFLINE tests. Reference 'now' for the dataset is ~2026-06-03: ocds-bandi-0003 is already closed and ocds-bandi-0002 closes within 7 days. Synthetic data, not real notices.",
-  "releases": [
-    {
-      "ocid": "ocds-bandi-0001",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0001",
-      "id": "ocds-bandi-0001-2026-05-20",
-      "date": "2026-05-20T09:00:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-c_h501", "name": "Comune di Roma Capitale" },
-      "parties": [
-        {
-          "id": "ipa-c_h501",
-          "name": "Comune di Roma Capitale",
-          "roles": ["buyer"],
-          "address": { "region": "Lazio", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0001",
-        "title": "Servizi di sviluppo e manutenzione software gestionale comunale",
-        "description": "Affidamento dei servizi di progettazione, sviluppo e manutenzione di una piattaforma software gestionale per i servizi al cittadino, inclusa integrazione dati e supporto.",
-        "status": "active",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "services",
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "72000000", "description": "Servizi IT: consulenza, sviluppo software, Internet e supporto" }
-          }
-        ],
-        "value": { "amount": 120000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-09-15T12:00:00+02:00" }
+ "_note": "REAL ANAC OCDS compiled releases captured from the Open Contracting mirror (publication 117, file 2025.jsonl.gz). These are RETROSPECTIVE / awarded-contract records (deadlines in the past -> status=closed), NOT open calls. Used for offline tests + `fetch --source anac --sample`.",
+ "_source": "https://data.open-contracting.org/en/publication/117/ (CC BY 4.0)",
+ "_captured": "2026-06-06",
+ "releases": [
+  {
+   "id": "ocds-hu01ve-8114164-2025-01-08 17:31:38.793T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-08 17:31:38.793T12:00:00Z",
+   "ocid": "ocds-hu01ve-8114164",
+   "buyer": {
+    "id": "83000350724",
+    "name": "COMUNE DI TRANI"
+   },
+   "tender": {
+    "id": "8114164",
+    "lots": [
+     {
+      "id": "90940496A3",
+      "value": {
+       "amount": 196721.31,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "SERVIZIO TRIENNALE DI SUPPORTO ALLA GESTIONE DELLE FUNZIONI TECNICO - AMMINISTRATIVE IN MATERIA DI DEMANIO MARITTIMO"
+     }
+    ],
+    "items": [
+     {
+      "id": "90940496A3",
+      "unit": {
+       "value": {
+        "amount": 196721.31,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "90940496A3",
+      "description": "SERVIZIO TRIENNALE DI SUPPORTO ALLA GESTIONE DELLE FUNZIONI TECNICO - AMMINISTRATIVE IN MATERIA DI DEMANIO MARITTIMO",
+      "classification": {
+       "id": "72322000-8",
+       "uri": "https://dati.anticorruzione.it/data/cpv/72322000-8",
+       "scheme": "CPV",
+       "description": "SERVIZI DI GESTIONE DATI"
       }
+     }
+    ],
+    "value": {
+     "amount": 196721.31,
+     "currency": "EUR"
+    },
+    "description": "SERVIZIO TRIENNALE DI SUPPORTO ALLA GESTIONE DELLE FUNZIONI TECNICO - AMMINISTRATIVE IN MATERIA DI DEMANIO MARITTIMO",
+    "tenderPeriod": {
+     "endDate": "2022-02-18T12:00:00Z",
+     "startDate": "2022-02-04T12:00:00Z"
+    },
+    "mainProcurementCategory": "services",
+    "procurementMethodDetails": "COD:34 ; TITLE:PROCEDURA NEGOZIATA PER AFFIDAMENTI SOTTO SOGLIA"
+   },
+   "parties": [
+    {
+     "id": "83000350724",
+     "name": "COMUNE DI TRANI",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "TRANI",
+      "postalCode": "76125",
+      "countryName": "ITALY",
+      "streetAddress": "VIA TENENTE LUIGI MORRICO 2"
+     },
+     "identifier": {
+      "id": "83000350724",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI TRANI"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000245464",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI TRANI"
+      }
+     ]
     },
     {
-      "ocid": "ocds-bandi-0002",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0002",
-      "id": "ocds-bandi-0002-2026-05-22",
-      "date": "2026-05-22T10:30:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-r_lazio", "name": "Regione Lazio" },
-      "parties": [
-        {
-          "id": "ipa-r_lazio",
-          "name": "Regione Lazio",
-          "roles": ["buyer"],
-          "address": { "region": "Lazio", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0002",
-        "title": "Fornitura di licenze software e servizi cloud GDPR-compliant",
-        "description": "Acquisizione di licenze software applicativo e servizi cloud conformi al GDPR per la digitalizzazione dei processi amministrativi regionali.",
-        "status": "active",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "goods",
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "48000000", "description": "Pacchetti software e sistemi di informazione" }
-          }
-        ],
-        "value": { "amount": 80000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-06-08T12:00:00+02:00" }
-      }
-    },
-    {
-      "ocid": "ocds-bandi-0003",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0003",
-      "id": "ocds-bandi-0003-2026-04-10",
-      "date": "2026-04-10T08:00:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-c_f205", "name": "Comune di Milano" },
-      "parties": [
-        {
-          "id": "ipa-c_f205",
-          "name": "Comune di Milano",
-          "roles": ["buyer"],
-          "address": { "region": "Lombardia", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0003",
-        "title": "Lavori di riqualificazione edilizia di un edificio scolastico",
-        "description": "Esecuzione dei lavori di ristrutturazione e riqualificazione energetica di un plesso scolastico comunale.",
-        "status": "complete",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "works",
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "45000000", "description": "Lavori di costruzione" }
-          }
-        ],
-        "value": { "amount": 2000000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-05-15T12:00:00+02:00" }
-      }
-    },
-    {
-      "ocid": "ocds-bandi-0004",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0004",
-      "id": "ocds-bandi-0004-2026-05-28",
-      "date": "2026-05-28T11:00:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-m_mef", "name": "Ministero dell'Economia e delle Finanze" },
-      "parties": [
-        {
-          "id": "ipa-m_mef",
-          "name": "Ministero dell'Economia e delle Finanze",
-          "roles": ["buyer"],
-          "address": { "region": "Lazio", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0004",
-        "title": "Servizi di analisi dati e machine learning per la PA centrale",
-        "description": "Servizi di data science, sviluppo di modelli di machine learning e automazione dei processi a supporto delle amministrazioni centrali. Appalto a rilevanza nazionale.",
-        "status": "active",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "services",
-        "coveredBy": ["national"],
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "72000000", "description": "Servizi IT: consulenza, sviluppo software, Internet e supporto" }
-          }
-        ],
-        "value": { "amount": 250000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-12-01T12:00:00+01:00" }
-      }
-    },
-    {
-      "ocid": "ocds-bandi-0005",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0005",
-      "id": "ocds-bandi-0005-2026-05-30",
-      "date": "2026-05-30T09:45:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-c_a509", "name": "Comune di Napoli" },
-      "parties": [
-        {
-          "id": "ipa-c_a509",
-          "name": "Comune di Napoli",
-          "roles": ["buyer"],
-          "address": { "region": "Campania", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0005",
-        "title": "Servizi di consulenza organizzativa e di processo",
-        "description": "Servizi di consulenza per la riorganizzazione dei processi interni e l'efficientamento amministrativo dell'ente.",
-        "status": "active",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "services",
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "79000000", "description": "Servizi per le imprese: servizi giuridici, di marketing, di consulenza" }
-          }
-        ],
-        "value": { "amount": 45000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-07-30T12:00:00+02:00" }
-      }
-    },
-    {
-      "ocid": "ocds-bandi-0006",
-      "url": "https://example.invalid/anac/notice/ocds-bandi-0006",
-      "id": "ocds-bandi-0006-2026-06-01",
-      "date": "2026-06-01T14:15:00+02:00",
-      "tag": ["tender"],
-      "initiationType": "tender",
-      "language": "it",
-      "buyer": { "id": "ipa-r_emr", "name": "Regione Emilia-Romagna" },
-      "parties": [
-        {
-          "id": "ipa-r_emr",
-          "name": "Regione Emilia-Romagna",
-          "roles": ["buyer"],
-          "address": { "region": "Emilia-Romagna", "countryName": "Italia" }
-        }
-      ],
-      "tender": {
-        "id": "tender-0006",
-        "title": "Fornitura di macchinari industriali per laboratorio meccanico",
-        "description": "Fornitura e installazione di macchinari per lavorazioni meccaniche di precisione a supporto di un polo manifatturiero, con servizi di automazione di linea.",
-        "status": "active",
-        "procurementMethod": "open",
-        "mainProcurementCategory": "goods",
-        "items": [
-          {
-            "id": "1",
-            "classification": { "scheme": "CPV", "id": "42000000", "description": "Macchine industriali" }
-          }
-        ],
-        "value": { "amount": 180000, "currency": "EUR" },
-        "tenderPeriod": { "endDate": "2026-08-20T12:00:00+02:00" }
-      }
+     "id": "878370A6-8589-42A1-B1F0-E322E29729A9",
+     "name": "AREA URBANISTICA",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "TRANI",
+      "postalCode": "76125"
+     },
+     "identifier": {
+      "id": "878370A6-8589-42A1-B1F0-E322E29729A9",
+      "scheme": "internal",
+      "legalName": "AREA URBANISTICA"
+     }
     }
-  ]
+   ],
+   "language": "ita",
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8315069-2025-01-02 17:30:22.056T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-02 17:30:22.056T12:00:00Z",
+   "ocid": "ocds-hu01ve-8315069",
+   "buyer": {
+    "id": "81002430759",
+    "name": "COMUNE DI TIGGIANO"
+   },
+   "awards": [
+    {
+     "id": "2288869",
+     "date": "2022-04-12T12:00:00Z",
+     "items": [
+      {
+       "id": "8949845DB9",
+       "unit": {
+        "value": {
+         "amount": 820417.76,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "8949845DB9",
+       "description": "LAVORI DI MANUTENZIONE STRAORDINARIA DELLE RETI VIARIE E INFRASTRUTTURE ACCESSORIE PER RIDURRE IL RISCHIO IDROGEOLOGICO",
+       "classification": {
+        "id": "44130000-0",
+        "uri": "https://dati.anticorruzione.it/data/cpv/44130000-0",
+        "scheme": "CPV",
+        "description": "CONDOTTE FOGNARIE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 811537.41,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "03213200755",
+       "name": "CO.GE.FA. S.R.L. "
+      }
+     ],
+     "relatedLots": [
+      "8949845DB9"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8315069",
+    "lots": [
+     {
+      "id": "8949845DB9",
+      "value": {
+       "amount": 820417.76,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LAVORI DI MANUTENZIONE STRAORDINARIA DELLE RETI VIARIE E INFRASTRUTTURE ACCESSORIE PER RIDURRE IL RISCHIO IDROGEOLOGICO"
+     }
+    ],
+    "items": [
+     {
+      "id": "8949845DB9",
+      "unit": {
+       "value": {
+        "amount": 820417.76,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "8949845DB9",
+      "description": "LAVORI DI MANUTENZIONE STRAORDINARIA DELLE RETI VIARIE E INFRASTRUTTURE ACCESSORIE PER RIDURRE IL RISCHIO IDROGEOLOGICO",
+      "classification": {
+       "id": "44130000-0",
+       "uri": "https://dati.anticorruzione.it/data/cpv/44130000-0",
+       "scheme": "CPV",
+       "description": "CONDOTTE FOGNARIE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 820417.76,
+     "currency": "EUR"
+    },
+    "description": "LAVORI DI MANUTENZIONE STRAORDINARIA DELLE RETI VIARIE E INFRASTRUTTURE ACCESSORIE PER RIDURRE IL RISCHIO IDROGEOLOGICO",
+    "tenderPeriod": {
+     "endDate": "2022-02-08T12:00:00Z",
+     "startDate": "2022-01-11T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:4 ; TITLE:PROCEDURA NEGOZIATA SENZA PREVIA PUBBLICAZIONE"
+   },
+   "parties": [
+    {
+     "id": "81002430759",
+     "name": "COMUNE DI TIGGIANO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "TIGGIANO",
+      "postalCode": "N.A.",
+      "countryName": "ITALY",
+      "streetAddress": "PIAZZA CASTELLO"
+     },
+     "identifier": {
+      "id": "81002430759",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI TIGGIANO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000240129",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI TIGGIANO"
+      }
+     ]
+    },
+    {
+     "id": "03213200755",
+     "name": "CO.GE.FA. S.R.L. ",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "03213200755",
+      "scheme": "IT-CF",
+      "legalName": "CO.GE.FA. S.R.L. "
+     }
+    },
+    {
+     "id": "EB1AEE91-B868-487D-8D1F-12A8038FA5C2",
+     "name": "UFFICIO  TECNICO - SETT.LL.PP.",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "TIGGIANO",
+      "postalCode": "73030",
+      "streetAddress": "PZA CASTELLO 33"
+     },
+     "identifier": {
+      "id": "EB1AEE91-B868-487D-8D1F-12A8038FA5C2",
+      "scheme": "internal",
+      "legalName": "UFFICIO  TECNICO - SETT.LL.PP."
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2288869",
+     "items": [
+      {
+       "id": "8949845DB9",
+       "unit": {
+        "value": {
+         "amount": 820417.76,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "8949845DB9",
+       "description": "LAVORI DI MANUTENZIONE STRAORDINARIA DELLE RETI VIARIE E INFRASTRUTTURE ACCESSORIE PER RIDURRE IL RISCHIO IDROGEOLOGICO",
+       "classification": {
+        "id": "44130000-0",
+        "uri": "https://dati.anticorruzione.it/data/cpv/44130000-0",
+        "scheme": "CPV",
+        "description": "CONDOTTE FOGNARIE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2023-03-15T12:00:00Z"
+     },
+     "awardID": "2288869",
+     "dateSigned": "2022-08-11T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2288869-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "1°SAL",
+        "dateMet": "2022-12-20T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8365650-2025-01-03 17:30:33.550T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-03 17:30:33.550T12:00:00Z",
+   "ocid": "ocds-hu01ve-8365650",
+   "buyer": {
+    "id": "01421240480",
+    "name": "COMUNE DI REGGELLO"
+   },
+   "awards": [
+    {
+     "id": "2754824",
+     "date": "2022-07-18T12:00:00Z",
+     "items": [
+      {
+       "id": "8998391B27",
+       "unit": {
+        "value": {
+         "amount": 6928247.86,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "8998391B27",
+       "description": "CONCESSIONE MISTA AVENTE AD OGGETTO PRINCIPALE IL SERVIZIO DI REFEZIONE SCOLASTICA PERIODO 01 SETTEMBRE 2022 - 31 LUGLIO 2031 NEL RISPETTO DEI CRITERI AMBIENTALI MINIMI (CAM) PREVISTI DAL PAN GGP D.M. 10 MARZO 2020 ED A TITOLO ACCESSORIO LAVORI FUNZIONALI ALL'EROGAZIONE DEL SERVIZIO",
+       "classification": {
+        "id": "55322000-3",
+        "uri": "https://dati.anticorruzione.it/data/cpv/55322000-3",
+        "scheme": "CPV",
+        "description": "SERVIZI DI COTTURA PASTI"
+       }
+      }
+     ],
+     "value": {
+      "amount": 6359227.39,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "00311310379",
+       "name": "C.A.M.S.T. COOPERATIVA ALBERGO MENSA SPETTACOLO E TURISMO S.C.R.L. "
+      },
+      {
+       "id": "01587640515",
+       "name": "BETADUE COOPERATIVA SOCIALE DI TIPO B ONLUS"
+      }
+     ],
+     "relatedLots": [
+      "8998391B27"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8365650",
+    "lots": [
+     {
+      "id": "8998391B27",
+      "value": {
+       "amount": 6928247.86,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "CONCESSIONE MISTA AVENTE AD OGGETTO PRINCIPALE IL SERVIZIO DI REFEZIONE SCOLASTICA PERIODO 01 SETTEMBRE 2022 - 31 LUGLIO 2031 NEL RISPETTO DEI CRITERI AMBIENTALI MINIMI (CAM) PREVISTI DAL PAN GGP D.M. 10 MARZO 2020 ED A TITOLO ACCESSORIO LAVORI FUNZIONALI ALL'EROGAZIONE DEL SERVIZIO"
+     }
+    ],
+    "items": [
+     {
+      "id": "8998391B27",
+      "unit": {
+       "value": {
+        "amount": 6928247.86,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "8998391B27",
+      "description": "CONCESSIONE MISTA AVENTE AD OGGETTO PRINCIPALE IL SERVIZIO DI REFEZIONE SCOLASTICA PERIODO 01 SETTEMBRE 2022 - 31 LUGLIO 2031 NEL RISPETTO DEI CRITERI AMBIENTALI MINIMI (CAM) PREVISTI DAL PAN GGP D.M. 10 MARZO 2020 ED A TITOLO ACCESSORIO LAVORI FUNZIONALI ALL'EROGAZIONE DEL SERVIZIO",
+      "classification": {
+       "id": "55322000-3",
+       "uri": "https://dati.anticorruzione.it/data/cpv/55322000-3",
+       "scheme": "CPV",
+       "description": "SERVIZI DI COTTURA PASTI"
+      }
+     }
+    ],
+    "value": {
+     "amount": 6928247.86,
+     "currency": "EUR"
+    },
+    "description": "CONCESSIONE MISTA AVENTE AD OGGETTO PRINCIPALE IL SERVIZIO DI REFEZIONE SCOLASTICA PERIODO 01 SETTEMBRE 2022 - 31 LUGLIO 2031 NEL RISPETTO DEI CRITERI AMBIENTALI MINIMI (CAM) PREVISTI DAL PAN GGP D.M. 10 MARZO 2020 ED A TITOLO ACCESSORIO LAVORI FUNZIONALI ALL'EROGAZIONE DEL SERVIZIO",
+    "tenderPeriod": {
+     "endDate": "2022-03-21T12:00:00Z",
+     "startDate": "2022-02-14T12:00:00Z"
+    },
+    "mainProcurementCategory": "services",
+    "procurementMethodDetails": "COD:1 ; TITLE:PROCEDURA APERTA"
+   },
+   "parties": [
+    {
+     "id": "01421240480",
+     "name": "COMUNE DI REGGELLO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "REGGELLO",
+      "postalCode": "50066",
+      "countryName": "ITALY",
+      "streetAddress": "PIAZZA ROOSEVELT N 1"
+     },
+     "identifier": {
+      "id": "01421240480",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI REGGELLO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000180455",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI REGGELLO"
+      }
+     ]
+    },
+    {
+     "id": "01587640515",
+     "name": "BETADUE COOPERATIVA SOCIALE DI TIPO B ONLUS",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "01587640515",
+      "scheme": "IT-CF",
+      "legalName": "BETADUE COOPERATIVA SOCIALE DI TIPO B ONLUS"
+     }
+    },
+    {
+     "id": "00311310379",
+     "name": "C.A.M.S.T. COOPERATIVA ALBERGO MENSA SPETTACOLO E TURISMO S.C.R.L. ",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "00311310379",
+      "scheme": "IT-CF",
+      "legalName": "C.A.M.S.T. COOPERATIVA ALBERGO MENSA SPETTACOLO E TURISMO S.C.R.L. "
+     }
+    },
+    {
+     "id": "85C41C1C-5385-4AC9-B97A-7A10D8F744E4",
+     "name": "SETTORE SERVIZI EDUCATIVI CULTURALI E DEL TERRITORIO",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "REGGELLO",
+      "postalCode": "50066",
+      "streetAddress": "PZA ROOSEVELT 1"
+     },
+     "identifier": {
+      "id": "85C41C1C-5385-4AC9-B97A-7A10D8F744E4",
+      "scheme": "internal",
+      "legalName": "SETTORE SERVIZI EDUCATIVI CULTURALI E DEL TERRITORIO"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2754824",
+     "items": [
+      {
+       "id": "8998391B27",
+       "unit": {
+        "value": {
+         "amount": 6928247.86,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "8998391B27",
+       "description": "CONCESSIONE MISTA AVENTE AD OGGETTO PRINCIPALE IL SERVIZIO DI REFEZIONE SCOLASTICA PERIODO 01 SETTEMBRE 2022 - 31 LUGLIO 2031 NEL RISPETTO DEI CRITERI AMBIENTALI MINIMI (CAM) PREVISTI DAL PAN GGP D.M. 10 MARZO 2020 ED A TITOLO ACCESSORIO LAVORI FUNZIONALI ALL'EROGAZIONE DEL SERVIZIO",
+       "classification": {
+        "id": "55322000-3",
+        "uri": "https://dati.anticorruzione.it/data/cpv/55322000-3",
+        "scheme": "CPV",
+        "description": "SERVIZI DI COTTURA PASTI"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2031-07-31T12:00:00Z",
+      "startDate": "2023-03-07T12:00:00Z"
+     },
+     "awardID": "2754824",
+     "dateSigned": "2023-03-07T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2754824-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA ANNO 2022 - 2023 MESE DI SETTEMBRE 2022 ",
+        "dateMet": "2022-10-27T12:00:00Z"
+       },
+       {
+        "id": "2754824-24",
+        "code": "24",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE BUFFET POLO 0-6 SCUOLA CASCIA, CONGUAGLIO FASCIA ISEE E MESE DI SETTEMBRE 2024. CIG 8998391B27",
+        "dateMet": "2024-10-27T12:00:00Z"
+       },
+       {
+        "id": "2754824-13",
+        "code": "13",
+        "type": "delivery",
+        "title": "CENTRI ESTIVI - SETTEMBRE 2023 - LIQUIDAZIONE DITTA CAMST CIG. 8998391B27",
+        "dateMet": "2023-10-02T12:00:00Z"
+       },
+       {
+        "id": "2754824-11",
+        "code": "11",
+        "type": "delivery",
+        "title": "SERVIZIO DI REFEZIONE SCOLASTICA MESE DI GIUGNO 2023 CIG 8998391B27",
+        "dateMet": "2023-07-18T12:00:00Z"
+       },
+       {
+        "id": "2754824-7",
+        "code": "7",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA CON INTEGRAZIONE FASCIA ISEE E MESE DI FEBBRAIO 2023 CIG. 8998391B27.",
+        "dateMet": "2023-03-14T12:00:00Z"
+       },
+       {
+        "id": "2754824-25",
+        "code": "25",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE DITTA CAMST MESE DI OTTOBRE 2024. CIG.8998391B27",
+        "dateMet": "2024-11-13T12:00:00Z"
+       },
+       {
+        "id": "2754824-19",
+        "code": "19",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE VERSO DITTA CAMST MESE DI FEBBRAIO 2024 CIG. 8998391B2",
+        "dateMet": "2024-03-13T12:00:00Z"
+       },
+       {
+        "id": "2754824-23",
+        "code": "23",
+        "type": "delivery",
+        "title": " LIQUIDAZIONE DITTA CAMST MESE DI GIUGNO 2024 CIG. 8998391B27",
+        "dateMet": "2024-07-16T12:00:00Z"
+       },
+       {
+        "id": "2754824-21",
+        "code": "21",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE DITTA CAMST MESE DI APRILE 2024 CIG. 8998391B27",
+        "dateMet": "2024-05-15T12:00:00Z"
+       },
+       {
+        "id": "2754824-27",
+        "code": "27",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE PER EVENTO DEL 18 MAGGIO 2024. CIG 8998391B27.",
+        "dateMet": "2024-05-23T12:00:00Z"
+       },
+       {
+        "id": "2754824-20",
+        "code": "20",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA - LIQUIDAZIONE VERSO DITTA CAMST MESE DI MARZO 2024 E CONGUAGLIO ISEE CIG. 8998391B27",
+        "dateMet": "2024-04-15T12:00:00Z"
+       },
+       {
+        "id": "2754824-8",
+        "code": "8",
+        "type": "delivery",
+        "title": "SERVIZIO DI REFEZIONE SCOLASTICA DITTA CAMST CON INTEGRAZIONE FASCIA ISEE MESE DI MARZO 2023. CIG. 8998391B27.",
+        "dateMet": "2023-04-14T12:00:00Z"
+       },
+       {
+        "id": "2754824-26",
+        "code": "26",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE DITTA CAMST MESE DI NOVEMBRE E CONGUAGLIO PER ISEE 2024. CIG. 8998391B27",
+        "dateMet": "2024-12-12T12:00:00Z"
+       },
+       {
+        "id": "2754824-18",
+        "code": "18",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA - LIQUIDAZIONE VERSO LA DITTA CAMST MESE DI GENNAIO 2024 E CONGUAGLIO DIC 2023 CIG. 8998391B27.",
+        "dateMet": "2024-02-15T12:00:00Z"
+       },
+       {
+        "id": "2754824-5",
+        "code": "5",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA - LIQUIDAZIONE CAMST PER INTEGRAZIONE FASCE ISEE CIG.8998391B27",
+        "dateMet": "2023-01-27T12:00:00Z"
+       },
+       {
+        "id": "2754824-15",
+        "code": "15",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA LIQUIDAZIONE DITTA CAMST MESE DI OTTOBRE 2023 CIG. 8998391B27",
+        "dateMet": "2023-11-07T12:00:00Z"
+       },
+       {
+        "id": "2754824-16",
+        "code": "16",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA - LIQUIDAZIONE DITTA CAMST MESE DI NOVEMBRE 2023. CIG. 8998391B27",
+        "dateMet": "2023-12-14T12:00:00Z"
+       },
+       {
+        "id": "2754824-2",
+        "code": "2",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA MESE DI OTTOBRE 2022 CIG 8998391B27",
+        "dateMet": "2022-11-18T12:00:00Z"
+       },
+       {
+        "id": "2754824-14",
+        "code": "14",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA - LIQUIDAZIONE DITTA CAMST MESE DI SETTEMBRE 2023 - CIG 8998391B27",
+        "dateMet": "2023-10-20T12:00:00Z"
+       },
+       {
+        "id": "2754824-10",
+        "code": "10",
+        "type": "delivery",
+        "title": "SERVIZIO DI REFEZIONE SCOLASTICA MESE DI MAGGIO 2023 CIG.8998391B27",
+        "dateMet": "2023-06-16T12:00:00Z"
+       },
+       {
+        "id": "2754824-17",
+        "code": "17",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA DITTA CAMST MESE DI DICEMBRE 2023 - CIG. 8998391B27",
+        "dateMet": "2024-01-15T12:00:00Z"
+       },
+       {
+        "id": "2754824-6",
+        "code": "6",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA MESE DI DICEMBRE 2022 - INTEGRAZIONE ISEE - MESE DI GENNAIO 2023. CIG.8998391B27",
+        "dateMet": "2023-02-24T12:00:00Z"
+       },
+       {
+        "id": "2754824-22",
+        "code": "22",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE DITTA CAMST MESE DI MAGGIO 2024 CIG. 8998391B27",
+        "dateMet": "2024-06-13T12:00:00Z"
+       },
+       {
+        "id": "2754824-4",
+        "code": "4",
+        "type": "delivery",
+        "title": "LIQUIDAZIONE DITTA CAMST PER CENTRI ESTIVI SETTEMBRE 2022 CIG 8998391B27",
+        "dateMet": "2023-01-25T12:00:00Z"
+       },
+       {
+        "id": "2754824-9",
+        "code": "9",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA DITTA CAMST MESE DI APRILE 2023 CIG.8998391B27",
+        "dateMet": "2023-05-16T12:00:00Z"
+       },
+       {
+        "id": "2754824-3",
+        "code": "3",
+        "type": "delivery",
+        "title": "REFEZIONE SCOLASTICA MESE DI NOVEMBRE 2022 CIG. 8998391B27",
+        "dateMet": "2022-12-21T12:00:00Z"
+       },
+       {
+        "id": "2754824-12",
+        "code": "12",
+        "type": "delivery",
+        "title": "CENTRI ESTIVI AGOSTO 2023 CIG. 8998391B27",
+        "dateMet": "2023-09-25T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8383079-2025-01-08 17:30:37.077T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-08 17:30:37.077T12:00:00Z",
+   "ocid": "ocds-hu01ve-8383079",
+   "buyer": {
+    "id": "06328131211",
+    "name": "AZIENDA SANITARIA LOCALE NAPOLI 1 CENTRO"
+   },
+   "awards": [
+    {
+     "id": "2855336",
+     "date": "2022-09-15T12:00:00Z",
+     "items": [
+      {
+       "id": "9021934F72",
+       "unit": {
+        "value": {
+         "amount": 102973.04,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9021934F72",
+       "description": "INTERVENTI MANUTENZIONE DEI LOCALI SPOGLIATOIO DEL PO DEI PELLEGRINI DI NAPOLI",
+       "classification": {
+        "id": "45453100-8",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45453100-8",
+        "scheme": "CPV",
+        "description": "LAVORI DI RIPARAZIONE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 68998.87,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "04327290617",
+       "name": "D L COSTYRUZIONI DI PUPAZA DANIEL"
+      }
+     ],
+     "relatedLots": [
+      "9021934F72"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8383079",
+    "lots": [
+     {
+      "id": "9021934F72",
+      "value": {
+       "amount": 102973.04,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "INTERVENTI MANUTENZIONE DEI LOCALI SPOGLIATOIO DEL PO DEI PELLEGRINI DI NAPOLI"
+     }
+    ],
+    "items": [
+     {
+      "id": "9021934F72",
+      "unit": {
+       "value": {
+        "amount": 102973.04,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9021934F72",
+      "description": "INTERVENTI MANUTENZIONE DEI LOCALI SPOGLIATOIO DEL PO DEI PELLEGRINI DI NAPOLI",
+      "classification": {
+       "id": "45453100-8",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45453100-8",
+       "scheme": "CPV",
+       "description": "LAVORI DI RIPARAZIONE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 102973.04,
+     "currency": "EUR"
+    },
+    "description": "INTERVENTI MANUTENZIONE DEI LOCALI SPOGLIATOIO DEL PO DEI PELLEGRINI DI NAPOLI",
+    "tenderPeriod": {
+     "endDate": "2022-02-17T12:00:00Z",
+     "startDate": "2022-02-02T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:34 ; TITLE:PROCEDURA NEGOZIATA PER AFFIDAMENTI SOTTO SOGLIA"
+   },
+   "parties": [
+    {
+     "id": "06328131211",
+     "name": "AZIENDA SANITARIA LOCALE NAPOLI 1 CENTRO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "NAPOLI",
+      "postalCode": "80145",
+      "countryName": "ITALY",
+      "streetAddress": "VIA COMUNALE DEL PRINCIPE 13/A"
+     },
+     "identifier": {
+      "id": "06328131211",
+      "scheme": "IT-CF",
+      "legalName": "AZIENDA SANITARIA LOCALE NAPOLI 1 CENTRO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000224976",
+       "scheme": "AUSA",
+       "legalName": "AZIENDA SANITARIA LOCALE NAPOLI 1 CENTRO"
+      }
+     ]
+    },
+    {
+     "id": "04327290617",
+     "name": "D L COSTYRUZIONI DI PUPAZA DANIEL",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "04327290617",
+      "scheme": "IT-CF",
+      "legalName": "D L COSTYRUZIONI DI PUPAZA DANIEL"
+     }
+    },
+    {
+     "id": "65CF4060-79A6-4D0D-BA47-789A7C6331DD",
+     "name": "SERVIZIO TECNICO CENTRALE",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "NAPOLI",
+      "postalCode": "80141",
+      "streetAddress": "VIA DON BOSCO 4/F"
+     },
+     "identifier": {
+      "id": "65CF4060-79A6-4D0D-BA47-789A7C6331DD",
+      "scheme": "internal",
+      "legalName": "SERVIZIO TECNICO CENTRALE"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2855336",
+     "items": [
+      {
+       "id": "9021934F72",
+       "unit": {
+        "value": {
+         "amount": 102973.04,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9021934F72",
+       "description": "INTERVENTI MANUTENZIONE DEI LOCALI SPOGLIATOIO DEL PO DEI PELLEGRINI DI NAPOLI",
+       "classification": {
+        "id": "45453100-8",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45453100-8",
+        "scheme": "CPV",
+        "description": "LAVORI DI RIPARAZIONE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2022-12-21T12:00:00Z"
+     },
+     "awardID": "2855336",
+     "dateSigned": "2022-11-02T12:00:00Z"
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8390739-2025-01-02 17:30:04.772T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-02 17:30:04.772T12:00:00Z",
+   "ocid": "ocds-hu01ve-8390739",
+   "buyer": {
+    "id": "92033190395",
+    "name": "AUTORITA' DI SISTEMA PORTUALE DEL MARE ADRIATICO CENTRO-SETTENTRIONALE"
+   },
+   "awards": [
+    {
+     "id": "2258545",
+     "date": "2022-05-13T12:00:00Z",
+     "items": [
+      {
+       "id": "9030406EC3",
+       "unit": {
+        "value": {
+         "amount": 11486415.7,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030406EC3",
+       "description": "LOTTO 4_YARA SUD",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 11369082.96,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "01808910655",
+       "name": "R.C.M. COSTRUZIONI"
+      },
+      {
+       "id": "06281300654",
+       "name": "ERRE S.R.L."
+      },
+      {
+       "id": "03530851207",
+       "name": "CONSORZIO INTEGRA SOCIETA' COOPERATIVA"
+      }
+     ],
+     "relatedLots": [
+      "9030406EC3"
+     ]
+    },
+    {
+     "id": "2258523",
+     "date": "2022-05-13T12:00:00Z",
+     "items": [
+      {
+       "id": "9030388FE8",
+       "unit": {
+        "value": {
+         "amount": 8556019.78,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030388FE8",
+       "description": "LOTTO 3_EURODOCKS ACCOSTO NORD",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 8117943.72,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "01336990328",
+       "name": "FINCANTIERI INFRASTRUCTURE OPERE MARITTIME S.P.A."
+      },
+      {
+       "id": "02924640275",
+       "name": "NAUTILUS"
+      },
+      {
+       "id": "03384320408",
+       "name": "ISOFOND"
+      }
+     ],
+     "relatedLots": [
+      "9030388FE8"
+     ]
+    },
+    {
+     "id": "2257652",
+     "date": "2022-05-13T12:00:00Z",
+     "items": [
+      {
+       "id": "903035330A",
+       "unit": {
+        "value": {
+         "amount": 9530406.42,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903035330A",
+       "description": "LOTTO 1_SAPIR 5-7",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 9416789.66,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "03530851207",
+       "name": "CONSORZIO INTEGRA SOCIETA' COOPERATIVA"
+      },
+      {
+       "id": "01808910655",
+       "name": "R.C.M. COSTRUZIONI"
+      },
+      {
+       "id": "06281300654",
+       "name": "ERRE S.R.L."
+      }
+     ],
+     "relatedLots": [
+      "903035330A"
+     ]
+    },
+    {
+     "id": "2258390",
+     "date": "2022-05-13T12:00:00Z",
+     "items": [
+      {
+       "id": "903037338B",
+       "unit": {
+        "value": {
+         "amount": 9948668.73,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903037338B",
+       "description": "LOTTO 2_TCR DANTE",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 9839047.74,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "03530851207",
+       "name": "CONSORZIO INTEGRA SOCIETA' COOPERATIVA"
+      },
+      {
+       "id": "01808910655",
+       "name": "R.C.M. COSTRUZIONI"
+      },
+      {
+       "id": "06281300654",
+       "name": "ERRE S.R.L."
+      }
+     ],
+     "relatedLots": [
+      "903037338B"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8390739",
+    "lots": [
+     {
+      "id": "9030406EC3",
+      "value": {
+       "amount": 11486415.7,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LOTTO 4_YARA SUD"
+     },
+     {
+      "id": "9030388FE8",
+      "value": {
+       "amount": 8556019.78,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LOTTO 3_EURODOCKS ACCOSTO NORD"
+     },
+     {
+      "id": "903035330A",
+      "value": {
+       "amount": 9530406.42,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LOTTO 1_SAPIR 5-7"
+     },
+     {
+      "id": "903037338B",
+      "value": {
+       "amount": 9948668.73,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LOTTO 2_TCR DANTE"
+     }
+    ],
+    "items": [
+     {
+      "id": "903035330A",
+      "unit": {
+       "value": {
+        "amount": 9530406.42,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "903035330A",
+      "description": "LOTTO 1_SAPIR 5-7",
+      "classification": {
+       "id": "45244200-1",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+       "scheme": "CPV",
+       "description": "BANCHINE"
+      }
+     },
+     {
+      "id": "9030406EC3",
+      "unit": {
+       "value": {
+        "amount": 11486415.7,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9030406EC3",
+      "description": "LOTTO 4_YARA SUD",
+      "classification": {
+       "id": "45244200-1",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+       "scheme": "CPV",
+       "description": "BANCHINE"
+      }
+     },
+     {
+      "id": "903037338B",
+      "unit": {
+       "value": {
+        "amount": 9948668.73,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "903037338B",
+      "description": "LOTTO 2_TCR DANTE",
+      "classification": {
+       "id": "45244200-1",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+       "scheme": "CPV",
+       "description": "BANCHINE"
+      }
+     },
+     {
+      "id": "9030388FE8",
+      "unit": {
+       "value": {
+        "amount": 8556019.78,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9030388FE8",
+      "description": "LOTTO 3_EURODOCKS ACCOSTO NORD",
+      "classification": {
+       "id": "45244200-1",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+       "scheme": "CPV",
+       "description": "BANCHINE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 39521510.63,
+     "currency": "EUR"
+    },
+    "description": "ADEGUAMENTO BANCHINE OPERATIVE 3^ STRALCIO - LOTTI 1, 2, 3, 4",
+    "tenderPeriod": {
+     "endDate": "2022-02-04T12:00:00Z",
+     "startDate": "2022-01-04T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:1 ; TITLE:PROCEDURA APERTA"
+   },
+   "parties": [
+    {
+     "id": "92033190395",
+     "name": "AUTORITA' DI SISTEMA PORTUALE DEL MARE ADRIATICO CENTRO-SETTENTRIONALE",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "RAVENNA",
+      "postalCode": "48122",
+      "countryName": "ITALY",
+      "streetAddress": "VIA ANTICO SQUERO, 31 RAVENNA"
+     },
+     "identifier": {
+      "id": "92033190395",
+      "scheme": "IT-CF",
+      "legalName": "AUTORITA' DI SISTEMA PORTUALE DEL MARE ADRIATICO CENTRO-SETTENTRIONALE"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000243202",
+       "scheme": "AUSA",
+       "legalName": "AUTORITA' DI SISTEMA PORTUALE DEL MARE ADRIATICO CENTRO-SETTENTRIONALE"
+      }
+     ]
+    },
+    {
+     "id": "03530851207",
+     "name": "CONSORZIO INTEGRA SOCIETA' COOPERATIVA",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "03530851207",
+      "scheme": "IT-CF",
+      "legalName": "CONSORZIO INTEGRA SOCIETA' COOPERATIVA"
+     }
+    },
+    {
+     "id": "02924640275",
+     "name": "NAUTILUS",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "02924640275",
+      "scheme": "IT-CF",
+      "legalName": "NAUTILUS"
+     }
+    },
+    {
+     "id": "01808910655",
+     "name": "R.C.M. COSTRUZIONI",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "01808910655",
+      "scheme": "IT-CF",
+      "legalName": "R.C.M. COSTRUZIONI"
+     }
+    },
+    {
+     "id": "06281300654",
+     "name": "ERRE S.R.L.",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "06281300654",
+      "scheme": "IT-CF",
+      "legalName": "ERRE S.R.L."
+     }
+    },
+    {
+     "id": "01336990328",
+     "name": "FINCANTIERI INFRASTRUCTURE OPERE MARITTIME S.P.A.",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "01336990328",
+      "scheme": "IT-CF",
+      "legalName": "FINCANTIERI INFRASTRUCTURE OPERE MARITTIME S.P.A."
+     }
+    },
+    {
+     "id": "03384320408",
+     "name": "ISOFOND",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "03384320408",
+      "scheme": "IT-CF",
+      "legalName": "ISOFOND"
+     }
+    },
+    {
+     "id": "500",
+     "name": "UFFICIO TECNICO",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "RAVENNA",
+      "postalCode": "48122"
+     },
+     "identifier": {
+      "id": "500",
+      "scheme": "internal",
+      "legalName": "UFFICIO TECNICO"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2258523",
+     "items": [
+      {
+       "id": "9030388FE8",
+       "unit": {
+        "value": {
+         "amount": 8556019.78,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030388FE8",
+       "description": "LOTTO 3_EURODOCKS ACCOSTO NORD",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2024-09-17T12:00:00Z"
+     },
+     "awardID": "2258523",
+     "amendments": [
+      {
+       "id": "337700",
+       "date": "2023-12-28T12:00:00Z",
+       "rationale": "A SEGUITO ADOZIONE DELLA PROPOSTA DADEGUAMENTO TECNICO FUNZIONALE DEL PIANO REGOLATORE PORTUALE DEL PORTO DI RAVENNA, NELLE MORE DEL PARERE DEL CONSIGLIO SUPERIORE DEI LAVORI PUBBLICI, SI È RITENUTO NECESSARIO SUDDIVIDIRE IN DUE STRALCI LE OPERE - AUMENTO PARI AL 6,36%"
+      },
+      {
+       "id": "355163",
+       "date": "2024-07-16T12:00:00Z",
+       "rationale": "ASPETTI TECNICI-FUNZIONALI PER LA REALIZZAZIONE DELL?INTERVENTO DI RISTRUTTURAZIONE ATTINENTI PRINCIPALMENTE ALL?ADEGUAMENTO DELL?INFRASTRUTTURA ALL?ATF APPROVATA DAL CONSIGLIO SUPERIORE DEI LAVORI PUBBLICI"
+      }
+     ],
+     "dateSigned": "2022-11-15T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2258523-4",
+        "code": "4",
+        "type": "delivery",
+        "title": "SAL. 4 TRASMESSO CON PEC DEL DL DEL 20.09.24 PER ADOZIONE",
+        "dateMet": "2024-08-20T12:00:00Z"
+       },
+       {
+        "id": "2258523-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "SAL ADOTTATO IN DATA 22.02.2024 CON PEC DEL DL PROT 22.02.2024\\R\\NPROVV RUP CDP ANTICIPAZIONE 14689",
+        "dateMet": "2024-02-07T12:00:00Z"
+       },
+       {
+        "id": "2258523-2",
+        "code": "2",
+        "type": "delivery",
+        "title": "SAL 2 ADOTTATO CON PEC DEL DL IN DATA 09.04.2024 ",
+        "dateMet": "2024-04-04T12:00:00Z"
+       },
+       {
+        "id": "2258523-5",
+        "code": "5",
+        "type": "delivery",
+        "title": "SAL 5",
+        "dateMet": "2024-12-03T12:00:00Z"
+       },
+       {
+        "id": "2258523-3",
+        "code": "3",
+        "type": "delivery",
+        "title": "SAL 3",
+        "dateMet": "2024-06-28T12:00:00Z"
+       }
+      ]
+     }
+    },
+    {
+     "id": "2258545",
+     "items": [
+      {
+       "id": "9030406EC3",
+       "unit": {
+        "value": {
+         "amount": 11486415.7,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030406EC3",
+       "description": "LOTTO 4_YARA SUD",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2026-01-04T12:00:00Z"
+     },
+     "awardID": "2258545",
+     "amendments": [
+      {
+       "id": "355157",
+       "date": "2024-07-03T12:00:00Z",
+       "rationale": "PERIZIA TECNICA MIGLIORATIVA E PERIZIA PER OPERE NECESSARIE PER IL TERMINALISTA"
+      }
+     ],
+     "dateSigned": "2022-10-24T12:00:00Z"
+    },
+    {
+     "id": "2258390",
+     "items": [
+      {
+       "id": "903037338B",
+       "unit": {
+        "value": {
+         "amount": 9948668.73,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903037338B",
+       "description": "LOTTO 2_TCR DANTE",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2025-01-03T12:00:00Z"
+     },
+     "awardID": "2258390",
+     "amendments": [
+      {
+       "id": "322749",
+       "date": "2023-10-09T12:00:00Z",
+       "rationale": "ALTRE MODIFICHE DI IMPORTO INFERIORE ALLA SOGLIA COMUNITARIA E AL 10% DEL VALORE CONTRATTUALE PER SERVIZI E FORNITURE O AL 15% PER LAVORI"
+      }
+     ],
+     "dateSigned": "2022-10-24T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2258390-2",
+        "code": "2",
+        "type": "delivery",
+        "title": "A TUTTO IL 31.05.2024. DL DEPOSITA ATTI CONTABILI PEC PROT 8952 DEL 04.07.2024 ",
+        "dateMet": "2024-06-28T12:00:00Z"
+       },
+       {
+        "id": "2258390-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "SAL 1",
+        "dateMet": "2024-04-11T12:00:00Z"
+       },
+       {
+        "id": "2258390-4",
+        "code": "4",
+        "type": "delivery",
+        "title": "SAL 4",
+        "dateMet": "2024-11-28T12:00:00Z"
+       },
+       {
+        "id": "2258390-3",
+        "code": "3",
+        "type": "delivery",
+        "title": "3",
+        "dateMet": "2024-09-30T12:00:00Z"
+       }
+      ]
+     }
+    },
+    {
+     "id": "2257652",
+     "items": [
+      {
+       "id": "903035330A",
+       "unit": {
+        "value": {
+         "amount": 9530406.42,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903035330A",
+       "description": "LOTTO 1_SAPIR 5-7",
+       "classification": {
+        "id": "45244200-1",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45244200-1",
+        "scheme": "CPV",
+        "description": "BANCHINE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2024-11-11T12:00:00Z"
+     },
+     "awardID": "2257652",
+     "amendments": [
+      {
+       "id": "322745",
+       "date": "2023-09-18T12:00:00Z",
+       "rationale": "ALTRE MODIFICHE DI IMPORTO INFERIORE ALLA SOGLIA COMUNITARIA E AL 10% DEL VALORE CONTRATTUALE PER SERVIZI E FORNITURE O AL 15% PER LAVORI"
+      }
+     ],
+     "dateSigned": "2022-10-24T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2257652-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "PROVV RUP CDP ANTICIPAZIONE PEC PROT 14424 11/10/2023\\R\\NPEC PROT 2858 DEL 01/03/2024 DL TRASMETTE CONTABILITA' PER ADOZIONE SAL EMISSIONE CDP LIQUIDABILE ",
+        "dateMet": "2024-02-16T12:00:00Z"
+       },
+       {
+        "id": "2257652-2",
+        "code": "2",
+        "type": "delivery",
+        "title": "SAL 2 A TUTTO IL 30/04/2024 DL TRASMETTE AL RUP ATTI PROT ADSP 30/05/2024 E CDP SOTTOSCRITTO IN DATA 06/06/2024 E RELAZIONE IN DATA 30/05/2024",
+        "dateMet": "2024-05-28T12:00:00Z"
+       },
+       {
+        "id": "2257652-3",
+        "code": "3",
+        "type": "delivery",
+        "title": "SAL 3, CONTABILITÀ TRASMESSA DAL DL AL RUP PER ADOZIONE CON PEC DEL 23.08.2024",
+        "dateMet": "2024-08-02T12:00:00Z"
+       },
+       {
+        "id": "2257652-4",
+        "code": "4",
+        "type": "delivery",
+        "title": "SAL 4, CONTABILITÀ TRASMESSA DAL DL AL RUP PER ADOZIONE CON PEC DEL 26.11.2024",
+        "dateMet": "2024-10-30T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8390960-2025-01-07 17:31:09.000T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-07 17:31:09.000T12:00:00Z",
+   "ocid": "ocds-hu01ve-8390960",
+   "buyer": {
+    "id": "90024210511",
+    "name": "UNIONE DEI COMUNI DEL PRATOMAGNO"
+   },
+   "awards": [
+    {
+     "id": "2606432",
+     "date": "2022-02-09T12:00:00Z",
+     "items": [
+      {
+       "id": "9030665482",
+       "unit": {
+        "value": {
+         "amount": 145000,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030665482",
+       "description": "CONTROLLO DELLA VEGETAZIONE RIPARIALE E MOVIMENTAZIONE DEPOSITI FLUVIALI LUNGO IL RETICOLO DI GESTIONE NEI COMUNI DI RIGNANO S.A., REGGELLO, CASTELFRANCO PIANDISCÒ E TERRANUOVA BRACCIOLINI (AR) (PROG. 292/2021, C07_11)",
+       "classification": {
+        "id": "45246400-7",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45246400-7",
+        "scheme": "CPV",
+        "description": "LAVORI DI DIFESA DALLE PIENE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 88740.65,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "02300310519",
+       "name": "CONSORZIO CON.T.E.A."
+      }
+     ],
+     "relatedLots": [
+      "9030665482"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8390960",
+    "lots": [
+     {
+      "id": "9030665482",
+      "value": {
+       "amount": 145000,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "CONTROLLO DELLA VEGETAZIONE RIPARIALE E MOVIMENTAZIONE DEPOSITI FLUVIALI LUNGO IL RETICOLO DI GESTIONE NEI COMUNI DI RIGNANO S.A., REGGELLO, CASTELFRANCO PIANDISCÒ E TERRANUOVA BRACCIOLINI (AR) (PROG. 292/2021, C07_11)"
+     }
+    ],
+    "items": [
+     {
+      "id": "9030665482",
+      "unit": {
+       "value": {
+        "amount": 145000,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9030665482",
+      "description": "CONTROLLO DELLA VEGETAZIONE RIPARIALE E MOVIMENTAZIONE DEPOSITI FLUVIALI LUNGO IL RETICOLO DI GESTIONE NEI COMUNI DI RIGNANO S.A., REGGELLO, CASTELFRANCO PIANDISCÒ E TERRANUOVA BRACCIOLINI (AR) (PROG. 292/2021, C07_11)",
+      "classification": {
+       "id": "45246400-7",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45246400-7",
+       "scheme": "CPV",
+       "description": "LAVORI DI DIFESA DALLE PIENE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 145000,
+     "currency": "EUR"
+    },
+    "description": "CONTROLLO DELLA VEGETAZIONE RIPARIALE E MOVIMENTAZIONE DEPOSITI FLUVIALI LUNGO IL RETICOLO DI GESTIONE NEI COMUNI DI RIGNANO S.A., REGGELLO, CASTELFRANCO PIANDISCÒ E TERRANUOVA BRACCIOLINI (AR) (PROG. 292/2021, C07_11)",
+    "tenderPeriod": {
+     "endDate": "2022-02-07T12:00:00Z",
+     "startDate": "2022-01-25T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:24 ; TITLE:AFFIDAMENTO DIRETTO"
+   },
+   "parties": [
+    {
+     "id": "90024210511",
+     "name": "UNIONE DEI COMUNI DEL PRATOMAGNO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "LORO CIUFFENNA",
+      "postalCode": "N.A.",
+      "countryName": "ITALY",
+      "streetAddress": "VIA PERUGIA 2/A"
+     },
+     "identifier": {
+      "id": "90024210511",
+      "scheme": "IT-CF",
+      "legalName": "UNIONE DEI COMUNI DEL PRATOMAGNO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000242987",
+       "scheme": "AUSA",
+       "legalName": "UNIONE DEI COMUNI DEL PRATOMAGNO"
+      }
+     ]
+    },
+    {
+     "id": "02300310519",
+     "name": "CONSORZIO CON.T.E.A.",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "02300310519",
+      "scheme": "IT-CF",
+      "legalName": "CONSORZIO CON.T.E.A."
+     }
+    },
+    {
+     "id": "840854D8-7B47-40CB-8DDF-54AC290ACE88",
+     "name": "AREA TECNICA",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "LORO CIUFFENNA",
+      "postalCode": "52024",
+      "streetAddress": "VIA PERUGIA 2"
+     },
+     "identifier": {
+      "id": "840854D8-7B47-40CB-8DDF-54AC290ACE88",
+      "scheme": "internal",
+      "legalName": "AREA TECNICA"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2606432",
+     "items": [
+      {
+       "id": "9030665482",
+       "unit": {
+        "value": {
+         "amount": 145000,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9030665482",
+       "description": "CONTROLLO DELLA VEGETAZIONE RIPARIALE E MOVIMENTAZIONE DEPOSITI FLUVIALI LUNGO IL RETICOLO DI GESTIONE NEI COMUNI DI RIGNANO S.A., REGGELLO, CASTELFRANCO PIANDISCÒ E TERRANUOVA BRACCIOLINI (AR) (PROG. 292/2021, C07_11)",
+       "classification": {
+        "id": "45246400-7",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45246400-7",
+        "scheme": "CPV",
+        "description": "LAVORI DI DIFESA DALLE PIENE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2022-09-08T12:00:00Z",
+      "startDate": "2022-03-08T12:00:00Z"
+     },
+     "awardID": "2606432",
+     "dateSigned": "2022-03-08T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2606432-2",
+        "code": "2",
+        "type": "delivery",
+        "title": "SALDO FINALE",
+        "dateMet": "2022-08-18T12:00:00Z"
+       },
+       {
+        "id": "2606432-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "1SAL",
+        "dateMet": "2024-06-01T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8391662-2025-01-07 17:31:15.509T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-07 17:31:15.509T12:00:00Z",
+   "ocid": "ocds-hu01ve-8391662",
+   "buyer": {
+    "id": "00115070336",
+    "name": "COMUNE DI FIORENZUOLA D ARDA"
+   },
+   "tender": {
+    "id": "8391662",
+    "lots": [
+     {
+      "id": "9239378FE9",
+      "value": {
+       "amount": 55450.6,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "INTERVENTO DI RIQUALIFICAZIONE E TRASFORMAZIONE A GAS METANO DELLA CENTRALE TERMICA A SERVIZIO BOCCIODROMO"
+     }
+    ],
+    "items": [
+     {
+      "id": "9239378FE9",
+      "unit": {
+       "value": {
+        "amount": 55450.6,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9239378FE9",
+      "description": "INTERVENTO DI RIQUALIFICAZIONE E TRASFORMAZIONE A GAS METANO DELLA CENTRALE TERMICA A SERVIZIO BOCCIODROMO",
+      "classification": {
+       "id": "50720000-8",
+       "uri": "https://dati.anticorruzione.it/data/cpv/50720000-8",
+       "scheme": "CPV",
+       "description": "SERVIZI DI RIPARAZIONE E MANUTENZIONE DI RISCALDAMENTI CENTRALI"
+      }
+     }
+    ],
+    "value": {
+     "amount": 55450.6,
+     "currency": "EUR"
+    },
+    "description": "INTERVENTO DI RIQUALIFICAZIONE E TRASFORMAZIONE A GAS METANO DELLA CENTRALE TERMICA A SERVIZIO BOCCIODROMO",
+    "tenderPeriod": {
+     "endDate": "2022-05-17T12:00:00Z",
+     "startDate": "2022-05-17T12:00:00Z"
+    },
+    "mainProcurementCategory": "goods",
+    "procurementMethodDetails": "COD:24 ; TITLE:AFFIDAMENTO DIRETTO"
+   },
+   "parties": [
+    {
+     "id": "00115070336",
+     "name": "COMUNE DI FIORENZUOLA D ARDA",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "FIORENZUOLA D'ARDA",
+      "postalCode": "29017",
+      "countryName": "ITALY",
+      "streetAddress": "PIAZZALE SAN GIOVANNI 2"
+     },
+     "identifier": {
+      "id": "00115070336",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI FIORENZUOLA D ARDA"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000157685",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI FIORENZUOLA D ARDA"
+      }
+     ]
+    },
+    {
+     "id": "7A1D0587-F878-45A4-9C54-FE9DCD70E8E2",
+     "name": "UFFICIO TECNICO LL.PP.",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "FIORENZUOLA D'ARDA",
+      "postalCode": "29017",
+      "streetAddress": "PLE SAN GIOVANNI 2"
+     },
+     "identifier": {
+      "id": "7A1D0587-F878-45A4-9C54-FE9DCD70E8E2",
+      "scheme": "internal",
+      "legalName": "UFFICIO TECNICO LL.PP."
+     }
+    }
+   ],
+   "language": "ita",
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8393566-2025-01-08 17:31:14.934T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-08 17:31:14.934T12:00:00Z",
+   "ocid": "ocds-hu01ve-8393566",
+   "buyer": {
+    "id": "80015010723",
+    "name": "COMUNE DI BARI"
+   },
+   "awards": [
+    {
+     "id": "2202284",
+     "date": "2022-05-02T12:00:00Z",
+     "items": [
+      {
+       "id": "9033544C53",
+       "unit": {
+        "value": {
+         "amount": 859517.86,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9033544C53",
+       "description": "'COMPLETAMENTO DEL VILLAGGIO PER L'ACCOGLIENZA DELLE FAMIGLIE DEI BAMBINI MALATI ONCOLOGICI - AGEBEO & AMICI DI VINCENZO ONLUS' - 1^ TRAVERSA DI VIA CAMILLO ROSALBA - BARI. PRIMO CONTRATTO ATTUATIVO",
+       "classification": {
+        "id": "45215214-0",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45215214-0",
+        "scheme": "CPV",
+        "description": "LAVORI DI COSTRUZIONE DI CASE RESIDENZIALI"
+       }
+      }
+     ],
+     "value": {
+      "amount": 859517.86,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "RNAGPP54B15L328M",
+       "name": "EDILSTUDIO DEL GEOM. GIUSEPPE ARENA"
+      }
+     ],
+     "relatedLots": [
+      "9033544C53"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8393566",
+    "lots": [
+     {
+      "id": "9033544C53",
+      "value": {
+       "amount": 859517.86,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "'COMPLETAMENTO DEL VILLAGGIO PER L'ACCOGLIENZA DELLE FAMIGLIE DEI BAMBINI MALATI ONCOLOGICI - AGEBEO & AMICI DI VINCENZO ONLUS' - 1^ TRAVERSA DI VIA CAMILLO ROSALBA - BARI. PRIMO CONTRATTO ATTUATIVO"
+     }
+    ],
+    "items": [
+     {
+      "id": "9033544C53",
+      "unit": {
+       "value": {
+        "amount": 859517.86,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9033544C53",
+      "description": "'COMPLETAMENTO DEL VILLAGGIO PER L'ACCOGLIENZA DELLE FAMIGLIE DEI BAMBINI MALATI ONCOLOGICI - AGEBEO & AMICI DI VINCENZO ONLUS' - 1^ TRAVERSA DI VIA CAMILLO ROSALBA - BARI. PRIMO CONTRATTO ATTUATIVO",
+      "classification": {
+       "id": "45215214-0",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45215214-0",
+       "scheme": "CPV",
+       "description": "LAVORI DI COSTRUZIONE DI CASE RESIDENZIALI"
+      }
+     }
+    ],
+    "value": {
+     "amount": 859517.86,
+     "currency": "EUR"
+    },
+    "description": "COMPLETAMENTO DEL VILLAGGIO PER L'ACCOGLIENZA DELLE FAMIGLIE DEI BAMBINI MALATI ONCOLOGICI - AGEBEO & AMICI DI VINCENZO ONLUS - 1^ TRAVERSA DI VIA CAMILLO ROSALBA - BARI. PRIMO CONTRATTO ATTUATIVO",
+    "tenderPeriod": {
+     "endDate": "2022-05-02T12:00:00Z",
+     "startDate": "2022-05-02T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:27 ; TITLE:AFFIDAMENTO DIRETTO IN ADESIONE AD ACCORDO QUADRO/CONVENZIONE"
+   },
+   "parties": [
+    {
+     "id": "80015010723",
+     "name": "COMUNE DI BARI",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "BARI",
+      "postalCode": "70122",
+      "countryName": "ITALY",
+      "streetAddress": "CORSO VITTORIO EMANUELE II 84"
+     },
+     "identifier": {
+      "id": "80015010723",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI BARI"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000238809",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI BARI"
+      }
+     ]
+    },
+    {
+     "id": "RNAGPP54B15L328M",
+     "name": "EDILSTUDIO DEL GEOM. GIUSEPPE ARENA",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "RNAGPP54B15L328M",
+      "scheme": "IT-CF",
+      "legalName": "EDILSTUDIO DEL GEOM. GIUSEPPE ARENA"
+     }
+    },
+    {
+     "id": "3829F63D-0F9E-4672-B8F2-D08878E57871",
+     "name": "RIPARTIZIONE IVOP",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "BARI",
+      "postalCode": "70125"
+     },
+     "identifier": {
+      "id": "3829F63D-0F9E-4672-B8F2-D08878E57871",
+      "scheme": "internal",
+      "legalName": "RIPARTIZIONE IVOP"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2202284",
+     "items": [
+      {
+       "id": "9033544C53",
+       "unit": {
+        "value": {
+         "amount": 859517.86,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9033544C53",
+       "description": "'COMPLETAMENTO DEL VILLAGGIO PER L'ACCOGLIENZA DELLE FAMIGLIE DEI BAMBINI MALATI ONCOLOGICI - AGEBEO & AMICI DI VINCENZO ONLUS' - 1^ TRAVERSA DI VIA CAMILLO ROSALBA - BARI. PRIMO CONTRATTO ATTUATIVO",
+       "classification": {
+        "id": "45215214-0",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45215214-0",
+        "scheme": "CPV",
+        "description": "LAVORI DI COSTRUZIONE DI CASE RESIDENZIALI"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2023-01-23T12:00:00Z",
+      "startDate": "2022-06-20T12:00:00Z"
+     },
+     "awardID": "2202284",
+     "amendments": [
+      {
+       "id": "301616",
+       "date": "2023-02-15T12:00:00Z",
+       "rationale": "REVISIONE DEI PREZZI"
+      },
+      {
+       "id": "313545",
+       "date": "2023-05-25T12:00:00Z",
+       "rationale": "LAVORI, SERVIZI O FORNITURE SUPPLEMENTARI NON INCLUSI NELLU2019APPALTO INIZIALE"
+      }
+     ],
+     "dateSigned": "2022-06-20T12:00:00Z"
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8393918-2025-02-14 17:31:28.202T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-02-14 17:31:28.202T12:00:00Z",
+   "ocid": "ocds-hu01ve-8393918",
+   "buyer": {
+    "id": "80000330656",
+    "name": "COMUNE DI SALERNO"
+   },
+   "awards": [
+    {
+     "id": "2876570",
+     "date": "2022-07-05T12:00:00Z",
+     "items": [
+      {
+       "id": "9033777C9A",
+       "unit": {
+        "value": {
+         "amount": 64500,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9033777C9A",
+       "description": "ACCORDO QUADRO - AI SENSI DELL'ART. 54 COMMA 3 DEL D.LGS N. 50/2016 - PER LAVORI DI MANUTENZIONE ORDINARIA AGLI IMPIANTI ELETTRICI DELLE STRUTTURE COMUNALI CON L'UTILIZZO DEL MERCATO ELETTRONICO DELLA PUBBLICA AMMINISTRAZIONE",
+       "classification": {
+        "id": "50711000-2",
+        "uri": "https://dati.anticorruzione.it/data/cpv/50711000-2",
+        "scheme": "CPV",
+        "description": "SERVIZI DI RIPARAZIONE E MANUTENZIONE DI IMPIANTI ELETTRICI DI EDIFICI"
+       }
+      }
+     ],
+     "value": {
+      "amount": 64500,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "02249430659",
+       "name": "ELETTROTECNICA DI D?ANTONIO GIACOMO"
+      }
+     ],
+     "relatedLots": [
+      "9033777C9A"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8393918",
+    "lots": [
+     {
+      "id": "9033777C9A",
+      "value": {
+       "amount": 64500,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "ACCORDO QUADRO - AI SENSI DELL'ART. 54 COMMA 3 DEL D.LGS N. 50/2016 - PER LAVORI DI MANUTENZIONE ORDINARIA AGLI IMPIANTI ELETTRICI DELLE STRUTTURE COMUNALI CON L'UTILIZZO DEL MERCATO ELETTRONICO DELLA PUBBLICA AMMINISTRAZIONE"
+     }
+    ],
+    "items": [
+     {
+      "id": "9033777C9A",
+      "unit": {
+       "value": {
+        "amount": 64500,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9033777C9A",
+      "description": "ACCORDO QUADRO - AI SENSI DELL'ART. 54 COMMA 3 DEL D.LGS N. 50/2016 - PER LAVORI DI MANUTENZIONE ORDINARIA AGLI IMPIANTI ELETTRICI DELLE STRUTTURE COMUNALI CON L'UTILIZZO DEL MERCATO ELETTRONICO DELLA PUBBLICA AMMINISTRAZIONE",
+      "classification": {
+       "id": "50711000-2",
+       "uri": "https://dati.anticorruzione.it/data/cpv/50711000-2",
+       "scheme": "CPV",
+       "description": "SERVIZI DI RIPARAZIONE E MANUTENZIONE DI IMPIANTI ELETTRICI DI EDIFICI"
+      }
+     }
+    ],
+    "value": {
+     "amount": 64500,
+     "currency": "EUR"
+    },
+    "description": "ACCORDO QUADRO - AI SENSI DELL'ART. 54 COMMA 3 DEL D.LGS N. 50/2016 - PER LAVORI DI MANUTENZIONE ORDINARIA AGLI IMPIANTI ELETTRICI DELLE STRUTTURE COMUNALI CON L'UTILIZZO DEL MERCATO ELETTRONICO DELLA PUBBLICA AMMINISTRAZIONE",
+    "tenderPeriod": {
+     "endDate": "2022-05-30T12:00:00Z",
+     "startDate": "2022-05-12T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:34 ; TITLE:PROCEDURA NEGOZIATA PER AFFIDAMENTI SOTTO SOGLIA"
+   },
+   "parties": [
+    {
+     "id": "80000330656",
+     "name": "COMUNE DI SALERNO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "SALERNO",
+      "postalCode": "84121",
+      "countryName": "ITALY",
+      "streetAddress": "VIA ROMA PALAZZO DI CITTA"
+     },
+     "identifier": {
+      "id": "80000330656",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI SALERNO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000234875",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI SALERNO"
+      }
+     ]
+    },
+    {
+     "id": "02249430659",
+     "name": "ELETTROTECNICA DI D?ANTONIO GIACOMO",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "02249430659",
+      "scheme": "IT-CF",
+      "legalName": "ELETTROTECNICA DI D?ANTONIO GIACOMO"
+     }
+    },
+    {
+     "id": "736045A6-2E67-4E6D-8B02-78B0A560DB16",
+     "name": "SETTORE MOBILITA' ELIMINAZIONE BARRIERE ARCHITETTONICHE E TRASPORTO PUBBLICO",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "SALERNO",
+      "postalCode": "84126"
+     },
+     "identifier": {
+      "id": "736045A6-2E67-4E6D-8B02-78B0A560DB16",
+      "scheme": "internal",
+      "legalName": "SETTORE MOBILITA' ELIMINAZIONE BARRIERE ARCHITETTONICHE E TRASPORTO PUBBLICO"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2876570",
+     "items": [
+      {
+       "id": "9033777C9A",
+       "unit": {
+        "value": {
+         "amount": 64500,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9033777C9A",
+       "description": "ACCORDO QUADRO - AI SENSI DELL'ART. 54 COMMA 3 DEL D.LGS N. 50/2016 - PER LAVORI DI MANUTENZIONE ORDINARIA AGLI IMPIANTI ELETTRICI DELLE STRUTTURE COMUNALI CON L'UTILIZZO DEL MERCATO ELETTRONICO DELLA PUBBLICA AMMINISTRAZIONE",
+       "classification": {
+        "id": "50711000-2",
+        "uri": "https://dati.anticorruzione.it/data/cpv/50711000-2",
+        "scheme": "CPV",
+        "description": "SERVIZI DI RIPARAZIONE E MANUTENZIONE DI IMPIANTI ELETTRICI DI EDIFICI"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2023-08-28T12:00:00Z"
+     },
+     "awardID": "2876570",
+     "amendments": [
+      {
+       "id": "369079",
+       "date": "2023-09-28T12:00:00Z",
+       "rationale": "QUINTO D''OBBLIGO "
+      }
+     ],
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2876570-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "STATO FINALE",
+        "dateMet": "2023-10-03T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8394326-2025-01-08 17:30:56.102T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-08 17:30:56.102T12:00:00Z",
+   "ocid": "ocds-hu01ve-8394326",
+   "buyer": {
+    "id": "80034840167",
+    "name": "COMUNE DI BERGAMO"
+   },
+   "awards": [
+    {
+     "id": "2325226",
+     "date": "2022-03-21T12:00:00Z",
+     "items": [
+      {
+       "id": "90343071FC",
+       "unit": {
+        "value": {
+         "amount": 658111.72,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "90343071FC",
+       "description": "INTERVENTO STRAORDINARIO DI SISTEMAZIONE E ADEGUAMENTO IMPIANTISTICO DI SICUREZZA DI PALAZZO UFFICI CON REALIZZAZIONE IMPIANTO DI CLIMATIZZAZIONE - LOTTO 3",
+       "classification": {
+        "id": "45331000-6",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45331000-6",
+        "scheme": "CPV",
+        "description": "LAVORI DI INSTALLAZIONE DI IMPIANTI DI RISCALDAMENTO, VENTILAZIONE E CLIMATIZZAZIONE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 559058.03,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "12783620151",
+       "name": "SIAL IMPIANTI SRL"
+      }
+     ],
+     "relatedLots": [
+      "90343071FC"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8394326",
+    "lots": [
+     {
+      "id": "90343071FC",
+      "value": {
+       "amount": 658111.72,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "INTERVENTO STRAORDINARIO DI SISTEMAZIONE E ADEGUAMENTO IMPIANTISTICO DI SICUREZZA DI PALAZZO UFFICI CON REALIZZAZIONE IMPIANTO DI CLIMATIZZAZIONE - LOTTO 3"
+     }
+    ],
+    "items": [
+     {
+      "id": "90343071FC",
+      "unit": {
+       "value": {
+        "amount": 658111.72,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "90343071FC",
+      "description": "INTERVENTO STRAORDINARIO DI SISTEMAZIONE E ADEGUAMENTO IMPIANTISTICO DI SICUREZZA DI PALAZZO UFFICI CON REALIZZAZIONE IMPIANTO DI CLIMATIZZAZIONE - LOTTO 3",
+      "classification": {
+       "id": "45331000-6",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45331000-6",
+       "scheme": "CPV",
+       "description": "LAVORI DI INSTALLAZIONE DI IMPIANTI DI RISCALDAMENTO, VENTILAZIONE E CLIMATIZZAZIONE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 658111.72,
+     "currency": "EUR"
+    },
+    "description": "INTERVENTO STRAORDINARIO DI SISTEMAZIONE E ADEGUAMENTO IMPIANTISTICO DI SICUREZZA DI PALAZZO UFFICI CON REALIZZAZIONE IMPIANTO DI CLIMATIZZAZIONE - LOTTO 3",
+    "tenderPeriod": {
+     "endDate": "2022-02-14T12:00:00Z",
+     "startDate": "2022-01-25T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:34 ; TITLE:PROCEDURA NEGOZIATA PER AFFIDAMENTI SOTTO SOGLIA"
+   },
+   "parties": [
+    {
+     "id": "80034840167",
+     "name": "COMUNE DI BERGAMO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "BERGAMO",
+      "postalCode": "24122",
+      "countryName": "ITALY",
+      "streetAddress": "P.ZZA MATTEOTTI,27"
+     },
+     "identifier": {
+      "id": "80034840167",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI BERGAMO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000244392",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI BERGAMO"
+      }
+     ]
+    },
+    {
+     "id": "12783620151",
+     "name": "SIAL IMPIANTI SRL",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "12783620151",
+      "scheme": "IT-CF",
+      "legalName": "SIAL IMPIANTI SRL"
+     }
+    },
+    {
+     "id": "263F8D0D-D768-4235-B9C1-B0ED13232B80",
+     "name": "DIREZIONE LAVORI PUBBLICI",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "BERGAMO",
+      "postalCode": "24126",
+      "streetAddress": "VIA DELLE CANOVINE 21"
+     },
+     "identifier": {
+      "id": "263F8D0D-D768-4235-B9C1-B0ED13232B80",
+      "scheme": "internal",
+      "legalName": "DIREZIONE LAVORI PUBBLICI"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2325226",
+     "items": [
+      {
+       "id": "90343071FC",
+       "unit": {
+        "value": {
+         "amount": 658111.72,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "90343071FC",
+       "description": "INTERVENTO STRAORDINARIO DI SISTEMAZIONE E ADEGUAMENTO IMPIANTISTICO DI SICUREZZA DI PALAZZO UFFICI CON REALIZZAZIONE IMPIANTO DI CLIMATIZZAZIONE - LOTTO 3",
+       "classification": {
+        "id": "45331000-6",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45331000-6",
+        "scheme": "CPV",
+        "description": "LAVORI DI INSTALLAZIONE DI IMPIANTI DI RISCALDAMENTO, VENTILAZIONE E CLIMATIZZAZIONE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2022-12-12T12:00:00Z"
+     },
+     "awardID": "2325226",
+     "amendments": [
+      {
+       "id": "364467",
+       "date": "2023-04-21T12:00:00Z",
+       "rationale": "PROROGA"
+      },
+      {
+       "id": "364461",
+       "date": "2022-12-09T12:00:00Z",
+       "rationale": "LAVORI AGGIUNTIVI"
+      }
+     ],
+     "dateSigned": "2022-05-09T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2325226-5",
+        "code": "5",
+        "type": "delivery",
+        "dateMet": "2023-05-31T12:00:00Z"
+       },
+       {
+        "id": "2325226-6",
+        "code": "6",
+        "type": "delivery",
+        "dateMet": "2023-08-17T12:00:00Z"
+       },
+       {
+        "id": "2325226-1",
+        "code": "1",
+        "type": "delivery",
+        "dateMet": "2022-07-20T12:00:00Z"
+       },
+       {
+        "id": "2325226-3",
+        "code": "3",
+        "type": "delivery",
+        "dateMet": "2023-01-31T12:00:00Z"
+       },
+       {
+        "id": "2325226-2",
+        "code": "2",
+        "type": "delivery",
+        "dateMet": "2022-10-25T12:00:00Z"
+       },
+       {
+        "id": "2325226-4",
+        "code": "4",
+        "type": "delivery",
+        "dateMet": "2023-05-02T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8395181-2025-01-04 17:30:03.632T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-01-04 17:30:03.632T12:00:00Z",
+   "ocid": "ocds-hu01ve-8395181",
+   "buyer": {
+    "id": "80002270074",
+    "name": "REGIONE AUTONOMA VALLE D'AOSTA"
+   },
+   "awards": [
+    {
+     "id": "2220779",
+     "date": "2022-04-04T12:00:00Z",
+     "items": [
+      {
+       "id": "9081684AB6",
+       "unit": {
+        "value": {
+         "amount": 493813.85,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9081684AB6",
+       "description": "LAVORI DI RIFACIMENTO DI PORZIONI VETRATE DELLA COPERTURA DEL CASTELLO DI USSEL A CHÂTILLON- BENE TUTELATO AI SENSI DEL D.LGS. 42/2004.",
+       "classification": {
+        "id": "45454000-4",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45454000-4",
+        "scheme": "CPV",
+        "description": "LAVORI DI RISTRUTTURAZIONE"
+       }
+      }
+     ],
+     "value": {
+      "amount": 493809.49,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "00191870070",
+       "name": "ARCHEOS S.A.S."
+      }
+     ],
+     "relatedLots": [
+      "9081684AB6"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8395181",
+    "lots": [
+     {
+      "id": "9081684AB6",
+      "value": {
+       "amount": 493813.85,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "LAVORI DI RIFACIMENTO DI PORZIONI VETRATE DELLA COPERTURA DEL CASTELLO DI USSEL A CHÂTILLON- BENE TUTELATO AI SENSI DEL D.LGS. 42/2004."
+     }
+    ],
+    "items": [
+     {
+      "id": "9081684AB6",
+      "unit": {
+       "value": {
+        "amount": 493813.85,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "9081684AB6",
+      "description": "LAVORI DI RIFACIMENTO DI PORZIONI VETRATE DELLA COPERTURA DEL CASTELLO DI USSEL A CHÂTILLON- BENE TUTELATO AI SENSI DEL D.LGS. 42/2004.",
+      "classification": {
+       "id": "45454000-4",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45454000-4",
+       "scheme": "CPV",
+       "description": "LAVORI DI RISTRUTTURAZIONE"
+      }
+     }
+    ],
+    "value": {
+     "amount": 493813.85,
+     "currency": "EUR"
+    },
+    "description": "LAVORI DI RIFACIMENTO DI PORZIONI VETRATE DELLA COPERTURA DEL CASTELLO DI USSEL A CHÂTILLON- BENE TUTELATO AI SENSI DEL D.LGS. 42/2004.",
+    "tenderPeriod": {
+     "endDate": "2022-02-14T12:00:00Z",
+     "startDate": "2022-01-31T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:34 ; TITLE:PROCEDURA NEGOZIATA PER AFFIDAMENTI SOTTO SOGLIA"
+   },
+   "parties": [
+    {
+     "id": "80002270074",
+     "name": "REGIONE AUTONOMA VALLE D'AOSTA",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "AOSTA",
+      "postalCode": "11100",
+      "countryName": "ITALY",
+      "streetAddress": "PIAZZA A DEFFEYES 1"
+     },
+     "identifier": {
+      "id": "80002270074",
+      "scheme": "IT-CF",
+      "legalName": "REGIONE AUTONOMA VALLE D'AOSTA"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000246415",
+       "scheme": "AUSA",
+       "legalName": "REGIONE AUTONOMA VALLE D'AOSTA"
+      }
+     ]
+    },
+    {
+     "id": "00191870070",
+     "name": "ARCHEOS S.A.S.",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "00191870070",
+      "scheme": "IT-CF",
+      "legalName": "ARCHEOS S.A.S."
+     }
+    },
+    {
+     "id": "26B6FC57-B0CD-4EEF-9411-F790C321DCD5",
+     "name": "PATRIMONIO ARCHEOLOGICO E RESTAURO BENI MONUMENTALI",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "AOSTA",
+      "postalCode": "11100"
+     },
+     "identifier": {
+      "id": "26B6FC57-B0CD-4EEF-9411-F790C321DCD5",
+      "scheme": "internal",
+      "legalName": "PATRIMONIO ARCHEOLOGICO E RESTAURO BENI MONUMENTALI"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2220779",
+     "items": [
+      {
+       "id": "9081684AB6",
+       "unit": {
+        "value": {
+         "amount": 493813.85,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "9081684AB6",
+       "description": "LAVORI DI RIFACIMENTO DI PORZIONI VETRATE DELLA COPERTURA DEL CASTELLO DI USSEL A CHÂTILLON- BENE TUTELATO AI SENSI DEL D.LGS. 42/2004.",
+       "classification": {
+        "id": "45454000-4",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45454000-4",
+        "scheme": "CPV",
+        "description": "LAVORI DI RISTRUTTURAZIONE"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2023-07-21T12:00:00Z",
+      "startDate": "2023-02-15T12:00:00Z"
+     },
+     "awardID": "2220779",
+     "dateSigned": "2023-02-15T12:00:00Z"
+    }
+   ],
+   "initiationType": "tender"
+  },
+  {
+   "id": "ocds-hu01ve-8398353-2025-02-01 17:30:11.318T12:00:00Z",
+   "tag": [
+    "compiled"
+   ],
+   "date": "2025-02-01 17:30:11.318T12:00:00Z",
+   "ocid": "ocds-hu01ve-8398353",
+   "buyer": {
+    "id": "00071560700",
+    "name": "COMUNE DI CAMPOBASSO"
+   },
+   "awards": [
+    {
+     "id": "2342650",
+     "date": "2022-09-09T12:00:00Z",
+     "items": [
+      {
+       "id": "903907617D",
+       "unit": {
+        "value": {
+         "amount": 151678.72,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903907617D",
+       "description": "REALIZZAZIONE DI INTERVENTI CONCERNENTI LA SICUREZZA DELLA CIRCOLAZIONE CICLISTICA CITTADINA E LA REALIZZAZIONE DI CORSIE CICLABILI (EX DM 12 AGOSTO 2020)",
+       "classification": {
+        "id": "45233162-2",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45233162-2",
+        "scheme": "CPV",
+        "description": "LAVORI DI COSTRUZIONE DI PISTE CICLABILI"
+       }
+      }
+     ],
+     "value": {
+      "amount": 149038.78,
+      "currency": "EUR"
+     },
+     "status": "active",
+     "suppliers": [
+      {
+       "id": "00851630707",
+       "name": "DUE PÌ SNC"
+      }
+     ],
+     "relatedLots": [
+      "903907617D"
+     ]
+    }
+   ],
+   "tender": {
+    "id": "8398353",
+    "lots": [
+     {
+      "id": "903907617D",
+      "value": {
+       "amount": 151678.72,
+       "currency": "EUR"
+      },
+      "status": "active",
+      "description": "REALIZZAZIONE DI INTERVENTI CONCERNENTI LA SICUREZZA DELLA CIRCOLAZIONE CICLISTICA CITTADINA E LA REALIZZAZIONE DI CORSIE CICLABILI (EX DM 12 AGOSTO 2020)"
+     }
+    ],
+    "items": [
+     {
+      "id": "903907617D",
+      "unit": {
+       "value": {
+        "amount": 151678.72,
+        "currency": "EUR"
+       }
+      },
+      "relatedLot": "903907617D",
+      "description": "REALIZZAZIONE DI INTERVENTI CONCERNENTI LA SICUREZZA DELLA CIRCOLAZIONE CICLISTICA CITTADINA E LA REALIZZAZIONE DI CORSIE CICLABILI (EX DM 12 AGOSTO 2020)",
+      "classification": {
+       "id": "45233162-2",
+       "uri": "https://dati.anticorruzione.it/data/cpv/45233162-2",
+       "scheme": "CPV",
+       "description": "LAVORI DI COSTRUZIONE DI PISTE CICLABILI"
+      }
+     }
+    ],
+    "value": {
+     "amount": 151678.72,
+     "currency": "EUR"
+    },
+    "description": "REALIZZAZIONE DI INTERVENTI CONCERNENTI LA SICUREZZA DELLA CIRCOLAZIONE CICLISTICA CITTADINA E LA REALIZZAZIONE DI CORSIE CICLABILI (EX DM 12 AGOSTO 2020)",
+    "tenderPeriod": {
+     "endDate": "2022-05-30T12:00:00Z",
+     "startDate": "2022-05-02T12:00:00Z"
+    },
+    "mainProcurementCategory": "works",
+    "procurementMethodDetails": "COD:4 ; TITLE:PROCEDURA NEGOZIATA SENZA PREVIA PUBBLICAZIONE"
+   },
+   "parties": [
+    {
+     "id": "00071560700",
+     "name": "COMUNE DI CAMPOBASSO",
+     "roles": [
+      "buyer"
+     ],
+     "address": {
+      "locality": "CAMPOBASSO",
+      "postalCode": "86100",
+      "countryName": "ITALY",
+      "streetAddress": "PIAZZA V EMANUELE 29"
+     },
+     "identifier": {
+      "id": "00071560700",
+      "scheme": "IT-CF",
+      "legalName": "COMUNE DI CAMPOBASSO"
+     },
+     "additionalIdentifiers": [
+      {
+       "id": "0000157238",
+       "scheme": "AUSA",
+       "legalName": "COMUNE DI CAMPOBASSO"
+      }
+     ]
+    },
+    {
+     "id": "00851630707",
+     "name": "DUE PÌ SNC",
+     "roles": [
+      "supplier"
+     ],
+     "identifier": {
+      "id": "00851630707",
+      "scheme": "IT-CF",
+      "legalName": "DUE PÌ SNC"
+     }
+    },
+    {
+     "id": "FB62EE14-9860-410B-A88E-14F4883AACCB",
+     "name": "AREA N. 7 - VIABILITA', TRAFFICO, TRASPORTI E MOBILITA'",
+     "roles": [
+      "payer"
+     ],
+     "address": {
+      "locality": "CAMPOBASSO",
+      "postalCode": "86100",
+      "streetAddress": "VIA TOSCANA 57"
+     },
+     "identifier": {
+      "id": "FB62EE14-9860-410B-A88E-14F4883AACCB",
+      "scheme": "internal",
+      "legalName": "AREA N. 7 - VIABILITA', TRAFFICO, TRASPORTI E MOBILITA'"
+     }
+    }
+   ],
+   "language": "ita",
+   "contracts": [
+    {
+     "id": "2342650",
+     "items": [
+      {
+       "id": "903907617D",
+       "unit": {
+        "value": {
+         "amount": 151678.72,
+         "currency": "EUR"
+        }
+       },
+       "relatedLot": "903907617D",
+       "description": "REALIZZAZIONE DI INTERVENTI CONCERNENTI LA SICUREZZA DELLA CIRCOLAZIONE CICLISTICA CITTADINA E LA REALIZZAZIONE DI CORSIE CICLABILI (EX DM 12 AGOSTO 2020)",
+       "classification": {
+        "id": "45233162-2",
+        "uri": "https://dati.anticorruzione.it/data/cpv/45233162-2",
+        "scheme": "CPV",
+        "description": "LAVORI DI COSTRUZIONE DI PISTE CICLABILI"
+       }
+      }
+     ],
+     "period": {
+      "endDate": "2023-12-31T12:00:00Z"
+     },
+     "awardID": "2342650",
+     "dateSigned": "2022-10-11T12:00:00Z",
+     "implementation": {
+      "milestones": [
+       {
+        "id": "2342650-1",
+        "code": "1",
+        "type": "delivery",
+        "title": "1° SAL",
+        "dateMet": "2023-11-13T12:00:00Z"
+       }
+      ]
+     }
+    }
+   ],
+   "initiationType": "tender"
+  }
+ ]
 }

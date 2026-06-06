@@ -156,9 +156,14 @@ fixture + test. This is the path to "integrate everything later": the long tail
 of regional bandi can be crowdsourced by the community against this interface.
 
 **v1 reference adapters**
-- `anac` — ANAC / PNCP open contracting data (OCDS). The backbone: real,
-  structured, free. *Confirm the current PNCP/ANAC open-data endpoint against
-  live docs before wiring the live fetch; ship the sample fixture first.*
+- `anac` — ANAC / PNCP open contracting data (OCDS). Real, structured, free.
+  Wired to the Open Contracting mirror (key-less), streamed line by line via the
+  shared `bandiradar/ocp.py` reader and **capped** (500 releases/run). The data is
+  **retrospective** — *awarded* contracts, not open calls — so it surfaces
+  mostly-closed opportunities (the matcher drops them); its real value is the
+  historical/benchmark track. The OCDS address carries no region/NUTS, so
+  `region=None` and `geo_scope="national"`. `to_opportunities` stays pure; the
+  network/streaming lives in `fetch()`.
 - `incentivi` — incentivi.gov.it (national business incentives). Phase 1.
 
 Regional adapters = phase 2, community-contributed via the `add-a-source` skill.
@@ -270,9 +275,9 @@ query, not a *monitor*.
 ## 10. Phasing (architecture is complete now; delivery is staged)
 
 - **Phase 0 — v1 spine (this build):** canonical model + Source framework + ANAC
-  adapter (sample + live) + two-stage matcher (with offline fallback) + SQLite +
-  CLI + MCP + tests + README. Ships as a credible public repo that runs
-  **end-to-end on sample data with zero secrets**.
+  adapter (offline fixture + live capped OCDS streaming) + two-stage matcher (with
+  offline fallback) + SQLite + CLI + MCP + tests + README. Ships as a credible
+  public repo that runs **end-to-end on sample data with zero secrets**.
 - **Phase 1:** `incentivi` adapter, `watch`/scheduling, JSON/RSS export,
   embeddings-based prefilter.
 - **Phase 2:** regional adapters (community via the framework) + `bandiradar-pro`

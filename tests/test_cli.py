@@ -42,7 +42,9 @@ def test_profile_validate_bad(tmp_path):
 
 def test_fetch_sample(tmp_path):
     db = str(tmp_path / "f.db")
-    result = runner.invoke(app, ["fetch", "--source", "anac", "--sample", "--db", db])
+    result = runner.invoke(
+        app, ["fetch", "--source", "synthetic", "--sample", "--db", db]
+    )
     assert result.exit_code == 0
     assert "fetched=6" in result.stdout
 
@@ -65,7 +67,7 @@ def test_match_json_shape(tmp_path):
     data = json.loads(result.stdout)
     assert isinstance(data, list) and data
     assert set(data[0].keys()) == JSON_KEYS
-    assert any(d["opportunity_id"] == "anac:ocds-bandi-0001" for d in data)
+    assert any(d["opportunity_id"] == "synthetic:ocds-bandi-0001" for d in data)
 
 
 def test_match_limit(tmp_path):

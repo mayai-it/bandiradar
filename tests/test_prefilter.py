@@ -1,7 +1,7 @@
 """Tests for the Stage-1 deterministic prefilter (ARCHITECTURE.md §6 / Prompt 3).
 
-Offline, fixed ``now``. Real-profile cases are built from the bundled ANAC
-fixture + the two shipped YAML profiles; edge cases use small synthetic
+Offline, fixed ``now``. Real-profile cases are built from the bundled synthetic
+OCDS fixture + the two shipped YAML profiles; edge cases use small synthetic
 opportunities/profiles to isolate one gate at a time.
 """
 
@@ -10,9 +10,9 @@ from pathlib import Path
 
 import yaml
 
+import synthetic_source as synthetic
 from bandiradar.matching.prefilter import prefilter, prefilter_explain
 from bandiradar.models import Opportunity, Profile, ValueRange
-from bandiradar.sources import anac
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
 PROFILES = Path(__file__).resolve().parents[1] / "data" / "profiles"
@@ -25,8 +25,8 @@ def load_profile(name: str) -> Profile:
 
 def all_opportunities() -> list[Opportunity]:
     opps: list[Opportunity] = []
-    for raw in anac.load_fixture():
-        opps.extend(anac.to_opportunities(raw, now=NOW))
+    for raw in synthetic.load_fixture():
+        opps.extend(synthetic.to_opportunities(raw, now=NOW))
     return opps
 
 
@@ -53,7 +53,7 @@ def make_opp(**overrides) -> Opportunity:
 
 
 # --------------------------------------------------------------------------- #
-# Real profiles against the ANAC fixture
+# Real profiles against the synthetic OCDS fixture
 # --------------------------------------------------------------------------- #
 
 
@@ -62,24 +62,24 @@ def test_mayai_keepset():
     mayai = load_profile("mayai.yaml")
     kept = {o.id for o in prefilter(opps, mayai, now=NOW)}
     assert kept == {
-        "anac:ocds-bandi-0001",
-        "anac:ocds-bandi-0002",
-        "anac:ocds-bandi-0004",
+        "synthetic:ocds-bandi-0001",
+        "synthetic:ocds-bandi-0002",
+        "synthetic:ocds-bandi-0004",
     }
     reasons = reasons_by_id(opps, mayai)
     region_drop = (False, "region not among profile regions")
-    assert reasons["anac:ocds-bandi-0003"][0] is False
-    assert "closed" in reasons["anac:ocds-bandi-0003"][1]  # past deadline
-    assert reasons["anac:ocds-bandi-0005"] == region_drop
-    assert reasons["anac:ocds-bandi-0006"] == region_drop
+    assert reasons["synthetic:ocds-bandi-0003"][0] is False
+    assert "closed" in reasons["synthetic:ocds-bandi-0003"][1]  # past deadline
+    assert reasons["synthetic:ocds-bandi-0005"] == region_drop
+    assert reasons["synthetic:ocds-bandi-0006"] == region_drop
 
 
 def test_mayai_keeps_national_0004_despite_lazio_region_via_geo_bypass():
     opps = all_opportunities()
     mayai = load_profile("mayai.yaml")
     kept = {o.id: o for o in prefilter(opps, mayai, now=NOW)}
-    assert "anac:ocds-bandi-0004" in kept
-    opp = kept["anac:ocds-bandi-0004"]
+    assert "synthetic:ocds-bandi-0004" in kept
+    opp = kept["synthetic:ocds-bandi-0004"]
     # Kept because geo_scope is "national" (bypasses geo), not because Lazio
     # is in mayai.regions — mayai.regions is just ["Lazio"], and the region is
     # still populated on the opportunity.
@@ -98,9 +98,12 @@ def test_manifattura_keepset_derived_from_profile():
     opps = all_opportunities()
     manifattura = load_profile("manifattura.yaml")
     kept = {o.id for o in prefilter(opps, manifattura, now=NOW)}
-    assert kept == {"anac:ocds-bandi-0006"}
+    assert kept == {"synthetic:ocds-bandi-0006"}
     reasons = reasons_by_id(opps, manifattura)
-    assert reasons["anac:ocds-bandi-0004"] == (False, "no CPV match or keyword hit")
+    assert reasons["synthetic:ocds-bandi-0004"] == (
+        False,
+        "no CPV match or keyword hit",
+    )
 
 
 # --------------------------------------------------------------------------- #
