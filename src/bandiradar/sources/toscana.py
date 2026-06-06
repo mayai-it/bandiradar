@@ -126,6 +126,9 @@ class ToscanaSource:
 
     id = SOURCE_ID
     kind: Kind = "incentive"
+    # Live fetch needs an LLM provider+key (it extracts fields from HTML pages).
+    # `doctor` reports "needs key" instead of probing when none is configured.
+    requires_llm = True
 
     def _list_details(self) -> list[DetailRef]:
         with httpx.Client(

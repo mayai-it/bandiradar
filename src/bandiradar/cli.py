@@ -631,6 +631,72 @@ def batch(
 
 
 # --------------------------------------------------------------------------- #
+# doctor (diagnostics)
+# --------------------------------------------------------------------------- #
+
+
+def _render_doctor(report) -> str:
+    """Human health table + environment section."""
+    lines = [
+        f"{'SOURCE':14} {'REACH':6} {'NEEDKEY':7} {'KEY?':5} {'STATUS':9} ERROR/NOTE",
+        "-" * 72,
+    ]
+    for s in report.sources:
+        reach = "—" if s.reachable is None else ("yes" if s.reachable else "no")
+        needk = "yes" if s.needs_key else "no"
+        keyq = "—" if s.key_ok is None else ("yes" if s.key_ok else "no")
+        note = s.note or "—"
+        if len(note) > 30:
+            note = note[:29] + "…"
+        lines.append(
+            f"{_trunc(s.source, 14):14} {reach:6} {needk:7} {keyq:5} "
+            f"{s.status:9} {note}"
+        )
+    e = report.env
+    key_state = "present" if e.llm_key_present else "absent"
+    extras = " ".join(f"{k}={'yes' if v else 'no'}" for k, v in e.extras.items())
+    lines += [
+        "",
+        "environment:",
+        f"  python: {e.python_version}",
+        f"  llm: provider={e.llm_provider} key={key_state} "
+        f"ready={'yes' if e.llm_ready else 'no'}",
+        f"  extras: {extras}",
+        f"  db: {'ok' if e.db_ok else f'ERROR: {e.db_error}'}",
+        "",
+        f"verdict: {'healthy' if report.healthy else 'problems detected'}",
+    ]
+    return "\n".join(lines)
+
+
+@app.command()
+def doctor(
+    source: str | None = typer.Option(
+        None, "--source", help="Check a single source id (default: all)"
+    ),
+    json_out: bool = typer.Option(
+        False, "--json", help="Emit the structured DoctorReport"
+    ),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+):
+    """Diagnose source reachability + environment health (one bounded live probe
+    per source). Exit 0 if healthy, non-zero (by failure kind) otherwise."""
+    try:
+        report = core.run_doctor(db=db, source_id=source)
+    except Exception as exc:  # noqa: BLE001 — clean operational message, no traceback
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+
+    if json_out:
+        typer.echo(report.model_dump_json(indent=2))
+    else:
+        typer.echo(_render_doctor(report))
+
+    if report.exit_code:
+        raise typer.Exit(report.exit_code)
+
+
+# --------------------------------------------------------------------------- #
 # mcp
 # --------------------------------------------------------------------------- #
 

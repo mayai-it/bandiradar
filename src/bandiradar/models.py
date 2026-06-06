@@ -45,6 +45,9 @@ __all__ = [
     "Profile",
     "Match",
     "SourceResult",
+    "DoctorSourceResult",
+    "DoctorEnv",
+    "DoctorReport",
     "default_status",
     "sanitize_value_bounds",
 ]
@@ -334,3 +337,37 @@ class SourceResult(BaseModel):
     def ok(self) -> bool:
         """True when the source did not error (``ok`` or ``empty``)."""
         return self.status in ("ok", "empty")
+
+
+class DoctorSourceResult(BaseModel):
+    """Health of ONE source from ``bandiradar doctor`` (a lightweight live probe)."""
+
+    source: str
+    needs_key: bool  # the source requires an LLM provider/key to run
+    key_ok: bool | None  # is that key configured? (None when not key-dependent)
+    reachable: bool | None  # None when not probed (needs key, none configured)
+    parsed: bool  # the first probed record mapped/validated cleanly
+    status: str  # FetchStatus, or "needs_key" when the probe was skipped
+    error_kind: FetchErrorKind | None = None
+    note: str | None = None
+
+
+class DoctorEnv(BaseModel):
+    """Environment-level diagnostics (no LLM calls made)."""
+
+    python_version: str
+    llm_provider: str  # "none" | "anthropic" | "openai"
+    llm_key_present: bool
+    llm_ready: bool  # provider set + key present + SDK importable
+    extras: dict[str, bool]  # optional extras installed (anthropic/openai/ocr)
+    db_ok: bool
+    db_error: str | None = None
+
+
+class DoctorReport(BaseModel):
+    """Assembled health report: per-source probes + environment + verdict."""
+
+    sources: list[DoctorSourceResult]
+    env: DoctorEnv
+    healthy: bool
+    exit_code: int

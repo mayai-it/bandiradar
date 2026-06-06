@@ -7,19 +7,29 @@ business logic. This module contains NO presentation/printing.
 
 from __future__ import annotations
 
+import importlib.util
 import logging
+import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
 
-from bandiradar import resources
+from bandiradar import config, resources
 from bandiradar.http import FetchError
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
-from bandiradar.models import Match, Opportunity, Profile, SourceResult
+from bandiradar.models import (
+    DoctorEnv,
+    DoctorReport,
+    DoctorSourceResult,
+    Match,
+    Opportunity,
+    Profile,
+    SourceResult,
+)
 from bandiradar.sources.base import ProgressFn, Source, get, list_sources
 from bandiradar.storage import SqliteDocumentCache, SqliteScoreCache, Store
 
@@ -291,6 +301,133 @@ def fetch_exit_code(results: list[SourceResult]) -> int:
         return _EXIT_OK
     rep = next((r for r in bad if r.status == "failed"), bad[0])
     return _EXIT_BY_KIND.get(rep.error_kind or "unknown", _EXIT_FAILED)
+
+
+# --------------------------------------------------------------------------- #
+# doctor — source + environment diagnostics (reuses the per-source spine)
+# --------------------------------------------------------------------------- #
+
+_EXTRA_SPECS: dict[str, str] = {  # extra name -> a module that proves it's installed
+    "anthropic": "anthropic",
+    "openai": "openai",
+    "ocr": "pytesseract",
+}
+
+
+def _llm_status() -> tuple[str, bool, bool]:
+    """Inspect LLM config WITHOUT making a call: (provider, key_present, ready).
+
+    ``ready`` means a live LLM path could actually run: a provider is selected, its
+    key is present, and its SDK is importable.
+    """
+    provider = config.llm_provider() or "none"
+    if provider in ("", "none"):
+        return "none", False, False
+    key_present = config.api_key(provider) is not None
+    sdk_present = importlib.util.find_spec(provider) is not None
+    return provider, key_present, (key_present and sdk_present)
+
+
+def _check_db(db: str | None) -> tuple[bool, str | None]:
+    """Open the DB (which runs migrations) and report whether it's clean."""
+    try:
+        store = Store(db)
+        store.close()
+        return True, None
+    except Exception as exc:  # noqa: BLE001 — report, never crash the doctor
+        return False, _clean_error(exc)
+
+
+def run_doctor(
+    db: str | None = None,
+    source_id: str | None = None,
+    now: datetime | None = None,
+) -> DoctorReport:
+    """Probe each source (bounded, isolated) + check the environment.
+
+    Each source is probed with a ``limit=1`` LIVE fetch into a THROWAWAY in-memory
+    Store, reusing :func:`run_fetch_many` — so reachability / first-record-parsed /
+    ``error_kind`` come for free and one source failing never blocks the others.
+    Key-dependent sources (the LLM scraper) are reported as "needs key" instead of
+    probed when no provider/key is configured. No LLM call is ever made.
+    """
+    provider, key_present, llm_ready = _llm_status()
+    sources = [get(source_id)] if source_id else list_sources()
+
+    def _needs_key(s) -> bool:
+        return bool(getattr(s, "requires_llm", False)) and not llm_ready
+
+    to_probe = [s for s in sources if not _needs_key(s)]
+    # Probe live, bounded, isolated — into a throwaway DB so the real one is untouched.
+    mem = Store(":memory:")
+    try:
+        probes = run_fetch_many(
+            [s.id for s in to_probe], mem, sample=False, limit=1, now=now
+        )
+    finally:
+        mem.close()
+    by_id = {r.source: r for r in probes}
+
+    source_results: list[DoctorSourceResult] = []
+    for s in sources:
+        requires_llm = bool(getattr(s, "requires_llm", False))
+        if _needs_key(s):
+            source_results.append(
+                DoctorSourceResult(
+                    source=s.id,
+                    needs_key=True,
+                    key_ok=False,
+                    reachable=None,
+                    parsed=False,
+                    status="needs_key",
+                    note="LLM provider/key not configured — not probed",
+                )
+            )
+            continue
+        r = by_id[s.id]
+        source_results.append(
+            DoctorSourceResult(
+                source=s.id,
+                needs_key=requires_llm,
+                key_ok=(llm_ready if requires_llm else None),
+                reachable=(r.status != "failed"),
+                parsed=(r.mapped > 0),
+                status=r.status,
+                error_kind=r.error_kind,
+                note=r.error,
+            )
+        )
+
+    db_ok, db_error = _check_db(db)
+    env = DoctorEnv(
+        python_version=".".join(str(p) for p in sys.version_info[:3]),
+        llm_provider=provider,
+        llm_key_present=key_present,
+        llm_ready=llm_ready,
+        extras={
+            name: importlib.util.find_spec(mod) is not None
+            for name, mod in _EXTRA_SPECS.items()
+        },
+        db_ok=db_ok,
+        db_error=db_error,
+    )
+
+    code = fetch_exit_code([by_id[s.id] for s in to_probe])
+    if not db_ok and code == _EXIT_OK:
+        code = _EXIT_FAILED
+    report = DoctorReport(
+        sources=source_results, env=env, healthy=(code == _EXIT_OK), exit_code=code
+    )
+    logger.info(
+        "doctor: healthy=%s exit=%d sources=%d (probed=%d) db_ok=%s llm_ready=%s",
+        report.healthy,
+        code,
+        len(sources),
+        len(to_probe),
+        db_ok,
+        llm_ready,
+    )
+    return report
 
 
 def run_match(
