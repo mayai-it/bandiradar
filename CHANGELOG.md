@@ -4,6 +4,52 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.2.0] — 2026-06-06 — Reliability
+
+Hardens live fetching and observability. Backward-compatible — existing SQLite DBs
+upgrade in place; the default suite stays fully offline / zero-secret.
+
+### Per-source isolation & observability
+- `watch` / `batch` (via the new `run_fetch_many`) run each source independently:
+  **one source failing never aborts the others.**
+- Every fetch returns a structured per-source result (status `ok`/`partial`/
+  `failed`/`empty`, counts, `error_kind`, duration) that is **returned, persisted**
+  (one `runs` row per source), **and logged.**
+- A stdlib **logging foundation**: one logger per module, `-v/--verbose` for DEBUG,
+  per-page progress as log records, no secrets logged.
+
+### Correctness
+- Lifecycle `status` (open/closing_soon/closed) is now **computed at read time**
+  from `deadline` + now — no more stale "open" past a deadline.
+- **Structured error kinds** (rate_limited / unavailable / invalid / unknown) drive
+  meaningful **exit codes** (3 / 4 / 2 / 1) — no string-matching.
+- The "changed/amended" signal is **decoupled from lifecycle status** (tracked via
+  `version` + `updated_at`, surfaced by `list_new` + the watch marker); `status` is
+  now purely lifecycle.
+
+### Diagnostics
+- **`bandiradar doctor`** — a per-source reachability probe (bounded `limit=1`,
+  isolated, into a throwaway in-memory DB) plus environment checks (LLM config,
+  optional extras, DB migrates cleanly, Python version), as a human table or
+  `--json`, with a health-based exit code. Makes **no LLM call**; key-dependent
+  sources report "needs key" rather than failing.
+
+### Tests & upgrades
+- **Contract tests** drive each source's real `fetch()` against a recorded response
+  (envelope included) in CI — pinning fetch+parse to reality.
+- An opt-in **live drift check** (`uv run pytest -m live`) hits real endpoints on
+  demand (never in CI).
+- DBs **upgrade cleanly** via a PRAGMA-introspecting migration (upgrade path tested).
+
+### Known limitations / next
+- 0.1.0's reliability gaps are now **closed**: per-source isolation, read-time
+  status recompute, the amended/lifecycle split, and contract tests are all done.
+- Matching is still **lexical** (CPV-prefix + keyword/capability overlap + optional
+  LLM rerank); **0.3.0** targets semantic (embeddings) matching quality.
+- Then **0.4.0** broadens source coverage, and **0.5.0** grows the intelligence
+  track. Live-fetch hardening continues (deep-pagination of very large sources;
+  more recorded cassettes as APIs drift).
+
 ## [0.1.0] — 2026-06-06
 
 First public release: the open-core engine that monitors Italian public funding
@@ -61,4 +107,5 @@ PyPI — `pip install bandiradar` (a CI job installs the built wheel and runs
 - `amended` is sticky until the opportunity is re-derived — no acknowledge/reset
   flow yet (a delivery concern, partly lives in the private `bandiradar-pro`).
 
+[0.2.0]: https://github.com/mayai-it/bandiradar/releases/tag/v0.2.0
 [0.1.0]: https://github.com/mayai-it/bandiradar/releases/tag/v0.1.0
