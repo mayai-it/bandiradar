@@ -8,9 +8,9 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 
 First public release: the open-core engine that monitors Italian public funding
 opportunities, normalizes them into one canonical model, and ranks them against a
-company profile. Runs **fully offline on `--sample` with zero secrets**, and is
-**pip-installable** (a CI job installs the built wheel and runs `--sample` end to
-end).
+company profile. Runs **fully offline on `--sample` with zero secrets**, and is on
+PyPI — `pip install bandiradar` (a CI job installs the built wheel and runs
+`--sample` end to end, so the bundled data ships intact).
 
 ### Engine
 - Canonical `Opportunity` / `RawDoc` / `Profile` / `Match` model (the contract).

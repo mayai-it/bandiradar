@@ -1,12 +1,25 @@
 [project]
 name = "bandiradar"
 version = "0.1.0"
-description = "Open-source engine that monitors Italian public funding opportunities (tenders, grants, incentives), normalizes them into one canonical model, and ranks them against a company profile with a two-stage matcher."
+description = "Monitor Italian public funding opportunities (tenders, grants, incentives) and rank them against a company profile."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.12"
-authors = [{ name = "MayAI" }]
+authors = [{ name = "MayAI", email = "ciao@mayai.it" }]
 keywords = ["bandi", "tenders", "grants", "anac", "pncp", "ocds", "funding", "italy"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Environment :: Console",
+    "Natural Language :: Italian",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 dependencies = [
     "pydantic>=2.6",
@@ -17,6 +30,12 @@ dependencies = [
     "python-dotenv>=1.0",
     "pypdf>=4.0",
 ]
+
+[project.urls]
+Homepage = "https://mayai.it"
+Repository = "https://github.com/mayai-it/bandiradar"
+Issues = "https://github.com/mayai-it/bandiradar/issues"
+Changelog = "https://github.com/mayai-it/bandiradar/blob/main/CHANGELOG.md"
 
 [project.scripts]
 bandiradar = "bandiradar.cli:main"

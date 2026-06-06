@@ -1,5 +1,6 @@
 # BandiRadar
 
+[![PyPI](https://img.shields.io/pypi/v/bandiradar.svg)](https://pypi.org/project/bandiradar/)
 [![CI](https://github.com/mayai-it/bandiradar/actions/workflows/ci.yml/badge.svg)](https://github.com/mayai-it/bandiradar/actions/workflows/ci.yml)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -48,6 +49,13 @@
 ## Quickstart
 
 30 seconds, offline, no keys:
+
+```bash
+pip install bandiradar
+bandiradar match --profile mayai --sample
+```
+
+Or from a source checkout:
 
 ```bash
 uv sync
