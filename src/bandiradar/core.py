@@ -7,9 +7,10 @@ business logic. This module contains NO presentation/printing.
 
 from __future__ import annotations
 
+import logging
+import time
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
 
 import yaml
 
@@ -17,9 +18,11 @@ from bandiradar import resources
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
-from bandiradar.models import Match, Opportunity, Profile
+from bandiradar.models import Match, Opportunity, Profile, SourceResult
 from bandiradar.sources.base import ProgressFn, Source, get, list_sources
 from bandiradar.storage import SqliteDocumentCache, SqliteScoreCache, Store
+
+logger = logging.getLogger(__name__)
 
 
 def load_profile(path_or_name: str | Path) -> Profile:
@@ -70,6 +73,18 @@ def _raw_stream(
     yield from source.fetch(since, limit=limit, max_pages=max_pages, progress=progress)
 
 
+def _clean_error(exc: BaseException) -> str:
+    """A short, secret-free error string (message + type, no traceback)."""
+    return str(exc) or type(exc).__name__
+
+
+def _classify(error: str | None, fetched: int) -> str:
+    """Derive the FetchStatus from whether the fetch errored and how much arrived."""
+    if error is not None:
+        return "partial" if fetched > 0 else "failed"
+    return "empty" if fetched == 0 else "ok"
+
+
 def run_fetch(
     source_id: str,
     store: Store,
@@ -80,75 +95,196 @@ def run_fetch(
     limit: int | None = None,
     max_pages: int | None = None,
     progress: ProgressFn | None = None,
-) -> dict[str, Any]:
-    """Ingest one source into the store, saving PROGRESSIVELY as records arrive.
+) -> SourceResult:
+    """Ingest one source into the store, saving PROGRESSIVELY, and return a
+    :class:`SourceResult` describing exactly what happened.
 
-    Two resilience properties:
+    Resilience (all preserved):
+    - **never propagates:** any failure is caught into ``status="failed"`` (nothing
+      saved) or ``status="partial"`` (saves kept) with a clean error string — so a
+      sibling source is never aborted by this one.
     - **dirty data:** a record that fails to map/validate is QUARANTINED (skipped +
       counted), never fatal.
-    - **mid-fetch failure:** if the live fetch raises (retries exhausted), whatever
-      was already saved is KEPT, the run is recorded as ``partial`` with the error,
-      and a clean result is returned (no traceback escapes).
+    - **bounded:** live fetches stop at ``limit`` (default
+      :data:`DEFAULT_FETCH_LIMIT`).
 
-    Live fetches are bounded by ``limit`` (default :data:`DEFAULT_FETCH_LIMIT`).
-    Returns counts: ``fetched`` / ``mapped`` / ``new`` / ``amended`` /
-    ``skipped_invalid`` plus ``completed`` (bool) and ``error`` (str | None).
+    The same result is persisted as one ``runs`` row and logged.
     """
-    source = get(source_id)
-    run_id = store.start_run(source_id)
+    started = datetime.now(UTC)
+    t0 = time.monotonic()
+    run_id = store.start_run(source_id, started_at=started)
     if limit is not None:
         effective_limit = limit
     else:
         effective_limit = None if sample else DEFAULT_FETCH_LIMIT
 
     fetched = mapped = new = amended = skipped_invalid = 0
-    completed = True
     error: str | None = None
 
-    iterator = iter(
-        _raw_stream(source, sample, since, effective_limit, max_pages, progress)
-    )
-    while True:
-        try:
-            raw = next(iterator)
-        except StopIteration:
-            break
-        except Exception as exc:  # noqa: BLE001 — fetch failed; finalize as partial
-            completed = False
-            error = str(exc) or type(exc).__name__
-            break
-        fetched += 1
-        store.save_raw_doc(raw)
-        try:
-            opportunities = source.to_opportunities(raw, now=now)
-        except Exception:  # noqa: BLE001 — quarantine a dirty record, keep ingesting
-            skipped_invalid += 1
-            continue
-        for opp in opportunities:
-            mapped += 1
-            result = store.upsert_opportunity(opp, now=now)
-            if result == "new":
-                new += 1
-            elif result == "amended":
-                amended += 1
+    try:
+        source = get(source_id)
+        iterator = iter(
+            _raw_stream(source, sample, since, effective_limit, max_pages, progress)
+        )
+        while True:
+            try:
+                raw = next(iterator)
+            except StopIteration:
+                break
+            except Exception as exc:  # noqa: BLE001 — fetch raised mid-stream
+                error = _clean_error(exc)
+                logger.error(
+                    "source=%s fetch stopped after %d records: %s",
+                    source_id,
+                    fetched,
+                    error,
+                )
+                break
+            fetched += 1
+            store.save_raw_doc(raw)
+            try:
+                opportunities = source.to_opportunities(raw, now=now)
+            except Exception as exc:  # noqa: BLE001 — quarantine a dirty record
+                skipped_invalid += 1
+                logger.warning(
+                    "source=%s skipped invalid record %s: %s",
+                    source_id,
+                    getattr(raw, "id", "?"),
+                    _clean_error(exc),
+                )
+                continue
+            for opp in opportunities:
+                mapped += 1
+                result = store.upsert_opportunity(opp, now=now)
+                if result == "new":
+                    new += 1
+                elif result == "amended":
+                    amended += 1
+    except Exception as exc:  # noqa: BLE001 — setup error (e.g. unknown source)
+        error = _clean_error(exc)
+        logger.error("source=%s fetch setup failed: %s", source_id, error)
 
+    finished = datetime.now(UTC)
+    duration_s = time.monotonic() - t0
+    status = _classify(error, fetched)
     store.finish_run(
         run_id,
         fetched=fetched,
         new=new,
         amended=amended,
-        status="completed" if completed else "partial",
+        mapped=mapped,
+        skipped_invalid=skipped_invalid,
+        duration_s=duration_s,
+        status=status,
         error=error,
+        finished_at=finished,
     )
-    return {
-        "fetched": fetched,
-        "mapped": mapped,
-        "new": new,
-        "amended": amended,
-        "skipped_invalid": skipped_invalid,
-        "completed": completed,
-        "error": error,
-    }
+    log = logger.error if status == "failed" else logger.info
+    log(
+        "source=%s status=%s fetched=%d mapped=%d new=%d amended=%d "
+        "skipped_invalid=%d duration=%.2fs",
+        source_id,
+        status,
+        fetched,
+        mapped,
+        new,
+        amended,
+        skipped_invalid,
+        duration_s,
+    )
+    return SourceResult(
+        source=source_id,
+        status=status,
+        fetched=fetched,
+        mapped=mapped,
+        skipped_invalid=skipped_invalid,
+        new=new,
+        amended=amended,
+        error=error,
+        duration_s=duration_s,
+        started_at=started,
+        finished_at=finished,
+    )
+
+
+def run_fetch_many(
+    source_ids: list[str],
+    store: Store,
+    *,
+    sample: bool = False,
+    now: datetime | None = None,
+    since: datetime | None = None,
+    limit: int | None = None,
+    max_pages: int | None = None,
+    progress: ProgressFn | None = None,
+) -> list[SourceResult]:
+    """Fetch several sources with PER-SOURCE ISOLATION.
+
+    Each source runs independently — one failing (TED) never aborts the others
+    (Lazio still runs). ``run_fetch`` already absorbs its own errors into a
+    ``SourceResult``; the extra guard here is defense-in-depth so even an
+    unexpected error can't break the loop.
+    """
+    results: list[SourceResult] = []
+    for sid in source_ids:
+        try:
+            results.append(
+                run_fetch(
+                    sid,
+                    store,
+                    sample=sample,
+                    now=now,
+                    since=since,
+                    limit=limit,
+                    max_pages=max_pages,
+                    progress=progress,
+                )
+            )
+        except Exception as exc:  # noqa: BLE001 — never let one source abort siblings
+            error = _clean_error(exc)
+            logger.error("source=%s unexpected error, isolated: %s", sid, error)
+            results.append(SourceResult(source=sid, status="failed", error=error))
+    return results
+
+
+_EXIT_OK = 0
+_EXIT_FAILED = 1
+_EXIT_INVALID_DATA = 2
+_EXIT_RATE_LIMITED = 3
+_EXIT_UNAVAILABLE = 4
+
+
+def fetch_exit_code(results: list[SourceResult]) -> int:
+    """Worst-status exit code: 0 if all ok/empty, else a code by failure kind.
+
+    Distinguishes (where the error text allows) rate-limited (3) and
+    source-unavailable (4) and invalid-data (2) from a generic failure (1).
+    """
+    bad = [r for r in results if r.status in ("failed", "partial")]
+    if not bad:
+        return _EXIT_OK
+    rep = next((r for r in bad if r.status == "failed"), bad[0])
+    err = (rep.error or "").lower()
+    if "429" in err or "rate" in err or "too many requests" in err:
+        return _EXIT_RATE_LIMITED
+    if any(
+        k in err
+        for k in (
+            "connect",
+            "timeout",
+            "timed out",
+            "download failed",
+            "unavailable",
+            "name or service",
+            "nodename",
+            "temporarily",
+            "no reachable",
+        )
+    ):
+        return _EXIT_UNAVAILABLE
+    if any(k in err for k in ("validation", "invalid", "parse", "decode", "json")):
+        return _EXIT_INVALID_DATA
+    return _EXIT_FAILED
 
 
 def run_match(
@@ -255,28 +391,28 @@ def run_batch(
     fetch_limit: int | None = None,
     max_pages: int | None = None,
     progress: ProgressFn | None = None,
-) -> list[tuple[Profile, list[tuple[Opportunity, Match]]]]:
-    """Run every profile against the sources; return (profile, ranked) per profile.
+) -> tuple[list[SourceResult], list[tuple[Profile, list[tuple[Opportunity, Match]]]]]:
+    """Run every profile against the sources, with per-source-isolated fetching.
 
-    Pure orchestration (no printing). Fetches each requested source once (sample
-    mode) before matching, so the shared opportunity set is built a single time.
+    Returns ``(fetch_results, per_profile_results)``. Fetches each requested source
+    once (so the shared opportunity set is built a single time); one failing source
+    never aborts the others or the matching.
     """
+    fetch_results: list[SourceResult] = []
     if sample:
         targets = source_ids if source_ids else [s.id for s in list_sources()]
-        for sid in targets:
-            if not store.list_opportunities(source=sid):
-                run_fetch(sid, store, sample=True, now=now)
+        to_fetch = [s for s in targets if not store.list_opportunities(source=s)]
+        fetch_results = run_fetch_many(to_fetch, store, sample=True, now=now)
     elif source_ids:  # live batch over explicit sources
-        for sid in source_ids:
-            run_fetch(
-                sid,
-                store,
-                sample=False,
-                now=now,
-                limit=fetch_limit,
-                max_pages=max_pages,
-                progress=progress,
-            )
+        fetch_results = run_fetch_many(
+            source_ids,
+            store,
+            sample=False,
+            now=now,
+            limit=fetch_limit,
+            max_pages=max_pages,
+            progress=progress,
+        )
 
     results: list[tuple[Profile, list[tuple[Opportunity, Match]]]] = []
     for profile in profiles:
@@ -297,7 +433,7 @@ def run_batch(
         if top is not None:
             ranked = ranked[:top]
         results.append((profile, ranked))
-    return results
+    return fetch_results, results
 
 
 def run_watch(
@@ -313,13 +449,13 @@ def run_watch(
     fetch_limit: int | None = None,
     max_pages: int | None = None,
     progress: ProgressFn | None = None,
-) -> list[tuple[Opportunity, Match]]:
-    """Monitor loop: fetch + dedupe/change-detect, then return ONLY matches whose
-    opportunity is NEW or AMENDED since the last watch run for this profile.
+) -> tuple[list[SourceResult], list[tuple[Opportunity, Match]]]:
+    """Monitor loop: fetch (per-source isolated) + dedupe/change-detect, then return
+    ONLY matches whose opportunity is NEW or AMENDED since the last watch run.
 
-    Reuses storage change-detection (``upsert_opportunity`` + ``list_new``) and the
-    existing matcher. A per-profile watch marker is persisted; ``since`` overrides
-    it. Deterministic given a fixed ``now``.
+    Returns ``(fetch_results, delta)``. One failing source never aborts the monitor:
+    the others still fetch and matching proceeds over whatever was saved. A
+    per-profile watch marker is persisted; ``since`` overrides it.
     """
     moment = now if now is not None else datetime.now(UTC)
     marker = since if since is not None else store.get_watch_marker(profile.version)
@@ -327,16 +463,15 @@ def run_watch(
     # Stamp this run's fetch/upserts AND the marker with the same `moment`, so the
     # next run's `since` (== this marker) excludes exactly what we saw this run.
     targets = source_ids if source_ids else [s.id for s in list_sources()]
-    for sid in targets:
-        run_fetch(
-            sid,
-            store,
-            sample=sample,
-            now=moment,
-            limit=fetch_limit,
-            max_pages=max_pages,
-            progress=progress,
-        )
+    fetch_results = run_fetch_many(
+        targets,
+        store,
+        sample=sample,
+        now=moment,
+        limit=fetch_limit,
+        max_pages=max_pages,
+        progress=progress,
+    )
 
     # Opportunities the store saw change (insert/amend) after the marker.
     changed = store.list_new(marker)
@@ -358,4 +493,4 @@ def run_watch(
     delta = [(opp, match) for opp, match in ranked if opp.id in changed_ids]
 
     store.set_watch_marker(profile.version, moment)
-    return delta
+    return fetch_results, delta

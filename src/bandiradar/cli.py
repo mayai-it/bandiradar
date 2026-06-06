@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
+import sys
 from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,6 +22,7 @@ from bandiradar import core, exporters
 from bandiradar.intelligence import anac_history
 from bandiradar.intelligence import benchmarks as bench
 from bandiradar.intelligence.store import BenchmarkStore
+from bandiradar.models import SourceResult
 from bandiradar.sources.base import list_sources
 
 app = typer.Typer(
@@ -27,6 +30,69 @@ app = typer.Typer(
     help="Monitor Italian public funding opportunities and rank them for your company.",
     no_args_is_help=True,
 )
+
+
+def _setup_logging(verbose: bool) -> None:
+    """Configure stdlib logging to stderr — DEBUG with ``-v``, else INFO.
+
+    Idempotent (won't duplicate handlers or fight pytest's caplog). No secrets are
+    logged anywhere; messages carry context (source, counts, page).
+    """
+    level = logging.DEBUG if verbose else logging.INFO
+    root = logging.getLogger()
+    if not root.handlers:
+        logging.basicConfig(
+            level=level,
+            stream=sys.stderr,
+            format="%(levelname)s %(name)s: %(message)s",
+        )
+    root.setLevel(level)
+    logging.getLogger("bandiradar").setLevel(level)
+
+
+@app.callback()
+def _root(
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Verbose (DEBUG) logging to stderr."
+    ),
+) -> None:
+    """Monitor Italian public funding opportunities and rank them for your company."""
+    _setup_logging(verbose)
+
+
+_progress_logger = logging.getLogger("bandiradar.progress")
+
+
+def _progress_sink(quiet: bool = False):
+    """Progress sink: per-page lines become INFO log records (None when quiet)."""
+    if quiet:
+        return None
+    return _progress_logger.info
+
+
+def _source_results_json(results: list[SourceResult]) -> str:
+    return json.dumps(
+        [r.model_dump(mode="json") for r in results], ensure_ascii=False, indent=2
+    )
+
+
+def _source_summary(results: list[SourceResult]) -> str:
+    """A compact per-source table: source | status | new | amended | skip | error."""
+    lines = [
+        f"{'SOURCE':14} {'STATUS':8} {'NEW':>4} {'AMEND':>5} {'SKIP':>4}  ERROR",
+        "-" * 64,
+    ]
+    for r in results:
+        err = r.error or "—"
+        if len(err) > 48:
+            err = err[:47] + "…"
+        lines.append(
+            f"{_trunc(r.source, 14):14} {r.status:8} {r.new:>4} "
+            f"{r.amended:>5} {r.skipped_invalid:>4}  {err}"
+        )
+    return "\n".join(lines)
+
+
 profile_app = typer.Typer(help="Inspect and validate company profiles.")
 sources_app = typer.Typer(help="Inspect available sources.")
 benchmarks_app = typer.Typer(help="ANAC historical benchmarks (intelligence track).")
@@ -106,16 +172,11 @@ def sources_list(json_out: bool = typer.Option(False, "--json", help="JSON outpu
 # --------------------------------------------------------------------------- #
 
 
-def _stderr_progress(quiet: bool = False):
-    """A progress sink that writes a per-page line to stderr (None when quiet)."""
-    if quiet:
-        return None
-    return lambda msg: typer.echo(msg, err=True)
-
-
 @app.command()
 def fetch(
-    source: str = typer.Option("anac", "--source", help="Source id"),
+    source: str | None = typer.Option(
+        None, "--source", help="Source id(s), comma-separated (default: anac)"
+    ),
     sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
     limit: int | None = typer.Option(
         None, "--limit", help="Max records to fetch (live; default safety cap)"
@@ -124,34 +185,37 @@ def fetch(
         None, "--max-pages", help="Max pages to fetch (live safety bound)"
     ),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    json_out: bool = typer.Option(
+        False, "--json", help="Emit the structured SourceResult list"
+    ),
 ):
-    """Fetch a source into the store and print counts (progress on stderr)."""
+    """Fetch one or more sources into the store, with per-source isolation.
+
+    Prints a per-source summary; exit code reflects the worst outcome. One source
+    failing never aborts the others.
+    """
+    source_ids = _source_ids(source) or ["anac"]
     store = core.Store(db)
     try:
-        counts = core.run_fetch(
-            source,
+        results = core.run_fetch_many(
+            source_ids,
             store,
             sample=sample,
             limit=limit,
             max_pages=max_pages,
-            progress=_stderr_progress(),
+            progress=_progress_sink(json_out),
         )
     finally:
         store.close()
-    line = (
-        f"fetched={counts['fetched']} new={counts['new']} amended={counts['amended']}"
-    )
-    if counts.get("skipped_invalid"):
-        line += f" skipped_invalid={counts['skipped_invalid']}"
-    typer.echo(line)
-    if not counts["completed"]:
-        typer.secho(
-            f"PARTIAL: fetch stopped before completing — {counts['error']}. "
-            f"Saved {counts['new']} new / {counts['amended']} amended so far.",
-            fg=typer.colors.RED,
-            err=True,
-        )
-        raise typer.Exit(1)
+
+    if json_out:
+        typer.echo(_source_results_json(results))
+    else:
+        typer.echo(_source_summary(results))
+
+    code = core.fetch_exit_code(results)
+    if code:
+        raise typer.Exit(code)
 
 
 # --------------------------------------------------------------------------- #
@@ -336,7 +400,7 @@ def watch(
     quiet = json_out or rss is not None
     try:
         company = core.load_profile(profile)
-        delta = core.run_watch(
+        fetch_results, delta = core.run_watch(
             company,
             store,
             source_ids=_source_ids(source),
@@ -346,13 +410,16 @@ def watch(
             with_documents=with_documents,
             fetch_limit=limit,
             max_pages=max_pages,
-            progress=_stderr_progress(quiet),
+            progress=_progress_sink(quiet),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
         raise typer.Exit(1) from exc
     finally:
         store.close()
+
+    # Per-source fetch summary is operational -> stderr (keeps stdout = matches/feed).
+    typer.echo(_source_summary(fetch_results), err=True)
 
     if rss is not None:
         Path(rss).write_text(exporters.to_rss(delta), encoding="utf-8")
@@ -366,6 +433,10 @@ def watch(
             noun = "match" if len(delta) == 1 else "matches"
             typer.echo(f"{len(delta)} new/amended {noun} for '{company.name}':\n")
             _print_ranked(delta)
+
+    code = core.fetch_exit_code(fetch_results)
+    if code:
+        raise typer.Exit(code)
 
 
 @app.command()
@@ -468,7 +539,7 @@ def batch(
     store = core.Store(db)
     try:
         companies = [core.load_profile(p) for p in profile_args]
-        results = core.run_batch(
+        fetch_results, results = core.run_batch(
             companies,
             store,
             source_ids=_source_ids(source),
@@ -479,13 +550,17 @@ def batch(
             with_documents=with_documents,
             fetch_limit=limit,
             max_pages=max_pages,
-            progress=_stderr_progress(json_out or csv_path is not None),
+            progress=_progress_sink(json_out or csv_path is not None),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
         raise typer.Exit(1) from exc
     finally:
         store.close()
+
+    # Per-source fetch summary is operational -> stderr (keeps stdout = the table).
+    if fetch_results:
+        typer.echo(_source_summary(fetch_results), err=True)
 
     if json_out:
         payload = [
@@ -542,6 +617,10 @@ def batch(
             typer.echo(
                 f"{_trunc(p.name, 30):30} {len(ranked):>3}  {top_str:38} {by_str}"
             )
+
+    code = core.fetch_exit_code(fetch_results)
+    if code:
+        raise typer.Exit(code)
 
 
 # --------------------------------------------------------------------------- #

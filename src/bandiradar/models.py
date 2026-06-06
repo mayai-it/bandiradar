@@ -35,11 +35,13 @@ __all__ = [
     "Kind",
     "GeoScope",
     "Status",
+    "FetchStatus",
     "Opportunity",
     "RawDoc",
     "ValueRange",
     "Profile",
     "Match",
+    "SourceResult",
     "default_status",
     "sanitize_value_bounds",
 ]
@@ -50,6 +52,12 @@ CLOSING_SOON_DAYS = 7
 Kind = Literal["tender", "grant", "incentive"]
 GeoScope = Literal["national", "regional", "eu", "local"]
 Status = Literal["open", "closing_soon", "closed", "amended"]
+# Outcome of fetching ONE source in a run (observability — see SourceResult):
+#   ok       -> records fetched, fetch completed cleanly
+#   partial  -> fetch raised mid-stream, but records already saved are kept
+#   failed   -> fetch raised before saving anything (nothing ingested)
+#   empty    -> fetch completed cleanly but yielded no records
+FetchStatus = Literal["ok", "partial", "failed", "empty"]
 
 # The fields that feed content_hash — i.e. the ones whose change makes an
 # opportunity semantically different and so re-notifiable (ARCHITECTURE.md §8).
@@ -281,3 +289,30 @@ class Match(BaseModel):
     matched_capabilities: list[str] = Field(default_factory=list)
     eligibility_flags: list[str] = Field(default_factory=list)
     risk_notes: list[str] = Field(default_factory=list)
+
+
+class SourceResult(BaseModel):
+    """Structured outcome of fetching ONE source in a run — the single source of
+    truth for "what happened" (returned, persisted, printed, and logged).
+
+    This is observability, not the canonical contract: it captures counts, the
+    derived :data:`FetchStatus`, a clean (secret-free) error string, and timing,
+    so per-source isolation and debugging start ahead.
+    """
+
+    source: str
+    status: FetchStatus
+    fetched: int = 0  # raw records pulled from the source
+    mapped: int = 0  # opportunities produced by to_opportunities
+    skipped_invalid: int = 0  # records quarantined (failed to map/validate)
+    new: int = 0  # store upserts that were new
+    amended: int = 0  # store upserts that changed an existing opportunity
+    error: str | None = None  # clean message when status is partial/failed
+    duration_s: float = 0.0
+    started_at: datetime | None = None
+    finished_at: datetime | None = None
+
+    @property
+    def ok(self) -> bool:
+        """True when the source did not error (``ok`` or ``empty``)."""
+        return self.status in ("ok", "empty")

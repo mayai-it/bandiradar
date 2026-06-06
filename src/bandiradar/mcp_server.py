@@ -60,13 +60,14 @@ def fetch_opportunities(
 ) -> dict[str, Any]:
     """Ingest a source into the store, saving progressively.
 
-    Returns counts: fetched / mapped / new / amended / skipped_invalid, plus
-    ``completed`` (False if the live fetch stopped early) and ``error``. ``sample``
-    defaults to True so it is usable offline with zero secrets.
+    Returns a structured SourceResult dict: source, status
+    (ok/partial/failed/empty), fetched / mapped / new / amended / skipped_invalid,
+    error, duration_s, started_at / finished_at. ``sample`` defaults to True so it
+    is usable offline with zero secrets.
     """
     store = Store(db)
     try:
-        return core.run_fetch(source, store, sample=sample)
+        return core.run_fetch(source, store, sample=sample).model_dump(mode="json")
     finally:
         store.close()
 

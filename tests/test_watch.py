@@ -31,12 +31,14 @@ def store(tmp_path):
 
 
 def test_first_run_all_new_second_run_none(store):
-    first = core.run_watch(
+    results, first = core.run_watch(
         mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
     )
     assert {o.id for o, _ in first} == {"incentivi:3400"}  # the one mayai match
+    assert [r.source for r in results] == ["incentivi"]
+    assert results[0].status == "ok"
 
-    second = core.run_watch(
+    _, second = core.run_watch(
         mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
     )
     assert second == []  # nothing changed since the marker
@@ -49,10 +51,10 @@ def test_amended_record_reappears(tmp_path, monkeypatch, store):
     monkeypatch.setattr(incentivi, "FIXTURE_PATH", fixture)
 
     core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)
-    assert (
-        core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)
-        == []
+    _, again = core.run_watch(
+        mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
     )
+    assert again == []
 
     # Mutate the matched record's title (changes content_hash -> amended).
     data = json.loads(fixture.read_text(encoding="utf-8"))
@@ -63,7 +65,7 @@ def test_amended_record_reappears(tmp_path, monkeypatch, store):
             ]
     fixture.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
-    delta = core.run_watch(
+    _, delta = core.run_watch(
         mayai(), store, source_ids=["incentivi"], sample=True, now=LATER
     )
     by_id = {o.id: o for o, _ in delta}
@@ -79,7 +81,7 @@ def test_amended_record_reappears(tmp_path, monkeypatch, store):
 def _sample_matches(store):
     return core.run_watch(
         mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
-    )
+    )[1]
 
 
 def test_to_json_matches_shape(store):

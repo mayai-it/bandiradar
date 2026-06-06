@@ -56,15 +56,18 @@ CREATE TABLE IF NOT EXISTS matches (
 );
 
 CREATE TABLE IF NOT EXISTS runs (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    source      TEXT,
-    started_at  TEXT,
-    finished_at TEXT,
-    fetched     INTEGER,
-    "new"       INTEGER,
-    amended     INTEGER,
-    status      TEXT,   -- 'running' | 'completed' | 'partial'
-    error       TEXT    -- operational error message when status='partial'
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    source          TEXT,
+    started_at      TEXT,
+    finished_at     TEXT,
+    fetched         INTEGER,
+    "new"           INTEGER,
+    amended         INTEGER,
+    mapped          INTEGER,
+    skipped_invalid INTEGER,
+    duration_s      REAL,
+    status          TEXT,   -- 'running' | ok | partial | failed | empty
+    error           TEXT    -- clean operational error when status in (partial, failed)
 );
 
 CREATE TABLE IF NOT EXISTS watch_state (
@@ -91,7 +94,13 @@ CREATE TABLE IF NOT EXISTS extractions (
 # declaration ALTER-compatible: a NOT NULL column must carry a DEFAULT.
 _EXPECTED_COLUMNS: dict[str, dict[str, str]] = {
     "matches": {"cache_key": "TEXT NOT NULL DEFAULT ''"},
-    "runs": {"status": "TEXT", "error": "TEXT"},
+    "runs": {
+        "status": "TEXT",
+        "error": "TEXT",
+        "mapped": "INTEGER",
+        "skipped_invalid": "INTEGER",
+        "duration_s": "REAL",
+    },
 }
 
 # Indexes that reference possibly-migrated columns. Created ONLY AFTER the columns
@@ -364,13 +373,28 @@ class Store:
         new: int,
         amended: int,
         finished_at: datetime | None = None,
-        status: str = "completed",
+        status: str = "ok",
         error: str | None = None,
+        mapped: int = 0,
+        skipped_invalid: int = 0,
+        duration_s: float | None = None,
     ) -> None:
+        """Finalize a run row with its outcome + counts (one row per source/run)."""
         self.conn.execute(
             'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=?, '
-            "status=?, error=? WHERE id=?",
-            (_to_text(_now(finished_at)), fetched, new, amended, status, error, run_id),
+            "mapped=?, skipped_invalid=?, duration_s=?, status=?, error=? WHERE id=?",
+            (
+                _to_text(_now(finished_at)),
+                fetched,
+                new,
+                amended,
+                mapped,
+                skipped_invalid,
+                duration_s,
+                status,
+                error,
+                run_id,
+            ),
         )
         self.conn.commit()
 

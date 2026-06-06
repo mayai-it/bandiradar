@@ -48,7 +48,22 @@ def test_fetch_sample(tmp_path):
         app, ["fetch", "--source", "synthetic", "--sample", "--db", db]
     )
     assert result.exit_code == 0
-    assert "fetched=6" in result.stdout
+    # Per-source summary table: source + ok status.
+    assert "synthetic" in result.stdout
+    assert "ok" in result.stdout
+
+
+def test_fetch_json_emits_source_results(tmp_path):
+    db = str(tmp_path / "fj.db")
+    result = runner.invoke(
+        app, ["fetch", "--source", "synthetic", "--sample", "--json", "--db", db]
+    )
+    assert result.exit_code == 0
+    data = json.loads(result.stdout)
+    assert isinstance(data, list) and len(data) == 1
+    assert data[0]["source"] == "synthetic"
+    assert data[0]["status"] == "ok"
+    assert data[0]["new"] == 6
 
 
 def test_match_human(tmp_path):

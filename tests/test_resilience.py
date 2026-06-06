@@ -125,15 +125,15 @@ class _UnboundedSource:
 
 def test_default_cap_bounds_unbounded_source(store, monkeypatch):
     monkeypatch.setattr(core, "get", lambda _sid: _UnboundedSource())
-    counts = core.run_fetch("inf", store, sample=False, now=NOW)
-    assert counts["fetched"] == core.DEFAULT_FETCH_LIMIT
-    assert counts["completed"] is True
+    result = core.run_fetch("inf", store, sample=False, now=NOW)
+    assert result.fetched == core.DEFAULT_FETCH_LIMIT
+    assert result.status == "ok"
 
 
 def test_explicit_limit_overrides_default(store, monkeypatch):
     monkeypatch.setattr(core, "get", lambda _sid: _UnboundedSource())
-    counts = core.run_fetch("inf", store, sample=False, now=NOW, limit=7)
-    assert counts["fetched"] == 7
+    result = core.run_fetch("inf", store, sample=False, now=NOW, limit=7)
+    assert result.fetched == 7
 
 
 # --------------------------------------------------------------------------- #
@@ -182,12 +182,12 @@ def test_partial_run_keeps_saved_records(store, monkeypatch):
             return []
 
     monkeypatch.setattr(core, "get", lambda _sid: _Flaky())
-    counts = core.run_fetch("flaky", store, sample=False, now=NOW)
+    result = core.run_fetch("flaky", store, sample=False, now=NOW)
 
-    assert counts["fetched"] == 3  # the 3 that arrived before the failure
-    assert counts["new"] == 3  # ...were saved
-    assert counts["completed"] is False
-    assert "429" in counts["error"]
+    assert result.fetched == 3  # the 3 that arrived before the failure
+    assert result.new == 3  # ...were saved
+    assert result.status == "partial"
+    assert "429" in result.error
     assert len(store.list_opportunities(source="flaky")) == 3
 
     fetched, status, error = _last_run(store)
@@ -197,14 +197,14 @@ def test_partial_run_keeps_saved_records(store, monkeypatch):
 
 def test_clean_source_completes(store, monkeypatch):
     monkeypatch.setattr(core, "get", lambda _sid: _CleanSource())
-    counts = core.run_fetch("flaky", store, sample=False, now=NOW)
-    assert counts["fetched"] == 3
-    assert counts["completed"] is True
-    assert counts["error"] is None
-    assert _last_run(store)[1] == "completed"
+    result = core.run_fetch("flaky", store, sample=False, now=NOW)
+    assert result.fetched == 3
+    assert result.status == "ok"
+    assert result.error is None
+    assert _last_run(store)[1] == "ok"
 
 
-def test_fetch_failure_before_any_yield_is_partial(store, monkeypatch):
+def test_fetch_failure_before_any_yield_is_failed(store, monkeypatch):
     class _DeadOnArrival:
         id = "dead"
         kind = "tender"
@@ -220,7 +220,7 @@ def test_fetch_failure_before_any_yield_is_partial(store, monkeypatch):
             return []
 
     monkeypatch.setattr(core, "get", lambda _sid: _DeadOnArrival())
-    counts = core.run_fetch("dead", store, sample=False, now=NOW)
-    assert counts["fetched"] == 0
-    assert counts["completed"] is False
-    assert "required" in counts["error"]
+    result = core.run_fetch("dead", store, sample=False, now=NOW)
+    assert result.fetched == 0
+    assert result.status == "failed"  # nothing saved -> failed (not partial)
+    assert "required" in result.error

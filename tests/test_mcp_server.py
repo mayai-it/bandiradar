@@ -32,16 +32,17 @@ def test_expected_tools_registered():
 def test_fetch_then_search_offline(tmp_path):
     db = str(tmp_path / "mcp.db")
 
-    counts = mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
-    assert counts == {
-        "fetched": 6,
-        "mapped": 6,
-        "new": 6,
-        "amended": 0,
-        "skipped_invalid": 0,
-        "completed": True,
-        "error": None,
-    }
+    result = mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
+    assert result["source"] == "synthetic"
+    assert result["status"] == "ok"
+    assert (result["fetched"], result["mapped"], result["new"], result["amended"]) == (
+        6,
+        6,
+        6,
+        0,
+    )
+    assert result["skipped_invalid"] == 0
+    assert result["error"] is None
 
     ranked = mcp_server.search_opportunities(
         profile_path="mayai", source="synthetic", sample=True, db=db

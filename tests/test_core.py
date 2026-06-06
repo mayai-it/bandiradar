@@ -19,20 +19,16 @@ def store(tmp_path):
 
 def test_run_fetch_sample_counts_and_dedupe(store):
     first = core.run_fetch("synthetic", store, sample=True, now=NOW)
-    assert first == {
-        "fetched": 6,
-        "mapped": 6,
-        "new": 6,
-        "amended": 0,
-        "skipped_invalid": 0,
-        "completed": True,
-        "error": None,
-    }
+    assert (first.source, first.status) == ("synthetic", "ok")
+    assert (first.fetched, first.mapped, first.new, first.amended) == (6, 6, 6, 0)
+    assert first.skipped_invalid == 0
+    assert first.error is None
+    assert first.duration_s >= 0.0
 
     second = core.run_fetch("synthetic", store, sample=True, now=NOW)
-    assert second["new"] == 0
-    assert second["amended"] == 0
-    assert second["skipped_invalid"] == 0
+    assert second.new == 0
+    assert second.amended == 0
+    assert second.skipped_invalid == 0
     assert len(store.list_opportunities()) == 6
 
 
@@ -107,9 +103,10 @@ def test_run_fetch_quarantines_invalid_records(store, monkeypatch):
             ]
 
     monkeypatch.setattr(core, "get", lambda _sid: _DirtySource())
-    counts = core.run_fetch("dirty", store, sample=True, now=NOW)
-    assert counts["fetched"] == 2  # both raw docs pulled
-    assert counts["mapped"] == 1  # only the good one mapped
-    assert counts["new"] == 1
-    assert counts["skipped_invalid"] == 1  # the dirty one quarantined, not fatal
+    result = core.run_fetch("dirty", store, sample=True, now=NOW)
+    assert result.status == "ok"  # a quarantined record is not a failure
+    assert result.fetched == 2  # both raw docs pulled
+    assert result.mapped == 1  # only the good one mapped
+    assert result.new == 1
+    assert result.skipped_invalid == 1  # the dirty one quarantined, not fatal
     assert len(store.list_opportunities()) == 1

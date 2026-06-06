@@ -39,8 +39,10 @@ def all_profiles() -> list[Profile]:
 def test_run_batch_one_entry_per_profile_with_valid_scores(store):
     profiles = all_profiles()
     assert len(profiles) >= 7  # the curated suite
-    results = core.run_batch(profiles, store, sample=True, now=NOW)
+    fetch_results, results = core.run_batch(profiles, store, sample=True, now=NOW)
 
+    # Sample fetch of every source succeeded (per-source isolation, all ok/empty).
+    assert fetch_results and all(r.ok for r in fetch_results)
     assert len(results) == len(profiles)
     assert [p.name for p, _ in results] == [p.name for p in profiles]  # order kept
     for _profile, ranked in results:
@@ -53,7 +55,7 @@ def test_run_batch_one_entry_per_profile_with_valid_scores(store):
 
 def test_run_batch_top_limits_per_profile(store):
     profiles = all_profiles()
-    results = core.run_batch(profiles, store, sample=True, now=NOW, top=1)
+    _, results = core.run_batch(profiles, store, sample=True, now=NOW, top=1)
     assert all(len(ranked) <= 1 for _, ranked in results)
 
 
