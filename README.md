@@ -131,8 +131,8 @@ With an LLM key the same table gets sharper scores and ranking — see
         ┌─────────┐   ┌───────────┐   ┌────────┐   ┌────────┐   ┌──────────┐
  sources│ INGEST  │──▶│ NORMALIZE │──▶│ STORE  │──▶│ MATCH  │──▶│ DELIVER  │
         └─────────┘   └───────────┘   └────────┘   └────────┘   └──────────┘
-            fetch        raw→canonical   sqlite       2 stages     cli/mcp
-                                         + dedupe                  (dashboard=pro)
+          fetch        raw→canonical   sqlite       2 stages     cli/mcp
+                                      + dedupe                  (dashboard=pro)
 ```
 
 Italian public funding is scattered across dozens of fragmented sources.
