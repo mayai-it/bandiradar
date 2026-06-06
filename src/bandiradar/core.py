@@ -15,6 +15,7 @@ from pathlib import Path
 import yaml
 
 from bandiradar import resources
+from bandiradar.http import FetchError
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
@@ -78,6 +79,11 @@ def _clean_error(exc: BaseException) -> str:
     return str(exc) or type(exc).__name__
 
 
+def _error_kind(exc: BaseException) -> str:
+    """Structured cause: a FetchError's own kind, else "unknown"."""
+    return exc.kind if isinstance(exc, FetchError) else "unknown"
+
+
 def _classify(error: str | None, fetched: int) -> str:
     """Derive the FetchStatus from whether the fetch errored and how much arrived."""
     if error is not None:
@@ -120,6 +126,7 @@ def run_fetch(
 
     fetched = mapped = new = amended = skipped_invalid = 0
     error: str | None = None
+    error_kind: str | None = None
 
     try:
         source = get(source_id)
@@ -133,11 +140,13 @@ def run_fetch(
                 break
             except Exception as exc:  # noqa: BLE001 — fetch raised mid-stream
                 error = _clean_error(exc)
+                error_kind = _error_kind(exc)
                 logger.error(
-                    "source=%s fetch stopped after %d records: %s",
+                    "source=%s fetch stopped after %d records: %s (kind=%s)",
                     source_id,
                     fetched,
                     error,
+                    error_kind,
                 )
                 break
             fetched += 1
@@ -162,6 +171,7 @@ def run_fetch(
                     amended += 1
     except Exception as exc:  # noqa: BLE001 — setup error (e.g. unknown source)
         error = _clean_error(exc)
+        error_kind = _error_kind(exc)
         logger.error("source=%s fetch setup failed: %s", source_id, error)
 
     finished = datetime.now(UTC)
@@ -177,6 +187,7 @@ def run_fetch(
         duration_s=duration_s,
         status=status,
         error=error,
+        error_kind=error_kind,
         finished_at=finished,
     )
     log = logger.error if status == "failed" else logger.info
@@ -201,6 +212,7 @@ def run_fetch(
         new=new,
         amended=amended,
         error=error,
+        error_kind=error_kind,
         duration_s=duration_s,
         started_at=started,
         finished_at=finished,
@@ -243,48 +255,42 @@ def run_fetch_many(
         except Exception as exc:  # noqa: BLE001 — never let one source abort siblings
             error = _clean_error(exc)
             logger.error("source=%s unexpected error, isolated: %s", sid, error)
-            results.append(SourceResult(source=sid, status="failed", error=error))
+            results.append(
+                SourceResult(
+                    source=sid,
+                    status="failed",
+                    error=error,
+                    error_kind=_error_kind(exc),
+                )
+            )
     return results
 
 
 _EXIT_OK = 0
-_EXIT_FAILED = 1
+_EXIT_FAILED = 1  # generic / unknown
 _EXIT_INVALID_DATA = 2
 _EXIT_RATE_LIMITED = 3
 _EXIT_UNAVAILABLE = 4
 
+# Structured error kind -> exit code. "unknown" (and any unmapped kind) -> generic.
+_EXIT_BY_KIND: dict[str, int] = {
+    "rate_limited": _EXIT_RATE_LIMITED,
+    "unavailable": _EXIT_UNAVAILABLE,
+    "invalid": _EXIT_INVALID_DATA,
+}
+
 
 def fetch_exit_code(results: list[SourceResult]) -> int:
-    """Worst-status exit code: 0 if all ok/empty, else a code by failure kind.
+    """Worst-status exit code: 0 if all ok/empty, else a code by ``error_kind``.
 
-    Distinguishes (where the error text allows) rate-limited (3) and
-    source-unavailable (4) and invalid-data (2) from a generic failure (1).
+    Maps the representative failure's STRUCTURED kind (no string-matching):
+    rate_limited -> 3, unavailable -> 4, invalid -> 2; unknown/anything else -> 1.
     """
     bad = [r for r in results if r.status in ("failed", "partial")]
     if not bad:
         return _EXIT_OK
     rep = next((r for r in bad if r.status == "failed"), bad[0])
-    err = (rep.error or "").lower()
-    if "429" in err or "rate" in err or "too many requests" in err:
-        return _EXIT_RATE_LIMITED
-    if any(
-        k in err
-        for k in (
-            "connect",
-            "timeout",
-            "timed out",
-            "download failed",
-            "unavailable",
-            "name or service",
-            "nodename",
-            "temporarily",
-            "no reachable",
-        )
-    ):
-        return _EXIT_UNAVAILABLE
-    if any(k in err for k in ("validation", "invalid", "parse", "decode", "json")):
-        return _EXIT_INVALID_DATA
-    return _EXIT_FAILED
+    return _EXIT_BY_KIND.get(rep.error_kind or "unknown", _EXIT_FAILED)
 
 
 def run_match(
@@ -309,7 +315,9 @@ def run_match(
     """
 
     def _stored() -> list[Opportunity]:
-        return store.list_opportunities(source=source_id)
+        # Pass `now` so each opportunity's lifecycle status is recomputed for the
+        # same reference time the matcher uses (never a stale stored status).
+        return store.list_opportunities(source=source_id, now=now)
 
     opportunities = _stored()
     if sample and not opportunities:
@@ -474,7 +482,7 @@ def run_watch(
     )
 
     # Opportunities the store saw change (insert/amend) after the marker.
-    changed = store.list_new(marker)
+    changed = store.list_new(marker, now=moment)
     if source_ids:
         wanted = set(source_ids)
         changed = [o for o in changed if o.source in wanted]

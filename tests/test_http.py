@@ -99,3 +99,33 @@ def test_backoff_is_exponential(sleeps):
         http.with_retry(send, what="x", max_retries=3)
     # 0.5, 1, 2 (base * 2**attempt)
     assert sleeps == [0.5, 1.0, 2.0]
+
+
+# --------------------------------------------------------------------------- #
+# structured error kinds (no string-matching downstream)
+# --------------------------------------------------------------------------- #
+
+
+def test_fetch_error_kind_rate_limited_on_429(sleeps):
+    send = _scripted(*[_Resp(429) for _ in range(5)])
+    with pytest.raises(http.FetchError) as ei:
+        http.with_retry(send, what="x", max_retries=2)
+    assert ei.value.kind == "rate_limited"
+
+
+def test_fetch_error_kind_unavailable_on_5xx(sleeps):
+    send = _scripted(*[_Resp(503) for _ in range(5)])
+    with pytest.raises(http.FetchError) as ei:
+        http.with_retry(send, what="x", max_retries=1)
+    assert ei.value.kind == "unavailable"
+
+
+def test_fetch_error_kind_unavailable_on_connection_error(sleeps):
+    send = _scripted(*[httpx.ConnectError("down") for _ in range(5)])
+    with pytest.raises(http.FetchError) as ei:
+        http.with_retry(send, what="x", max_retries=1)
+    assert ei.value.kind == "unavailable"
+
+
+def test_fetch_error_default_kind_is_unknown():
+    assert http.FetchError("boom").kind == "unknown"

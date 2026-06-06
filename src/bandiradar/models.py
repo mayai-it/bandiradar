@@ -16,9 +16,11 @@ Design notes (see the Prompt 1 spec):
 - ``content_hash`` is derived from ONLY the semantically meaningful fields and
   deliberately EXCLUDES ``version`` and ``updated_at`` — otherwise change
   detection (ARCHITECTURE.md §8) would fire on every re-fetch.
-- ``status`` is a STORED field, not a pure computed property. ``default_status``
-  derives a sensible initial value, but storage stays free to set ``"amended"``
-  when a ``content_hash`` change is detected.
+- ``status`` is PURELY lifecycle (open/closing_soon/closed) and is DERIVED from
+  ``deadline`` + the current time at READ time (``default_status``); storage
+  recomputes it on the way out, so a stored item never shows "open" past its
+  deadline. The "this notice changed" signal is tracked separately via ``version``
+  + ``updated_at`` (storage change-detection / ``list_new``), not in ``status``.
 """
 
 from __future__ import annotations
@@ -36,6 +38,7 @@ __all__ = [
     "GeoScope",
     "Status",
     "FetchStatus",
+    "FetchErrorKind",
     "Opportunity",
     "RawDoc",
     "ValueRange",
@@ -51,13 +54,25 @@ CLOSING_SOON_DAYS = 7
 
 Kind = Literal["tender", "grant", "incentive"]
 GeoScope = Literal["national", "regional", "eu", "local"]
-Status = Literal["open", "closing_soon", "closed", "amended"]
+# ``status`` is PURELY the lifecycle of the deadline (open / closing soon / closed).
+# It is DERIVED from ``deadline`` + the current time at READ time (see
+# ``default_status``), so a stored item never shows "open" past its deadline. The
+# "this notice changed" signal does NOT live here — it is tracked separately via
+# ``version`` + ``updated_at`` (storage change-detection), surfaced by the watch
+# delta / ``list_new``. (Pre-0.2.0 used a sticky ``"amended"`` status; removed.)
+Status = Literal["open", "closing_soon", "closed"]
 # Outcome of fetching ONE source in a run (observability — see SourceResult):
 #   ok       -> records fetched, fetch completed cleanly
 #   partial  -> fetch raised mid-stream, but records already saved are kept
 #   failed   -> fetch raised before saving anything (nothing ingested)
 #   empty    -> fetch completed cleanly but yielded no records
 FetchStatus = Literal["ok", "partial", "failed", "empty"]
+# Structured cause of a failed/partial fetch (no string-matching downstream):
+#   rate_limited -> HTTP 429 / throttled
+#   unavailable  -> 5xx / timeout / connection error (source down or unreachable)
+#   invalid      -> the payload could not be parsed/validated
+#   unknown      -> anything else (non-FetchError exceptions)
+FetchErrorKind = Literal["rate_limited", "unavailable", "invalid", "unknown"]
 
 # The fields that feed content_hash — i.e. the ones whose change makes an
 # opportunity semantically different and so re-notifiable (ARCHITECTURE.md §8).
@@ -65,7 +80,8 @@ FetchStatus = Literal["ok", "partial", "failed", "empty"]
 # they are bookkeeping / derived hints, not the substance of the notice.
 # document_urls / document_text are also absent ON PURPOSE: they are optional
 # downstream enrichment (fetched attachment text), not source-of-truth content —
-# including them would flip the hash to "amended" just because we ran enrichment.
+# including them would trip change-detection (a spurious amend) just because we
+# ran enrichment.
 _CONTENT_HASH_FIELDS = (
     "title",
     "summary",
@@ -118,7 +134,7 @@ def sanitize_value_bounds(
 def default_status(
     deadline: datetime | None, now: datetime | None = None
 ) -> Literal["open", "closing_soon", "closed"]:
-    """Derive an initial status from a deadline.
+    """Derive the lifecycle status from a deadline (the single source of truth).
 
     - no deadline -> ``"open"``
     - deadline in the past -> ``"closed"``
@@ -127,8 +143,9 @@ def default_status(
 
     ``now`` defaults to the current UTC time; tests pass an explicit value for
     determinism. Naive ``now``/``deadline`` are defensively coerced to UTC, so
-    callers cannot trigger a naive-vs-aware crash here. Never returns
-    ``"amended"`` — that status is owned by storage on a content_hash change.
+    callers cannot trigger a naive-vs-aware crash here. Storage calls this on every
+    read so ``status`` is always current; the "changed" signal is separate
+    (``version`` / ``updated_at``).
     """
     now = datetime.now(UTC) if now is None else _ensure_utc(now)
     deadline = _ensure_utc(deadline)
@@ -308,6 +325,7 @@ class SourceResult(BaseModel):
     new: int = 0  # store upserts that were new
     amended: int = 0  # store upserts that changed an existing opportunity
     error: str | None = None  # clean message when status is partial/failed
+    error_kind: FetchErrorKind | None = None  # structured cause (None when no error)
     duration_s: float = 0.0
     started_at: datetime | None = None
     finished_at: datetime | None = None

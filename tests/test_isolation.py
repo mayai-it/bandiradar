@@ -15,6 +15,7 @@ from typer.testing import CliRunner
 
 from bandiradar import core
 from bandiradar.cli import app
+from bandiradar.http import FetchError
 from bandiradar.models import Opportunity, RawDoc, SourceResult
 from bandiradar.storage import Store
 
@@ -67,12 +68,13 @@ class _OkSource:
 class _FailSource:
     kind = "tender"
 
-    def __init__(self, sid: str, msg: str):
+    def __init__(self, sid: str, msg: str, kind: str = "rate_limited"):
         self.id = sid
         self._msg = msg
+        self._kind = kind
 
     def fetch(self, since=None, *, limit=None, max_pages=None, progress=None):
-        raise RuntimeError(self._msg)
+        raise FetchError(self._msg, kind=self._kind)
         yield  # pragma: no cover (makes fetch a generator)
 
     def to_opportunities(self, raw, now=None):
@@ -110,21 +112,22 @@ def test_one_source_failure_does_not_abort_others(store, monkeypatch):
 # --------------------------------------------------------------------------- #
 
 
-def _r(status, error=None):
-    return SourceResult(source="x", status=status, error=error)
+def _r(status, kind=None):
+    return SourceResult(
+        source="x", status=status, error=("e" if kind else None), error_kind=kind
+    )
 
 
 def test_exit_codes_by_failure_kind():
+    # Driven by the STRUCTURED error_kind, not string-matching the message.
     assert core.fetch_exit_code([_r("ok"), _r("empty")]) == 0
-    assert core.fetch_exit_code([_r("failed", "... (HTTP 429)")]) == 3  # rate-limited
-    assert (
-        core.fetch_exit_code([_r("failed", "ConnectError: nodename nor servname")]) == 4
-    )  # unavailable
-    assert core.fetch_exit_code([_r("failed", "ValidationError: bad")]) == 2  # data
-    assert core.fetch_exit_code([_r("failed", "boom")]) == 1  # generic
-    assert core.fetch_exit_code([_r("partial", "HTTP 429")]) == 3
+    assert core.fetch_exit_code([_r("failed", "rate_limited")]) == 3
+    assert core.fetch_exit_code([_r("failed", "unavailable")]) == 4
+    assert core.fetch_exit_code([_r("failed", "invalid")]) == 2
+    assert core.fetch_exit_code([_r("failed", "unknown")]) == 1  # generic fallback
+    assert core.fetch_exit_code([_r("partial", "rate_limited")]) == 3
     # worst-first: a failed source dominates an ok one.
-    assert core.fetch_exit_code([_r("ok"), _r("failed", "boom")]) == 1
+    assert core.fetch_exit_code([_r("ok"), _r("failed", "unknown")]) == 1
 
 
 # --------------------------------------------------------------------------- #

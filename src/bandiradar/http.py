@@ -25,6 +25,8 @@ from contextlib import contextmanager
 
 import httpx
 
+from bandiradar.models import FetchErrorKind
+
 DEFAULT_TIMEOUT = 60.0
 DEFAULT_MAX_RETRIES = 4
 _BACKOFF_BASE = 0.5  # seconds; attempt n waits base * 2**n (capped)
@@ -38,11 +40,24 @@ _sleep = time.sleep
 
 
 class FetchError(RuntimeError):
-    """Raised when a live request still fails after exhausting all retries."""
+    """Raised when a live request still fails after exhausting all retries.
+
+    Carries a STRUCTURED :data:`~bandiradar.models.FetchErrorKind` so callers
+    classify failures without string-matching the message.
+    """
+
+    def __init__(self, message: str, *, kind: FetchErrorKind = "unknown") -> None:
+        super().__init__(message)
+        self.kind: FetchErrorKind = kind
 
 
 def _is_retryable_status(status: int) -> bool:
     return status == 429 or status >= 500
+
+
+def _status_kind(status: int) -> FetchErrorKind:
+    """Map a retryable HTTP status to a structured error kind."""
+    return "rate_limited" if status == 429 else "unavailable"
 
 
 def _retry_after_seconds(response: httpx.Response) -> float | None:
@@ -75,16 +90,19 @@ def with_retry(
     ``max_retries`` retries are used up.
     """
     last_error = "unknown error"
+    last_kind: FetchErrorKind = "unknown"
     for attempt in range(max_retries + 1):
         try:
             response = send()
         except _TRANSIENT_EXC as exc:
             last_error = f"{type(exc).__name__}: {exc}"
+            last_kind = "unavailable"  # timeout / connection error
             delay = _backoff_seconds(attempt)
         else:
             if not _is_retryable_status(response.status_code):
                 return response
             last_error = f"HTTP {response.status_code}"
+            last_kind = _status_kind(response.status_code)
             delay = None
             if response.status_code == 429:
                 delay = _retry_after_seconds(response)
@@ -93,7 +111,10 @@ def with_retry(
         if attempt >= max_retries:
             break
         _sleep(delay)
-    raise FetchError(f"{what} failed after {max_retries + 1} attempts ({last_error})")
+    raise FetchError(
+        f"{what} failed after {max_retries + 1} attempts ({last_error})",
+        kind=last_kind,
+    )
 
 
 @contextmanager
@@ -114,12 +135,14 @@ def stream_with_retry(
     :class:`FetchError` when retries are exhausted.
     """
     last_error = "unknown error"
+    last_kind: FetchErrorKind = "unknown"
     for attempt in range(max_retries + 1):
         cm = httpx.stream(method, url, timeout=timeout, **kwargs)
         try:
             response = cm.__enter__()
         except _TRANSIENT_EXC as exc:
             last_error = f"{type(exc).__name__}: {exc}"
+            last_kind = "unavailable"
         else:
             if not _is_retryable_status(response.status_code):
                 try:
@@ -128,6 +151,7 @@ def stream_with_retry(
                     cm.__exit__(None, None, None)
                 return
             last_error = f"HTTP {response.status_code}"
+            last_kind = _status_kind(response.status_code)
             delay = (
                 _retry_after_seconds(response) if response.status_code == 429 else None
             )
@@ -139,4 +163,7 @@ def stream_with_retry(
         if attempt >= max_retries:
             break
         _sleep(_backoff_seconds(attempt))
-    raise FetchError(f"{what} failed after {max_retries + 1} attempts ({last_error})")
+    raise FetchError(
+        f"{what} failed after {max_retries + 1} attempts ({last_error})",
+        kind=last_kind,
+    )

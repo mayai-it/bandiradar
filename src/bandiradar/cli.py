@@ -107,12 +107,19 @@ def _fmt_deadline(opp) -> str:
     return opp.deadline.strftime(_DEADLINE_FMT) if opp.deadline else "—"
 
 
-def _print_ranked(ranked) -> None:
-    """Human-readable ranked match list (shared by `match` and `watch`)."""
+def _print_ranked(ranked, show_change: bool = False) -> None:
+    """Human-readable ranked match list (shared by `match` and `watch`).
+
+    With ``show_change`` (the watch delta), each item is tagged NEW/AMENDED from its
+    ``version`` — the change-state lives there now, not in the lifecycle ``status``.
+    """
     for rank, (opp, m) in enumerate(ranked, start=1):
         issuer = opp.issuer_name or "—"
         region = opp.region or opp.issuer_region or "—"
-        typer.echo(f"#{rank}  score {m.score}  [{opp.status}]  {opp.title}")
+        change = ""
+        if show_change:
+            change = "[AMENDED] " if opp.version > 1 else "[NEW] "
+        typer.echo(f"#{rank}  {change}score {m.score}  [{opp.status}]  {opp.title}")
         typer.echo(f"     issuer: {issuer} ({region})   deadline: {_fmt_deadline(opp)}")
         if m.reasons:
             typer.echo(f"     why: {'; '.join(m.reasons)}")
@@ -432,7 +439,7 @@ def watch(
         else:
             noun = "match" if len(delta) == 1 else "matches"
             typer.echo(f"{len(delta)} new/amended {noun} for '{company.name}':\n")
-            _print_ranked(delta)
+            _print_ranked(delta, show_change=True)
 
     code = core.fetch_exit_code(fetch_results)
     if code:

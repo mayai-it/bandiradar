@@ -104,7 +104,7 @@ class Opportunity(BaseModel):
     published_at: datetime | None
     deadline: datetime | None
     updated_at: datetime | None
-    status: Literal["open", "closing_soon", "closed", "amended"]
+    status: Literal["open", "closing_soon", "closed"]  # lifecycle, derived on read
 
     eligibility_text: str | None # free text fed to the matcher
     document_urls: list[str] = []  # attachment/doc links (disciplinare/bando PDFs)
@@ -130,9 +130,13 @@ class Opportunity(BaseModel):
   so downstream comparisons (e.g. the prefilter) never hit naive-vs-aware errors.
 - **`Opportunity` and `Profile` are `extra="forbid"`**: a mis-mapped adapter or
   profile field fails loudly instead of being silently dropped.
-- **`status` is stored, not computed.** `default_status(deadline, now)` derives a
-  sensible initial value, but storage stays free to set `"amended"` on a
-  content_hash change.
+- **`status` is purely lifecycle, derived on READ.** `default_status(deadline,
+  now)` is the single source of truth; storage recomputes `status` on every read
+  (§8) so a stored item never shows "open" past its deadline. The "this notice
+  changed" signal is **separate** — it lives in `version` + `updated_at` (bumped on
+  a content_hash change) and is surfaced by `list_new(since)` / the watch delta.
+  (Pre-0.2.0 overloaded `status` with a sticky `"amended"`; that's removed — reads
+  tolerate the old value and recompute it.)
 
 ---
 
@@ -255,9 +259,13 @@ Self-referential demo + free marketing.
 
 SQLite (stdlib, zero-config, agent-friendly). Tables: `opportunities`,
 `raw_docs`, `matches`, `runs`. Dedupe + **change detection** via `content_hash`:
-a changed hash bumps `version`, sets status `amended`, and makes the row eligible
-to be re-surfaced (a tender *rettifica* should re-notify). Without this it is a
-query, not a *monitor*.
+a changed hash bumps `version` and stamps `updated_at`, making the row eligible to
+be re-surfaced (a tender *rettifica* should re-notify) via `list_new(since)` and
+the watch delta. The change signal is kept **out** of `status`, which is recomputed
+from `deadline` + now on every read so it is always current. Each fetch also
+records one `runs` row per source (status, structured `error_kind`, counts,
+duration). Schema upgrades are additive via a PRAGMA-introspecting migration, so
+old DBs open cleanly. Without change detection it is a query, not a *monitor*.
 
 ---
 

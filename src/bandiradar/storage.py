@@ -3,11 +3,13 @@
 Stdlib ``sqlite3``, no ORM. Holds opportunities, raw docs, matches, and run
 bookkeeping, and backs the Stage-2 relevance cache (:class:`SqliteScoreCache`).
 Change detection is driven by ``content_hash`` (§8): a changed hash bumps the
-version, sets status ``"amended"``, and makes the row a re-notifiable
-*rettifica*. This module is persistence only — orchestration lives in core.
+``version`` and stamps ``updated_at``, making the row a re-notifiable *rettifica*
+— surfaced by ``list_new(since)`` / the watch delta. This module is persistence
+only — orchestration lives in core.
 
-The ``"amended"`` status stays until the opportunity is re-derived; clearing or
-acknowledging it is a later delivery concern.
+Lifecycle ``status`` (open/closing_soon/closed) is DERIVED from ``deadline`` + the
+current time on every read (see :func:`_load_opportunity`), never trusted from
+storage — so it is always current and the "changed" signal stays separate from it.
 """
 
 from __future__ import annotations
@@ -20,9 +22,25 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
 
-from bandiradar.models import Match, Opportunity, RawDoc
+from bandiradar.models import Match, Opportunity, RawDoc, default_status
 
 UpsertResult = Literal["new", "unchanged", "amended"]
+
+
+def _load_opportunity(data: str, now: datetime) -> Opportunity:
+    """Deserialize an Opportunity and recompute its lifecycle ``status`` at ``now``.
+
+    Status is DERIVED from ``deadline`` + ``now`` on every read (never trusted from
+    storage), so an item never reads back "open" past its deadline. This also
+    tolerates legacy rows that stored ``status="amended"`` (no longer a valid
+    status) by overwriting status before validation.
+    """
+    payload = json.loads(data)
+    raw_deadline = payload.get("deadline")
+    deadline = datetime.fromisoformat(raw_deadline) if raw_deadline else None
+    payload["status"] = default_status(deadline, now)
+    return Opportunity.model_validate(payload)
+
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS opportunities (
@@ -67,7 +85,8 @@ CREATE TABLE IF NOT EXISTS runs (
     skipped_invalid INTEGER,
     duration_s      REAL,
     status          TEXT,   -- 'running' | ok | partial | failed | empty
-    error           TEXT    -- clean operational error when status in (partial, failed)
+    error           TEXT,   -- clean operational error (partial/failed)
+    error_kind      TEXT    -- rate_limited | unavailable | invalid | unknown
 );
 
 CREATE TABLE IF NOT EXISTS watch_state (
@@ -97,6 +116,7 @@ _EXPECTED_COLUMNS: dict[str, dict[str, str]] = {
     "runs": {
         "status": "TEXT",
         "error": "TEXT",
+        "error_kind": "TEXT",
         "mapped": "INTEGER",
         "skipped_invalid": "INTEGER",
         "duration_s": "REAL",
@@ -212,12 +232,12 @@ class Store:
         if row["content_hash"] == opp.content_hash:
             return "unchanged"
 
-        # Amended: bump version, mark amended, stamp updated_at — persisted into
-        # the stored Opportunity JSON too so reads reflect the rettifica.
+        # Changed (rettifica): bump version + stamp updated_at — that IS the change
+        # signal (surfaced by list_new / the watch delta). ``status`` stays purely
+        # lifecycle; it is NOT overwritten with a sticky "amended" anymore.
         amended = opp.model_copy(
             update={
                 "version": row["version"] + 1,
-                "status": "amended",
                 "updated_at": moment,
             }
         )
@@ -268,35 +288,47 @@ class Store:
             )
         self.conn.commit()
 
-    def get_opportunity(self, opp_id: str) -> Opportunity | None:
+    def get_opportunity(
+        self, opp_id: str, now: datetime | None = None
+    ) -> Opportunity | None:
+        """Read one opportunity with its lifecycle ``status`` recomputed at ``now``."""
         row = self.conn.execute(
             "SELECT data FROM opportunities WHERE id=?", (opp_id,)
         ).fetchone()
-        return Opportunity.model_validate_json(row["data"]) if row else None
+        return _load_opportunity(row["data"], _now(now)) if row else None
 
     def list_opportunities(
-        self, status: str | None = None, source: str | None = None
+        self,
+        status: str | None = None,
+        source: str | None = None,
+        now: datetime | None = None,
     ) -> list[Opportunity]:
-        clauses: list[str] = []
-        params: list[str] = []
-        if status is not None:
-            clauses.append("status=?")
-            params.append(status)
-        if source is not None:
-            clauses.append("source=?")
-            params.append(source)
-        where = f" WHERE {' AND '.join(clauses)}" if clauses else ""
+        """List opportunities; ``status`` is recomputed at ``now`` on the way out.
+
+        The ``status`` filter applies to the RECOMPUTED lifecycle status (not the
+        stored column), so filtering stays consistent with what callers read.
+        """
+        moment = _now(now)
+        where = " WHERE source=?" if source is not None else ""
+        params = [source] if source is not None else []
         rows = self.conn.execute(
             f"SELECT data FROM opportunities{where} ORDER BY id", params
         ).fetchall()
-        return [Opportunity.model_validate_json(r["data"]) for r in rows]
+        opps = [_load_opportunity(r["data"], moment) for r in rows]
+        if status is not None:
+            opps = [o for o in opps if o.status == status]
+        return opps
 
-    def list_new(self, since: datetime | None) -> list[Opportunity]:
-        """Opportunities changed after ``since`` (all when ``since`` is None).
+    def list_new(
+        self, since: datetime | None, now: datetime | None = None
+    ) -> list[Opportunity]:
+        """Opportunities CHANGED after ``since`` (all when ``since`` is None).
 
-        "Changed" = last store mutation: updated_at if amended, else inserted_at.
-        This is the monitor's new/amended feed.
+        "Changed" = last store mutation (updated_at if a notice was amended, else
+        inserted_at) — this is the change signal, kept separate from lifecycle
+        ``status`` (which is recomputed at ``now`` for display).
         """
+        moment = _now(now)
         rows = self.conn.execute(
             "SELECT data, inserted_at, updated_at FROM opportunities"
         ).fetchall()
@@ -306,7 +338,7 @@ class Store:
             changed_text = row["updated_at"] or row["inserted_at"]
             changed_at = datetime.fromisoformat(changed_text)
             if threshold is None or changed_at > threshold:
-                out.append((changed_at, Opportunity.model_validate_json(row["data"])))
+                out.append((changed_at, _load_opportunity(row["data"], moment)))
         out.sort(key=lambda pair: pair[0])
         return [opp for _, opp in out]
 
@@ -375,6 +407,7 @@ class Store:
         finished_at: datetime | None = None,
         status: str = "ok",
         error: str | None = None,
+        error_kind: str | None = None,
         mapped: int = 0,
         skipped_invalid: int = 0,
         duration_s: float | None = None,
@@ -382,7 +415,8 @@ class Store:
         """Finalize a run row with its outcome + counts (one row per source/run)."""
         self.conn.execute(
             'UPDATE runs SET finished_at=?, fetched=?, "new"=?, amended=?, '
-            "mapped=?, skipped_invalid=?, duration_s=?, status=?, error=? WHERE id=?",
+            "mapped=?, skipped_invalid=?, duration_s=?, status=?, error=?, "
+            "error_kind=? WHERE id=?",
             (
                 _to_text(_now(finished_at)),
                 fetched,
@@ -393,6 +427,7 @@ class Store:
                 duration_s,
                 status,
                 error,
+                error_kind,
                 run_id,
             ),
         )

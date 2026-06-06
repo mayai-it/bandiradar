@@ -69,8 +69,10 @@ def test_amended_record_reappears(tmp_path, monkeypatch, store):
         mayai(), store, source_ids=["incentivi"], sample=True, now=LATER
     )
     by_id = {o.id: o for o, _ in delta}
-    assert "incentivi:3400" in by_id
-    assert by_id["incentivi:3400"].status == "amended"
+    assert "incentivi:3400" in by_id  # the amended notice resurfaces in the delta
+    # Change-state lives in version now (>1 == amended), NOT in lifecycle status.
+    assert by_id["incentivi:3400"].version == 2
+    assert by_id["incentivi:3400"].status in ("open", "closing_soon", "closed")
 
 
 # --------------------------------------------------------------------------- #

@@ -1,5 +1,6 @@
 """SQLite storage tests (ARCHITECTURE.md §8 / Prompt 5). Offline, tmp db."""
 
+import json
 import sqlite3
 from datetime import UTC, datetime, timedelta
 
@@ -47,29 +48,65 @@ def test_insert_then_unchanged_then_amended(store):
     assert len(store.list_opportunities()) == 1
     assert store.get_opportunity(opp.id).version == 1
 
-    # Changed meaningful field -> content_hash changes -> amended.
+    # Changed meaningful field -> content_hash changes -> amend outcome.
     amended_in = opp.model_copy(update={"title": "Titolo rettificato"})
     amended_in.content_hash = amended_in.compute_content_hash()
-    result = store.upsert_opportunity(amended_in, now=NOW + timedelta(days=1))
-    assert result == "amended"
+    later = NOW + timedelta(days=1)
+    result = store.upsert_opportunity(amended_in, now=later)
+    assert result == "amended"  # the change OUTCOME (not a status)
 
-    stored = store.get_opportunity(opp.id)
-    assert stored.version == 2
-    assert stored.status == "amended"
+    stored = store.get_opportunity(opp.id, now=later)
+    assert stored.version == 2  # the change signal lives in version/updated_at
+    assert stored.status == "open"  # status stays purely lifecycle (future deadline)
     assert stored.title == "Titolo rettificato"
     assert len(store.list_opportunities()) == 1  # still one row
+    # The change is surfaced by list_new (since just before the amend), not status.
+    changed = store.list_new(NOW + timedelta(hours=1), now=later)
+    assert [o.id for o in changed] == [opp.id]
 
 
 def test_get_and_list_roundtrip(store):
     opp = first_opp()
     store.upsert_opportunity(opp, now=NOW)
-    got = store.get_opportunity(opp.id)
+    got = store.get_opportunity(opp.id, now=NOW)
     assert got == opp  # faithful round-trip
 
-    assert store.list_opportunities(source="synthetic")
-    assert store.list_opportunities(status="open") == [opp]
-    assert store.list_opportunities(status="closed") == []
+    assert store.list_opportunities(source="synthetic", now=NOW)
+    assert store.list_opportunities(status="open", now=NOW) == [opp]
+    assert store.list_opportunities(status="closed", now=NOW) == []
     assert store.get_opportunity("missing") is None
+
+
+def test_status_is_recomputed_on_read_not_trusted_from_storage(store):
+    # Stored while OPEN; must read back CLOSED once the deadline passes — status is
+    # derived from deadline + now on read, never trusted from the stored value.
+    deadline = datetime(2026, 7, 1, 12, 0, tzinfo=UTC)
+    opp = Opportunity(
+        id="x:1",
+        source="x",
+        source_url="https://example.invalid/x",
+        kind="tender",
+        title="Bando con scadenza",
+        geo_scope="national",
+        status="open",
+        deadline=deadline,
+        raw_ref="x:1",
+    )
+    assert store.upsert_opportunity(opp, now=datetime(2026, 6, 1, tzinfo=UTC)) == "new"
+
+    before = datetime(2026, 6, 15, tzinfo=UTC)
+    soon = datetime(2026, 6, 28, tzinfo=UTC)  # within CLOSING_SOON_DAYS
+    after = datetime(2026, 8, 1, tzinfo=UTC)
+    assert store.get_opportunity("x:1", now=before).status == "open"
+    assert store.get_opportunity("x:1", now=soon).status == "closing_soon"
+    assert store.get_opportunity("x:1", now=after).status == "closed"
+
+    # list_opportunities filter is consistent with the recomputed status.
+    closed = store.list_opportunities(status="closed", now=after)
+    assert [o.id for o in closed] == ["x:1"]
+    assert store.list_opportunities(status="open", now=after) == []
+    # The stored deadline is unchanged across all those reads.
+    assert store.get_opportunity("x:1", now=after).deadline == deadline
 
 
 def test_save_and_get_raw_doc_roundtrip(store):
@@ -241,6 +278,53 @@ def _legacy_db(path: str) -> tuple[Opportunity, Match]:
         "VALUES (?,?,?,?,?)",
         ("anac", NOW.isoformat(), 1, 1, 0),
     )
+    # A LEGACY row whose stored JSON has the removed status "amended" + a past
+    # deadline. The current model rejects status="amended", so write raw JSON to
+    # mimic a real pre-0.2.0 DB; reads must tolerate it (recompute -> closed).
+    legacy_amended = {
+        "id": "anac:legacy-amended",
+        "source": "anac",
+        "source_url": "https://example.invalid/legacy-amended",
+        "kind": "tender",
+        "title": "Vecchio bando rettificato",
+        "summary": None,
+        "issuer_name": None,
+        "issuer_region": None,
+        "cpv": [],
+        "ateco_hints": [],
+        "keywords": [],
+        "value_amount": None,
+        "value_currency": "EUR",
+        "value_min": None,
+        "value_max": None,
+        "geo_scope": "national",
+        "region": None,
+        "published_at": None,
+        "deadline": "2020-01-01T00:00:00+00:00",
+        "updated_at": None,
+        "status": "amended",  # the removed status value, as old DBs stored it
+        "eligibility_text": None,
+        "document_urls": [],
+        "document_text": None,
+        "raw_ref": "anac:legacy-amended",
+        "content_hash": "legacyhash",
+        "version": 2,
+    }
+    conn.execute(
+        "INSERT INTO opportunities (id, source, content_hash, version, status, "
+        "deadline, updated_at, inserted_at, data) VALUES (?,?,?,?,?,?,?,?,?)",
+        (
+            "anac:legacy-amended",
+            "anac",
+            "legacyhash",
+            2,
+            "amended",
+            "2020-01-01T00:00:00+00:00",
+            NOW.isoformat(),
+            NOW.isoformat(),
+            json.dumps(legacy_amended),
+        ),
+    )
     conn.commit()
     conn.close()
     return opp, match
@@ -259,11 +343,18 @@ def test_opening_old_schema_db_upgrades_cleanly(tmp_path):
         }
         run_cols = {r["name"] for r in store.conn.execute("PRAGMA table_info(runs)")}
         assert "cache_key" in match_cols
-        assert {"status", "error"} <= run_cols
+        assert {"status", "error", "error_kind"} <= run_cols  # 0.2.0 run columns
 
         # Existing rows survived the upgrade and read back.
         assert store.get_opportunity(opp.id) == opp
         assert store.get_match(opp.id, "pv-legacy") == match
+
+        # A legacy row that stored the removed status "amended" reads back fine:
+        # status is recomputed from its (past) deadline -> closed, never a crash.
+        legacy = store.get_opportunity("anac:legacy-amended", now=NOW)
+        assert legacy is not None
+        assert legacy.status == "closed"  # deadline 2020 is in the past
+        assert legacy.version == 2  # change-state preserved in version
 
         # New inserts/queries work on the upgraded DB.
         opp2 = opp.model_copy(update={"id": "anac:legacy-2"})
@@ -283,10 +374,17 @@ def test_opening_old_schema_db_upgrades_cleanly(tmp_path):
 
         run_id = store.start_run("anac")
         store.finish_run(
-            run_id, fetched=2, new=1, amended=0, status="partial", error="boom"
+            run_id,
+            fetched=2,
+            new=1,
+            amended=0,
+            status="partial",
+            error="boom",
+            error_kind="rate_limited",
         )
         run = store.get_run(run_id)
         assert run["status"] == "partial" and run["error"] == "boom"
+        assert run["error_kind"] == "rate_limited"
     finally:
         store.close()
 
