@@ -32,6 +32,7 @@ from pydantic import BaseModel
 from bandiradar import core, resources
 from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, get_embedder
 from bandiradar.matching.llm import get_client
+from bandiradar.matching.prefilter import prefilter_explain
 from bandiradar.matching.relevance import HEURISTIC
 from bandiradar.models import Opportunity
 from bandiradar.storage import Store
@@ -175,6 +176,17 @@ class EmbeddingsReport(BaseModel):
     runs: list[EmbeddingsRun]  # [baseline, semantic@0.3, @0.4, @0.5]
 
 
+class GateDrop(BaseModel):
+    """A relevant-for-recall gold item that Stage 1 dropped, and WHICH gate did it —
+    so an over-strict gate (tunable recall) is told apart from a real ceiling."""
+
+    profile: str
+    opportunity_id: str
+    label: str
+    gate: str  # deadline | seeks | region | value | exclusions | relevance-signal
+    reason: str
+
+
 class EvalReport(BaseModel):
     corpus_size: int
     gold_profiles: list[str]
@@ -183,6 +195,7 @@ class EvalReport(BaseModel):
     methods: list[EvalMethodReport]
     attribution_k: int | None = None  # set when recall attribution was computed
     thresholds: list[int] = []  # set when the min_score sweep was computed
+    gate_drops: list[GateDrop] = []  # set with diagnostics: per-gate prefilter loss
     full_text: list[FullTextDelta] = []  # set when the full-text experiment ran
     embeddings: EmbeddingsReport | None = None  # set when --embeddings ran
 
@@ -294,6 +307,22 @@ def _score_profiles(
     return scored
 
 
+def _rerank_profiles(
+    store: Store,
+    client: object,
+    gold_profiles: dict[str, dict[str, Label]],
+) -> list[_Scored]:
+    """Like :func:`_score_profiles` but Stage 2 is LISTWISE rerank (1 call/profile)."""
+    scored: list[_Scored] = []
+    for name in sorted(gold_profiles):
+        profile = core.load_profile(name)
+        ranked = core.run_rerank(profile, store, client, now=EVAL_NOW)
+        scored.append(
+            (name, gold_profiles[name], [(opp.id, m.score) for opp, m in ranked])
+        )
+    return scored
+
+
 def _build_method_report(
     method: str,
     scored: list[_Scored],
@@ -341,6 +370,53 @@ def _build_method_report(
         attribution=_aggregate_attribution([p.attribution for p in per_profile]),
         sweep=sweep,
     )
+
+
+def _gate_of(reason: str) -> str:
+    """Map a prefilter drop reason to the gate that produced it."""
+    if reason.startswith("closed"):
+        return "deadline"
+    if "does not seek" in reason:
+        return "seeks"
+    if "region" in reason:
+        return "region"
+    if "value range" in reason:
+        return "value"
+    if "excluded term" in reason:
+        return "exclusions"
+    if "no CPV" in reason:
+        return "relevance-signal"
+    return "other"
+
+
+def _gate_drops(
+    corpus: list[Opportunity], gold_profiles: dict[str, dict[str, Label]]
+) -> list[GateDrop]:
+    """For every relevant-for-recall gold item the prefilter dropped, record WHICH
+    gate killed it (method-independent — Stage 1 is shared). Lets an over-strict
+    hard gate (recoverable recall) be told apart from a genuine ceiling."""
+    drops: list[GateDrop] = []
+    for name in sorted(gold_profiles):
+        profile = core.load_profile(name)
+        explained = {
+            opp.id: (kept, reason)
+            for opp, kept, reason in prefilter_explain(corpus, profile, now=EVAL_NOW)
+        }
+        for oid, label in gold_profiles[name].items():
+            if label not in ("relevant", "borderline"):
+                continue
+            kept, reason = explained.get(oid, (False, "not in corpus"))
+            if not kept:
+                drops.append(
+                    GateDrop(
+                        profile=name,
+                        opportunity_id=oid,
+                        label=label,
+                        gate=_gate_of(reason),
+                        reason=reason,
+                    )
+                )
+    return drops
 
 
 # Cosine cutoffs swept by the embeddings experiment (recall-vs-FPR curve).
@@ -403,6 +479,7 @@ def run_eval(
     diagnostics: bool = False,
     full_text: bool = False,
     embeddings: bool = False,
+    rerank: bool = False,
 ) -> EvalReport:
     """Evaluate the matcher(s) over the shipped corpus for the gold profiles.
 
@@ -416,6 +493,8 @@ def run_eval(
     UNCAPPED requirements text and report the aggregate delta vs the capped brief.
     ``embeddings`` runs the OFFLINE (heuristic-only) hybrid-prefilter measurement:
     recall/FPR/attribution WITH vs WITHOUT the semantic signal, swept over cutoffs.
+    ``rerank`` adds a LISTWISE-LLM method (one comparative call per profile) when an
+    LLM is configured, to compare against the pointwise LLM.
     """
     corpus = load_corpus()
     gold = load_gold()
@@ -463,6 +542,25 @@ def run_eval(
                 agg.false_positive_rate,
             )
 
+        # Listwise LLM rerank — one comparative call per profile, same prefiltered
+        # set as the pointwise LLM (so recall/FPR match; only the ranking differs).
+        if rerank and client is not None:
+            scored = _rerank_profiles(store, client, gold_profiles)
+            label = f"{getattr(client, 'cache_id', 'llm')} (listwise)"
+            report = _build_method_report(
+                label, scored, attribution_k=attribution_k, thresholds=thresholds
+            )
+            method_reports.append(report)
+            agg = report.aggregate
+            logger.info(
+                "eval method=%s P@5=%.2f P@10=%.2f recall=%.2f fpr=%.2f",
+                label,
+                agg.precision_at_5,
+                agg.precision_at_10,
+                agg.recall,
+                agg.false_positive_rate,
+            )
+
         full_text_deltas: list[FullTextDelta] = []
         if full_text:
             brief = {r.method: r.aggregate for r in method_reports}
@@ -499,6 +597,8 @@ def run_eval(
     finally:
         store.close()
 
+    gate_drops = _gate_drops(corpus, gold_profiles) if diagnostics else []
+
     return EvalReport(
         corpus_size=len(corpus),
         gold_profiles=sorted(gold_profiles),
@@ -507,6 +607,7 @@ def run_eval(
         methods=method_reports,
         attribution_k=attribution_k,
         thresholds=thresholds,
+        gate_drops=gate_drops,
         full_text=full_text_deltas,
         embeddings=embeddings_report,
     )

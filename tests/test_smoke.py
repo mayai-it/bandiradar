@@ -28,6 +28,7 @@ MODULES = [
     "bandiradar.matching.llm",
     "bandiradar.matching.prompts",
     "bandiradar.matching.embeddings",
+    "bandiradar.matching.rerank",
     "bandiradar.config",
     "bandiradar.http",
     "bandiradar.ocp",

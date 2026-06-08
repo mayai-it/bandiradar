@@ -22,6 +22,7 @@ from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, Embedder
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
+from bandiradar.matching.rerank import RERANK_TOP_N, rerank
 from bandiradar.models import (
     DoctorEnv,
     DoctorReport,
@@ -516,6 +517,28 @@ def run_match(
     if limit is not None:
         ranked = ranked[:limit]
     return ranked
+
+
+def run_rerank(
+    profile: Profile,
+    store: Store,
+    client: LLMClient,
+    source_id: str | None = None,
+    now: datetime | None = None,
+    min_score: int = 0,
+    top_n: int = RERANK_TOP_N,
+) -> list[tuple[Opportunity, Match]]:
+    """Prefilter, then LISTWISE-rerank the candidates in one LLM call (ranked desc).
+
+    Same Stage-1 prefilter as :func:`run_match` (so the returned SET — and thus
+    recall — matches pointwise), but Stage 2 ranks comparatively instead of scoring
+    each opportunity in isolation. Used by ``eval --rerank`` to measure precision@k.
+    """
+    opportunities = store.list_opportunities(source=source_id, now=now)
+    kept = prefilter(opportunities, profile, now=now)
+    matches = rerank(profile, kept, client, now=now, top_n=top_n)
+    by_id = {opp.id: opp for opp in kept}
+    return [(by_id[m.opportunity_id], m) for m in matches if m.score >= min_score]
 
 
 def run_monitor(

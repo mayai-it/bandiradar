@@ -81,8 +81,19 @@ script never promotes labels (that stays human). Re-run it to regenerate.
 
 **Diagnostics** (`eval --diagnostics`, free — no extra scoring): *recall
 attribution* splits each missed relevant-for-recall item into Stage-1 `prefilter_drop`
-(→ embeddings) vs Stage-2 `below_k` (→ reranking); a *min_score sweep* prints the
-precision/recall/FPR curve across cutoffs. **Full-text experiment**
+(→ embeddings) vs Stage-2 `below_k` (→ reranking); *gate attribution* names WHICH
+Stage-1 gate dropped each (so an over-strict gate is told from a real ceiling — on
+the corrected gold the 6 drops are 4 genuinely-closed + 2 lexical-gap, i.e. NO
+over-strict gate, ceiling is real); a *min_score sweep* prints the
+precision/recall/FPR curve across cutoffs.
+
+**Listwise rerank** (`eval --rerank`, `matching/rerank.py`, OFF by default, opt-in):
+one comparative LLM call per profile (vs pointwise's N) ranking the whole candidate
+set; same prefilter so recall/FPR match pointwise, only the order differs. *Measured:*
+lifts top-k precision slightly (P@5 0.37→0.39, P@10 0.24→0.25) at ~12× fewer calls,
+BUT its comparative scores don't threshold well — pointwise's calibrated 0-100 wins
+the min_score sweep decisively (P@5 0.73 vs 0.49 at thr 40). So keep pointwise for a
+high-precision thresholded view; listwise is the cheaper top-k-only option. **Full-text experiment**
 (`eval --full-text`, extra scoring): re-scores feeding the UNCAPPED requirements
 text (vs the `prompts._MAX_DOC_CHARS` brief) and reports the aggregate delta — a
 controlled A/B, threaded via `full_text=` through `run_match`/`score_all`/`score`

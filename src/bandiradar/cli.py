@@ -728,6 +728,8 @@ def _render_eval(report) -> str:
 
     if report.attribution_k is not None:
         lines += _render_attribution(report)
+    if report.gate_drops:
+        lines += _render_gate_drops(report)
     if report.thresholds:
         lines += _render_sweep(report)
     if report.full_text:
@@ -792,6 +794,29 @@ def _render_attribution(report) -> list[str]:
         if method.attribution is not None:
             lines.append("-" * len(head))
             lines.append(row("AGGREGATE (totals)", method.attribution))
+    return lines
+
+
+def _render_gate_drops(report) -> list[str]:
+    """Which Stage-1 gate killed each prefilter-dropped relevant item — over-strict
+    gate (tunable) vs real ceiling."""
+    from collections import Counter
+
+    tally = Counter(d.gate for d in report.gate_drops)
+    tally_str = " ".join(f"{g}={n}" for g, n in tally.most_common())
+    head = f"{'PROFILE':22} {'OPPORTUNITY':26} {'LABEL':10} {'GATE':16} REASON"
+    lines = [
+        "",
+        "== gate attribution — which Stage-1 gate dropped each relevant item",
+        f"   tally: {tally_str}",
+        head,
+        "-" * len(head),
+    ]
+    for d in report.gate_drops:
+        lines.append(
+            f"{_trunc(d.profile, 22):22} {_trunc(d.opportunity_id, 26):26} "
+            f"{d.label:10} {d.gate:16} {d.reason}"
+        )
     return lines
 
 
@@ -860,6 +885,11 @@ def eval_cmd(
         "--embeddings",
         help="Experiment: hybrid semantic prefilter WITH vs WITHOUT (needs the extra)",
     ),
+    rerank: bool = typer.Option(
+        False,
+        "--rerank",
+        help="Add a LISTWISE LLM method (one comparative call/profile) if a key is set",
+    ),
     db: str | None = typer.Option(
         None, "--db", help="SQLite path (default: in-memory throwaway)"
     ),
@@ -882,6 +912,7 @@ def eval_cmd(
             diagnostics=diagnostics,
             full_text=full_text,
             embeddings=embeddings,
+            rerank=rerank,
         )
     except Exception as exc:  # noqa: BLE001 — clean operational message, no traceback
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)

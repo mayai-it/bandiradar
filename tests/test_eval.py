@@ -231,10 +231,55 @@ def test_cli_eval_embeddings_section():
     assert "backend unavailable" in out.stdout
 
 
+def test_diagnostics_include_gate_attribution():
+    r = ev.run_eval(diagnostics=True)
+    # Every prefilter-dropped relevant/borderline item is attributed to a gate.
+    assert r.gate_drops  # the corrected gold still has a few real drops
+    gates = {d.gate for d in r.gate_drops}
+    assert gates <= {
+        "deadline",
+        "seeks",
+        "region",
+        "value",
+        "exclusions",
+        "relevance-signal",
+        "other",
+    }
+    # The count of gate-drops equals the aggregate prefilter_drop of the heuristic.
+    heuristic = next(m for m in r.methods if m.method == "heuristic")
+    assert len(r.gate_drops) == heuristic.attribution.prefilter_drop
+    # Off by default.
+    assert ev.run_eval().gate_drops == []
+
+
+def test_listwise_rerank_method_with_fake_client(monkeypatch):
+    from test_rerank import FakeRankClient
+
+    monkeypatch.setattr(ev, "get_client", lambda: FakeRankClient())
+    r = ev.run_eval(diagnostics=True, rerank=True)
+    methods = {m.method for m in r.methods}
+    assert "fake:rank" in methods  # pointwise
+    assert "fake:rank (listwise)" in methods  # listwise
+    listwise = next(m for m in r.methods if m.method == "fake:rank (listwise)")
+    # same prefiltered SET as pointwise -> identical recall/FPR, only ranking differs
+    pointwise = next(m for m in r.methods if m.method == "fake:rank")
+    assert listwise.aggregate.returned == pointwise.aggregate.returned
+    assert abs(listwise.aggregate.recall - pointwise.aggregate.recall) < 1e-9
+    for value in (listwise.aggregate.precision_at_5, listwise.aggregate.recall):
+        assert 0.0 <= value <= 1.0
+
+
+def test_rerank_off_when_no_llm():
+    # conftest -> get_client None -> no listwise method even with rerank=True.
+    r = ev.run_eval(rerank=True)
+    assert all("listwise" not in m.method for m in r.methods)
+
+
 def test_cli_eval_diagnostics_and_full_text():
     human = runner.invoke(app, ["eval", "--diagnostics", "--full-text"])
     assert human.exit_code == 0
     assert "recall attribution" in human.stdout
+    assert "gate attribution" in human.stdout
     assert "min_score sweep" in human.stdout
     assert "full-text experiment" in human.stdout
 
