@@ -51,6 +51,9 @@ anthropic = ["anthropic>=0.40"]
 openai = ["openai>=1.0"]
 # OCR fallback for scanned PDFs (also needs system binaries: tesseract + poppler).
 ocr = ["pytesseract>=0.3.10", "pdf2image>=1.17"]
+# Optional semantic prefilter. fastembed is ONNX-based (NO torch); the multilingual
+# model downloads ONCE on first use. Off unless explicitly enabled + installed.
+embeddings = ["fastembed>=0.3"]
 
 [build-system]
 requires = ["hatchling"]

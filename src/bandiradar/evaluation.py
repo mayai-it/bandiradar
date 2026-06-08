@@ -17,7 +17,8 @@ so recall is "recall within the labelled pool" — read it as relative, for
 comparing matchers on the same gold set, not as absolute corpus recall.
 
 Always reports the HEURISTIC matcher; if an LLM provider+key is configured it also
-reports the LLM matcher on the SAME gold set. Embeddings join in slice 2.
+reports the LLM matcher on the SAME gold set. ``--embeddings`` adds the offline
+hybrid-prefilter measurement (semantic signal WITH vs WITHOUT, swept).
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ import yaml
 from pydantic import BaseModel
 
 from bandiradar import core, resources
+from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, get_embedder
 from bandiradar.matching.llm import get_client
 from bandiradar.matching.relevance import HEURISTIC
 from bandiradar.models import Opportunity
@@ -156,6 +158,23 @@ class FullTextDelta(BaseModel):
     full: EvalMetrics
 
 
+class EmbeddingsRun(BaseModel):
+    """One configuration of the semantic-prefilter experiment (heuristic scorer)."""
+
+    label: str
+    threshold: float | None  # None = baseline (no semantic signal)
+    aggregate: EvalMetrics
+    attribution: RecallAttribution | None
+
+
+class EmbeddingsReport(BaseModel):
+    """WITH/WITHOUT semantic-prefilter measurement (offline, heuristic scorer)."""
+
+    available: bool  # False when the embeddings extra/model isn't installed
+    model_id: str | None
+    runs: list[EmbeddingsRun]  # [baseline, semantic@0.3, @0.4, @0.5]
+
+
 class EvalReport(BaseModel):
     corpus_size: int
     gold_profiles: list[str]
@@ -165,6 +184,7 @@ class EvalReport(BaseModel):
     attribution_k: int | None = None  # set when recall attribution was computed
     thresholds: list[int] = []  # set when the min_score sweep was computed
     full_text: list[FullTextDelta] = []  # set when the full-text experiment ran
+    embeddings: EmbeddingsReport | None = None  # set when --embeddings ran
 
 
 # --------------------------------------------------------------------------- #
@@ -245,10 +265,15 @@ def _score_profiles(
     with_benchmarks: bool,
     with_documents: bool,
     full_text: bool,
+    embedder: object | None = None,
+    sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
 ) -> list[_Scored]:
     """Run the matcher (min_score=0 -> the full prefiltered set) for every gold
     profile and capture the ranked ``(id, score)`` list — the raw material the
-    metrics, recall attribution and threshold sweep are all derived from."""
+    metrics, recall attribution and threshold sweep are all derived from.
+
+    ``embedder`` (opt-in) turns on the hybrid semantic prefilter at ``sim_threshold``.
+    """
     scored: list[_Scored] = []
     for name in sorted(gold_profiles):
         profile = core.load_profile(name)
@@ -260,6 +285,8 @@ def _score_profiles(
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
             full_text=full_text,
+            embedder=embedder,
+            sim_threshold=sim_threshold,
         )
         scored.append(
             (name, gold_profiles[name], [(opp.id, m.score) for opp, m in ranked])
@@ -316,12 +343,66 @@ def _build_method_report(
     )
 
 
+# Cosine cutoffs swept by the embeddings experiment (recall-vs-FPR curve).
+EMBEDDING_SWEEP = (0.3, 0.4, 0.5)
+
+
+def _run_embeddings_experiment(
+    store: Store, gold_profiles: dict[str, dict[str, Label]]
+) -> EmbeddingsReport:
+    """Measure the hybrid semantic prefilter WITH vs WITHOUT, on the HEURISTIC
+    matcher (offline, no LLM). Vectors cache in ``store`` so they're embedded once
+    and reused across the threshold sweep."""
+
+    def _run(label: str, threshold: float | None, embedder: object | None):
+        sim = threshold if threshold is not None else EMBEDDING_SIM_THRESHOLD
+        scored = _score_profiles(
+            store,
+            HEURISTIC,
+            gold_profiles,
+            with_benchmarks=False,
+            with_documents=False,
+            full_text=False,
+            embedder=embedder,
+            sim_threshold=sim,
+        )
+        rep = _build_method_report(
+            label, scored, attribution_k=ATTRIBUTION_K, thresholds=[]
+        )
+        return EmbeddingsRun(
+            label=label,
+            threshold=threshold,
+            aggregate=rep.aggregate,
+            attribution=rep.attribution,
+        )
+
+    runs = [_run("baseline (CPV/keyword)", None, None)]
+    embedder = get_embedder()
+    if embedder is not None:
+        for t in EMBEDDING_SWEEP:
+            runs.append(_run(f"semantic >= {t}", t, embedder))
+            agg = runs[-1].aggregate
+            logger.info(
+                "eval embeddings thr=%.2f recall=%.2f fpr=%.2f drop=%s",
+                t,
+                agg.recall,
+                agg.false_positive_rate,
+                runs[-1].attribution.prefilter_drop if runs[-1].attribution else "-",
+            )
+    return EmbeddingsReport(
+        available=embedder is not None,
+        model_id=getattr(embedder, "model_id", None),
+        runs=runs,
+    )
+
+
 def run_eval(
     db: str | None = None,
     with_benchmarks: bool = False,
     with_documents: bool = False,
     diagnostics: bool = False,
     full_text: bool = False,
+    embeddings: bool = False,
 ) -> EvalReport:
     """Evaluate the matcher(s) over the shipped corpus for the gold profiles.
 
@@ -333,6 +414,8 @@ def run_eval(
     (Stage-1-prefilter vs Stage-2-ranking loss) and the min_score threshold sweep.
     ``full_text`` runs the controlled experiment: re-score each method feeding the
     UNCAPPED requirements text and report the aggregate delta vs the capped brief.
+    ``embeddings`` runs the OFFLINE (heuristic-only) hybrid-prefilter measurement:
+    recall/FPR/attribution WITH vs WITHOUT the semantic signal, swept over cutoffs.
     """
     corpus = load_corpus()
     gold = load_gold()
@@ -410,6 +493,9 @@ def run_eval(
                     brief[method].precision_at_10,
                     full_report.aggregate.precision_at_10,
                 )
+        embeddings_report = (
+            _run_embeddings_experiment(store, gold_profiles) if embeddings else None
+        )
     finally:
         store.close()
 
@@ -422,4 +508,5 @@ def run_eval(
         attribution_k=attribution_k,
         thresholds=thresholds,
         full_text=full_text_deltas,
+        embeddings=embeddings_report,
     )

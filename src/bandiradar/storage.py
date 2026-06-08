@@ -105,6 +105,13 @@ CREATE TABLE IF NOT EXISTS extractions (
     url      TEXT NOT NULL,
     data     TEXT NOT NULL       -- JSON of the LLM-extracted bando fields
 );
+
+CREATE TABLE IF NOT EXISTS embeddings (
+    content_hash TEXT NOT NULL,  -- Opportunity.content_hash (self-invalidates on amend)
+    model_id     TEXT NOT NULL,  -- embedder identity (e.g. fastembed:<model>)
+    vector       TEXT NOT NULL,  -- JSON array of floats
+    PRIMARY KEY (content_hash, model_id)
+);
 """
 
 # Columns added AFTER a table's original release. ``_migrate`` introspects each
@@ -536,5 +543,32 @@ class SqliteExtractionCache:
             "INSERT INTO extractions (url_hash, url, data) VALUES (?, ?, ?) "
             "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, data=excluded.data",
             (self._key(url), url, json.dumps(data, ensure_ascii=False)),
+        )
+        self.store.conn.commit()
+
+
+class SqliteEmbeddingCache:
+    """SQLite-backed EmbeddingCache (matching.embeddings.EmbeddingCache Protocol).
+
+    Persists opportunity vectors keyed by (content_hash, model_id), so embedding is
+    paid once per opportunity and reused across profiles, threshold sweeps and runs.
+    An amended opportunity gets a fresh content_hash -> a clean miss -> re-embed.
+    """
+
+    def __init__(self, store: Store) -> None:
+        self.store = store
+
+    def get(self, content_hash: str, model_id: str) -> list[float] | None:
+        row = self.store.conn.execute(
+            "SELECT vector FROM embeddings WHERE content_hash=? AND model_id=?",
+            (content_hash, model_id),
+        ).fetchone()
+        return json.loads(row["vector"]) if row else None
+
+    def set(self, content_hash: str, model_id: str, vector: list[float]) -> None:
+        self.store.conn.execute(
+            "INSERT INTO embeddings (content_hash, model_id, vector) VALUES (?, ?, ?) "
+            "ON CONFLICT(content_hash, model_id) DO UPDATE SET vector=excluded.vector",
+            (content_hash, model_id, json.dumps(vector)),
         )
         self.store.conn.commit()

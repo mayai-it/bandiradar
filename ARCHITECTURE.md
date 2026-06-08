@@ -187,11 +187,19 @@ most regional portals are bespoke and need a dedicated adapter (CKAN/Socrata lik
 ## 6. Matching engine (two stages)
 
 **Stage 1 — deterministic prefilter (no LLM, pure function, fully tested).**
-Filters on region/geo, value range, `deadline > now`, and a relevance signal:
-the opportunity's CPV codes prefix-matched against the profile's `cpv_interests`,
-OR a keyword overlap; plus exclusion terms. (There is no ATECO→CPV mapping; ATECO
-lives on the profile as metadata and is not used as a prefilter gate.) Cuts
-thousands of rows to dozens. Cheap and explainable.
+Ordered gates: `deadline > now`, instrument type (`Profile.seeks`: grant vs
+tender), region/geo, value range, exclusion terms, and a relevance signal: the
+opportunity's CPV codes prefix-matched against the profile's `cpv_interests`, OR a
+keyword overlap. (There is no ATECO→CPV mapping; ATECO lives on the profile as
+metadata and is not used as a prefilter gate.) Cuts thousands of rows to dozens.
+Cheap and explainable.
+
+*Optional hybrid signal (off by default):* when an `Embedder` is injected
+(`run_match(embedder=…)`, the `embeddings` extra), the relevance gate also passes on
+`cosine(profile, opportunity) ≥ threshold` — a semantic recall lever for items that
+share no exact CPV/keyword. Vectors cache by `content_hash`. Whether it nets
+positive is measured by `eval --embeddings`; the default path stays pure (no model,
+no network). See `matching/embeddings.py`.
 
 **Stage 2 — LLM relevance.**
 Input: `(profile, opportunity minimal text)`. Structured output:

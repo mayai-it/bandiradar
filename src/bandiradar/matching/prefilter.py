@@ -18,15 +18,30 @@ Gates, evaluated in order (the first failing gate's reason is reported):
                 overlap. Missing data never drops.
 5. Exclusions — drop if any exclusion term appears in title + summary.
 6. Relevance  — when the profile has cpv_interests or keywords, require a CPV
-                match or a keyword hit; otherwise this gate is skipped.
+                match or a keyword hit; OR (hybrid, opt-in) a semantic-embedding
+                similarity >= threshold. Skipped if the profile gives no signal.
+
+The semantic signal is OPT-IN: pass an ``embedder`` (else ``None`` -> the gate is
+exactly the deterministic CPV/keyword test it has always been). This is the only
+place Stage 1 may do local model inference + a cache lookup; the default path stays
+pure (no model, no network, no I/O).
 """
 
 from __future__ import annotations
 
 import math
 import re
+from collections.abc import Callable
 from datetime import UTC, datetime
 
+from bandiradar.matching.embeddings import (
+    EMBEDDING_SIM_THRESHOLD,
+    Embedder,
+    EmbeddingCache,
+    cosine,
+    embed_opportunity,
+    profile_text,
+)
 from bandiradar.models import Kind, Opportunity, Profile, Seek
 
 _BYPASS_GEO = {"national", "eu"}
@@ -209,7 +224,13 @@ def _opp_interval(opp: Opportunity) -> tuple[float, float]:
     return opp.value_amount, opp.value_amount  # type: ignore[return-value]
 
 
-def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, str]:
+def _evaluate(
+    opp: Opportunity,
+    profile: Profile,
+    now: datetime,
+    semantic: Callable[[Opportunity], float] | None = None,
+    sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
+) -> tuple[bool, str]:
     """Return (kept, reason). ``reason`` is the first failing gate, else ""."""
 
     # Gate 1 — open.
@@ -248,7 +269,7 @@ def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, 
             return False, f"excluded term: {term}"
 
     # Gate 6 — relevance signal (skipped if the profile gives no signal sources).
-    if profile.cpv_interests or profile.keywords:
+    if profile.cpv_interests or profile.keywords or semantic is not None:
         cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
         # Keyword overlap on MEANINGFUL tokens only (stopwords stripped from both
         # sides), so generic procurement words don't create cross-sector hits.
@@ -258,8 +279,13 @@ def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, 
         elig = f"{_norm(opp.eligibility_text)} {_norm(opp.document_text)}"
         opp_tokens = meaningful_tokens(f"{haystack} {elig}")
         keyword_ok = bool(profile_tokens & opp_tokens)
+        # Semantic rescue (opt-in): only computed when the cheap signals miss, so
+        # an embedder is invoked just for the items it might actually save.
         if not (cpv_ok or keyword_ok):
-            return False, "no CPV match or keyword hit"
+            if semantic is None:
+                return False, "no CPV match or keyword hit"
+            if semantic(opp) < sim_threshold:
+                return False, "no CPV match, keyword hit, or semantic similarity"
 
     return True, ""
 
@@ -272,20 +298,43 @@ def _resolve_now(now: datetime | None) -> datetime:
     return now
 
 
+def _semantic_scorer(
+    profile: Profile,
+    embedder: Embedder | None,
+    cache: EmbeddingCache | None,
+) -> Callable[[Opportunity], float] | None:
+    """Build the ``opp -> cosine`` scorer, embedding the profile ONCE. ``None`` when
+    no embedder is injected (the prefilter then behaves exactly as before)."""
+    if embedder is None:
+        return None
+    profile_vec = embedder.embed([profile_text(profile)])[0]
+
+    def score(opp: Opportunity) -> float:
+        return cosine(profile_vec, embed_opportunity(opp, embedder, cache))
+
+    return score
+
+
 def prefilter_explain(
     opportunities: list[Opportunity],
     profile: Profile,
     now: datetime | None = None,
+    *,
+    embedder: Embedder | None = None,
+    embedding_cache: EmbeddingCache | None = None,
+    sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
 ) -> list[tuple[Opportunity, bool, str]]:
     """Like :func:`prefilter`, but report the keep flag + drop reason per item.
 
-    The reason is the first failing gate's message, or ``""`` when kept. Pure
-    and order-preserving.
+    The reason is the first failing gate's message, or ``""`` when kept.
+    Order-preserving. With no ``embedder`` it is pure (no I/O); an injected embedder
+    adds the opt-in semantic relevance signal (Gate 6).
     """
     resolved = _resolve_now(now)
+    semantic = _semantic_scorer(profile, embedder, embedding_cache)
     results: list[tuple[Opportunity, bool, str]] = []
     for opp in opportunities:
-        kept, reason = _evaluate(opp, profile, resolved)
+        kept, reason = _evaluate(opp, profile, resolved, semantic, sim_threshold)
         results.append((opp, kept, reason))
     return results
 
@@ -294,8 +343,21 @@ def prefilter(
     opportunities: list[Opportunity],
     profile: Profile,
     now: datetime | None = None,
+    *,
+    embedder: Embedder | None = None,
+    embedding_cache: EmbeddingCache | None = None,
+    sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
 ) -> list[Opportunity]:
     """Return the opportunities that survive every Stage-1 gate (order-preserving)."""
     return [
-        opp for opp, kept, _ in prefilter_explain(opportunities, profile, now) if kept
+        opp
+        for opp, kept, _ in prefilter_explain(
+            opportunities,
+            profile,
+            now,
+            embedder=embedder,
+            embedding_cache=embedding_cache,
+            sim_threshold=sim_threshold,
+        )
+        if kept
     ]

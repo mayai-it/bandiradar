@@ -21,6 +21,10 @@ def _force_offline(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("BANDIRADAR_LLM_MODEL", raising=False)
+    # Embeddings OFF for the whole suite -> get_embedder() is None, so no model is
+    # ever loaded/downloaded even if the `embeddings` extra is installed locally.
+    # Tests that exercise the semantic path inject a deterministic fake embedder.
+    monkeypatch.setenv("BANDIRADAR_EMBEDDINGS", "none")
 
 
 @pytest.fixture(autouse=True)

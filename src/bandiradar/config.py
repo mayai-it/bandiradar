@@ -29,6 +29,29 @@ _API_KEY_ENV: dict[str, str] = {
     "openai": "OPENAI_API_KEY",
 }
 
+# Optional embeddings backend (the ``embeddings`` extra). A small MULTILINGUAL
+# model so Italian opportunity/profile text embeds well. Override via
+# BANDIRADAR_EMBEDDINGS_MODEL; disable entirely with BANDIRADAR_EMBEDDINGS=none.
+DEFAULT_EMBEDDINGS_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+
+def embeddings_enabled() -> bool:
+    """False only when explicitly disabled (``BANDIRADAR_EMBEDDINGS=none``).
+
+    Default-on so that, once the extra is installed, ``eval --embeddings`` / an
+    opt-in match can use it; ``get_embedder`` still returns None when fastembed is
+    absent. The test suite forces ``none`` so it never loads a model.
+    """
+    return os.environ.get("BANDIRADAR_EMBEDDINGS", "").strip().lower() != "none"
+
+
+def embeddings_model() -> str:
+    """The embeddings model id: BANDIRADAR_EMBEDDINGS_MODEL override, else default."""
+    return (
+        os.environ.get("BANDIRADAR_EMBEDDINGS_MODEL", "").strip()
+        or DEFAULT_EMBEDDINGS_MODEL
+    )
+
 
 def llm_provider() -> str:
     """The configured provider, lowercased; ``"none"`` (offline) by default."""

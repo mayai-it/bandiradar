@@ -89,6 +89,73 @@ def test_tender_only_profile_drops_grants_and_incentives():
 
 
 # --------------------------------------------------------------------------- #
+# Gate 6 — hybrid semantic signal (opt-in embedder)
+# --------------------------------------------------------------------------- #
+
+
+def _semantic_case():
+    """A profile + opportunity that share concept words (in capabilities) but NO
+    keyword-gate token, so the deterministic gate drops it and only semantics can
+    rescue it."""
+    from test_embeddings import FakeEmbedder
+
+    profile = Profile(
+        name="p",
+        keywords=["nomatchtoken"],  # shares nothing with the opportunity text
+        capabilities="ricerca quantistica fotonica avanzata",
+    )
+    opp = make_opp(
+        id="x:sem",
+        kind="incentive",
+        title="Bando ricerca quantistica fotonica",
+        summary="contributi alla fotonica",
+    )
+    return profile, opp, FakeEmbedder()
+
+
+def test_semantic_rescues_item_the_keyword_gate_would_drop():
+    profile, opp, embedder = _semantic_case()
+    # Without an embedder: dropped by the deterministic relevance gate.
+    assert prefilter([opp], profile, NOW) == []
+    assert reasons_by_id([opp], profile)["x:sem"] == (
+        False,
+        "no CPV match or keyword hit",
+    )
+    # With the embedder: the semantic signal rescues it.
+    kept = prefilter([opp], profile, NOW, embedder=embedder, sim_threshold=0.4)
+    assert [o.id for o in kept] == ["x:sem"]
+
+
+def test_semantic_below_threshold_still_drops():
+    profile, opp, embedder = _semantic_case()
+    explained = prefilter_explain(
+        [opp], profile, NOW, embedder=embedder, sim_threshold=0.99
+    )
+    kept, reason = explained[0][1], explained[0][2]
+    assert kept is False
+    assert reason == "no CPV match, keyword hit, or semantic similarity"
+
+
+def test_semantic_does_not_override_hard_gates():
+    # Even a perfect semantic match cannot rescue a wrong-region item: the hard
+    # gates run BEFORE the relevance gate.
+    from test_embeddings import FakeEmbedder
+
+    profile = Profile(
+        name="p", regions=["Lazio"], capabilities="ricerca quantistica fotonica"
+    )
+    opp = make_opp(
+        id="x:geo",
+        kind="incentive",
+        geo_scope="regional",
+        region="Sicilia",
+        title="ricerca quantistica fotonica",
+    )
+    kept = prefilter([opp], profile, NOW, embedder=FakeEmbedder(), sim_threshold=0.0)
+    assert kept == []  # dropped by the region gate, semantics never consulted
+
+
+# --------------------------------------------------------------------------- #
 # Real profiles against the synthetic OCDS fixture
 # --------------------------------------------------------------------------- #
 

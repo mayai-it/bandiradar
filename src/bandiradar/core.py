@@ -18,6 +18,7 @@ import yaml
 
 from bandiradar import config, resources
 from bandiradar.http import FetchError
+from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, Embedder
 from bandiradar.matching.llm import LLMClient
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
@@ -31,7 +32,12 @@ from bandiradar.models import (
     SourceResult,
 )
 from bandiradar.sources.base import ProgressFn, Source, get, list_sources
-from bandiradar.storage import SqliteDocumentCache, SqliteScoreCache, Store
+from bandiradar.storage import (
+    SqliteDocumentCache,
+    SqliteEmbeddingCache,
+    SqliteScoreCache,
+    Store,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -442,6 +448,8 @@ def run_match(
     with_benchmarks: bool = False,
     with_documents: bool = False,
     full_text: bool = False,
+    embedder: Embedder | None = None,
+    sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
 ) -> list[tuple[Opportunity, Match]]:
     """Prefilter + score stored opportunities, ranked by score descending.
 
@@ -450,7 +458,9 @@ def run_match(
     each prefiltered opportunity's attachment PDFs and folds their text into the
     matcher input (cached per URL). Both are graceful no-ops when there's nothing
     to add. ``full_text`` feeds the uncapped requirements text to the LLM brief
-    (eval experiment only); default keeps the capped brief.
+    (eval experiment only); default keeps the capped brief. ``embedder`` (opt-in)
+    turns on the hybrid Stage-1 semantic relevance signal, vectors cached on the
+    same DB; ``None`` keeps the deterministic CPV/keyword prefilter.
     """
 
     def _stored() -> list[Opportunity]:
@@ -465,7 +475,14 @@ def run_match(
             run_fetch(sid, store, sample=True, now=now)
         opportunities = _stored()
 
-    kept = prefilter(opportunities, profile, now=now)
+    kept = prefilter(
+        opportunities,
+        profile,
+        now=now,
+        embedder=embedder,
+        embedding_cache=SqliteEmbeddingCache(store) if embedder is not None else None,
+        sim_threshold=sim_threshold,
+    )
 
     if with_documents:
         from bandiradar.documents import enrich as enrich_documents

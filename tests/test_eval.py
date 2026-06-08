@@ -195,6 +195,42 @@ def test_cli_eval_human_and_json():
     assert report["methods"][0]["aggregate"]["precision_at_5"] >= 0.0
 
 
+def test_run_eval_embeddings_unavailable_is_graceful():
+    # conftest disables embeddings -> get_embedder() is None.
+    r = ev.run_eval(embeddings=True)
+    assert r.embeddings is not None
+    assert r.embeddings.available is False
+    assert len(r.embeddings.runs) == 1  # baseline only, no sweep
+    assert r.embeddings.runs[0].threshold is None
+
+
+def test_run_eval_embeddings_experiment_with_fake_embedder(monkeypatch):
+    from test_embeddings import FakeEmbedder
+
+    monkeypatch.setattr(ev, "get_embedder", lambda: FakeEmbedder())
+    r = ev.run_eval(embeddings=True)
+    assert r.embeddings is not None and r.embeddings.available is True
+    runs = r.embeddings.runs
+    assert runs[0].label.startswith("baseline")
+    assert len(runs) == 1 + len(ev.EMBEDDING_SWEEP)
+
+    base = runs[0]
+    for run in runs[1:]:
+        # The semantic signal is an OR rescue: it can only KEEP more items, so
+        # recall never falls and Stage-1 prefilter drops never rise vs baseline.
+        assert run.aggregate.recall >= base.aggregate.recall - 1e-9
+        assert run.aggregate.returned >= base.aggregate.returned
+        assert run.attribution.prefilter_drop <= base.attribution.prefilter_drop
+
+
+def test_cli_eval_embeddings_section():
+    out = runner.invoke(app, ["eval", "--embeddings"])
+    assert out.exit_code == 0
+    assert "embeddings semantic prefilter" in out.stdout
+    # extra disabled in the suite -> graceful "unavailable" line, never a crash.
+    assert "backend unavailable" in out.stdout
+
+
 def test_cli_eval_diagnostics_and_full_text():
     human = runner.invoke(app, ["eval", "--diagnostics", "--full-text"])
     assert human.exit_code == 0

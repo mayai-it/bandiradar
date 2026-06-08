@@ -732,7 +732,39 @@ def _render_eval(report) -> str:
         lines += _render_sweep(report)
     if report.full_text:
         lines += _render_full_text(report)
+    if report.embeddings is not None:
+        lines += _render_embeddings(report.embeddings)
     return "\n".join(lines)
+
+
+def _render_embeddings(emb) -> list[str]:
+    """WITH/WITHOUT semantic-prefilter table (heuristic, offline). DROP = Stage-1
+    prefilter drops — the recall lever; should fall vs baseline."""
+    lines = [
+        "",
+        "== embeddings semantic prefilter — WITH vs WITHOUT (heuristic, offline)",
+    ]
+    if not emb.available:
+        lines.append(
+            "   backend unavailable — install + enable: uv sync --extra embeddings "
+            "(BANDIRADAR_EMBEDDINGS!=none)"
+        )
+        return lines
+    lines.append(f"   model: {emb.model_id}")
+    head = (
+        f"{'CONFIG':22} {'P@5':>5} {'P@10':>5} {'RECALL':>6} {'FPR':>5} "
+        f"{'RET':>4} {'DROP':>4}"
+    )
+    lines += [head, "-" * len(head)]
+    for run in emb.runs:
+        m = run.aggregate
+        drop = run.attribution.prefilter_drop if run.attribution else 0
+        lines.append(
+            f"{_trunc(run.label, 22):22} {m.precision_at_5:>5.2f} "
+            f"{m.precision_at_10:>5.2f} {m.recall:>6.2f} "
+            f"{m.false_positive_rate:>5.2f} {m.returned:>4} {drop:>4}"
+        )
+    return lines
 
 
 def _render_attribution(report) -> list[str]:
@@ -823,6 +855,11 @@ def eval_cmd(
         "--full-text",
         help="Experiment: re-score with FULL requirements text, report delta vs brief",
     ),
+    embeddings: bool = typer.Option(
+        False,
+        "--embeddings",
+        help="Experiment: hybrid semantic prefilter WITH vs WITHOUT (needs the extra)",
+    ),
     db: str | None = typer.Option(
         None, "--db", help="SQLite path (default: in-memory throwaway)"
     ),
@@ -844,6 +881,7 @@ def eval_cmd(
             with_documents=with_documents,
             diagnostics=diagnostics,
             full_text=full_text,
+            embeddings=embeddings,
         )
     except Exception as exc:  # noqa: BLE001 — clean operational message, no traceback
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)

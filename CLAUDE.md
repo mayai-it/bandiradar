@@ -60,6 +60,8 @@ uv run bandiradar fetch --source anac --sample   # offline sample run
 uv run bandiradar match --profile mayai --sample # --profile: bundled name OR path
 uv run bandiradar eval       # matching-quality metrics over the labelled corpus
 uv run bandiradar mcp        # start MCP server
+# optional semantic prefilter (downloads a model once); measure it:
+uv sync --extra embeddings && uv run bandiradar eval --embeddings
 ```
 
 ## Matching evaluation (`bandiradar eval`)
@@ -85,6 +87,19 @@ precision/recall/FPR curve across cutoffs. **Full-text experiment**
 text (vs the `prompts._MAX_DOC_CHARS` brief) and reports the aggregate delta — a
 controlled A/B, threaded via `full_text=` through `run_match`/`score_all`/`score`
 and part of the relevance cache key. None of these change default matcher behaviour.
+
+**Embeddings semantic prefilter** (OPTIONAL, OFF by default — the `embeddings`
+extra = fastembed/ONNX, no torch). `matching/embeddings.py` adds a hybrid Stage-1
+relevance signal: `cpv OR keyword OR cosine ≥ threshold`, injected via
+`run_match(embedder=…)`/`prefilter(embedder=…)` (`get_embedder()` → None when the
+extra/model is absent, so the default path is unchanged and the test suite never
+loads a model — `conftest` forces `BANDIRADAR_EMBEDDINGS=none`; tests use a fake
+embedder). Opportunity vectors cache in SQLite (`SqliteEmbeddingCache`, by
+content_hash). **Measured & currently NOT enabled:** `eval --embeddings` (offline,
+heuristic) showed recall +0.01–0.02 but FPR up and the candidate set 1.2–2.7× —
+not net-positive, because the gold corrections already removed most prefilter-drops
+(only ~6 remain). Keep the code optional/off; revisit with reranking or a higher
+threshold.
 
 ## Conventions
 - Python 3.12, full type hints, pydantic v2.
