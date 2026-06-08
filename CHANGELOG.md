@@ -4,6 +4,32 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.3.0] — 2026-06-09 — Matching quality
+
+Makes matching quality **measurable and tunable**. Backward-compatible — the
+default suite stays fully offline / zero-secret; programmatic callers are unchanged.
+
+### Added
+- Labelled evaluation harness (`bandiradar eval`) over a shipped 292-opportunity /
+  8-profile gold set: precision@5/@10, recall, FPR — per profile + macro-aggregate.
+- `eval --diagnostics`: recall attribution (prefilter-drop vs below-k vs gate-level),
+  min_score threshold sweep, full-text A/B — all free (no extra scoring).
+- Operating-point modes: `--mode {precision|balanced|recall}` on match/watch/batch
+  + MCP `search_opportunities`, mapping to min_score cutoffs (40 / 20 / 0).
+  Default `balanced` at the CLI/MCP layer; `run_match`'s programmatic default stays
+  recall (min_score 0) — backward-compatible.
+- "Matching quality (measured)" README section: reproducible heuristic-vs-LLM numbers
+  + honest limits.
+- `seeks` profile dimension (grant vs tender bidder); deterministic gold corrections
+  (geo / instrument / seeks) via `scripts/correct_gold.py`.
+- Optional, OFF by default, both measured: embeddings semantic prefilter
+  (`embeddings` extra — net-negative at the current recall ceiling) and listwise
+  reranking (`eval --rerank` — cheaper top-k, loses calibrated thresholding).
+
+### Changed
+- CLI/MCP default operating point is now `balanced` (min_score 20). Programmatic
+  callers unchanged.
+
 ## [0.2.0] — 2026-06-06 — Reliability
 
 Hardens live fetching and observability. Backward-compatible — existing SQLite DBs
