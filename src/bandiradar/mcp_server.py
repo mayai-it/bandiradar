@@ -78,7 +78,8 @@ def search_opportunities(
     profile: dict[str, Any] | None = None,
     source: str | None = None,
     sample: bool = True,
-    min_score: int = 0,
+    mode: str = core.DEFAULT_MODE,
+    min_score: int | None = None,
     limit: int | None = None,
     with_benchmarks: bool = False,
     with_documents: bool = False,
@@ -87,10 +88,13 @@ def search_opportunities(
     """Rank opportunities for a profile (offline in sample mode).
 
     Accepts EITHER ``profile_path`` OR an inline ``profile`` dict. Returns ranked
-    canonical views — no raw payloads. ``with_benchmarks`` adds ANAC historical
-    benchmark notes; ``with_documents`` folds attachment-PDF text into matching.
+    canonical views — no raw payloads. ``mode`` is the operating point
+    (precision|balanced|recall; precision needs an LLM key); an explicit ``min_score``
+    overrides it. ``with_benchmarks`` adds ANAC historical benchmark notes;
+    ``with_documents`` folds attachment-PDF text into matching.
     """
     company = _resolve_profile(profile_path, profile)
+    cutoff = {"min_score": min_score} if min_score is not None else {"mode": mode}
     store = Store(db)
     try:
         ranked = core.run_match(
@@ -98,10 +102,10 @@ def search_opportunities(
             store,
             source_id=source,
             sample=sample,
-            min_score=min_score,
             limit=limit,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
+            **cutoff,
         )
         return [_opportunity_view(opp, m) for opp, m in ranked]
     finally:

@@ -437,6 +437,28 @@ def run_doctor(
     return report
 
 
+# Operating points — a min_score cutoff per mode. The precision points are
+# meaningful WITH an LLM (its 0-100 scores separate cleanly); the offline heuristic
+# scores are too coarse to threshold, so keyless runs are effectively recall-oriented
+# whatever the mode (documented in the CLI + README "Matching quality").
+MATCH_MODES: dict[str, int] = {
+    "precision": 40,  # LLM ~P@5 0.73 / P@10 0.68 / recall 0.45 / FPR 0.03
+    "balanced": 20,  # LLM ~P@5 0.46 / recall 0.78 — the default
+    "recall": 0,  # everything prefiltered — the monitor's safety net
+}
+DEFAULT_MODE = "balanced"
+
+
+def min_score_for_mode(mode: str) -> int:
+    """Map an operating-point mode to its min_score cutoff (raises on unknown)."""
+    try:
+        return MATCH_MODES[mode]
+    except KeyError:
+        raise ValueError(
+            f"unknown mode {mode!r}; choose one of {', '.join(MATCH_MODES)}"
+        ) from None
+
+
 def run_match(
     profile: Profile,
     store: Store,
@@ -444,6 +466,7 @@ def run_match(
     sample: bool = False,
     client: LLMClient | None = None,
     min_score: int = 0,
+    mode: str | None = None,
     limit: int | None = None,
     now: datetime | None = None,
     with_benchmarks: bool = False,
@@ -461,8 +484,12 @@ def run_match(
     to add. ``full_text`` feeds the uncapped requirements text to the LLM brief
     (eval experiment only); default keeps the capped brief. ``embedder`` (opt-in)
     turns on the hybrid Stage-1 semantic relevance signal, vectors cached on the
-    same DB; ``None`` keeps the deterministic CPV/keyword prefilter.
+    same DB; ``None`` keeps the deterministic CPV/keyword prefilter. ``mode`` (an
+    operating point in :data:`MATCH_MODES`) sets the score cutoff and takes
+    precedence over ``min_score`` when given.
     """
+    if mode is not None:
+        min_score = min_score_for_mode(mode)
 
     def _stored() -> list[Opportunity]:
         # Pass `now` so each opportunity's lifecycle status is recomputed for the
@@ -548,6 +575,7 @@ def run_monitor(
     sample: bool = False,
     client: LLMClient | None = None,
     min_score: int = 0,
+    mode: str | None = None,
     limit: int | None = None,
     now: datetime | None = None,
 ) -> list[tuple[Opportunity, Match]]:
@@ -560,6 +588,7 @@ def run_monitor(
         sample=sample,
         client=client,
         min_score=min_score,
+        mode=mode,
         limit=limit,
         now=now,
     )
@@ -572,6 +601,7 @@ def run_batch(
     sample: bool = False,
     client: LLMClient | None = None,
     min_score: int = 0,
+    mode: str | None = None,
     top: int | None = None,
     with_benchmarks: bool = False,
     with_documents: bool = False,
@@ -611,6 +641,7 @@ def run_batch(
             sample=False,  # sources already ensured above
             client=client,
             min_score=min_score,
+            mode=mode,
             now=now,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
@@ -631,6 +662,8 @@ def run_watch(
     sample: bool = False,
     since: datetime | None = None,
     client: LLMClient | None = None,
+    min_score: int = 0,
+    mode: str | None = None,
     with_benchmarks: bool = False,
     with_documents: bool = False,
     now: datetime | None = None,
@@ -674,6 +707,8 @@ def run_watch(
         source_id=None,
         sample=False,  # already fetched above
         client=client,
+        min_score=min_score,
+        mode=mode,
         now=moment,
         with_benchmarks=with_benchmarks,
         with_documents=with_documents,

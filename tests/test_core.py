@@ -90,6 +90,33 @@ def test_run_match_grant_only_profile_drops_tenders(store):
     assert {opp.id for opp, _ in ranked} == {"x:incentive"}
 
 
+def test_min_score_for_mode_mapping():
+    assert core.min_score_for_mode("precision") == 40
+    assert core.min_score_for_mode("balanced") == 20
+    assert core.min_score_for_mode("recall") == 0
+    assert core.DEFAULT_MODE == "balanced"
+    import pytest
+
+    with pytest.raises(ValueError):
+        core.min_score_for_mode("nope")
+
+
+def test_run_match_mode_maps_and_overrides_min_score(store):
+    mayai = core.load_profile("mayai")
+    kw = dict(source_id="synthetic", sample=True, now=NOW)
+    # mode == the equivalent explicit cutoff
+    for mode in ("precision", "balanced", "recall"):
+        by_mode = core.run_match(mayai, store, mode=mode, **kw)
+        by_score = core.run_match(
+            mayai, store, min_score=core.min_score_for_mode(mode), **kw
+        )
+        assert [o.id for o, _ in by_mode] == [o.id for o, _ in by_score]
+    # mode takes precedence over an explicit min_score
+    precedence = core.run_match(mayai, store, mode="precision", min_score=0, **kw)
+    expected = core.run_match(mayai, store, min_score=40, **kw)
+    assert [o.id for o, _ in precedence] == [o.id for o, _ in expected]
+
+
 def test_run_monitor_fetches_then_matches(store):
     mayai = core.load_profile("mayai")
     ranked = core.run_monitor(mayai, "synthetic", store, sample=True, now=NOW)

@@ -192,6 +192,63 @@ Studio comm. software-licenses      50               25   ← weak fit penalized
 MedForniture medical devices        76               92   ← strong sector fit held
 ```
 
+## Matching quality (measured)
+
+Most matching repos ask you to trust them. This one ships the numbers. On a
+**labelled gold set of 292 real opportunities × 8 company profiles**
+(`src/bandiradar/data/eval/`), here is the matcher quality — reproduce it any time
+with `bandiradar eval --diagnostics` (offline for the heuristic; set an LLM key for
+the LLM column):
+
+```text
+min_score sweep — precision@5 / precision@10 / recall / false-positive-rate / returned
+                 P@5   P@10  recall  FPR    returned
+HEURISTIC (offline, zero-secret)
+  recall  (0)   0.34  0.20   0.87   0.29     99      ← the firehose
+  balanced(20)  0.34  0.20   0.87   0.29     99      ← scores too coarse to move
+  precision(40) 0.53  0.39   0.64   0.24     82
+  (60)          0.25  0.25   0.03   0.00      2      ← collapses; no usable cut
+LLM pointwise (anthropic Haiku)
+  recall  (0)   0.37  0.24   0.87   0.29     99      ← the firehose
+  balanced(20)  0.46  0.37   0.78   0.11     51
+  precision(40) 0.73  0.68   0.45   0.03     26      ← the operating point
+  (60)          0.81  0.80   0.41   0.02     20
+```
+
+**Read it:** with an LLM, raising the cutoff cleanly trades recall for precision —
+at `precision` (min_score ≥ 40) **P@5 0.73 / P@10 0.68 / FPR 0.03**, roughly double
+the precision of the unfiltered firehose (**P@5 0.37 / FPR 0.29**) while still
+holding ~half the recall. The **offline heuristic** is a genuine zero-secret
+fallback (P@5 0.34) but its scores are too coarse to threshold — it has no usable
+precision cut (it collapses to 2 items at 60). So **the LLM is the matcher to ship**,
+and precision modes are meaningful **only with a key**; keyless runs are
+recall-oriented whatever the mode.
+
+### Operating-point modes
+
+`match` / `watch` / `batch` (and the MCP `search_opportunities`) take a `--mode`:
+
+| mode | cutoff | with an LLM key | use it for |
+|------|--------|-----------------|------------|
+| `precision` | `min_score ≥ 40` | P@5 0.73, P@10 0.68, FPR 0.03 | a tight shortlist |
+| `balanced` *(default)* | `min_score ≥ 20` | P@5 0.46, recall 0.78 | day-to-day |
+| `recall` | everything prefiltered | recall 0.87 | the monitor's safety net |
+
+`--min-score N` still works for power users (it overrides `--mode`).
+
+### Honest limits (also measured — `eval --diagnostics`)
+
+- **Embeddings** (semantic prefilter, the `embeddings` extra) are **built and
+  measured but net-negative** at the current recall ceiling: ~+0.02 recall for a
+  1.2–2.7× larger candidate set and higher FPR, so they ship **optional and off**.
+- **Recall ceiling is real.** Gate attribution shows the few relevant items the
+  prefilter drops are **4/6 correctly-closed bandi** (the deadline gate is right —
+  expired calls shouldn't surface) and only **2** a lexical gap; no over-strict gate
+  to tune.
+- **Listwise reranking** (`eval --rerank`) is an **optional cheaper top-k mode**
+  (one LLM call/profile vs N) that lifts top-k slightly but loses the calibrated
+  thresholding — so pointwise stays the default.
+
 ## Sources
 
 | Source | What it delivers | Live fetch |

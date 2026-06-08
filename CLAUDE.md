@@ -64,6 +64,16 @@ uv run bandiradar mcp        # start MCP server
 uv sync --extra embeddings && uv run bandiradar eval --embeddings
 ```
 
+## Operating-point modes
+`match`/`watch`/`batch` + `core.run_match`/`run_monitor`/`run_batch`/`run_watch` +
+MCP `search_opportunities` take `--mode` → a `min_score` cutoff via
+`core.MATCH_MODES`: `precision`=40, `balanced`=20 (DEFAULT at the CLI/MCP layer),
+`recall`=0. `--min-score N` overrides `--mode`. `core.run_match`'s programmatic
+default stays `min_score=0`/`mode=None` (recall) — backward-compatible; only the
+CLI/MCP option defaults are `balanced`. Precision points are meaningful WITH an LLM
+key (calibrated 0-100 scores); the offline heuristic can't threshold cleanly, so
+keyless = recall-oriented. Numbers: see README "Matching quality (measured)".
+
 ## Matching evaluation (`bandiradar eval`)
 Runs the matcher over the shipped labelled corpus (`data/eval/`) for the gold
 profiles and prints precision@5/@10, recall, FPR — per profile + macro-aggregate.

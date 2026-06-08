@@ -97,6 +97,54 @@ def test_match_limit(tmp_path):
     assert len(json.loads(result.stdout)) == 1
 
 
+def test_match_modes_run_and_default_is_balanced(tmp_path):
+    # All three operating points run offline; default (no --mode) == balanced.
+    for mode in ("precision", "balanced", "recall"):
+        db = str(tmp_path / f"{mode}.db")
+        r = runner.invoke(
+            app, ["match", "--profile", MAYAI, "--sample", "--mode", mode, "--db", db]
+        )
+        assert r.exit_code == 0
+
+    default = runner.invoke(
+        app,
+        [
+            "match",
+            "--profile",
+            MAYAI,
+            "--sample",
+            "--json",
+            "--db",
+            str(tmp_path / "d.db"),
+        ],
+    )
+    balanced = runner.invoke(
+        app,
+        [
+            "match",
+            "--profile",
+            MAYAI,
+            "--sample",
+            "--json",
+            "--mode",
+            "balanced",
+            "--db",
+            str(tmp_path / "b.db"),
+        ],
+    )
+    assert default.exit_code == 0 and balanced.exit_code == 0
+    assert json.loads(default.stdout) == json.loads(balanced.stdout)
+
+
+def test_match_invalid_mode_errors(tmp_path):
+    db = str(tmp_path / "x.db")
+    r = runner.invoke(
+        app, ["match", "--profile", MAYAI, "--sample", "--mode", "nope", "--db", db]
+    )
+    assert r.exit_code == 1
+    assert "unknown mode" in (r.stdout + str(r.stderr)).lower()
+
+
 def test_benchmarks_build_and_show(tmp_path):
     db = str(tmp_path / "b.db")
     built = runner.invoke(app, ["benchmarks", "build", "--sample", "--db", db])

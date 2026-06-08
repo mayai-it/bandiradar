@@ -103,6 +103,12 @@ app.add_typer(benchmarks_app, name="benchmarks")
 _DEADLINE_FMT = "%Y-%m-%d"
 
 
+def _cutoff_kwargs(mode: str, min_score: int | None) -> dict:
+    """Resolve the score cutoff for a run: an explicit ``--min-score`` wins, else the
+    ``--mode`` operating point. Returns the right kwarg for ``core.run_*``."""
+    return {"min_score": min_score} if min_score is not None else {"mode": mode}
+
+
 def _fmt_deadline(opp) -> str:
     return opp.deadline.strftime(_DEADLINE_FMT) if opp.deadline else "—"
 
@@ -235,7 +241,14 @@ def match(
     profile: str = typer.Option(..., "--profile", help="Path to a profile YAML"),
     source: str | None = typer.Option(None, "--source", help="Limit to a source id"),
     sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
-    min_score: int = typer.Option(0, "--min-score", help="Drop matches below N"),
+    mode: str = typer.Option(
+        core.DEFAULT_MODE,
+        "--mode",
+        help="Operating point: precision|balanced|recall (precision needs an LLM key)",
+    ),
+    min_score: int | None = typer.Option(
+        None, "--min-score", help="Explicit cutoff N (overrides --mode)"
+    ),
     limit: int | None = typer.Option(None, "--limit", help="Keep top N"),
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
@@ -246,19 +259,25 @@ def match(
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
     json_out: bool = typer.Option(False, "--json", help="JSON output"),
 ):
-    """Rank opportunities for a profile (offline on --sample)."""
+    """Rank opportunities for a profile (offline on --sample).
+
+    --mode sets the score cutoff: precision (40), balanced (20, default), recall (0).
+    The precision points are meaningful WITH an LLM key — the offline heuristic's
+    scores are too coarse to threshold, so keyless runs are recall-oriented.
+    """
     store = core.Store(db)
     try:
         company = core.load_profile(profile)
+        cutoff = _cutoff_kwargs(mode, min_score)
         ranked = core.run_match(
             company,
             store,
             source_id=source,
             sample=sample,
-            min_score=min_score,
             limit=limit,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
+            **cutoff,
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -381,6 +400,14 @@ def watch(
     since: str | None = typer.Option(
         None, "--since", help="Override marker: only items changed after this date"
     ),
+    mode: str = typer.Option(
+        core.DEFAULT_MODE,
+        "--mode",
+        help="Operating point: precision|balanced|recall (precision needs an LLM key)",
+    ),
+    min_score: int | None = typer.Option(
+        None, "--min-score", help="Explicit cutoff N (overrides --mode)"
+    ),
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
     ),
@@ -418,6 +445,7 @@ def watch(
             fetch_limit=limit,
             max_pages=max_pages,
             progress=_progress_sink(quiet),
+            **_cutoff_kwargs(mode, min_score),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
@@ -512,7 +540,14 @@ def batch(
         None, "--source", help="Comma-separated source ids (default: all)"
     ),
     sample: bool = typer.Option(False, "--sample", help="Use bundled offline fixture"),
-    min_score: int = typer.Option(0, "--min-score", help="Drop matches below N"),
+    mode: str = typer.Option(
+        core.DEFAULT_MODE,
+        "--mode",
+        help="Operating point: precision|balanced|recall (precision needs an LLM key)",
+    ),
+    min_score: int | None = typer.Option(
+        None, "--min-score", help="Explicit cutoff N (overrides --mode)"
+    ),
     top: int | None = typer.Option(None, "--top", help="Keep top K per profile"),
     with_benchmarks: bool = typer.Option(
         False, "--with-benchmarks", help="Add ANAC historical benchmark notes"
@@ -530,7 +565,11 @@ def batch(
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     csv_path: str | None = typer.Option(None, "--csv", help="Write CSV to PATH"),
 ):
-    """Run every profile in a directory against the sources and compare results."""
+    """Run every profile in a directory against the sources and compare results.
+
+    --mode sets the score cutoff (precision|balanced|recall); precision is meaningful
+    with an LLM key (the offline heuristic can't threshold cleanly).
+    """
     if profiles_dir is not None:
         paths = sorted(Path(profiles_dir).glob("*.yaml"))
         if not paths:
@@ -551,13 +590,13 @@ def batch(
             store,
             source_ids=_source_ids(source),
             sample=sample,
-            min_score=min_score,
             top=top,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
             fetch_limit=limit,
             max_pages=max_pages,
             progress=_progress_sink(json_out or csv_path is not None),
+            **_cutoff_kwargs(mode, min_score),
         )
     except Exception as exc:  # noqa: BLE001
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
