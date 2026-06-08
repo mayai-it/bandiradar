@@ -23,6 +23,16 @@ def fixture(name: str) -> Traversable:
     return _DATA / "fixtures" / name
 
 
+def eval_corpus() -> Traversable:
+    """The labelled evaluation corpus (JSONL of canonical Opportunity records)."""
+    return _DATA / "eval" / "opportunities.jsonl"
+
+
+def eval_gold() -> Traversable:
+    """The evaluation gold labels (per-profile relevant/borderline/not)."""
+    return _DATA / "eval" / "gold.yaml"
+
+
 def profiles_dir() -> Traversable:
     """The bundled example-profiles directory."""
     return _DATA / "profiles"

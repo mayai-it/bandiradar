@@ -697,6 +697,72 @@ def doctor(
 
 
 # --------------------------------------------------------------------------- #
+# eval (matching-quality evaluation)
+# --------------------------------------------------------------------------- #
+
+
+def _render_eval(report) -> str:
+    head = (
+        f"{'PROFILE':28} {'P@5':>5} {'P@10':>5} {'RECALL':>6} {'FPR':>5} "
+        f"{'RET':>4} {'POOL':>4}"
+    )
+    lines = [
+        f"corpus: {report.corpus_size} opportunities | "
+        f"profiles: {len(report.gold_profiles)} | eval_now: {report.eval_now}",
+        f"labels: {report.note}",
+    ]
+
+    def row(label, m):
+        return (
+            f"{_trunc(label, 28):28} {m.precision_at_5:>5.2f} "
+            f"{m.precision_at_10:>5.2f} {m.recall:>6.2f} "
+            f"{m.false_positive_rate:>5.2f} {m.returned:>4} {m.pool:>4}"
+        )
+
+    for method in report.methods:
+        lines += ["", f"method: {method.method}", head, "-" * len(head)]
+        for p in method.profiles:
+            lines.append(row(p.profile, p.metrics))
+        lines.append("-" * len(head))
+        lines.append(row("AGGREGATE (macro avg)", method.aggregate))
+    return "\n".join(lines)
+
+
+@app.command(name="eval")
+def eval_cmd(
+    with_benchmarks: bool = typer.Option(
+        False, "--with-benchmarks", help="Add ANAC historical benchmark enrichment"
+    ),
+    with_documents: bool = typer.Option(
+        False, "--with-documents", help="Fold attachment-PDF text into matching"
+    ),
+    db: str | None = typer.Option(
+        None, "--db", help="SQLite path (default: in-memory throwaway)"
+    ),
+    json_out: bool = typer.Option(False, "--json", help="Emit the structured report"),
+):
+    """Evaluate matching quality over the shipped labelled corpus (offline).
+
+    Always reports the heuristic matcher; if an LLM provider+key is configured, also
+    the LLM matcher on the same gold set. No live fetch happens here.
+    """
+    from bandiradar import evaluation
+
+    try:
+        report = evaluation.run_eval(
+            db=db, with_benchmarks=with_benchmarks, with_documents=with_documents
+        )
+    except Exception as exc:  # noqa: BLE001 — clean operational message, no traceback
+        typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1) from exc
+
+    if json_out:
+        typer.echo(report.model_dump_json(indent=2))
+    else:
+        typer.echo(_render_eval(report))
+
+
+# --------------------------------------------------------------------------- #
 # mcp
 # --------------------------------------------------------------------------- #
 

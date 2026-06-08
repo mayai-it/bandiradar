@@ -39,6 +39,7 @@ MODULES = [
     "bandiradar.intelligence.store",
     "bandiradar.intelligence.enrichment",
     "bandiradar.core",
+    "bandiradar.evaluation",
     "bandiradar.cli",
     "bandiradar.mcp_server",
 ]

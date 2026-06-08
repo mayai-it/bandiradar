@@ -30,12 +30,14 @@ src/bandiradar/
     prompts.py     # prompt templates
   storage.py       # SQLite store, dedupe, change detection
   core.py          # service layer that orchestrates the pipeline
+  evaluation.py    # matching-quality eval: pure metrics + run over eval corpus
   cli.py           # Typer CLI (thin)
   mcp_server.py    # FastMCP server (thin)
   resources.py     # importlib.resources access to packaged data (below)
   data/            # PACKAGED runtime data (ships in the wheel)
     fixtures/      # recorded source payloads for offline tests / --sample
     profiles/      # example profiles (mayai.yaml, manifattura.yaml, …)
+    eval/          # labelled eval set: opportunities.jsonl + gold.yaml
 tests/
 ```
 Runtime data lives INSIDE the package and is reached via `bandiradar.resources`
@@ -56,8 +58,19 @@ uv run pytest                # tests (must pass offline, no secrets)
 uv run ruff check . && uv run ruff format .
 uv run bandiradar fetch --source anac --sample   # offline sample run
 uv run bandiradar match --profile mayai --sample # --profile: bundled name OR path
+uv run bandiradar eval       # matching-quality metrics over the labelled corpus
 uv run bandiradar mcp        # start MCP server
 ```
+
+## Matching evaluation (`bandiradar eval`)
+Runs the matcher over the shipped labelled corpus (`data/eval/`) for the gold
+profiles and prints precision@5/@10, recall, FPR — per profile + macro-aggregate.
+Offline by default (heuristic). If an LLM key is set it ALSO reports the LLM on the
+SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL but
+NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic
+baseline alongside a configured LLM, pass `client=relevance.HEURISTIC` (NOT
+`client=None`, which falls back to the configured client). Gold labels in
+`gold.yaml` are AUTO-PROPOSED — a curated starting set for human review.
 
 ## Conventions
 - Python 3.12, full type hints, pydantic v2.

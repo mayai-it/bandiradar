@@ -14,6 +14,7 @@ from bandiradar import resources
 from bandiradar.matching import relevance
 from bandiradar.matching.llm import get_client
 from bandiradar.matching.relevance import (
+    HEURISTIC,
     InMemoryScoreCache,
     cache_key,
     heuristic_fallback,
@@ -175,6 +176,25 @@ def test_benchmarks_none_leaves_match_unchanged():
     mayai = load_profile("mayai.yaml")
     bare = score(opp, mayai, now=NOW)
     assert not any("ANAC history" in r for r in bare.reasons)
+
+
+def test_heuristic_sentinel_forces_offline_even_with_a_client(monkeypatch):
+    """``client=HEURISTIC`` must use the offline heuristic even when a provider is
+    configured — otherwise the eval "heuristic" baseline secretly becomes the LLM."""
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    spy = _SpyClient()
+    # Pretend a real client IS configured (the default fallback would pick it up).
+    monkeypatch.setattr(relevance, "get_client", lambda: spy)
+
+    forced = score(opp, mayai, client=HEURISTIC, now=NOW)
+    assert spy.calls == 0  # the configured client was NOT consulted
+    assert forced.score == heuristic_fallback(opp, mayai, now=NOW).score
+
+    # client=None still falls back to the configured client (CLI/MCP behaviour).
+    fell_back = score(opp, mayai, client=None, now=NOW)
+    assert spy.calls == 1
+    assert fell_back.score == 77  # the spy's fixed score, not the heuristic
 
 
 def test_score_all_sorted_desc():

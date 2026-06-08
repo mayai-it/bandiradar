@@ -45,6 +45,21 @@ class RelevanceResult(BaseModel):
     risk_notes: list[str] = Field(default_factory=list)
 
 
+class _Heuristic:
+    """Sentinel type for :data:`HEURISTIC` (see below)."""
+
+    def __repr__(self) -> str:  # pragma: no cover - debug aid only
+        return "HEURISTIC"
+
+
+# Passed as ``client=`` to FORCE the deterministic offline heuristic, bypassing
+# the implicit ``get_client()`` fallback. ``client=None`` means "use the configured
+# default backend" (LLM if a key is present, else heuristic) — the right default
+# for the CLI/MCP. ``client=HEURISTIC`` means "use the heuristic no matter what" —
+# what `eval` needs to pin a true heuristic baseline alongside the LLM.
+HEURISTIC = _Heuristic()
+
+
 @runtime_checkable
 class ScoreCache(Protocol):
     """Relevance cache keyed by (profile.version, opportunity.content_hash)."""
@@ -286,8 +301,14 @@ def score(
     """
     # Resolve the backend BEFORE the cache lookup: its identity (and whether
     # document text is present) is part of the cache key, so different scoring
-    # inputs can never reuse each other's result.
-    active = client if client is not None else get_client()
+    # inputs can never reuse each other's result. ``HEURISTIC`` forces the offline
+    # path; ``None`` falls back to the configured client; anything else is used.
+    if client is HEURISTIC:
+        active = None
+    elif client is not None:
+        active = client
+    else:
+        active = get_client()
     key = cache_key(opportunity, profile, _model_id(active))
     if cache is not None:
         cached = cache.get(key)
