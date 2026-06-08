@@ -441,6 +441,7 @@ def run_match(
     now: datetime | None = None,
     with_benchmarks: bool = False,
     with_documents: bool = False,
+    full_text: bool = False,
 ) -> list[tuple[Opportunity, Match]]:
     """Prefilter + score stored opportunities, ranked by score descending.
 
@@ -448,7 +449,8 @@ def run_match(
     track), read from a BenchmarkStore on the same DB. ``with_documents`` fetches
     each prefiltered opportunity's attachment PDFs and folds their text into the
     matcher input (cached per URL). Both are graceful no-ops when there's nothing
-    to add.
+    to add. ``full_text`` feeds the uncapped requirements text to the LLM brief
+    (eval experiment only); default keeps the capped brief.
     """
 
     def _stored() -> list[Opportunity]:
@@ -486,6 +488,7 @@ def run_match(
             cache=cache,
             now=now,
             benchmarks=benchmark_store,
+            full_text=full_text,
         )
     finally:
         if benchmark_store is not None:

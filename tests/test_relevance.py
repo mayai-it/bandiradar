@@ -236,6 +236,34 @@ def test_distinct_opportunities_do_not_collide():
     assert cache_key(a, mayai, "heuristic") != cache_key(b, mayai, "heuristic")
 
 
+def test_cache_key_differs_by_full_text():
+    # A full-text score must never reuse the capped-brief score for the same
+    # opportunity/backend (eval full-text experiment correctness).
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    mayai = load_profile("mayai.yaml")
+    assert cache_key(opp, mayai, "anthropic:m") != cache_key(
+        opp, mayai, "anthropic:m", full_text=True
+    )
+    # The default (brief) key is unchanged — no suffix appended.
+    assert cache_key(opp, mayai, "anthropic:m") == cache_key(
+        opp, mayai, "anthropic:m", full_text=False
+    )
+
+
+def test_opportunity_brief_full_text_toggle():
+    from bandiradar.matching import prompts
+
+    opp = opps_by_id()["synthetic:ocds-bandi-0001"]
+    long_text = "requisiti " * 2000  # > _MAX_DOC_CHARS
+    opp = opp.model_copy(update={"eligibility_text": long_text})
+
+    brief = prompts.opportunity_brief(opp)
+    full = prompts.opportunity_brief(opp, full_text=True)
+    assert "…[truncated]" in brief
+    assert "…[truncated]" not in full
+    assert len(full) > len(brief)
+
+
 def test_documents_run_does_not_reuse_bare_score():
     # A bare score is cached; a later --with-documents score of the SAME opp must
     # MISS (different input) and recompute, not reuse the bare result.

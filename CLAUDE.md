@@ -72,6 +72,15 @@ baseline alongside a configured LLM, pass `client=relevance.HEURISTIC` (NOT
 `client=None`, which falls back to the configured client). Gold labels in
 `gold.yaml` are AUTO-PROPOSED — a curated starting set for human review.
 
+**Diagnostics** (`eval --diagnostics`, free — no extra scoring): *recall
+attribution* splits each missed relevant-for-recall item into Stage-1 `prefilter_drop`
+(→ embeddings) vs Stage-2 `below_k` (→ reranking); a *min_score sweep* prints the
+precision/recall/FPR curve across cutoffs. **Full-text experiment**
+(`eval --full-text`, extra scoring): re-scores feeding the UNCAPPED requirements
+text (vs the `prompts._MAX_DOC_CHARS` brief) and reports the aggregate delta — a
+controlled A/B, threaded via `full_text=` through `run_match`/`score_all`/`score`
+and part of the relevance cache key. None of these change default matcher behaviour.
+
 ## Conventions
 - Python 3.12, full type hints, pydantic v2.
 - `ruff` for lint + format. `pytest` for tests. `uv` for env/deps.

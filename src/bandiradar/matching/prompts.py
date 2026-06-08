@@ -53,8 +53,14 @@ def profile_summary(profile: Profile) -> str:
 _MAX_DOC_CHARS = 6000
 
 
-def opportunity_brief(opportunity: Opportunity) -> str:
-    """Minimal opportunity brief — only the fields the matcher needs."""
+def opportunity_brief(opportunity: Opportunity, *, full_text: bool = False) -> str:
+    """Minimal opportunity brief — only the fields the matcher needs.
+
+    ``full_text=True`` feeds the COMPLETE eligibility/requirements text instead of
+    the default ``_MAX_DOC_CHARS`` excerpt — used by the eval full-text experiment
+    to measure whether the truncation costs matching quality. Default keeps the
+    capped brief (privacy guardrail #2 + prompt size).
+    """
     o = opportunity
     value = "—" if o.value_amount is None else f"{o.value_amount} {o.value_currency}"
     deadline = o.deadline.isoformat() if o.deadline else "—"
@@ -63,7 +69,7 @@ def opportunity_brief(opportunity: Opportunity) -> str:
     eligibility = " ".join(
         part for part in (o.eligibility_text, o.document_text) if part
     ).strip()
-    if len(eligibility) > _MAX_DOC_CHARS:
+    if not full_text and len(eligibility) > _MAX_DOC_CHARS:
         eligibility = eligibility[:_MAX_DOC_CHARS] + " …[truncated]"
     return "\n".join(
         [
@@ -80,16 +86,21 @@ def opportunity_brief(opportunity: Opportunity) -> str:
 
 
 def build_user_prompt(
-    opportunity: Opportunity, profile: Profile, benchmark=None
+    opportunity: Opportunity,
+    profile: Profile,
+    benchmark=None,
+    *,
+    full_text: bool = False,
 ) -> str:
     """Assemble the user message: compact profile + minimal opportunity brief.
 
     When a historical ``benchmark`` (intelligence track) is supplied, a compact
-    one-line summary is included so the model can reason about it.
+    one-line summary is included so the model can reason about it. ``full_text``
+    feeds the uncapped requirements text (eval experiment only).
     """
     parts = [
         "COMPANY PROFILE:\n" + profile_summary(profile),
-        "OPPORTUNITY:\n" + opportunity_brief(opportunity),
+        "OPPORTUNITY:\n" + opportunity_brief(opportunity, full_text=full_text),
     ]
     if benchmark is not None:
         from bandiradar.intelligence.enrichment import benchmark_summary

@@ -245,21 +245,30 @@ def _model_id(client: LLMClient | None) -> str:
 
 
 def cache_key(
-    opportunity: Opportunity, profile: Profile, model_id: str = "heuristic"
+    opportunity: Opportunity,
+    profile: Profile,
+    model_id: str = "heuristic",
+    *,
+    full_text: bool = False,
 ) -> CacheKey:
     """The relevance cache key (see :data:`CacheKey`).
 
     Includes a hash of ``document_text`` so a ``--with-documents`` score (which
     folds attachment text into the matcher input) never reuses a bare score, and
     the backend ``model_id`` so a heuristic score is never reused for an LLM run.
+    ``full_text`` adds a marker so a full-text score never collides with the capped
+    brief score for the same opportunity/backend.
     """
     doc_text = opportunity.document_text or ""
     doc_fp = hashlib.sha256(doc_text.encode("utf-8")).hexdigest() if doc_text else "-"
+    suffix = f"{model_id}:{doc_fp}"
+    if full_text:
+        suffix += ":full"
     return (
         profile.version,
         opportunity.id,
         opportunity.content_hash,
-        f"{model_id}:{doc_fp}",
+        suffix,
     )
 
 
@@ -292,12 +301,15 @@ def score(
     cache: ScoreCache | None = None,
     now: datetime | None = None,
     benchmarks=None,
+    full_text: bool = False,
 ) -> Match:
     """Score one opportunity: cache-first, then LLM, then offline heuristic.
 
     The BARE match (no enrichment) is what gets cached. When ``benchmarks`` is
     provided, the returned match is an enriched COPY — never cached, so cache
-    hits never double-append.
+    hits never double-append. ``full_text`` feeds the uncapped requirements text to
+    the LLM brief (eval experiment); the heuristic already reads the full text, so
+    it is unaffected. The flag is part of the cache key (no brief/full collision).
     """
     # Resolve the backend BEFORE the cache lookup: its identity (and whether
     # document text is present) is part of the cache key, so different scoring
@@ -309,7 +321,7 @@ def score(
         active = client
     else:
         active = get_client()
-    key = cache_key(opportunity, profile, _model_id(active))
+    key = cache_key(opportunity, profile, _model_id(active), full_text=full_text)
     if cache is not None:
         cached = cache.get(key)
         if cached is not None:
@@ -326,7 +338,9 @@ def score(
             benchmark = benchmark_for(opportunity, benchmarks)
         raw = active.score(
             SCORING_SYSTEM,
-            build_user_prompt(opportunity, profile, benchmark=benchmark),
+            build_user_prompt(
+                opportunity, profile, benchmark=benchmark, full_text=full_text
+            ),
         )
         result = _coerce_result(raw)
 
@@ -352,10 +366,19 @@ def score_all(
     cache: ScoreCache | None = None,
     now: datetime | None = None,
     benchmarks=None,
+    full_text: bool = False,
 ) -> list[Match]:
     """Score many opportunities, sorted by score descending."""
     matches = [
-        score(opp, profile, client=client, cache=cache, now=now, benchmarks=benchmarks)
+        score(
+            opp,
+            profile,
+            client=client,
+            cache=cache,
+            now=now,
+            benchmarks=benchmarks,
+            full_text=full_text,
+        )
         for opp in opportunities
     ]
     return sorted(matches, key=lambda m: m.score, reverse=True)

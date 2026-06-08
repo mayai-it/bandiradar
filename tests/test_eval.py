@@ -62,6 +62,25 @@ def test_borderline_split_precision_recall_fpr():
     assert ev.false_positive_rate(["x"], labels) == 0.0  # not a "not" negative
 
 
+def test_attribute_recall_splits_stage1_vs_stage2():
+    ranked = ["a", "b", "c"]  # returned set; positions a=0,b=1,c=2
+    labels = {
+        "a": "relevant",  # returned, top
+        "b": "not",  # not wanted-for-recall
+        "c": "borderline",  # returned, position 2
+        "d": "relevant",  # NOT returned -> prefilter drop
+        "e": "borderline",  # NOT returned -> prefilter drop
+    }
+    # wanted-for-recall = {a, c, d, e} = 4
+    wanted, drop, below, top = ev.attribute_recall(ranked, labels, k=2)
+    assert (wanted, drop, below, top) == (4, 2, 1, 1)  # a=top, c=below(k=2), d+e=drop
+    assert drop + below + top == wanted
+    # widen k: c now lands in the top -> no Stage-2 loss
+    assert ev.attribute_recall(ranked, labels, k=10) == (4, 2, 0, 2)
+    # nothing wanted -> all zero
+    assert ev.attribute_recall(ranked, {"a": "not"}, k=5) == (0, 0, 0, 0)
+
+
 # --------------------------------------------------------------------------- #
 # run_eval over the shipped corpus (offline, deterministic, heuristic only)
 # --------------------------------------------------------------------------- #
@@ -77,8 +96,15 @@ def test_run_eval_is_offline_and_deterministic():
     assert {m.method for m in first.methods} == {"heuristic"}
     assert first.model_dump() == second.model_dump()  # deterministic
 
+    # Diagnostics are OFF by default — base report only.
+    assert first.attribution_k is None
+    assert first.thresholds == []
+    assert first.full_text == []
+
     for method in first.methods:
         assert len(method.profiles) == len(first.gold_profiles)
+        assert method.attribution is None  # no diagnostics by default
+        assert method.sweep == []
         for p in method.profiles:
             m = p.metrics
             for value in (
@@ -88,6 +114,39 @@ def test_run_eval_is_offline_and_deterministic():
                 m.false_positive_rate,
             ):
                 assert 0.0 <= value <= 1.0
+
+
+def test_run_eval_diagnostics_offline():
+    r = ev.run_eval(diagnostics=True)
+    assert r.attribution_k == ev.ATTRIBUTION_K
+    assert r.thresholds == list(ev.SWEEP_THRESHOLDS)
+
+    for method in r.methods:
+        # Recall attribution present + the three fates sum to wanted (aggregate
+        # and per profile), since gold ⊆ corpus.
+        agg = method.attribution
+        assert agg is not None
+        assert agg.prefilter_drop + agg.below_k + agg.in_top_k == agg.wanted
+        for p in method.profiles:
+            pa = p.attribution
+            assert pa is not None
+            assert pa.prefilter_drop + pa.below_k + pa.in_top_k == pa.wanted
+
+        # Sweep covers each threshold; returned is non-increasing as the cutoff
+        # rises; threshold 0 reproduces the base aggregate.
+        assert [pt.threshold for pt in method.sweep] == list(ev.SWEEP_THRESHOLDS)
+        rets = [pt.aggregate.returned for pt in method.sweep]
+        assert rets == sorted(rets, reverse=True)
+        assert method.sweep[0].aggregate.returned == method.aggregate.returned
+
+
+def test_full_text_experiment_offline():
+    r = ev.run_eval(full_text=True)
+    assert r.full_text  # the experiment ran
+    heuristic = next(d for d in r.full_text if d.method == "heuristic")
+    # The heuristic already reads the full requirements text, so feeding "full
+    # text" changes nothing — brief == full by design (the delta isolates the LLM).
+    assert heuristic.brief.model_dump() == heuristic.full.model_dump()
 
 
 class _FakeLLM:
@@ -134,3 +193,20 @@ def test_cli_eval_human_and_json():
     assert report["corpus_size"] >= 100
     assert report["methods"][0]["method"] == "heuristic"
     assert report["methods"][0]["aggregate"]["precision_at_5"] >= 0.0
+
+
+def test_cli_eval_diagnostics_and_full_text():
+    human = runner.invoke(app, ["eval", "--diagnostics", "--full-text"])
+    assert human.exit_code == 0
+    assert "recall attribution" in human.stdout
+    assert "min_score sweep" in human.stdout
+    assert "full-text experiment" in human.stdout
+
+    js = runner.invoke(app, ["eval", "-d", "--json"])
+    assert js.exit_code == 0
+    report = json.loads(js.stdout)
+    assert report["attribution_k"] == ev.ATTRIBUTION_K
+    assert report["thresholds"] == list(ev.SWEEP_THRESHOLDS)
+    method = report["methods"][0]
+    assert method["attribution"] is not None
+    assert len(method["sweep"]) == len(ev.SWEEP_THRESHOLDS)

@@ -725,7 +725,83 @@ def _render_eval(report) -> str:
             lines.append(row(p.profile, p.metrics))
         lines.append("-" * len(head))
         lines.append(row("AGGREGATE (macro avg)", method.aggregate))
+
+    if report.attribution_k is not None:
+        lines += _render_attribution(report)
+    if report.thresholds:
+        lines += _render_sweep(report)
+    if report.full_text:
+        lines += _render_full_text(report)
     return "\n".join(lines)
+
+
+def _render_attribution(report) -> list[str]:
+    """Where relevant-for-recall items end up: Stage-1 prefilter vs Stage-2 ranking."""
+    k = report.attribution_k
+    head = f"{'PROFILE':28} {'WANT':>4} {'DROP':>4} {'BELOW':>5} {'TOP':>4}"
+    lines = [
+        "",
+        f"== recall attribution (k={k}) — WHY relevant-for-recall items are missed",
+        "   DROP = dropped by Stage-1 prefilter (→ embeddings); "
+        f"BELOW = returned but ranked ≥{k} (→ reranking); TOP = surfaced in top-{k}",
+    ]
+
+    def row(label, a):
+        return (
+            f"{_trunc(label, 28):28} {a.wanted:>4} {a.prefilter_drop:>4} "
+            f"{a.below_k:>5} {a.in_top_k:>4}"
+        )
+
+    for method in report.methods:
+        lines += ["", f"method: {method.method}", head, "-" * len(head)]
+        for p in method.profiles:
+            if p.attribution is not None:
+                lines.append(row(p.profile, p.attribution))
+        if method.attribution is not None:
+            lines.append("-" * len(head))
+            lines.append(row("AGGREGATE (totals)", method.attribution))
+    return lines
+
+
+def _render_sweep(report) -> list[str]:
+    """The precision/recall/FPR curve across min_score cutoffs (aggregate)."""
+    head = f"{'THRESH':>6} {'P@5':>5} {'P@10':>5} {'RECALL':>6} {'FPR':>5} {'RET':>4}"
+    lines = ["", "== min_score sweep — precision/recall/FPR vs cutoff (aggregate)"]
+    for method in report.methods:
+        lines += ["", f"method: {method.method}", head, "-" * len(head)]
+        for point in method.sweep:
+            m = point.aggregate
+            lines.append(
+                f"{point.threshold:>6} {m.precision_at_5:>5.2f} "
+                f"{m.precision_at_10:>5.2f} {m.recall:>6.2f} "
+                f"{m.false_positive_rate:>5.2f} {m.returned:>4}"
+            )
+    return lines
+
+
+def _render_full_text(report) -> list[str]:
+    """Before/after: capped brief vs full requirements text (aggregate)."""
+    head = f"{'METHOD':28} {'METRIC':>8} {'BRIEF':>6} {'FULL':>6} {'Δ':>7}"
+    lines = [
+        "",
+        "== full-text experiment — capped brief vs FULL requirements text (aggregate)",
+        "   (the heuristic already reads full text, so its delta is ~0 by design)",
+        head,
+        "-" * len(head),
+    ]
+    metrics = [
+        ("P@5", "precision_at_5"),
+        ("P@10", "precision_at_10"),
+        ("RECALL", "recall"),
+        ("FPR", "false_positive_rate"),
+    ]
+    for ft in report.full_text:
+        for i, (label, attr) in enumerate(metrics):
+            b = getattr(ft.brief, attr)
+            f = getattr(ft.full, attr)
+            name = _trunc(ft.method, 28) if i == 0 else ""
+            lines.append(f"{name:28} {label:>8} {b:>6.2f} {f:>6.2f} {f - b:>+7.2f}")
+    return lines
 
 
 @app.command(name="eval")
@@ -736,6 +812,17 @@ def eval_cmd(
     with_documents: bool = typer.Option(
         False, "--with-documents", help="Fold attachment-PDF text into matching"
     ),
+    diagnostics: bool = typer.Option(
+        False,
+        "--diagnostics",
+        "-d",
+        help="Add recall attribution (Stage 1 vs 2) + min_score threshold sweep",
+    ),
+    full_text: bool = typer.Option(
+        False,
+        "--full-text",
+        help="Experiment: re-score with FULL requirements text, report delta vs brief",
+    ),
     db: str | None = typer.Option(
         None, "--db", help="SQLite path (default: in-memory throwaway)"
     ),
@@ -744,13 +831,19 @@ def eval_cmd(
     """Evaluate matching quality over the shipped labelled corpus (offline).
 
     Always reports the heuristic matcher; if an LLM provider+key is configured, also
-    the LLM matcher on the same gold set. No live fetch happens here.
+    the LLM matcher on the same gold set. ``--diagnostics`` adds (free) recall
+    attribution + a min_score sweep; ``--full-text`` runs the controlled full-text
+    experiment. No live fetch happens here.
     """
     from bandiradar import evaluation
 
     try:
         report = evaluation.run_eval(
-            db=db, with_benchmarks=with_benchmarks, with_documents=with_documents
+            db=db,
+            with_benchmarks=with_benchmarks,
+            with_documents=with_documents,
+            diagnostics=diagnostics,
+            full_text=full_text,
         )
     except Exception as exc:  # noqa: BLE001 — clean operational message, no traceback
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
