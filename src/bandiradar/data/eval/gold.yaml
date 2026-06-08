@@ -3,17 +3,22 @@ _meta:
   eval_now: '2026-06-08'
   note: AUTO-PROPOSED labels (heuristic top-k + cross-source sample, LLM-labelled).
     A CURATED STARTING SET FOR HUMAN REVIEW — correct as needed.
+  corrections:
+  - 'GEO: regional opportunity whose region != profile region(s) and not national/eu
+    -> not (uses Opportunity.region/geo_scope vs Profile.regions).'
+  - 'INSTRUMENT: for grant-seeking SME profiles, debt/equity/financing and non-funding
+    items (by title) -> not. See scripts/correct_gold.py.'
 profiles:
   mayai:
     lazio:48841: relevant
     incentivi:146: borderline
     incentivi:3400: not
-    lazio:40791: borderline
-    lazio:41414: borderline
+    lazio:40791: not
+    lazio:41414: not
     lazio:58887: borderline
     lazio:48957: not
     incentivi:1426: not
-    lazio:40997: borderline
+    lazio:40997: not
     lazio:42580: not
     lazio:48958: not
     lazio:49869: not
@@ -22,8 +27,8 @@ profiles:
     lazio:46318: not
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
-    incentivi:1053: borderline
-    incentivi:1071: relevant
+    incentivi:1053: not
+    incentivi:1071: not
     lazio:12899: not
     lazio:40990: relevant
     lombardia:140990: not
@@ -72,8 +77,8 @@ profiles:
     ted:382630-2026: not
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
-    incentivi:1053: borderline
-    incentivi:1071: borderline
+    incentivi:1053: not
+    incentivi:1071: not
     lazio:12899: not
     lazio:40791: not
     lombardia:140990: not
@@ -91,8 +96,8 @@ profiles:
     incentivi:1426: not
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
-    incentivi:1053: borderline
-    incentivi:1071: borderline
+    incentivi:1053: not
+    incentivi:1071: not
     lazio:12899: not
     lazio:40791: not
     lombardia:140990: not
@@ -127,8 +132,8 @@ profiles:
     incentivi:5525: relevant
     lazio:43887: borderline
     lazio:48957: not
-    lazio:52641: borderline
-    lazio:52668: borderline
+    lazio:52641: not
+    lazio:52668: not
     incentivi:1426: not
     incentivi:146: not
     incentivi:3265: not
@@ -160,7 +165,7 @@ profiles:
     incentivi:1053: not
     incentivi:1071: not
     lazio:12899: not
-    lazio:40791: borderline
+    lazio:40791: not
     lombardia:140990: not
     lombardia:140997: not
     ted:371438-2026: not
@@ -177,18 +182,18 @@ profiles:
     lazio:44498: not
     lazio:48957: not
     lazio:49062: not
-    lazio:52641: borderline
+    lazio:52641: not
     lazio:52660: not
-    lazio:59084: borderline
+    lazio:59084: not
     ted:376324-2026: not
     incentivi:1426: not
     lazio:41006: not
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
-    incentivi:1053: borderline
+    incentivi:1053: not
     incentivi:1071: not
     lazio:12899: not
-    lazio:40791: borderline
+    lazio:40791: not
     lombardia:140990: not
     lombardia:140997: not
     ted:371438-2026: borderline

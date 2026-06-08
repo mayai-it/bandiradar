@@ -70,7 +70,11 @@ SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL 
 NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic
 baseline alongside a configured LLM, pass `client=relevance.HEURISTIC` (NOT
 `client=None`, which falls back to the configured client). Gold labels in
-`gold.yaml` are AUTO-PROPOSED — a curated starting set for human review.
+`gold.yaml` are AUTO-PROPOSED — a curated starting set for human review, then
+hardened by `scripts/correct_gold.py`: deterministic, auditable rule-based fixes
+(GEO = wrong-region → not; INSTRUMENT = debt/equity/non-funding → not for
+grant-seekers). The rules are recorded in `gold.yaml`'s `_meta.corrections`; the
+script never promotes labels (that stays human). Re-run it to regenerate.
 
 **Diagnostics** (`eval --diagnostics`, free — no extra scoring): *recall
 attribution* splits each missed relevant-for-recall item into Stage-1 `prefilter_drop`
