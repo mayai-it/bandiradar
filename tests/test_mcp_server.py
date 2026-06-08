@@ -29,7 +29,21 @@ def test_expected_tools_registered():
     assert EXPECTED_TOOLS <= names
 
 
-def test_fetch_then_search_offline(tmp_path):
+def test_fetch_then_search_offline(tmp_path, monkeypatch):
+    # Pin "now" so this is deterministic. The synthetic fixture is designed for a
+    # reference of ~2026-06-03 (0002 closes within 7 days, 0003 already closed), but
+    # the MCP tools intentionally take no `now`, so freeze the clock the offline
+    # pipeline reads. Without this the test flips the moment wall-clock passes
+    # 0002's 2026-06-08T10:00Z deadline (it becomes `closed` and drops out).
+    from datetime import UTC, datetime
+
+    from bandiradar import storage
+    from bandiradar.matching import prefilter
+
+    ref = datetime(2026, 6, 3, tzinfo=UTC)
+    monkeypatch.setattr(prefilter, "_resolve_now", lambda now: now or ref)
+    monkeypatch.setattr(storage, "_now", lambda now: now or ref)
+
     db = str(tmp_path / "mcp.db")
 
     result = mcp_server.fetch_opportunities(source="synthetic", sample=True, db=db)
