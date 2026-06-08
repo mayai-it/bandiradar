@@ -6,6 +6,8 @@ _meta:
   corrections:
   - 'GEO: regional opportunity whose region != profile region(s) and not national/eu
     -> not (uses Opportunity.region/geo_scope vs Profile.regions).'
+  - 'SEEKS: an opportunity whose instrument class (tender vs grant) is not in Profile.seeks
+    -> not (e.g. public tenders for grant-only profiles).'
   - 'INSTRUMENT: for grant-seeking SME profiles, debt/equity/financing and non-funding
     items (by title) -> not. See scripts/correct_gold.py.'
 profiles:
@@ -22,7 +24,7 @@ profiles:
     lazio:42580: not
     lazio:48958: not
     lazio:49869: not
-    ted:376324-2026: borderline
+    ted:376324-2026: not
     lazio:41006: not
     lazio:46318: not
     anac:ocds-hu01ve-8114164: not
@@ -33,8 +35,8 @@ profiles:
     lazio:40990: relevant
     lombardia:140990: not
     lombardia:140997: not
-    ted:371438-2026: relevant
-    ted:372600-2026: borderline
+    ted:371438-2026: not
+    ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not
   medtech_lombardia:
@@ -146,8 +148,8 @@ profiles:
     lazio:40791: not
     lombardia:140990: not
     lombardia:140997: not
-    ted:371438-2026: relevant
-    ted:372600-2026: relevant
+    ted:371438-2026: not
+    ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not
   hospitality_retail:
@@ -196,7 +198,7 @@ profiles:
     lazio:40791: not
     lombardia:140990: not
     lombardia:140997: not
-    ted:371438-2026: borderline
-    ted:372600-2026: borderline
+    ted:371438-2026: not
+    ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not

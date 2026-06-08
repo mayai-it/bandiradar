@@ -9,6 +9,11 @@ This source owns that synthetic corpus (``tests/data/synthetic_ocds.json``) and
 maps it with a region-aware OCDS mapping (buyer-party region + ``coveredBy`` scope)
 — exactly the fixture the matcher tests were designed against. It registers under
 id ``"synthetic"`` so ``--sample`` / ``get("synthetic")`` work in-process.
+
+Kind: the corpus is mapped as ``incentive`` so the (grant-seeking) bundled test
+profiles match it through the Stage-1 instrument gate (``Profile.seeks``). That gate
+is covered by its own unit tests and by the real-tender eval corpus, so the
+synthetic corpus doesn't need tender-kind records.
 """
 
 from __future__ import annotations
@@ -23,7 +28,7 @@ from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import register
 
 SOURCE_ID = "synthetic"
-SOURCE_KIND: Kind = "tender"
+SOURCE_KIND: Kind = "incentive"  # grant-class, so grant-seeking test profiles match
 
 FIXTURE_PATH = Path(__file__).resolve().parent / "data" / "synthetic_ocds.json"
 

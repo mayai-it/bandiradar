@@ -13,3 +13,4 @@ capabilities: >
   revisione, dichiarazioni, supporto a bandi e incentivi per la
   digitalizzazione degli studi e dei clienti.
 exclusions: ["construction", "catering"]
+seeks: ["grant"]   # an accounting firm chases grants/incentives, not public tenders

@@ -9,12 +9,15 @@ Gates, evaluated in order (the first failing gate's reason is reported):
 
 1. Open       — drop if a deadline exists and is at/after... (<= now). Missing
                 deadline passes.
-2. Geography  — national/eu bypass; regional/local must match a profile region
+2. Instrument — drop if the opportunity's seek class (tender vs grant/incentive)
+                is not in profile.seeks. Default seeks = both, so unset profiles
+                are unaffected.
+3. Geography  — national/eu bypass; regional/local must match a profile region
                 (when the profile lists any). Empty profile.regions = no limit.
-3. Value      — drop only when BOTH sides carry value info and the ranges do not
+4. Value      — drop only when BOTH sides carry value info and the ranges do not
                 overlap. Missing data never drops.
-4. Exclusions — drop if any exclusion term appears in title + summary.
-5. Relevance  — when the profile has cpv_interests or keywords, require a CPV
+5. Exclusions — drop if any exclusion term appears in title + summary.
+6. Relevance  — when the profile has cpv_interests or keywords, require a CPV
                 match or a keyword hit; otherwise this gate is skipped.
 """
 
@@ -24,9 +27,19 @@ import math
 import re
 from datetime import UTC, datetime
 
-from bandiradar.models import Opportunity, Profile
+from bandiradar.models import Kind, Opportunity, Profile, Seek
 
 _BYPASS_GEO = {"national", "eu"}
+
+
+def seek_class(kind: Kind) -> Seek:
+    """Map an opportunity ``kind`` to the company-intent class it satisfies.
+
+    Tenders are bid on ("tender"); grants and incentives are applied for ("grant").
+    Single source of truth for the Stage-1 instrument gate and the gold corrections.
+    """
+    return "tender" if kind == "tender" else "grant"
+
 
 # Tokenizer for keyword/capability overlap: runs of >=4 ASCII letters, lowercased.
 _TOKEN_RE = re.compile(r"[a-zA-Z]{4,}")
@@ -203,13 +216,19 @@ def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, 
     if opp.deadline is not None and opp.deadline <= now:
         return False, "closed: deadline at or before now"
 
-    # Gate 2 — geography.
+    # Gate 2 — instrument type (grant vs tender). A profile only matches the
+    # instrument classes it pursues; default seeks = both, so unset profiles pass.
+    klass = seek_class(opp.kind)
+    if klass not in profile.seeks:
+        return False, f"profile does not seek {klass}s"
+
+    # Gate 3 — geography.
     if opp.geo_scope not in _BYPASS_GEO and profile.regions:
         wanted = {_norm(r) for r in profile.regions}
         if _norm(opp.region) not in wanted:
             return False, "region not among profile regions"
 
-    # Gate 3 — value overlap (only when both sides carry value info).
+    # Gate 4 — value overlap (only when both sides carry value info).
     range_has_bound = (
         profile.value_range.min is not None or profile.value_range.max is not None
     )
@@ -221,14 +240,14 @@ def _evaluate(opp: Opportunity, profile: Profile, now: datetime) -> tuple[bool, 
         if not (o_lo <= p_hi and p_lo <= o_hi):
             return False, "value range does not overlap profile range"
 
-    # Gate 4 — exclusions.
+    # Gate 5 — exclusions.
     haystack = _haystack(opp)
     for term in profile.exclusions:
         norm_term = _norm(term)
         if norm_term and norm_term in haystack:
             return False, f"excluded term: {term}"
 
-    # Gate 5 — relevance signal (skipped if the profile gives no signal sources).
+    # Gate 6 — relevance signal (skipped if the profile gives no signal sources).
     if profile.cpv_interests or profile.keywords:
         cpv_ok = cpv_match(opp.cpv, profile.cpv_interests)
         # Keyword overlap on MEANINGFUL tokens only (stopwords stripped from both

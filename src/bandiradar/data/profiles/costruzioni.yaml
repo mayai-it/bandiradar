@@ -11,3 +11,4 @@ capabilities: >
   Lavori edili e di costruzione, manutenzione straordinaria, ristrutturazione
   e opere pubbliche per enti locali e committenti privati.
 exclusions: ["catering"]
+seeks: ["grant", "tender"]   # bids on public works tenders AND chases grants

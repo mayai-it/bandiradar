@@ -13,3 +13,4 @@ capabilities: >
   Distribuzione e fornitura di dispositivi medici e materiale sanitario per
   strutture ospedaliere e ASST: endoscopia, monitoraggio, ossigenoterapia.
 exclusions: ["construction", "catering"]
+seeks: ["grant", "tender"]   # supplies the PA via tenders AND chases grants

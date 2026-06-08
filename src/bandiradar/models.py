@@ -56,6 +56,11 @@ __all__ = [
 CLOSING_SOON_DAYS = 7
 
 Kind = Literal["tender", "grant", "incentive"]
+# What a company pursues: GRANTS/incentives (applied for) vs public TENDERS (bid on,
+# i.e. selling to the PA). A profile may seek either or both; see Profile.seeks and
+# the Stage-1 instrument gate. Opportunity ``kind`` maps to a seek class: tenders ->
+# "tender", grants/incentives -> "grant" (see ``matching.prefilter.seek_class``).
+Seek = Literal["grant", "tender"]
 GeoScope = Literal["national", "regional", "eu", "local"]
 # ``status`` is PURELY the lifecycle of the deadline (open / closing soon / closed).
 # It is DERIVED from ``deadline`` + the current time at READ time (see
@@ -279,6 +284,12 @@ class Profile(BaseModel):
     value_range: ValueRange = Field(default_factory=ValueRange)
     capabilities: str = ""  # free text fed to the matcher
     exclusions: list[str] = Field(default_factory=list)
+    # Which instrument classes this company pursues. Default BOTH — so unset
+    # profiles match grants AND tenders exactly as before (no false drops). A
+    # grant-only profile (e.g. an AI studio) drops public tenders at Stage 1; a
+    # firm that sells to the PA (construction, medical supply) keeps ["grant",
+    # "tender"]. See the Stage-1 instrument gate.
+    seeks: list[Seek] = Field(default_factory=lambda: ["grant", "tender"])
 
     @property
     def version(self) -> str:

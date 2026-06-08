@@ -72,8 +72,9 @@ baseline alongside a configured LLM, pass `client=relevance.HEURISTIC` (NOT
 `client=None`, which falls back to the configured client). Gold labels in
 `gold.yaml` are AUTO-PROPOSED — a curated starting set for human review, then
 hardened by `scripts/correct_gold.py`: deterministic, auditable rule-based fixes
-(GEO = wrong-region → not; INSTRUMENT = debt/equity/non-funding → not for
-grant-seekers). The rules are recorded in `gold.yaml`'s `_meta.corrections`; the
+(GEO = wrong-region → not; SEEKS = wrong instrument class for `Profile.seeks`, e.g.
+tenders for a grant-only profile → not; INSTRUMENT = debt/equity/non-funding → not
+for grant-seekers). The rules are recorded in `gold.yaml`'s `_meta.corrections`; the
 script never promotes labels (that stays human). Re-run it to regenerate.
 
 **Diagnostics** (`eval --diagnostics`, free — no extra scoring): *recall

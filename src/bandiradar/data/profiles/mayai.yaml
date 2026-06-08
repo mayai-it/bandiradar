@@ -16,3 +16,4 @@ capabilities: >
   italiane; data science, machine learning, automazione dei processi e cloud
   europeo conforme al GDPR.
 exclusions: ["construction", "catering"]
+seeks: ["grant"]   # an AI studio chases grants/incentives, not public tenders

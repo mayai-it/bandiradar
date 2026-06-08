@@ -62,6 +62,34 @@ def test_run_match_min_score_and_limit(store):
     assert high == []
 
 
+def test_run_match_grant_only_profile_drops_tenders(store):
+    # End-to-end: a grant-only profile (mayai, seeks=["grant"]) must drop public
+    # tenders at Stage 1 even when they'd otherwise match (same fields, differ only
+    # in kind). The incentive survives; the tender does not.
+    from bandiradar.models import Opportunity
+
+    mayai = core.load_profile("mayai")
+    common = dict(
+        source="x",
+        source_url="https://example.invalid/x",
+        title="Piattaforma software per la PA",
+        summary="software e dati",
+        cpv=["72000000"],  # matches mayai cpv_interests -> passes the relevance gate
+        geo_scope="national",  # bypasses the geography gate
+        region=None,
+        status="open",
+    )
+    store.upsert_opportunity(
+        Opportunity(id="x:tender", kind="tender", raw_ref="x:t", **common), now=NOW
+    )
+    store.upsert_opportunity(
+        Opportunity(id="x:incentive", kind="incentive", raw_ref="x:i", **common),
+        now=NOW,
+    )
+    ranked = core.run_match(mayai, store, source_id="x", now=NOW)
+    assert {opp.id for opp, _ in ranked} == {"x:incentive"}
+
+
 def test_run_monitor_fetches_then_matches(store):
     mayai = core.load_profile("mayai")
     ranked = core.run_monitor(mayai, "synthetic", store, sample=True, now=NOW)

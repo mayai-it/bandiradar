@@ -11,3 +11,4 @@ capabilities: >
   Consulenza direzionale e organizzativa, riorganizzazione dei processi,
   formazione e supporto alla trasformazione digitale delle PMI.
 exclusions: ["construction", "catering"]
+seeks: ["grant"]   # a consultancy chases grants/incentives, not public tenders

@@ -29,6 +29,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
 from bandiradar import evaluation as ev  # noqa: E402
+from bandiradar.matching.prefilter import seek_class  # noqa: E402
 
 GOLD_PATH = REPO / "src" / "bandiradar" / "data" / "eval" / "gold.yaml"
 PROFILES_DIR = REPO / "src" / "bandiradar" / "data" / "profiles"
@@ -73,6 +74,11 @@ def _regions(profile: dict) -> set[str]:
     return {r.strip().lower() for r in (profile.get("regions") or [])}
 
 
+def _seeks(profile: dict) -> list[str]:
+    # Default both -> no SEEKS flips for profiles that don't set it.
+    return profile.get("seeks") or ["grant", "tender"]
+
+
 def _seeks_financing(profile: dict) -> bool:
     blob = " ".join(
         [
@@ -103,6 +109,7 @@ def main() -> int:
     for prof in sorted(gold_profiles):
         meta = profiles.get(prof, {})
         regions = _regions(meta)
+        seeks = _seeks(meta)
         seeks_financing = _seeks_financing(meta)
         for oid, label in gold_profiles[prof].items():
             if label not in RELEVANT_FOR_RECALL:
@@ -131,6 +138,17 @@ def main() -> int:
                 )
                 continue
 
+            # SEEKS rule — the opportunity's instrument class must be one the
+            # profile pursues (Profile.seeks). A tender for a grant-only profile
+            # (e.g. an AI studio) is not relevant: it does not bid on procurement.
+            klass = seek_class(opp.kind)
+            if klass not in seeks:
+                gold_profiles[prof][oid] = "not"
+                changes.append(
+                    (prof, oid, label, "SEEKS", f"{klass} ∉ profile.seeks {seeks}")
+                )
+                continue
+
             # INSTRUMENT rule (only for grant-seekers).
             if not seeks_financing:
                 reason = _instrument_reason(opp.title or "")
@@ -142,13 +160,15 @@ def main() -> int:
     gold.setdefault("_meta", {})["corrections"] = [
         "GEO: regional opportunity whose region != profile region(s) and not "
         "national/eu -> not (uses Opportunity.region/geo_scope vs Profile.regions).",
+        "SEEKS: an opportunity whose instrument class (tender vs grant) is not in "
+        "Profile.seeks -> not (e.g. public tenders for grant-only profiles).",
         "INSTRUMENT: for grant-seeking SME profiles, debt/equity/financing and "
         "non-funding items (by title) -> not. See scripts/correct_gold.py.",
     ]
 
     # ---- audit log ---------------------------------------------------------- #
     print(f"=== deterministic corrections: {len(changes)} label(s) -> 'not'\n")
-    for rule in ("GEO", "INSTRUMENT"):
+    for rule in ("GEO", "SEEKS", "INSTRUMENT"):
         rows = [c for c in changes if c[3] == rule]
         print(f"-- {rule} ({len(rows)})")
         for prof, oid, old, _rule, reason in rows:
@@ -157,8 +177,9 @@ def main() -> int:
         print()
 
     # ---- residual judgment calls (rule can't decide) ------------------------ #
-    print("=== residual JUDGMENT-CALL labels — procurement tenders kept as")
-    print("    relevant/borderline (human verdict needed; rules don't touch these)\n")
+    print("=== residual JUDGMENT-CALL labels — procurement tenders still kept as")
+    print("    relevant/borderline (only for tender-seeking profiles now; a human")
+    print("    confirms each is genuinely in scope)\n")
     for prof in sorted(gold_profiles):
         residual = [
             (oid, lab)

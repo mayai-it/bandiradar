@@ -14,3 +14,4 @@ capabilities: >
   alla digitalizzazione e all'innovazione del punto vendita e dei servizi al
   cliente.
 exclusions: ["construction"]
+seeks: ["grant"]   # chases retail/tourism grants/incentives, not public tenders

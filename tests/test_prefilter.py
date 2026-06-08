@@ -53,6 +53,42 @@ def make_opp(**overrides) -> Opportunity:
 
 
 # --------------------------------------------------------------------------- #
+# Gate 2 — instrument type (Profile.seeks: grant vs tender)
+# --------------------------------------------------------------------------- #
+
+
+def test_seek_class_maps_kind_to_intent():
+    from bandiradar.matching.prefilter import seek_class
+
+    assert seek_class("tender") == "tender"
+    assert seek_class("grant") == "grant"
+    assert seek_class("incentive") == "grant"  # incentives are applied for, like grants
+
+
+def test_seeks_defaults_to_both_and_keeps_every_kind():
+    p = Profile(name="p")
+    assert p.seeks == ["grant", "tender"]  # backward-compatible default
+    assert prefilter([make_opp(kind="tender")], p, NOW)
+    assert prefilter([make_opp(kind="incentive")], p, NOW)
+
+
+def test_grant_only_profile_drops_tenders_keeps_grants():
+    p = Profile(name="p", seeks=["grant"])
+    tender = make_opp(id="x:t", kind="tender")
+    incentive = make_opp(id="x:i", kind="incentive")
+    kept = {o.id for o in prefilter([tender, incentive], p, NOW)}
+    assert kept == {"x:i"}
+    # The instrument gate fires (Gate 2), with an explainable reason.
+    assert reasons_by_id([tender], p)["x:t"] == (False, "profile does not seek tenders")
+
+
+def test_tender_only_profile_drops_grants_and_incentives():
+    p = Profile(name="p", seeks=["tender"])
+    opps = [make_opp(id="x:t", kind="tender"), make_opp(id="x:i", kind="incentive")]
+    assert {o.id for o in prefilter(opps, p, NOW)} == {"x:t"}
+
+
+# --------------------------------------------------------------------------- #
 # Real profiles against the synthetic OCDS fixture
 # --------------------------------------------------------------------------- #
 

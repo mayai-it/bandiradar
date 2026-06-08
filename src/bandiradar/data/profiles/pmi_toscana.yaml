@@ -12,3 +12,4 @@ capabilities: >
   PMI toscana che investe in transizione digitale ed efficientamento energetico
   dei processi produttivi; innovazione e investimenti produttivi.
 exclusions: ["catering"]
+seeks: ["grant"]   # pursues digital/energy grants/incentives, not public tenders

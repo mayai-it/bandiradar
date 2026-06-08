@@ -243,11 +243,21 @@ capabilities: >
   AI consulting and vertical software for Italian SMEs; data science,
   ML, process automation, GDPR-compliant EU cloud.
 exclusions: ["construction", "catering"]
+seeks: ["grant"]                          # instrument classes pursued; default BOTH
 ```
 
 `keywords` is an optional list of free-text terms; the Stage-1 prefilter treats a
 case-insensitive substring hit in an opportunity's title/summary as a relevance
 signal (alongside CPV matching).
+
+`seeks` (`list["grant"|"tender"]`, **default `["grant","tender"]`**) declares which
+instrument classes the company pursues: GRANTS/incentives are applied for; public
+TENDERS are bid on (selling to the PA). It is a HARD Stage-1 gate — an opportunity
+whose class is not in `seeks` is dropped (tenders map to `"tender"`, grants and
+incentives to `"grant"`; see `matching.prefilter.seek_class`). The default seeks
+both, so existing/unset profiles are unaffected. Example: an AI studio or accounting
+firm sets `["grant"]` (no procurement bidding); a construction firm or medical-device
+distributor keeps `["grant","tender"]`.
 
 **Dogfood example profile = MayAI itself** (an AI studio chasing
 digitalization/innovation incentives) + a generic manufacturing PMI fixture.
