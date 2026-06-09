@@ -114,8 +114,9 @@ def test_open_gara_field_mapping():
     assert (opp.deadline.year, opp.deadline.month, opp.deadline.day) == (2026, 6, 16)
     assert opp.status == "open"
     assert opp.value_amount == 5148.0 and opp.value_currency == "EUR"
-    # CPV from PVL is a LABEL, not a code: numeric cpv stays empty, label -> text
-    assert opp.cpv == []
+    # CPV label is resolved to an official 8-digit code; the label is still kept as
+    # keyword text (alongside the CIG) in eligibility_text.
+    assert opp.cpv and all(c.isdigit() and len(c) == 8 for c in opp.cpv)
     assert opp.eligibility_text and "CIG" in opp.eligibility_text
 
 
@@ -135,12 +136,12 @@ def test_region_mapping_including_anac_spelling_variants():
     assert one(opps, "84faaad0").region == "Veneto"  # Padova
 
 
-def test_italia_and_country_nuts_map_to_national():
-    opps = mapped()
-    italia = one(opps, "79eb639e")  # luogo_nuts == "ITALIA"
-    germania = one(opps, "835fb425")  # luogo_nuts == "GERMANIA"
-    for opp in (italia, germania):
-        assert opp.geo_scope == "national" and opp.region is None
+def test_foreign_or_unresolvable_geo_maps_to_national():
+    # A truly foreign locality (GERMANIA: no province, no ISTAT comune, buyer is a
+    # ministry) stays national. (An ITALIA nuts WITH a real comune is instead
+    # recovered to its region — see test_mapper_resolves_cpv_codes_and_recovers_region.)
+    germania = one(mapped(), "835fb425")
+    assert germania.geo_scope == "national" and germania.region is None
 
 
 def test_region_for_nuts_unit():
@@ -150,6 +151,46 @@ def test_region_for_nuts_unit():
     assert pvl.region_for_nuts("ITALIA") is None
     assert pvl.region_for_nuts(None) is None
     assert pvl.region_for_nuts("Springfield") is None  # unmapped -> None (national)
+
+
+# --------------------------------------------------------------------------- #
+# 0.4.0 — region fallback (comune / buyer) + CPV label->code resolution
+# --------------------------------------------------------------------------- #
+
+
+def test_region_for_comune_unit():
+    assert pvl.region_for_comune("GALLARATE") == "Lombardia"
+    assert pvl.region_for_comune("Roma") == "Lazio"
+    assert pvl.region_for_comune("nowhere-town") is None
+
+
+def test_region_from_buyer_only_for_comune_pattern():
+    assert pvl.region_from_buyer("COMUNE DI ERCOLANO DIPARTIMENTO X") == "Campania"
+    assert pvl.region_from_buyer("Comune di Reggio nell'Emilia") == "Emilia-Romagna"
+    assert (
+        pvl.region_from_buyer("ACEA ATO 2 S.P.A.") is None
+    )  # not a comune -> no guess
+
+
+def test_resolve_region_fallback_order():
+    # province wins; else comune; else "Comune di X" buyer; else None (national)
+    assert pvl.resolve_region("Genova", "MILANO", None) == "Liguria"  # nuts wins
+    assert pvl.resolve_region("ITALIA", "GALLARATE", None) == "Lombardia"  # comune
+    assert pvl.resolve_region(None, None, "COMUNE DI TORINO") == "Piemonte"  # buyer
+    assert pvl.resolve_region(None, None, "ENEL S.P.A.") is None  # national
+
+
+def test_mapper_resolves_cpv_codes_and_recovers_region():
+    opps = {o.id.split(":")[1][:8]: o for o in mapped()}
+    # a works gara: CPV label -> a 45* construction code; region from luogo_nuts
+    works = opps["9c1a1fc2"]
+    assert works.cpv and works.cpv[0].startswith("45")
+    assert works.region == "Calabria"
+    # region fallback: luogo_nuts "ITALIA" but luogo_istat GALLARATE -> Lombardia
+    recovered = opps["79eb639e"]
+    assert recovered.region == "Lombardia" and recovered.geo_scope == "regional"
+    # the CPV LABEL is still kept as keyword text (resolver doesn't drop it)
+    assert recovered.eligibility_text and recovered.cpv  # both code and text present
 
 
 # --------------------------------------------------------------------------- #

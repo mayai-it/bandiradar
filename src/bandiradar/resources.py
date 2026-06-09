@@ -33,6 +33,16 @@ def eval_gold() -> Traversable:
     return _DATA / "eval" / "gold.yaml"
 
 
+def cpv_map() -> Traversable:
+    """The packaged CPV resolver map (normalized Italian label -> 8-digit code)."""
+    return _DATA / "cpv_it.json"
+
+
+def comuni_map() -> Traversable:
+    """The packaged ISTAT comune -> region map (casefolded comune name -> region)."""
+    return _DATA / "comuni_it.json"
+
+
 def profiles_dir() -> Traversable:
     """The bundled example-profiles directory."""
     return _DATA / "profiles"

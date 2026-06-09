@@ -18,10 +18,12 @@ NO per-item detail call. We also do NOT call ``/avvisi/{id}/cronologia`` per ite
 on re-fetch, and ``tipo=="rettifica"`` notices are simply not ingested as open gare.
 
 CAVEATS (honest, see README): ~4k avvisi/day of EVERY type are published; only the
-open gare are kept (see ``_is_open_tender``). ``cpv`` from PVL is the Italian LABEL,
-not the numeric code — kept as keyword text for now (numeric CPV = next slice).
-``valore_complessivo_stimato`` (importo) is sparse. ``luogo_nuts`` is a PROVINCE name
-mapped to a region via the static ISTAT table below; unmapped/country/None -> national.
+open gare are kept (see ``_is_open_tender``). ``cpv`` from PVL is the Italian LABEL —
+we resolve it to the official 8-digit code via ``bandiradar.cpv`` (often a coarse
+DIVISION code; unresolved labels stay as keyword text in eligibility_text).
+``valore_complessivo_stimato`` (importo) is sparse. Region is resolved structured-first:
+``luogo_nuts`` (province) -> ``luogo_istat`` (comune, ISTAT table) -> a conservative
+"Comune di X" buyer parse -> national.
 
 Attribution: ANAC — Pubblicità a Valore Legale (public, no license restriction).
 """
@@ -29,14 +31,16 @@ Attribution: ANAC — Pubblicità a Valore Legale (public, no license restrictio
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Iterable, Iterator
 from datetime import UTC, datetime, timedelta
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import httpx
 
-from bandiradar import http, resources
+from bandiradar import cpv, http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import ProgressFn, register
 
@@ -207,6 +211,52 @@ def region_for_nuts(luogo_nuts: str | None) -> str | None:
     return _PROVINCE_TO_REGION.get(_norm(luogo_nuts))
 
 
+@lru_cache(maxsize=1)
+def _comune_to_region() -> dict[str, str]:
+    """Packaged ISTAT comune (casefolded) -> region map (loaded once)."""
+    return json.loads(resources.comuni_map().read_text(encoding="utf-8"))
+
+
+def region_for_comune(luogo_istat: str | None) -> str | None:
+    """Resolve a PVL ``luogo_istat`` (comune) to its region via the ISTAT table."""
+    if not luogo_istat:
+        return None
+    return _comune_to_region().get(luogo_istat.strip().casefold())
+
+
+_BUYER_COMUNE_RE = re.compile(r"\bcomun[ei] di\s+([a-zà-ù'’\- ]+)", re.IGNORECASE)
+
+
+def region_from_buyer(buyer: str | None) -> str | None:
+    """Conservative last resort: only a "Comune di <X>" buyer name -> X's region.
+    Anything else returns None (we do not guess from arbitrary authority names)."""
+    if not buyer:
+        return None
+    m = _BUYER_COMUNE_RE.search(buyer)
+    if not m:
+        return None
+    # take a growing prefix of the captured words (handles multi-word comuni)
+    words = m.group(1).replace("’", "'").split()
+    region_map = _comune_to_region()
+    for n in range(len(words), 0, -1):
+        region = region_map.get(" ".join(words[:n]).casefold())
+        if region is not None:
+            return region
+    return None
+
+
+def resolve_region(
+    luogo_nuts: str | None, luogo_istat: str | None, buyer: str | None
+) -> str | None:
+    """Structured-first region resolution: province (luogo_nuts) -> comune
+    (luogo_istat) -> a conservative "Comune di X" buyer parse -> None (national)."""
+    return (
+        region_for_nuts(luogo_nuts)
+        or region_for_comune(luogo_istat)
+        or region_from_buyer(buyer)
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Pure payload helpers
 # --------------------------------------------------------------------------- #
@@ -328,10 +378,20 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     oggetto = (_template(payload).get("metadata") or {}).get("descrizione") or ""
     oggetto = oggetto.strip()
     lotti = _lotti(payload)
+    buyer = _buyer(payload)
     nuts = next(
         (lotto.get("luogo_nuts") for lotto in lotti if lotto.get("luogo_nuts")), None
     )
-    region = region_for_nuts(nuts)
+    istat = next(
+        (lotto.get("luogo_istat") for lotto in lotti if lotto.get("luogo_istat")), None
+    )
+    # Region: province -> comune -> conservative "Comune di X" buyer parse -> national.
+    region = resolve_region(nuts, istat, buyer)
+    # CPV: resolve the Italian LABEL(s) to official codes (often coarse divisions);
+    # unresolved labels stay in eligibility_text (built below) as keyword signal.
+    cpv_codes = cpv.resolve_labels(
+        [lotto.get("cpv") for lotto in lotti if lotto.get("cpv")]
+    )
     deadline = _deadline(payload)
 
     opportunity = Opportunity(
@@ -341,14 +401,12 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         kind=SOURCE_KIND,
         title=(oggetto or id_avviso)[:_TITLE_MAX],
         summary=None,
-        issuer_name=_buyer(payload),
-        issuer_region=nuts if region else None,  # the province, when we resolved it
-        cpv=[],  # PVL gives the Italian CPV LABEL, not the code -> next slice
+        issuer_name=buyer,
+        issuer_region=nuts or istat if region else None,  # the locality, when resolved
+        cpv=cpv_codes,  # resolved 8-digit codes (label kept in eligibility_text)
         value_amount=_value_total(lotti),
         value_currency="EUR",
-        geo_scope="regional"
-        if region
-        else "national",  # ITALIA/country/None -> national
+        geo_scope="regional" if region else "national",  # unresolved -> national
         region=region,
         published_at=_parse_dt(payload.get("dataPubblicazione")),
         deadline=deadline,

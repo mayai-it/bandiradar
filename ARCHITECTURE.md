@@ -175,9 +175,11 @@ of regional bandi can be crowdsourced by the community against this interface.
   not obscured) — NOT `codiceScheda` (recorded only for reference). `fetch()`
   pre-filters to open gare so the limit budget isn't spent on the ~70%
   esiti/rettifiche; rettifiche are caught later by `content_hash` change-detection,
-  not an N+1 `/cronologia` call. Mapper is pure; `luogo_nuts` (province) →region via a
-  static ISTAT table (country/None → national); PVL's `cpv` is a **label not a code**,
-  kept as keyword text until the CPV-code slice.
+  not an N+1 `/cronologia` call. Mapper is pure. Region is resolved structured-first:
+  `luogo_nuts` (province) → `luogo_istat` (comune, ISTAT table) → a conservative
+  "Comune di X" buyer parse → national. PVL's `cpv` is the Italian **label**; it is
+  resolved to the official 8-digit code via `bandiradar.cpv` (packaged EU CPV 2008
+  vocabulary; often coarse division-level), with the label kept as keyword text.
 - `incentivi` — incentivi.gov.it (national business incentives). Phase 1.
 
 Regional adapters = phase 2, community-contributed via the `add-a-source` skill.
