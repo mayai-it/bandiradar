@@ -345,6 +345,8 @@ uv run bandiradar match --profile pmi_toscana --source toscana --sample
 
 ## Self-healing crawl
 
+![A scraper's listing drifts and the crawl re-derives its own recipe — offline](docs/self-heal.gif)
+
 A scraper's fragile part is the **crawl** (the listing it depends on), not the
 extraction — the LLM already adapts to changed HTML. So the crawl is **data, not
 code**: a `CrawlRecipe` (where the listing is + dotted paths to each field). That
