@@ -49,7 +49,14 @@ WEB_BASE = "https://pubblicitalegale.anticorruzione.it/bandi"
 
 _PAGE_SIZE = 100
 _MAX_RECORDS = 5000  # safety ceiling when no explicit limit is given
-_DEFAULT_WINDOW_DAYS = 45  # default dataPubblicazione window when no `since` given
+# Interactive defaults — bounded so a plain `fetch` doesn't scan the whole window.
+# ~4k avvisi/day of every type are published and only ~3% are open gare, so the
+# kept-cap (_MAX_RECORDS) is never reached; a PAGE cap is the real bound. Results
+# are dataPubblicazione DESC, so capping pages = "the freshest avvisi" — the right
+# default for fetch/monitor. Deep backfill is an explicit --max-pages/--limit/--since.
+_DEFAULT_MAX_PAGES = 30
+# Recent open gare only; the monitor's continuity comes from incremental `since`.
+_DEFAULT_WINDOW_DAYS = 7
 _TITLE_MAX = 140
 
 # Observed "bando di indizione" scheda codes (open calls/indagini that carry a
@@ -410,12 +417,22 @@ class AnacPvlSource:
             "dataPubblicazioneEnd": now.strftime("%d/%m/%Y"),
             "size": _PAGE_SIZE,
         }
+        # Bounds: a kept-record cap (limit) AND a page cap (the real bound — the
+        # keep-rate is ~3%, so limit is rarely hit). max_pages overrides the default.
         cap = limit if limit is not None else _MAX_RECORDS
+        page_cap = max_pages if max_pages is not None else _DEFAULT_MAX_PAGES
         kept = 0
-        page = 0
+        scanned = 0
+        stop = "window-end"
         with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
-            while kept < cap and (max_pages is None or page < max_pages):
-                params = {**params_base, "page": page}
+            while True:
+                if kept >= cap:
+                    stop = "limit"
+                    break
+                if scanned >= page_cap:
+                    stop = "page-cap"
+                    break
+                params = {**params_base, "page": scanned}
                 response = http.with_retry(
                     lambda params=params: client.get(AVVISI_URL, params=params),
                     what="ANAC PVL fetch",
@@ -426,6 +443,7 @@ class AnacPvlSource:
                     raise RuntimeError(f"ANAC PVL fetch failed: {exc}") from exc
 
                 body = response.json()
+                scanned += 1
                 content = body.get("content") or []
                 if not content:
                     break
@@ -442,10 +460,14 @@ class AnacPvlSource:
                         payload=rec,
                     )
                 if progress is not None:
-                    progress(f"anac_pvl: page {page + 1}, {kept} open kept")
-                page += 1
-                if page >= (body.get("totalPages") or 0):
+                    progress(f"anac_pvl: page {scanned}, {kept} open gare kept")
+                if scanned >= (body.get("totalPages") or 0):
                     break
+        if progress is not None:
+            progress(
+                f"anac_pvl: stopped [{stop}] — {scanned} pages scanned, "
+                f"{kept} open gare kept"
+            )
 
     def to_opportunities(
         self, raw: RawDoc, now: datetime | None = None

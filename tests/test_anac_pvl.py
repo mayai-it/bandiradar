@@ -162,3 +162,96 @@ def test_registered_alongside_anac():
     assert source.id == "anac_pvl" and source.kind == "tender"
     ids = {s.id for s in list_sources()}
     assert {"anac", "anac_pvl"} <= ids  # both present, distinct sources
+
+
+# --------------------------------------------------------------------------- #
+# fetch() bounds — a fake paginator (no network); the live default must NOT scan
+# the whole window (~1.8k pages); deep backfill is an explicit override.
+# --------------------------------------------------------------------------- #
+
+
+class _FakeResponse:
+    status_code = 200
+
+    def __init__(self, body):
+        self._body = body
+
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return self._body
+
+
+class _FakePager:
+    """Serves endless pages of OPEN gare so only a cap can stop the fetch."""
+
+    def __init__(self, calls, *, total_pages=1000, per_page=2):
+        self.calls = calls
+        self.total_pages = total_pages
+        self.per_page = per_page
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def get(self, url, params=None):
+        self.calls.append(params)
+        page = params["page"]
+        content = [
+            {
+                "idAvviso": f"x-{page}-{i}",
+                "tipo": "avviso",
+                "attivo": True,
+                "oscurato": False,
+                "dataScadenza": "2030-01-01T00:00:00Z",  # always future
+            }
+            for i in range(self.per_page)
+        ]
+        return _FakeResponse({"content": content, "totalPages": self.total_pages})
+
+
+def _patch_client(monkeypatch, calls, **kw):
+    monkeypatch.setattr(pvl.httpx, "Client", lambda *a, **k: _FakePager(calls, **kw))
+
+
+def test_default_fetch_stops_at_page_cap(monkeypatch):
+    calls: list = []
+    _patch_client(monkeypatch, calls)
+    raws = list(pvl.AnacPvlSource().fetch())  # no max_pages -> default page cap
+    assert len(calls) == pvl._DEFAULT_MAX_PAGES  # did NOT scan the whole window
+    assert [c["page"] for c in calls] == list(range(pvl._DEFAULT_MAX_PAGES))
+    assert len(raws) == pvl._DEFAULT_MAX_PAGES * 2  # 2 open kept per page
+
+
+def test_max_pages_override_goes_deeper(monkeypatch):
+    calls: list = []
+    _patch_client(monkeypatch, calls)
+    list(pvl.AnacPvlSource().fetch(max_pages=50))
+    assert len(calls) == 50  # explicit override scans past the default cap
+
+
+def test_window_end_stops_before_page_cap(monkeypatch):
+    calls: list = []
+    _patch_client(monkeypatch, calls, total_pages=3)
+    list(pvl.AnacPvlSource().fetch())
+    assert len(calls) == 3  # ran out of pages before the cap
+
+
+def test_limit_caps_kept_records(monkeypatch):
+    calls: list = []
+    _patch_client(monkeypatch, calls)
+    raws = list(pvl.AnacPvlSource().fetch(limit=3))
+    assert len(raws) == 3
+    assert len(calls) <= 2  # stopped as soon as the kept-limit was hit
+
+
+def test_progress_reports_why_it_stopped(monkeypatch):
+    calls: list = []
+    msgs: list[str] = []
+    _patch_client(monkeypatch, calls)
+    list(pvl.AnacPvlSource().fetch(progress=msgs.append))
+    assert any("page-cap" in m for m in msgs)  # honest stop reason
+    assert any("pages scanned" in m for m in msgs)
