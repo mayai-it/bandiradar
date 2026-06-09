@@ -11,6 +11,14 @@
 
 **Runs offline, zero secrets · 4 live key-less sources + 1 LLM-assisted scraper · optional LLM Stage-2 · MIT**
 
+## Coverage
+
+> **[Coverage map](docs/coverage-map.md)** — an honest map of where Italian public
+> funding is published and what BandiRadar covers: open feeds vs gated, with the
+> honest gap.
+
+[![Italian public funding — data coverage map](docs/coverage-map.svg)](docs/coverage-map.md)
+
 ## Features
 
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
