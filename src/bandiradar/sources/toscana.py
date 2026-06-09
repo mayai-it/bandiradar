@@ -11,6 +11,7 @@ records are what ``to_opportunities`` maps — keeping that mapping PURE and the
 from __future__ import annotations
 
 import json
+import logging
 from collections.abc import Iterable, Iterator
 from datetime import UTC, datetime
 from pathlib import Path
@@ -29,11 +30,18 @@ from bandiradar.models import (
 )
 from bandiradar.sources.base import ProgressFn, register
 from bandiradar.sources.llm_scraper import (
+    CrawlRecipe,
+    DetailRef,
     ExtractionCache,
+    Health,
+    apply_recipe,
     extract_bando_fields,
     html_to_text,
+    validate_refs,
 )
 from bandiradar.storage import SqliteExtractionCache, Store
+
+logger = logging.getLogger(__name__)
 
 SOURCE_ID = "toscana"
 REGION = "Toscana"
@@ -42,9 +50,18 @@ ISSUER = "Sviluppo Toscana"
 TOSCANA_LIST_URL = "https://www.sviluppo.toscana.it/wp-json/wp/v2/bando"
 _MAX_ITEMS = 20
 
-FIXTURE_PATH = resources.fixture("toscana.json")
+# Default crawl recipe — the current Toscana values, now as DATA (validatable /
+# replaceable) instead of a hardcoded parse. WP-REST item shape: {id, link,
+# title:{rendered}}.
+TOSCANA_RECIPE = CrawlRecipe(
+    listing_url=TOSCANA_LIST_URL,
+    params={"per_page": _MAX_ITEMS, "_fields": "id,link,title"},
+    post_id_path="id",
+    detail_url_path="link",
+    title_path="title.rendered",
+)
 
-DetailRef = tuple[Any, str, str]  # (post_id, detail_url, listing_title)
+FIXTURE_PATH = resources.fixture("toscana.json")
 
 
 def _parse_iso(value: Any) -> datetime | None:
@@ -129,24 +146,42 @@ class ToscanaSource:
     # Live fetch needs an LLM provider+key (it extracts fields from HTML pages).
     # `doctor` reports "needs key" instead of probing when none is configured.
     requires_llm = True
+    # Health of the LAST crawl (set by _list_details / crawl_health). The CRAWL is
+    # key-less, so doctor can report it even without an LLM key.
+    last_crawl_health: Health | None = None
 
-    def _list_details(self) -> list[DetailRef]:
+    def _listing_json(self) -> Any:
+        """Fetch the raw WP-REST listing JSON (the key-less crawl)."""
         with httpx.Client(
             timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
         ) as client:
             resp = http.with_retry(
                 lambda: client.get(
-                    TOSCANA_LIST_URL,
-                    params={"per_page": _MAX_ITEMS, "_fields": "id,link,title"},
+                    TOSCANA_RECIPE.listing_url, params=TOSCANA_RECIPE.params
                 ),
                 what="Toscana listing",
             )
             resp.raise_for_status()
-            out: list[DetailRef] = []
-            for post in resp.json():
-                title = (post.get("title") or {}).get("rendered", "")
-                out.append((post["id"], post.get("link") or "", title))
-            return out
+            return resp.json()
+
+    def _list_details(self) -> list[DetailRef]:
+        """Build DetailRefs from the listing via the (data) recipe, and record drift
+        — a crawl gone wrong is logged, not silent."""
+        refs = apply_recipe(TOSCANA_RECIPE, self._listing_json())
+        self.last_crawl_health = validate_refs(refs)
+        if self.last_crawl_health != "ok":
+            logger.warning(
+                "toscana crawl health=%s (%d refs) — listing may have drifted; "
+                "the recipe needs review/re-derivation",
+                self.last_crawl_health,
+                len(refs),
+            )
+        return refs
+
+    def crawl_health(self) -> Health:
+        """Probe ONLY the crawl (listing -> recipe -> drift), no LLM. Lets ``doctor``
+        surface listing drift for this key-dependent source without a key."""
+        return validate_refs(apply_recipe(TOSCANA_RECIPE, self._listing_json()))
 
     def _fetch_text(self, url: str) -> str:
         with httpx.Client(

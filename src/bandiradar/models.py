@@ -343,6 +343,9 @@ class SourceResult(BaseModel):
     duration_s: float = 0.0
     started_at: datetime | None = None
     finished_at: datetime | None = None
+    # Crawl/listing health for scraper sources (ok/degraded/broken); None otherwise.
+    # Makes a crawl gone into drift visible in the result, not silent.
+    crawl_health: str | None = None
 
     @property
     def ok(self) -> bool:
@@ -361,6 +364,10 @@ class DoctorSourceResult(BaseModel):
     status: str  # FetchStatus, or "needs_key" when the probe was skipped
     error_kind: FetchErrorKind | None = None
     note: str | None = None
+    # Crawl/listing health for scraper sources (ok/degraded/broken). The crawl is
+    # key-less, so this is reported even when the source is "needs_key". None for
+    # sources without a crawl recipe.
+    crawl_health: str | None = None
 
 
 class DoctorEnv(BaseModel):

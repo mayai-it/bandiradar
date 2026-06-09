@@ -144,6 +144,7 @@ def run_fetch(
     fetched = mapped = new = amended = skipped_invalid = 0
     error: str | None = None
     error_kind: str | None = None
+    source = None
 
     try:
         source = get(source_id)
@@ -233,6 +234,9 @@ def run_fetch(
         duration_s=duration_s,
         started_at=started,
         finished_at=finished,
+        # A scraper's crawl health is recorded on the source during a LIVE crawl;
+        # surface it so a drifted listing is visible in the result (sample = N/A).
+        crawl_health=(None if sample else getattr(source, "last_crawl_health", None)),
     )
 
 
@@ -364,6 +368,16 @@ def run_doctor(
     def _needs_key(s) -> bool:
         return bool(getattr(s, "requires_llm", False)) and not llm_ready
 
+    def _probe_crawl(s) -> str | None:
+        """Key-less crawl-health probe (scraper sources only); never raises."""
+        fn = getattr(s, "crawl_health", None)
+        if not callable(fn):
+            return None
+        try:
+            return fn()
+        except Exception:  # noqa: BLE001 — a crawl probe failure must not break doctor
+            return None
+
     to_probe = [s for s in sources if not _needs_key(s)]
     # Probe live, bounded, isolated — into a throwaway DB so the real one is untouched.
     mem = Store(":memory:")
@@ -379,6 +393,12 @@ def run_doctor(
     for s in sources:
         requires_llm = bool(getattr(s, "requires_llm", False))
         if _needs_key(s):
+            # The crawl is key-less, so probe its health even without an LLM key —
+            # a drifted listing is visible here, not hidden behind "needs key".
+            crawl = _probe_crawl(s)
+            note = "LLM provider/key not configured — not probed"
+            if crawl is not None:
+                note += f"; crawl: {crawl}"
             source_results.append(
                 DoctorSourceResult(
                     source=s.id,
@@ -387,7 +407,8 @@ def run_doctor(
                     reachable=None,
                     parsed=False,
                     status="needs_key",
-                    note="LLM provider/key not configured — not probed",
+                    note=note,
+                    crawl_health=crawl,
                 )
             )
             continue
@@ -402,6 +423,8 @@ def run_doctor(
                 status=r.status,
                 error_kind=r.error_kind,
                 note=r.error,
+                # set during the live probe (run_fetch records it on the source)
+                crawl_health=getattr(s, "last_crawl_health", None),
             )
         )
 
