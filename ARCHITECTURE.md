@@ -168,6 +168,16 @@ of regional bandi can be crowdsourced by the community against this interface.
   historical/benchmark track. The OCDS address carries no region/NUTS, so
   `region=None` and `geo_scope="national"`. `to_opportunities` stays pure; the
   network/streaming lives in `fetch()`.
+- `anac_pvl` — ANAC *Pubblicità a Valore Legale* (`pubblicitalegale.anticorruzione.it`),
+  the **live feed of OPEN tenders** (`kind="tender"`) that `anac` (retrospective OCDS)
+  and `ted` (EU above-threshold) miss. Public JSON API, no credentials. The robust
+  filter is **`dataScadenza` in the future** (an original `tipo=="avviso"`, active,
+  not obscured) — NOT `codiceScheda` (recorded only for reference). `fetch()`
+  pre-filters to open gare so the limit budget isn't spent on the ~70%
+  esiti/rettifiche; rettifiche are caught later by `content_hash` change-detection,
+  not an N+1 `/cronologia` call. Mapper is pure; `luogo_nuts` (province) →region via a
+  static ISTAT table (country/None → national); PVL's `cpv` is a **label not a code**,
+  kept as keyword text until the CPV-code slice.
 - `incentivi` — incentivi.gov.it (national business incentives). Phase 1.
 
 Regional adapters = phase 2, community-contributed via the `add-a-source` skill.

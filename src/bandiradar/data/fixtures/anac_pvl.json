@@ -1,0 +1,976 @@
+{
+ "_captured": "2026-06-08T12:00:00+00:00",
+ "_note": "ANAC PVL capture (recon 2026-06-08) — mix of open gare + esiti/rettifica/oscurato for the filter test.",
+ "records": [
+  {
+   "idAvviso": "67f7b37c-14d2-4b65-a802-7397979a6e00",
+   "idAppalto": "4a970ddc-aad6-4e20-ab58-9d5d02f7374b",
+   "scheda": null,
+   "codiceScheda": "P7_1_2",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-16T15:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.426+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T15:02:45.426+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "67f7b37c-14d2-4b65-a802-7397979a6e00",
+       "idAppalto": "4a970ddc-aad6-4e20-ab58-9d5d02f7374b",
+       "scheda": null,
+       "codiceScheda": "P7_1_2",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-16T15:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.426+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T17:02:45.000+00:00",
+       "dataCreazione": "2026-06-05T15:02:45.426+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Servizio di assistenza specialistica per prodotti Vertiv"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "02994540108",
+           "denominazione_amministrazione": "LIGURIA DIGITALE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://www.ariaspa.it/wps/portal/Aria/"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF90A48C",
+          "natura_principale": "Servizi",
+          "descrizione": "Servizio di assistenza specialistica per prodotti Vertiv",
+          "cpv": "Servizi di assistenza al parco macchine",
+          "valore_complessivo_stimato": 5148.0,
+          "documenti_di_gara_link": "https://www.ariaspa.it/wps/portal/Aria/",
+          "luogo_nuts": "Genova",
+          "luogo_istat": "GENOVA",
+          "termine_invito": "2026-06-16T15:00:00Z"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "84faaad0-7946-4540-b8f9-7bf625427f0b",
+   "idAppalto": "bbf7c596-d0e1-4831-8895-93cab8944b96",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-22T12:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.186+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T13:55:29.186+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "84faaad0-7946-4540-b8f9-7bf625427f0b",
+       "idAppalto": "bbf7c596-d0e1-4831-8895-93cab8944b96",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-22T12:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.186+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T15:55:29.000+00:00",
+       "dataCreazione": "2026-06-05T13:55:29.186+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Avviso finalizzato all'individuazione degli operatori economici da invitare alla procedura negoziata senza bando per l'affidamento del servizio di manutenzione preventiva e correttiva, con reperibilita', dei gruppi statici di continuita', compresi condensatori e ventilatori, della sede centrale e delle sezioni territoriali dell'IZSVe"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "00206200289",
+           "denominazione_amministrazione": "ISTITUTO ZOOPROFILATTICO SPERIMENTALE DELLE VENEZIE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://www.izsvenezie.it/amministrazione/bandi-e-gare/forniture-di-beni-e-servizi/gare/#esiti-archivio-gare"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF65ACC8",
+          "natura_principale": "Servizi",
+          "descrizione": "Lotto 1",
+          "cpv": "Servizi di riparazione e manutenzione di impianti elettrici di edifici",
+          "valore_complessivo_stimato": 58000.0,
+          "documenti_di_gara_link": "https://www.izsvenezie.it/amministrazione/bandi-e-gare/forniture-di-beni-e-servizi/gare/#esiti-archivio-gare",
+          "luogo_nuts": "Padova",
+          "luogo_istat": "LEGNARO",
+          "termine_invito": "2026-06-22T12:00:00Z"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "9c1a1fc2-0127-4605-80b0-ffc07ebf9244",
+   "idAppalto": "5b845a49-3603-4e6a-8563-b71701839a3a",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-18T07:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.628+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T12:46:07.628+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "9c1a1fc2-0127-4605-80b0-ffc07ebf9244",
+       "idAppalto": "5b845a49-3603-4e6a-8563-b71701839a3a",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-18T07:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.628+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T14:46:07.000+00:00",
+       "dataCreazione": "2026-06-05T12:46:07.628+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "PROCEDURA NEGOZIATA SENZA BANDO, EX ART.50, CO.1 LETT.D) DEL D.LGS. 36/2023, MEDIANTE IL RICORSO ALLA PROCEDURA TELEMATICA  TUTTOGARE  MEDIANE RICHIESTA DI OFFERTA  SECONDO IL CRITERIO DEL MINOR PREZZO, RELATIVAMENTE A:  INTERVENTO “PR CALABRIA FESR - FSE 2021/2027 - S.T. RC. 5.1.1 N - INTERVENTO DI DEMOLIZIONE E RICOSTRUZIONE SCUOLA PRIMARIA CANNAVO': IST. COMP. SAN SPERATO – CARDETO” - CUP: H34E22002260006"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "00136380805",
+           "denominazione_amministrazione": "COMUNE DI REGGIO CALABRIA"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://reggiocal.tuttogare.it/gare/dettaglio.php?codice=184"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF18934A",
+          "natura_principale": "Lavori",
+          "descrizione": "PROCEDURA NEGOZIATA SENZA BANDO, EX ART.50, CO.1 LETT.D) DEL D.LGS. 36/2023, MEDIANTE RICHIESTA DI OFFERTA SECONDO IL CRITERIO DEL MINOR PREZZO, RELATIVAMENTE A:  “PR CALABRIA FESR - FSE 2021/2027 - S.T. RC. 5.1.1 N - INTERVENTO DI DEMOLIZIONE E RICOSTRUZIONE SCUOLA PRIMARIA CANNAVO': IST. COMP. SAN SPERATO – CARDETO” - CUP: H34E22002260006",
+          "cpv": "Lavori di costruzione di edifici per l'istruzione e la ricerca",
+          "valore_complessivo_stimato": 1195518.0,
+          "documenti_di_gara_link": "https://reggiocal.tuttogare.it/gare/dettaglio.php?codice=184",
+          "luogo_nuts": "Reggio di Calabria",
+          "luogo_istat": "REGGIO DI CALABRIA",
+          "termine_invito": "2026-06-18T09:00:00+02:00"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "8c6d1a52-1574-412f-9226-43a9a8a98b3a",
+   "idAppalto": "624fbe88-0964-4afd-8ce8-a2316d6ab655",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-20T23:59:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.051+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T12:05:31.051+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "8c6d1a52-1574-412f-9226-43a9a8a98b3a",
+       "idAppalto": "624fbe88-0964-4afd-8ce8-a2316d6ab655",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-20T23:59:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.051+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T14:05:30.000+00:00",
+       "dataCreazione": "2026-06-05T12:05:31.051+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "MANIFESTAZIONE DI INTERESSE 88643 del 03/06/2025 - POC - Laboratori Professionalizzanti"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "91157020354",
+           "denominazione_amministrazione": "ISTITUTO D'ISTRUZIONE SUPERIORE L. NOBILI"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://trasparenza-pa.net/?codcli=SG26763"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEEE67D72",
+          "natura_principale": "Forniture",
+          "descrizione": "Workstation Desktop ad Alte Prestazioni - settore Elettrotecnica Elettronica",
+          "cpv": "Apparecchiature informatiche e forniture",
+          "valore_complessivo_stimato": 65490.0,
+          "documenti_di_gara_link": "https://trasparenza-pa.net/?codcli=SG26763",
+          "luogo_nuts": "Reggio nell'Emilia",
+          "luogo_istat": "REGGIO NELL'EMILIA",
+          "termine_invito": "2026-06-20T23:59:00Z"
+         },
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEEE68E45",
+          "natura_principale": "Forniture",
+          "descrizione": "Workstation Desktop ad Alte Prestazioni  settore Meccanica Meccatronica",
+          "cpv": "Apparecchiature informatiche e forniture",
+          "valore_complessivo_stimato": 65490.0,
+          "documenti_di_gara_link": "https://trasparenza-pa.net/?codcli=SG26763",
+          "luogo_nuts": "Reggio nell'Emilia",
+          "luogo_istat": "REGGIO NELL'EMILIA",
+          "termine_invito": "2026-06-20T23:59:00Z"
+         },
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEEE69F18",
+          "natura_principale": "Forniture",
+          "descrizione": "Personal Computer Desktop  settore Sistema Moda",
+          "cpv": "Apparecchiature informatiche e forniture",
+          "valore_complessivo_stimato": 30426.0,
+          "documenti_di_gara_link": "https://trasparenza-pa.net/?codcli=SG26763",
+          "luogo_nuts": "Reggio nell'Emilia",
+          "luogo_istat": "REGGIO NELL'EMILIA",
+          "termine_invito": "2026-06-20T23:59:00Z"
+         },
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEEE6AFEB",
+          "natura_principale": "Forniture",
+          "descrizione": "Monitor Commerciale 24\" - settore Manutenzione assistenza tecnica",
+          "cpv": "Apparecchiature informatiche e forniture",
+          "valore_complessivo_stimato": 3267.0,
+          "documenti_di_gara_link": "https://trasparenza-pa.net/?codcli=SG26763",
+          "luogo_nuts": "Reggio nell'Emilia",
+          "luogo_istat": "REGGIO NELL'EMILIA",
+          "termine_invito": "2026-06-20T23:59:00Z"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "79eb639e-ab9e-47f6-8368-50582a9a6170",
+   "idAppalto": "d4a13baf-78c9-447f-b383-c20cbfbce945",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-22T00:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.042+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T15:07:23.042+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "79eb639e-ab9e-47f6-8368-50582a9a6170",
+       "idAppalto": "d4a13baf-78c9-447f-b383-c20cbfbce945",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-22T00:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.042+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T17:07:22.000+00:00",
+       "dataCreazione": "2026-06-05T15:07:23.042+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Indagine di mercato finalizzata alla ricerca degli Operatori economici da invitare alla successiva procedura negoziata sotto soglia per affidamento della fornitura di prodotti igienico sanitari a norma HACCP con comodato d uso di attrezzature specifiche e relativo servizio di manutenzione"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "82009260124",
+           "denominazione_amministrazione": "ISTITUTO SUPERIORE FALCONE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://www.trasparenza-pa.net/?codcli=SG26478&node=295819"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF9487B5",
+          "natura_principale": "Forniture",
+          "descrizione": "Fornitura di materiale igienico sanitario a norma HACCP con comodato d'uso di attrezzature specifiche e relativo servizio di manutenzione",
+          "cpv": "Detersivi per lavastoviglie",
+          "valore_complessivo_stimato": 18000.0,
+          "documenti_di_gara_link": "https://www.trasparenza-pa.net/?codcli=SG26478&node=295819",
+          "luogo_nuts": "ITALIA",
+          "luogo_istat": "GALLARATE",
+          "termine_invito": "2026-06-22T00:00:00Z"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "835fb425-c960-491d-b9f3-76f8fc71e8e8",
+   "idAppalto": "34a0f615-03c0-4e9b-9a38-f3b4f96573a0",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-07-05T21:59:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.227+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T12:56:35.228+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "835fb425-c960-491d-b9f3-76f8fc71e8e8",
+       "idAppalto": "34a0f615-03c0-4e9b-9a38-f3b4f96573a0",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-07-05T21:59:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.227+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T14:56:35.000+00:00",
+       "dataCreazione": "2026-06-05T12:56:35.228+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "AFFIDAMENTO IN CONCESSIONE DEL SERVIZIO DI ORGANIZZAZIONE E GESTIONE DEI CORSI DI LINGUA ITALIANA PRESSO IIC MONACO DI BAVIERA"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "80213330584",
+           "denominazione_amministrazione": "MINISTERO DEGLI AFFARI ESTERI E COOPERAZIONE INTERNAZIONALE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://maeci.traspare.com/announcements/79505"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF246F3E",
+          "natura_principale": "Servizi",
+          "descrizione": "AFFIDAMENTO IN CONCESSIONE DEL SERVIZIO DI ORGANIZZAZIONE E GESTIONE DEI CORSI DI LINGUA ITALIANA PRESSO IIC MONACO DI BAVIERA",
+          "cpv": "Organizzazione di corsi di lingue",
+          "valore_complessivo_stimato": 720000.0,
+          "documenti_di_gara_link": "https://maeci.traspare.com/announcements/79505",
+          "luogo_nuts": "GERMANIA",
+          "luogo_istat": "GERMANIA",
+          "termine_invito": "2026-07-05T23:59:00+02:00"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "e6f9fc50-73a7-4a28-a748-fdf7446636fa",
+   "idAppalto": "779b0ff5-56c4-435d-bbb9-4100243cacf3",
+   "scheda": null,
+   "codiceScheda": "P7_1_2",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-16T10:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.382+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T13:03:49.382+00:00",
+   "tipo": "rettifica",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "e6f9fc50-73a7-4a28-a748-fdf7446636fa",
+       "idAppalto": "779b0ff5-56c4-435d-bbb9-4100243cacf3",
+       "scheda": null,
+       "codiceScheda": "P7_1_2",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-16T10:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.382+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T15:03:49.000+00:00",
+       "dataCreazione": "2026-06-05T13:03:49.382+00:00",
+       "tipo": "rettifica",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Avviso volontario per la trasparenza preventiva, ai sensi dell’art. 86 del Decreto legislativo 31 marzo 2023, n. 36, relativo alla procedura negoziata senza pubblicazione di un bando, ai sensi dell'art. 76 comma 2 lett. b), n.2 e n.3, del D.lgs. 36/2023, per l’affidamento della fornitura per mesi 24 di “dispositivi medici/materiale di consumo per i sistemi di depurazione extracorporea in continuo –CRRT per le Terapie Intensive ed UU.OO.CC. Anestesia e Rianimazione dei PP.OO. di Marcianise, Aversa e Sessa Aurunca”."
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "03519500619",
+           "denominazione_amministrazione": "ASL CASERTA"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://portale.soresa.it/aflink/direct/link/?id=4655962"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBB7C25D87",
+          "natura_principale": "Forniture",
+          "descrizione": "AVVISO EX ANTE PER LA FORNITURA DI DISPOSITIVI MEDICI PER CCRTPER MESI 24 ",
+          "cpv": "Dispositivi e prodotti medici vari",
+          "valore_complessivo_stimato": 569746.0,
+          "documenti_di_gara_link": "https://portale.soresa.it/aflink/direct/link/?id=4655962",
+          "luogo_nuts": "Caserta",
+          "luogo_istat": "CASERTA",
+          "termine_invito": "2026-06-16T12:00:00+02:00"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "a99784e3-7868-432d-8247-b9c65381ac71",
+   "idAppalto": "cb26b417-b37b-45ec-ab28-fca24a4ab641",
+   "scheda": null,
+   "codiceScheda": "P7_1_3",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-05T10:30:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.366+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T12:03:50.366+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "a99784e3-7868-432d-8247-b9c65381ac71",
+       "idAppalto": "cb26b417-b37b-45ec-ab28-fca24a4ab641",
+       "scheda": null,
+       "codiceScheda": "P7_1_3",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-05T10:30:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.366+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T14:03:50.000+00:00",
+       "dataCreazione": "2026-06-05T12:03:50.366+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "AFFIDAMENTO IN CONCESSIONE DI SPAZI PER LA GESTIONE DEL SERVIZIO DISTRIBUZIONE AUTOMATICA BEVANDE E ALIMENTI PRECONFEZIONATI E DI EROGATORI D’ACQUA PRESSO LE SEDI DELL’ACCADEMIA DI BELLE ARTI DI FIRENZE PER IL PERIODO DI 5 ANNI "
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "80019050485",
+           "denominazione_amministrazione": "ACCADEMIA BELLE ARTI DI FIRENZE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://accademiafirenze.traspare.com/announcements/713"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEE5CE522",
+          "natura_principale": "Servizi",
+          "descrizione": "CONCESSIONE, AI SENSI DELL’ART 187 DEL D.LGS 36/2023, DEL SERVIZIO E GESTIONE DI DISTRIBUTORI AUTOMATICI  PER BEVANDE E SNACK NONCHÉ DI INSTALLAZIONE E GESTIONE DI EROGATORI DI ACQUA POTABILE DI RETE PRESSO LE SEDI DELL’ACCADEMIA DI BELLE ARTI DI FIR",
+          "cpv": "Distributori automatici",
+          "valore_complessivo_stimato": 6000.0,
+          "documenti_di_gara_link": "https://accademiafirenze.traspare.com/announcements/713",
+          "luogo_nuts": "Firenze",
+          "luogo_istat": "FIRENZE",
+          "termine_invito": "2026-06-05T12:30:00+02:00"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "f306ec52-abce-4fa9-bb17-df2e97314def",
+   "idAppalto": "d7e2c2cb-5a06-40e9-9d38-5fc8dbd9718f",
+   "scheda": null,
+   "codiceScheda": "P2_20",
+   "codiceEform": null,
+   "dataScadenza": "2026-07-06T10:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.998+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T10:33:03.998+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "f306ec52-abce-4fa9-bb17-df2e97314def",
+       "idAppalto": "d7e2c2cb-5a06-40e9-9d38-5fc8dbd9718f",
+       "scheda": null,
+       "codiceScheda": "P2_20",
+       "codiceEform": null,
+       "dataScadenza": "2026-07-06T10:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.998+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T12:33:03.000+00:00",
+       "dataCreazione": "2026-06-05T10:33:03.998+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "idTemplate": null,
+     "codiceScheda": "P2_20",
+     "dataPubblicazione": "2026-06-08T06:00:00.998+00:00",
+     "dataScadenza": "2026-07-06T10:00:00.000+00:00",
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "ASSISTENZA DOMICILIARE SOCIOASSISTENZIALE PER ANZIANI E PERSONE CON DISABILITA AMBITO N29"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "80017980634",
+           "denominazione_amministrazione": "COMUNE DI ERCOLANO DIPARTIMENTO ASSETTO E GOVERNO DEL TERRITORIO"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://ercolano.traspare.com/announcements/427",
+         "tipo_procedura_aggiudicazione": "Aperta"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEE0B3E8D",
+          "natura_principale": "Servizi",
+          "descrizione": "ASSISTENZA DOMICILIARE SOCIOASSISTENZIALE PER ANZIANI E PERSONE CON DISABILITA'",
+          "cpv": "Servizi sociali",
+          "valore_complessivo_stimato": 454440.3,
+          "documenti_di_gara_link": "https://ercolano.traspare.com/announcements/427",
+          "luogo_istat": "ERCOLANO",
+          "termine_ricezione": "2026-07-06T12:00:00+02:00"
+         }
+        ]
+       }
+      ]
+     },
+     "idAvviso": "f306ec52-abce-4fa9-bb17-df2e97314def",
+     "lingua": "it",
+     "count": 2342104.0,
+     "paginationToken": "CJzujgEaAhAAGgkp5grRpZ4BAAAaAmABIg5aDGoipeDF8t58HRGuBA==",
+     "score": 0.0,
+     "scoreDetails": {
+      "value": 0.0,
+      "description": "sum of:",
+      "details": [
+       {
+        "value": 0.0,
+        "description": "match on required clause, product of:",
+        "details": [
+         {
+          "value": 0.0,
+          "description": "# clause",
+          "details": []
+         },
+         {
+          "value": 1.0,
+          "description": "IndexOrDocValuesQuery(indexQuery=$type:date/dataPubblicazione:[-9223372036854775808 TO 1780963621100], dvQuery=$type:date/dataPubblicazione:[-9223372036854775808 TO 1780963621100]) $type:dateMultiple/dataPubblicazione:[-9223372036854775808 TO 1780963621100]",
+          "details": []
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false,
+     "noteOscuramento": null
+    }
+   ],
+   "score": 0.0,
+   "scoreDetails": {
+    "value": 0.0,
+    "description": "sum of:",
+    "details": [
+     {
+      "value": 0.0,
+      "description": "match on required clause, product of:",
+      "details": [
+       {
+        "value": 0.0,
+        "description": "# clause",
+        "details": []
+       },
+       {
+        "value": 1.0,
+        "description": "IndexOrDocValuesQuery(indexQuery=$type:date/dataPubblicazione:[-9223372036854775808 TO 1780963621100], dvQuery=$type:date/dataPubblicazione:[-9223372036854775808 TO 1780963621100]) $type:dateMultiple/dataPubblicazione:[-9223372036854775808 TO 1780963621100]",
+        "details": []
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "idAvviso": "cbdcf7ce-0406-4745-bcfe-fe07fc687a4c",
+   "idAppalto": "77c7ee51-ff31-4d5d-9455-48a5d66001d4",
+   "scheda": null,
+   "codiceScheda": "M2",
+   "codiceEform": null,
+   "dataScadenza": null,
+   "dataPubblicazione": "2026-06-08T06:00:00.486+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T15:46:43.486+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": false,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "cbdcf7ce-0406-4745-bcfe-fe07fc687a4c",
+       "idAppalto": "77c7ee51-ff31-4d5d-9455-48a5d66001d4",
+       "scheda": null,
+       "codiceScheda": "M2",
+       "codiceEform": null,
+       "dataScadenza": null,
+       "dataPubblicazione": "2026-06-08T06:00:00.486+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T17:46:43.000+00:00",
+       "dataCreazione": "2026-06-05T15:46:43.486+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Interventi di potatura straordinaria del verde pubblico comunale a seguito degli eventi avversi del mese di settembre 2025."
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "00412580243",
+           "denominazione_amministrazione": "COMUNE DI LONIGO"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://lonigo.trasparenza-valutazione-merito.it/web/trasparenza/papca-g/-/papca/grid/1153522"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "aggiudicazione",
+          "cig": "B8BB6EBD03",
+          "natura_principale": "Servizi",
+          "descrizione": "Interventi straordinari di messa in sicurezza e ripristino verde del Comune di Lonigo a seguito dell'evento del 1 Settembre 2025",
+          "cpv": "Potatura di alberi",
+          "documenti_di_gara_link": "https://lonigo.trasparenza-valutazione-merito.it/web/trasparenza/papca-g/-/papca/grid/1153522",
+          "luogo_nuts": "Vicenza",
+          "luogo_istat": "LONIGO",
+          "motivazione_modifica": "Modifiche inferiori a una soglia minima ('de minimis')."
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  },
+  {
+   "idAvviso": "00000000-osc0-0000-0000-000000000000",
+   "idAppalto": "4a970ddc-aad6-4e20-ab58-9d5d02f7374b",
+   "scheda": null,
+   "codiceScheda": "P7_1_2",
+   "codiceEform": null,
+   "dataScadenza": "2026-06-16T15:00:00.000+00:00",
+   "dataPubblicazione": "2026-06-08T06:00:00.426+00:00",
+   "dataPubblicazioneRettifica": null,
+   "dataCreazione": "2026-06-05T15:02:45.426+00:00",
+   "tipo": "avviso",
+   "attivo": true,
+   "oscurato": true,
+   "nuovoAvviso": null,
+   "template": [
+    {
+     "avviso": [
+      {
+       "idAvviso": "67f7b37c-14d2-4b65-a802-7397979a6e00",
+       "idAppalto": "4a970ddc-aad6-4e20-ab58-9d5d02f7374b",
+       "scheda": null,
+       "codiceScheda": "P7_1_2",
+       "codiceEform": null,
+       "dataScadenza": "2026-06-16T15:00:00.000+00:00",
+       "dataPubblicazione": "2026-06-08T06:00:00.426+00:00",
+       "dataPubblicazioneRettifica": null,
+       "dataPCP": "2026-06-05T17:02:45.000+00:00",
+       "dataCreazione": "2026-06-05T15:02:45.426+00:00",
+       "tipo": "avviso",
+       "attivo": true,
+       "nuovoAvviso": null
+      }
+     ],
+     "template": {
+      "metadata": {
+       "link_eform_ted": null,
+       "titolo": null,
+       "descrizione": "Servizio di assistenza specialistica per prodotti Vertiv"
+      },
+      "sections": [
+       {
+        "name": "SEZ. A - Committente",
+        "fields": {
+         "soggetti_sa": [
+          {
+           "codice_fiscale": "02994540108",
+           "denominazione_amministrazione": "LIGURIA DIGITALE"
+          }
+         ]
+        }
+       },
+       {
+        "name": "SEZ. B - Dati Generali",
+        "fields": {
+         "documenti_di_gara_link": "https://www.ariaspa.it/wps/portal/Aria/"
+        }
+       },
+       {
+        "name": "SEZ. C - Oggetto",
+        "items": [
+         {
+          "tipo_oggetto": "lotto",
+          "cig": "BBEF90A48C",
+          "natura_principale": "Servizi",
+          "descrizione": "Servizio di assistenza specialistica per prodotti Vertiv",
+          "cpv": "Servizi di assistenza al parco macchine",
+          "valore_complessivo_stimato": 5148.0,
+          "documenti_di_gara_link": "https://www.ariaspa.it/wps/portal/Aria/",
+          "luogo_nuts": "Genova",
+          "luogo_istat": "GENOVA",
+          "termine_invito": "2026-06-16T15:00:00Z"
+         }
+        ]
+       }
+      ]
+     },
+     "oscurato": false
+    }
+   ]
+  }
+ ]
+}

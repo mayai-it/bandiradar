@@ -11,6 +11,7 @@ bandiradar.sources``.
 """
 
 from bandiradar.sources import anac as anac  # noqa: F401  (registration side effect)
+from bandiradar.sources import anac_pvl as anac_pvl  # noqa: F401  (registration)
 from bandiradar.sources import incentivi as incentivi  # noqa: F401  (registration)
 from bandiradar.sources import lazio as lazio  # noqa: F401  (registration)
 from bandiradar.sources import lombardia as lombardia  # noqa: F401  (registration)
