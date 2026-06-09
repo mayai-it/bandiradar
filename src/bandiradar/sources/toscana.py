@@ -28,7 +28,9 @@ from bandiradar.models import (
     default_status,
     sanitize_value_bounds,
 )
+from bandiradar.recipe_store import RecipeStore
 from bandiradar.sources.base import ProgressFn, register
+from bandiradar.sources.heal import heal_crawl
 from bandiradar.sources.llm_scraper import (
     CrawlRecipe,
     DetailRef,
@@ -150,38 +152,71 @@ class ToscanaSource:
     # key-less, so doctor can report it even without an LLM key.
     last_crawl_health: Health | None = None
 
-    def _listing_json(self) -> Any:
-        """Fetch the raw WP-REST listing JSON (the key-less crawl)."""
+    def _active_recipe(self, recipe_store: RecipeStore | None) -> CrawlRecipe:
+        """The adopted override if present, else the baked default."""
+        override = recipe_store.get_recipe(SOURCE_ID) if recipe_store else None
+        return override or TOSCANA_RECIPE
+
+    def _listing_json(self, recipe: CrawlRecipe) -> Any:
+        """Fetch the raw WP-REST listing JSON for a recipe (the key-less crawl)."""
         with httpx.Client(
             timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
         ) as client:
             resp = http.with_retry(
-                lambda: client.get(
-                    TOSCANA_RECIPE.listing_url, params=TOSCANA_RECIPE.params
-                ),
+                lambda: client.get(recipe.listing_url, params=recipe.params),
                 what="Toscana listing",
             )
             resp.raise_for_status()
             return resp.json()
 
-    def _list_details(self) -> list[DetailRef]:
-        """Build DetailRefs from the listing via the (data) recipe, and record drift
-        — a crawl gone wrong is logged, not silent."""
-        refs = apply_recipe(TOSCANA_RECIPE, self._listing_json())
+    def _list_details(
+        self,
+        recipe_store: RecipeStore | None = None,
+        client: LLMClient | None = None,
+    ) -> list[DetailRef]:
+        """Crawl via the active recipe. On a healthy crawl, snapshot the golden refs.
+        On drift, log it and (with an LLM key + a golden) attempt a GATED self-heal —
+        adopting a re-derived recipe only if the spine guard passes."""
+        recipe = self._active_recipe(recipe_store)
+        listing = self._listing_json(recipe)
+        refs = apply_recipe(recipe, listing)
         self.last_crawl_health = validate_refs(refs)
-        if self.last_crawl_health != "ok":
-            logger.warning(
-                "toscana crawl health=%s (%d refs) — listing may have drifted; "
-                "the recipe needs review/re-derivation",
-                self.last_crawl_health,
-                len(refs),
+        if self.last_crawl_health == "ok":
+            if recipe_store is not None:
+                recipe_store.set_golden(SOURCE_ID, refs)  # the next heal's golden
+            return refs
+
+        logger.warning(
+            "toscana crawl health=%s (%d refs) — listing may have drifted",
+            self.last_crawl_health,
+            len(refs),
+        )
+        expected = recipe_store.get_golden(SOURCE_ID) if recipe_store else None
+        if recipe_store is not None and client is not None and expected:
+            result = heal_crawl(
+                SOURCE_ID, listing, expected, recipe, client, recipe_store
             )
+            logger.warning(
+                "toscana self-heal: status=%s adopted=%s — %s",
+                result.status,
+                result.adopted,
+                result.reason,
+            )
+            if result.adopted:
+                healed = self._active_recipe(recipe_store)
+                refs = apply_recipe(healed, listing)
+                self.last_crawl_health = validate_refs(refs)
         return refs
 
     def crawl_health(self) -> Health:
-        """Probe ONLY the crawl (listing -> recipe -> drift), no LLM. Lets ``doctor``
-        surface listing drift for this key-dependent source without a key."""
-        return validate_refs(apply_recipe(TOSCANA_RECIPE, self._listing_json()))
+        """Probe ONLY the crawl (active recipe -> listing -> drift), no LLM/heal. Lets
+        ``doctor`` surface listing drift for this key-dependent source without a key."""
+        store = Store(None)
+        try:
+            recipe = self._active_recipe(RecipeStore(store))
+            return validate_refs(apply_recipe(recipe, self._listing_json(recipe)))
+        finally:
+            store.close()
 
     def _fetch_text(self, url: str) -> str:
         with httpx.Client(
@@ -224,7 +259,11 @@ class ToscanaSource:
         own_store = Store(None) if cache is None else None
         if cache is None:
             cache = SqliteExtractionCache(own_store)  # persist on the default DB
-        list_details = list_details or self._list_details
+        # Recipe overrides + drift-heal live on the same DB (only when we own it).
+        recipe_store = RecipeStore(own_store) if own_store is not None else None
+        list_details = list_details or (
+            lambda: self._list_details(recipe_store, client)
+        )
         fetch_text = fetch_text or self._fetch_text
 
         return self._scrape(

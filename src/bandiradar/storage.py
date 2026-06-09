@@ -112,6 +112,20 @@ CREATE TABLE IF NOT EXISTS embeddings (
     vector       TEXT NOT NULL,  -- JSON array of floats
     PRIMARY KEY (content_hash, model_id)
 );
+
+CREATE TABLE IF NOT EXISTS crawl_recipes (
+    source_id    TEXT PRIMARY KEY,  -- per-source CrawlRecipe override (config)
+    recipe       TEXT NOT NULL,     -- JSON of CrawlRecipe
+    adopted_at   TEXT NOT NULL,
+    reason       TEXT,              -- why adopted (e.g. "drift-heal")
+    validated_by TEXT               -- which guard passed (e.g. "golden-exact")
+);
+
+CREATE TABLE IF NOT EXISTS crawl_golden (
+    source_id TEXT PRIMARY KEY,  -- last KNOWN-GOOD refs (the drift-heal golden)
+    refs      TEXT NOT NULL,     -- JSON list of [post_id, detail_url, title]
+    saved_at  TEXT NOT NULL
+);
 """
 
 # Columns added AFTER a table's original release. ``_migrate`` introspects each
