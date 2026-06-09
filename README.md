@@ -8,8 +8,10 @@
 > Open-source engine that monitors Italian public funding opportunities
 > (public tenders, grants, incentives), normalizes them into **one canonical
 > model**, and ranks them against a company profile with a two-stage matcher.
+> One normalized feed of **OPEN Italian tenders** (incl. sub-threshold gare) **+
+> incentives**, behind a crawl that **repairs itself** when a portal drifts.
 
-**Runs offline, zero secrets · 4 live key-less sources + 1 LLM-assisted scraper · optional LLM Stage-2 · MIT**
+**Runs offline, zero secrets · 6 live key-less sources + 1 LLM-assisted scraper · includes live OPEN Italian tenders (incl. sub-threshold) · optional LLM Stage-2 · MIT**
 
 ## Coverage
 
@@ -23,11 +25,18 @@
 
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
   a **zero-secrets offline heuristic fallback** (the LLM is optional).
-- **4 live, key-less sources** — TED (EU), incentivi.gov.it (national), Regione
-  Lombardia and Regione Lazio (regional); plus ANAC OCDS as a key-less **historical
-  / awarded-contracts** feed (analysis, not open calls). Regione Toscana is an
-  **LLM-assisted scraper** (live fetch needs an LLM key; `--sample` replays a
-  recorded extraction offline).
+- **6 live, key-less sources** — TED (EU), incentivi.gov.it (national), `anac_pvl`
+  (national open tenders), Regione Lombardia and Regione Lazio (regional); plus ANAC
+  OCDS as a key-less **historical / awarded-contracts** feed (analysis, not open
+  calls). Regione Toscana is an **LLM-assisted scraper** (live fetch needs an LLM
+  key; `--sample` replays a recorded extraction offline).
+- **Live OPEN Italian tenders** (`anac_pvl`) — the national *Pubblicità a Valore
+  Legale* feed of open, biddable gare, **incl. sub-threshold** ones TED never lists,
+  **no credentials** — the biddable feed the other sources lack.
+- **Self-healing crawl** — when a scraper's listing drifts, an LLM **re-derives the
+  crawl recipe** (data, not code); it's adopted **only if it exactly reproduces the
+  last-good results**, otherwise human-flagged — never silently. Demonstrated on
+  Toscana.
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the
@@ -44,6 +53,7 @@
 - [How it works](#how-it-works)
 - [Stage 2: LLM scoring](#stage-2-llm-scoring)
 - [Sources](#sources)
+- [Self-healing crawl](#self-healing-crawl)
 - [Intelligence and benchmarks](#intelligence-and-benchmarks)
 - [Document enrichment (PDF/OCR)](#document-enrichment-pdfocr)
 - [Watch and export](#watch-and-export)
@@ -102,8 +112,9 @@ Real output on the bundled sample data:
 from a `pip install` too) or a **path** to your own profile YAML.
 
 Add `--json` for machine-readable output. Live opportunities come from the
-key-less sources (incentivi, TED, Lombardia, Lazio); `anac` adds historical
-awarded-contract data (see [Sources](#sources) and [Status](#status)).
+key-less sources (incentivi, TED, `anac_pvl` open tenders, Lombardia, Lazio);
+`anac` adds historical awarded-contract data (see [Sources](#sources) and
+[Status](#status)).
 
 ## Works across company types
 
@@ -203,7 +214,7 @@ MedForniture medical devices        76               92   ← strong sector fit 
 ## Matching quality (measured)
 
 Most matching repos ask you to trust them. This one ships the numbers. On a
-**labelled gold set of 292 real opportunities × 8 company profiles**
+**labelled gold set of 312 real opportunities × 8 company profiles**
 (`src/bandiradar/data/eval/`), here is the matcher quality — reproduce it any time
 with `bandiradar eval --diagnostics` (offline for the heuristic; set an LLM key for
 the LLM column):
@@ -331,6 +342,32 @@ uv run bandiradar match --profile pmi_toscana --source toscana --sample
 # -> Bando Energia Imprese (92), Bando 1.3.2 Sostegno alle PMI/BEI (82),
 #    Bando Energia Immobili Imprese (78); public-only Energia Pubblico dropped to 15
 ```
+
+## Self-healing crawl
+
+A scraper's fragile part is the **crawl** (the listing it depends on), not the
+extraction — the LLM already adapts to changed HTML. So the crawl is **data, not
+code**: a `CrawlRecipe` (where the listing is + dotted paths to each field). That
+makes drift detectable and the fix machine-checkable:
+
+1. **Spine** — every healthy crawl validates its results and **snapshots the
+   last-good ones** (the *golden*). A drift (renamed/moved fields → unusable refs)
+   is detected deterministically, not by a crash.
+2. **Healer** — on drift, an LLM is shown one live listing item and the broken
+   recipe, and asked to re-derive **only the paths** (data, never code).
+3. **Guard** — the candidate recipe is **adopted only if it exactly reproduces the
+   golden**. If it parses but differs (content genuinely changed) or stays broken,
+   the recipe is left untouched and the source is **flagged for a human** — never a
+   silent swap. Adoptions are auditable (`{recipe, adopted_at, reason, validated_by}`).
+
+```bash
+uv run python scripts/demo_self_heal.py   # offline, fake healer: drift → heal → recovered
+```
+
+First demonstrated on the `toscana` scraper. This keeps a scraper alive across
+small portal changes without shipping new code — and refuses to guess when it
+can't prove the fix. Where the open engine stops and managed/premium coverage
+begins is mapped in the **[coverage map](docs/coverage-map.md)**.
 
 ## Intelligence and benchmarks
 
@@ -466,22 +503,33 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
 
 - ✅ **Offline, zero-secret** — every demo above and the whole test suite run with
   no network and no API key.
-- ✅ **4 live key-less sources** — `incentivi`, `ted`, `lombardia`, `lazio`. `--sample`
-  keeps them offline against recorded real captures.
+- ✅ **6 live key-less sources** — `incentivi`, `ted`, `anac_pvl`, `lombardia`,
+  `lazio` (open calls) plus `anac` (historical). `--sample` keeps them offline
+  against recorded real captures.
+- ✅ **Live OPEN Italian tenders** — `anac_pvl` (Pubblicità a Valore Legale) is the
+  national feed of open, biddable gare, incl. sub-threshold ones TED never lists, no
+  credentials; it keeps only still-open notices.
 - ✅ **1 LLM-assisted scraper** — `toscana`: live `fetch()` extracts fields from the
   portal's HTML bando pages with an LLM (needs a key); `--sample` replays a recorded
   extraction with zero secrets.
+- ✅ **Self-healing crawl** — a drifted scraper listing triggers an LLM that
+  re-derives the crawl recipe (data, not code); it's adopted only when it exactly
+  reproduces the last-good results, else human-flagged.
 - ✅ **Stage-2 LLM scoring is wired and working** (optional); with no key it
   transparently uses the offline heuristic — a proxy, not real semantic relevance.
 - ✅ **Live ANAC/PNCP fetch is wired** — streams the Open Contracting OCDS mirror
   (key-less), capped at 500 releases/run. The data is **retrospective** (awarded
   contracts), so it surfaces mostly-closed opportunities — useful for history /
   market analysis, not as a feed of open calls.
-- ⏳ **Honest limitation:** the offline/`--sample` path and the canonical model are
-  the solid core. Live-fetch *robustness* — retries/backoff, pagination of very
-  large sources, partial-failure handling — is deliberately minimal today and is
-  the hardening focus for **0.2.x**. (Dirty single records are already tolerated:
-  they're quarantined per-record, never fatal.)
+- ✅ **Live-fetch robustness shipped (0.2.0)** — retries/backoff, pagination,
+  per-source isolation (one source failing never aborts the others), per-record
+  quarantine, and a `doctor` diagnostic. Dirty single records are tolerated, never
+  fatal.
+- ⏳ **Honest limitation:** the real residual gap is **coverage**, not robustness —
+  Italian regional funding is fragmented across bespoke API-less portals, and the
+  richest tender documents are gated. See the
+  **[coverage map](docs/coverage-map.md)** for the open-vs-gated landscape and where
+  the open/Pro boundary falls.
 
 ## Open core vs Pro
 
@@ -508,18 +556,29 @@ which depends on this package — never the reverse.
   prefilter + LLM relevance with a zero-secrets offline fallback) + SQLite with
   change-detection + CLI + MCP server.
 - Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
-  incentives), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione Lazio**
-  (LazioInnova incentives), all key-less; **ANAC OCDS** wired as a capped, key-less
-  historical / awarded-contracts feed (analysis, not open calls).
+  incentives), **`anac_pvl`** (national OPEN tenders — Pubblicità a Valore Legale,
+  incl. sub-threshold), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione
+  Lazio** (LazioInnova incentives), all key-less; **ANAC OCDS** wired as a capped,
+  key-less historical / awarded-contracts feed (analysis, not open calls).
+- **CPV resolver** (Italian CPV labels → official 8-digit EU codes) + region
+  fallback (province → comune/ISTAT → buyer → national) — measured keyless recall
+  gains on tender profiles.
 - **LLM-assisted scraper** for API-less regional portals — **Regione Toscana**
   (Sviluppo Toscana) is the first instance (live fetch needs an LLM key).
+- **Self-healing crawl** — crawl recipes as data + drift detection + golden-sample
+  guard + an LLM recipe healer (gated adoption; human-flagged otherwise).
+- **[Coverage map](docs/coverage-map.md)** — honest open-vs-gated landscape of
+  Italian funding data.
 - **Intelligence track:** ANAC historical benchmarks + optional matcher
   enrichment (`--with-benchmarks`).
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
+- **Embeddings semantic prefilter** — built and **measured; ships optional and off**
+  (net-negative at the current recall ceiling — see *Honest limits* under
+  [Matching quality](#matching-quality-measured)).
 
 **Upcoming**
-- Embeddings-based prefilter; more community/regional source adapters (via the
-  `Source` framework — Lombardy is the first; other regions welcome).
+- More community/regional source adapters (via the `Source` framework — Lombardy is
+  the first; other regions welcome).
 - `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
   SaaS, multi-tenant hosting.
 

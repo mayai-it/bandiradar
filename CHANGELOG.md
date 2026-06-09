@@ -4,6 +4,31 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.4.0] — 2026-06-09 — Coverage & self-healing
+
+### Added
+- `anac_pvl` — live feed of OPEN Italian public tenders (ANAC Pubblicità a Valore
+  Legale): public JSON API, NO credentials, incl. sub-threshold gare TED never
+  lists; keeps only still-open gare. The live open-calls feed the engine lacked.
+- CPV resolver — PVL Italian CPV labels -> official 8-digit EU CPV codes (packaged
+  vocabulary), lighting the prefix-gate; measured +0.18 keyless recall on tender
+  profiles at zero FPR cost.
+- Region fallback — province -> comune (ISTAT) -> buyer -> national.
+- Coverage map (docs/coverage-map.md) — honest landscape of Italian funding data:
+  open feeds vs gated, with the honest gap.
+- Self-healing crawl — generic spine (crawl recipes as DATA + drift detection +
+  golden-sample validator) + an LLM healer: on listing drift an LLM re-derives the
+  crawl recipe; adopted ONLY if it exactly reproduces the last-good refs, else
+  flagged for a human. First demonstrated on the Toscana scraper.
+
+### Changed
+- Source inventory: 6 key-less live sources + 1 LLM-assisted scraper.
+- Eval corpus grows to ~312 labelled opportunities (adds real PVL open tenders).
+
+### Notes
+- Some commits carry aspirational tags (feat(0.6.0)); this 0.4.0 consolidates all
+  work since 0.3.0.
+
 ## [0.3.0] — 2026-06-09 — Matching quality
 
 Makes matching quality **measurable and tunable**. Backward-compatible — the
