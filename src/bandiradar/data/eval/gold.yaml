@@ -127,22 +127,26 @@ profiles:
     ted:372712-2026: not
     toscana:10135: not
     toscana:10136: not
-    anac_pvl:2da8d555-173d-437e-ba33-1f4ca608ec79: borderline
-    anac_pvl:eb404528-9757-44e3-abad-b1c281ec8dbe: borderline
-    anac_pvl:9c1a1fc2-0127-4605-80b0-ffc07ebf9244: borderline
-    anac_pvl:de69d322-d303-4faa-a904-9e7f66864325: borderline
-    anac_pvl:79eb639e-ab9e-47f6-8368-50582a9a6170: not
-    anac_pvl:fa35131e-9abf-40dc-b434-1575b91a729e: not
-    anac_pvl:7b807a83-1abd-475b-ab66-25d15f71f67f: not
-    anac_pvl:67f7b37c-14d2-4b65-a802-7397979a6e00: not
-    anac_pvl:84faaad0-7946-4540-b8f9-7bf625427f0b: not
-    anac_pvl:81b4aa87-d345-4bbd-aceb-e474119f1613: not
-    anac_pvl:15fcbf95-a36f-411f-adfa-0e2e3e9e8ca3: not
-    anac_pvl:1a3801b1-4726-4637-bd20-f5a267e19c34: not
-    anac_pvl:65421aa4-416b-4f2c-8232-0adba63cfd8d: not
-    anac_pvl:fa25972d-9b36-4a7e-8264-2ca2673ac31b: not
-    anac_pvl:835fb425-c960-491d-b9f3-76f8fc71e8e8: not
-    anac_pvl:ec24b729-d9ca-4322-9e4c-4f8a8841b856: not
+    anac_pvl:062bb765-fae1-468c-bfcc-b60a9ca73c7d: relevant
+    anac_pvl:123c3c76-1197-4b95-9a77-5f10d4e37cf0: relevant
+    anac_pvl:16fd9695-107a-46af-b0c9-b8d49332d9c7: relevant
+    anac_pvl:2027aeb6-0301-4d23-b7d2-55916a6745ac: relevant
+    anac_pvl:2517d7e5-d53d-40d3-bf06-c865851587e1: relevant
+    anac_pvl:40a9769a-0086-49db-a2b3-e7265aae057a: relevant
+    anac_pvl:45ac2ff5-76b9-44e4-bd5c-6e130c33dee0: relevant
+    anac_pvl:7544a79e-2254-431d-a8f7-42790763b23a: relevant
+    anac_pvl:009d2cf6-5bec-496a-979f-0fe4b17d1457: borderline
+    anac_pvl:02cdc33d-30ca-41e9-b318-13128769a8aa: borderline
+    anac_pvl:0565234a-7ca3-4dc0-969c-623a7a4d0c99: borderline
+    anac_pvl:063ed009-9ace-4305-ae98-9789321e1520: borderline
+    anac_pvl:08564a11-bdae-4a80-b5e9-9f2ae068aa0a: borderline
+    anac_pvl:003ab53c-7dcd-46d7-95c7-9ec39098f20a: not
+    anac_pvl:00bb5b3f-6ece-4f68-b605-9041525725a8: not
+    anac_pvl:02870e7b-6ca3-45ca-a5be-d4a22ce707a8: not
+    anac_pvl:005f6768-0d37-4e00-880c-0534ed977b60: not
+    anac_pvl:01e2bbcc-2f40-44d0-b38c-6d98a7ac9e7c: not
+    anac_pvl:01ee0df6-e067-4a7f-92e1-53061de85c68: not
+    anac_pvl:03d845bc-8dc4-4014-ad30-123be909240f: not
   consulenza:
     incentivi:2748: relevant
     lazio:48841: relevant

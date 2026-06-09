@@ -74,17 +74,14 @@ def _is_works(raw: RawDoc) -> bool:
 
 
 def _region(raw: RawDoc) -> str | None:
-    """Region for the gold rule — STABLE across mapper changes (luogo_nuts only, the
-    field present at labelling time), so the before/after delta keeps the same gold."""
-    nuts = next(
-        (
-            lt.get("luogo_nuts")
-            for lt in pvl._lotti(raw.payload)
-            if lt.get("luogo_nuts")
-        ),
-        None,
-    )
-    return pvl.region_for_nuts(nuts)
+    """Region for the gold rule. Computed ONCE here (the resolver code is frozen), so
+    the gold is fixed for the before/after CPV A/B. Uses the full structured
+    resolution (province -> comune -> buyer) so an ITALIA/None-nuts Lombardia comune
+    (e.g. BRESCIA) is still labelled in-region."""
+    lotti = pvl._lotti(raw.payload)
+    nuts = next((lt.get("luogo_nuts") for lt in lotti if lt.get("luogo_nuts")), None)
+    istat = next((lt.get("luogo_istat") for lt in lotti if lt.get("luogo_istat")), None)
+    return pvl.resolve_region(nuts, istat, pvl._buyer(raw.payload))
 
 
 def propose_label(raw: RawDoc) -> tuple[str, str]:
