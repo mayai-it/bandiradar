@@ -10,6 +10,9 @@ _meta:
     -> not (e.g. public tenders for grant-only profiles).'
   - 'INSTRUMENT: for grant-seeking SME profiles, debt/equity/financing and non-funding
     items (by title) -> not. See scripts/correct_gold.py.'
+  anac_pvl_note: 'anac_pvl costruzioni labels are AUTO-PROPOSED (rules in scripts/build_pvl_eval.py:
+    relevant=Lombardia works, borderline=out-of-region works or energetico, not=non-edile)
+    — PENDING HUMAN REVIEW.'
 profiles:
   mayai:
     lazio:48841: relevant
@@ -124,6 +127,22 @@ profiles:
     ted:372712-2026: not
     toscana:10135: not
     toscana:10136: not
+    anac_pvl:2da8d555-173d-437e-ba33-1f4ca608ec79: borderline
+    anac_pvl:eb404528-9757-44e3-abad-b1c281ec8dbe: borderline
+    anac_pvl:9c1a1fc2-0127-4605-80b0-ffc07ebf9244: borderline
+    anac_pvl:de69d322-d303-4faa-a904-9e7f66864325: borderline
+    anac_pvl:79eb639e-ab9e-47f6-8368-50582a9a6170: not
+    anac_pvl:fa35131e-9abf-40dc-b434-1575b91a729e: not
+    anac_pvl:7b807a83-1abd-475b-ab66-25d15f71f67f: not
+    anac_pvl:67f7b37c-14d2-4b65-a802-7397979a6e00: not
+    anac_pvl:84faaad0-7946-4540-b8f9-7bf625427f0b: not
+    anac_pvl:81b4aa87-d345-4bbd-aceb-e474119f1613: not
+    anac_pvl:15fcbf95-a36f-411f-adfa-0e2e3e9e8ca3: not
+    anac_pvl:1a3801b1-4726-4637-bd20-f5a267e19c34: not
+    anac_pvl:65421aa4-416b-4f2c-8232-0adba63cfd8d: not
+    anac_pvl:fa25972d-9b36-4a7e-8264-2ca2673ac31b: not
+    anac_pvl:835fb425-c960-491d-b9f3-76f8fc71e8e8: not
+    anac_pvl:ec24b729-d9ca-4322-9e4c-4f8a8841b856: not
   consulenza:
     incentivi:2748: relevant
     lazio:48841: relevant
