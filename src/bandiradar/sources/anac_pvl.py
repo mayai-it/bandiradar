@@ -205,6 +205,12 @@ def region_for_nuts(luogo_nuts: str | None) -> str | None:
 # --------------------------------------------------------------------------- #
 
 
+def _now() -> datetime:
+    """Wall-clock UTC — the live-fetch reference. Isolated so the offline mapper
+    never depends on it (and so it is trivially patchable in tests)."""
+    return datetime.now(tz=UTC)
+
+
 def _parse_dt(value: Any) -> datetime | None:
     if not isinstance(value, str) or not value:
         return None
@@ -265,7 +271,7 @@ def _is_open_tender(payload: dict[str, Any], now: datetime | None = None) -> boo
     deadline = _deadline(payload)
     if deadline is None:
         return False
-    reference = now if now is not None else datetime.now(tz=UTC)
+    reference = now if now is not None else _now()
     if reference.tzinfo is None:
         reference = reference.replace(tzinfo=UTC)
     return deadline > reference
@@ -299,9 +305,16 @@ def _matcher_text(oggetto: str, lotti: list[dict[str, Any]]) -> str | None:
 
 def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportunity]:
     """PURE mapping of one PVL avviso -> Opportunity. Non-open avvisi map to ``[]``
-    (the filter lives here too, so it is unit-testable without any network)."""
+    (the filter lives here too, so it is unit-testable without any network).
+
+    Reference time: an explicit ``now`` wins; otherwise ``raw.fetched_at`` — the
+    moment the doc was observed (≈now for a live fetch; the fixture's ``_captured``
+    for ``--sample``). This pins the offline demo to the capture snapshot, so it
+    always shows the gare that were open *then* — never silently 0 once the fixture
+    deadlines pass wall-clock (the "--sample always runs offline" guarantee)."""
     payload: dict[str, Any] = raw.payload
-    if not _is_open_tender(payload, now):
+    reference = now if now is not None else raw.fetched_at
+    if not _is_open_tender(payload, reference):
         return []
 
     id_avviso = payload["idAvviso"]
@@ -332,7 +345,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         region=region,
         published_at=_parse_dt(payload.get("dataPubblicazione")),
         deadline=deadline,
-        status=default_status(deadline, now),
+        status=default_status(deadline, reference),
         eligibility_text=_matcher_text(oggetto, lotti),
         raw_ref=raw.id,
         # content_hash auto-fills.
@@ -386,7 +399,7 @@ class AnacPvlSource:
         max_pages: int | None,
         progress: ProgressFn | None,
     ) -> Iterator[RawDoc]:
-        now = datetime.now(tz=UTC)
+        now = _now()
         start = (
             since if since is not None else now - timedelta(days=_DEFAULT_WINDOW_DAYS)
         )

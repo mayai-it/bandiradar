@@ -71,6 +71,31 @@ def test_deadline_in_the_past_drops_a_previously_open_gara():
     assert pvl.to_opportunities(raw, now=later) == []  # closed by 2026-07-01
 
 
+def test_sample_pinned_to_capture_not_wallclock(monkeypatch, tmp_path):
+    """Anti time-bomb: --sample must show the captured 7 gare even when the wall
+    clock is far past the fixture deadlines — else the offline demo silently → 0
+    (breaking the "--sample always runs offline" guarantee). The offline mapper
+    references raw.fetched_at (== fixture _captured), never the wall clock."""
+    from datetime import UTC as _UTC
+    from datetime import datetime as _dt
+
+    monkeypatch.setattr(pvl, "_now", lambda: _dt(2027, 1, 1, tzinfo=_UTC))
+
+    # mapper path: now=None -> raw.fetched_at, so the future wall clock is ignored
+    opps = [o for r in pvl.load_fixture() for o in pvl.to_opportunities(r)]
+    assert len(opps) == 7
+
+    # full offline path (what `fetch --source anac_pvl --sample` runs)
+    from bandiradar import core
+
+    store = core.Store(str(tmp_path / "pvl.db"))
+    try:
+        result = core.run_fetch("anac_pvl", store, sample=True)
+        assert result.new == 7
+    finally:
+        store.close()
+
+
 # --------------------------------------------------------------------------- #
 # field mapping
 # --------------------------------------------------------------------------- #
