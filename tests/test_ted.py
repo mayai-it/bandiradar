@@ -8,6 +8,7 @@ from datetime import UTC, datetime
 
 import pytest
 
+from bandiradar import http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import ted
 from bandiradar.sources.base import get, list_sources
@@ -119,7 +120,7 @@ class _FakeClient:
 def test_fetch_yields_rawdocs_with_mocked_client(monkeypatch):
     notice = ted.load_fixture()[0].payload
     payload = {"notices": [notice], "totalNoticeCount": 1}
-    monkeypatch.setattr(ted.httpx, "Client", lambda *a, **k: _FakeClient(payload))
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _FakeClient(payload))
 
     raws = list(ted.TedSource().fetch())
     assert len(raws) == 1
@@ -134,6 +135,6 @@ def test_fetch_raises_clear_error_on_http_failure(monkeypatch):
         def post(self, url, json=None, headers=None):
             raise httpx.ConnectError("boom")
 
-    monkeypatch.setattr(ted.httpx, "Client", lambda *a, **k: _BoomClient(None))
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _BoomClient(None))
     with pytest.raises(RuntimeError, match="TED search failed"):
         list(ted.TedSource().fetch())

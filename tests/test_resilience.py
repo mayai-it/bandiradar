@@ -12,7 +12,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from bandiradar import core
+from bandiradar import core, http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import ted
 from bandiradar.storage import Store
@@ -83,13 +83,13 @@ class _PagingClient:
 
 
 def test_limit_stops_at_n(monkeypatch):
-    monkeypatch.setattr(ted.httpx, "Client", lambda *a, **k: _PagingClient())
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _PagingClient())
     raws = list(ted.TedSource().fetch(limit=5))
     assert len(raws) == 5  # stops mid-page at the cap
 
 
 def test_max_pages_bounds_fetch(monkeypatch):
-    monkeypatch.setattr(ted.httpx, "Client", lambda *a, **k: _PagingClient())
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _PagingClient())
     progress: list[str] = []
     raws = list(ted.TedSource().fetch(max_pages=2, progress=progress.append))
     assert len(raws) == 2 * ted._PAGE_LIMIT

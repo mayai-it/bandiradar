@@ -6,6 +6,7 @@ real capture; no network.
 
 from datetime import UTC, datetime
 
+from bandiradar import http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import incentivi
 from bandiradar.sources.base import get, list_sources
@@ -142,7 +143,7 @@ def test_fetch_queries_official_export_endpoint(monkeypatch):
     payload = {"response": {"docs": docs, "numFound": len(docs)}}
     calls: list = []
     monkeypatch.setattr(
-        incentivi.httpx, "Client", lambda *a, **k: _FakeClient(payload, calls)
+        http.httpx, "Client", lambda *a, **k: _FakeClient(payload, calls)
     )
 
     raws = list(incentivi.IncentiviSource().fetch())
@@ -159,7 +160,7 @@ def test_fetch_since_filters_by_open_date(monkeypatch):
     docs = [r.payload for r in incentivi.load_fixture()[:1]]
     payload = {"response": {"docs": docs, "numFound": 1}}
     monkeypatch.setattr(
-        incentivi.httpx, "Client", lambda *a, **k: _FakeClient(payload, [])
+        http.httpx, "Client", lambda *a, **k: _FakeClient(payload, [])
     )
     future = datetime(2099, 1, 1, tzinfo=UTC)
     assert list(incentivi.IncentiviSource().fetch(since=future)) == []

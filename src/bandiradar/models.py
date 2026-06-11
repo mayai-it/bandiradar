@@ -77,10 +77,12 @@ Status = Literal["open", "closing_soon", "closed"]
 FetchStatus = Literal["ok", "partial", "failed", "empty"]
 # Structured cause of a failed/partial fetch (no string-matching downstream):
 #   rate_limited -> HTTP 429 / throttled
+#   blocked      -> 401/403/451 (UA/IP/geo block or auth) — the server refuses us,
+#                   distinct from a transient outage (e.g. TED 403s datacenter IPs)
 #   unavailable  -> 5xx / timeout / connection error (source down or unreachable)
 #   invalid      -> the payload could not be parsed/validated
 #   unknown      -> anything else (non-FetchError exceptions)
-FetchErrorKind = Literal["rate_limited", "unavailable", "invalid", "unknown"]
+FetchErrorKind = Literal["rate_limited", "blocked", "unavailable", "invalid", "unknown"]
 
 # The fields that feed content_hash — i.e. the ones whose change makes an
 # opportunity semantically different and so re-notifiable (ARCHITECTURE.md §8).

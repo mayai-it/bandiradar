@@ -292,10 +292,12 @@ _EXIT_FAILED = 1  # generic / unknown
 _EXIT_INVALID_DATA = 2
 _EXIT_RATE_LIMITED = 3
 _EXIT_UNAVAILABLE = 4
+_EXIT_BLOCKED = 5
 
 # Structured error kind -> exit code. "unknown" (and any unmapped kind) -> generic.
 _EXIT_BY_KIND: dict[str, int] = {
     "rate_limited": _EXIT_RATE_LIMITED,
+    "blocked": _EXIT_BLOCKED,
     "unavailable": _EXIT_UNAVAILABLE,
     "invalid": _EXIT_INVALID_DATA,
 }
@@ -693,6 +695,7 @@ def run_watch(
     fetch_limit: int | None = None,
     max_pages: int | None = None,
     progress: ProgressFn | None = None,
+    fetch: bool = True,
 ) -> tuple[list[SourceResult], list[tuple[Opportunity, Match]]]:
     """Monitor loop: fetch (per-source isolated) + dedupe/change-detect, then return
     ONLY matches whose opportunity is NEW or AMENDED since the last watch run.
@@ -700,6 +703,13 @@ def run_watch(
     Returns ``(fetch_results, delta)``. One failing source never aborts the monitor:
     the others still fetch and matching proceeds over whatever was saved. A
     per-profile watch marker is persisted; ``since`` overrides it.
+
+    ``fetch=False`` SKIPS the live fetch and works from data already in the DB —
+    so a multi-profile run (e.g. the daily monitor over N profiles) fetches every
+    source ONCE and the rest reuse it. The delta stays correct per profile: it is
+    computed from the store's change-detection (``list_new`` against THIS profile's
+    own marker), not from the fetch result, so each profile still sees exactly what
+    is new/amended since its last watch. ``fetch_results`` is empty when skipped.
     """
     moment = now if now is not None else datetime.now(UTC)
     marker = since if since is not None else store.get_watch_marker(profile.version)
@@ -707,15 +717,19 @@ def run_watch(
     # Stamp this run's fetch/upserts AND the marker with the same `moment`, so the
     # next run's `since` (== this marker) excludes exactly what we saw this run.
     targets = source_ids if source_ids else [s.id for s in list_sources()]
-    fetch_results = run_fetch_many(
-        targets,
-        store,
-        sample=sample,
-        now=moment,
-        limit=fetch_limit,
-        max_pages=max_pages,
-        progress=progress,
-    )
+    if fetch:
+        fetch_results = run_fetch_many(
+            targets,
+            store,
+            sample=sample,
+            now=moment,
+            limit=fetch_limit,
+            max_pages=max_pages,
+            progress=progress,
+        )
+    else:
+        # Worked from the shared single fetch this run; nothing fetched here.
+        fetch_results = []
 
     # Opportunities the store saw change (insert/amend) after the marker.
     changed = store.list_new(marker, now=moment)

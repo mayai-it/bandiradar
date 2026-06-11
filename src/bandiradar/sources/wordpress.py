@@ -120,10 +120,7 @@ def _wp_pages(
         )
         if response.status_code == 400:  # WP returns 400 past the last page
             break
-        try:
-            response.raise_for_status()
-        except httpx.HTTPError as exc:
-            raise RuntimeError(f"WordPress fetch failed for {data_url}: {exc}") from exc
+        http.raise_for_status(response, what=f"WordPress fetch for {data_url}")
         posts = response.json()
         if not posts:
             break
@@ -222,9 +219,7 @@ class WordPressBandiSource:
     ) -> Iterator[RawDoc]:
         cap = limit if limit is not None else self._MAX_RECORDS
         seen = 0
-        with httpx.Client(
-            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
-        ) as client:
+        with http.client(follow_redirects=True) as client:
             for page, posts in _wp_pages(
                 client, self.data_url, self.per_page, since, max_pages
             ):

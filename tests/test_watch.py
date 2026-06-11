@@ -44,6 +44,48 @@ def test_first_run_all_new_second_run_none(store):
     assert second == []  # nothing changed since the marker
 
 
+def test_skip_fetch_reuses_db_and_keeps_per_profile_delta(store):
+    # Profile mayai fetches the source ONCE (the only live fetch of the run).
+    res_fetch, delta_fetch = core.run_watch(
+        mayai(), store, source_ids=["incentivi"], sample=True, now=NOW
+    )
+    assert [r.source for r in res_fetch] == ["incentivi"]  # fetched
+    assert {o.id for o, _ in delta_fetch} == {"incentivi:3400"}
+
+    # A SECOND profile reuses the already-fetched data with NO fetch of its own.
+    other = core.load_profile("manifattura")
+    res_skip, delta_skip = core.run_watch(
+        other, store, source_ids=["incentivi"], sample=True, fetch=False, now=NOW
+    )
+    assert res_skip == []  # the skip-fetch path fetches nothing
+
+    # Per-profile correctness: the skip delta is EXACTLY what `other` gets if it
+    # fetches the same source itself in a fresh DB (skip-fetch changes cost, not
+    # the result).
+    control = Store(":memory:")
+    try:
+        _, delta_control = core.run_watch(
+            other, control, source_ids=["incentivi"], sample=True, now=NOW
+        )
+    finally:
+        control.close()
+    assert {o.id for o, _ in delta_skip} == {o.id for o, _ in delta_control}
+
+
+def test_skip_fetch_advances_marker_so_second_run_is_empty(store):
+    core.run_watch(mayai(), store, source_ids=["incentivi"], sample=True, now=NOW)
+    other = core.load_profile("manifattura")
+    # First skip-fetch run: marker was None -> sees the shared data, advances marker.
+    core.run_watch(
+        other, store, source_ids=["incentivi"], sample=True, fetch=False, now=NOW
+    )
+    # Second skip-fetch run later: marker advanced, nothing changed (no fetch) -> [].
+    _, second = core.run_watch(
+        other, store, source_ids=["incentivi"], sample=True, fetch=False, now=LATER
+    )
+    assert second == []
+
+
 def test_amended_record_reappears(tmp_path, monkeypatch, store):
     # Use a temp copy of the fixture so we can mutate it between runs.
     fixture = tmp_path / "incentivi.json"

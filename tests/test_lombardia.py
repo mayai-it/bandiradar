@@ -2,6 +2,7 @@
 
 from datetime import UTC, datetime
 
+from bandiradar import http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import lombardia
 from bandiradar.sources.base import get, list_sources
@@ -107,7 +108,7 @@ def test_fetch_dedupes_lotti_and_hits_soda(monkeypatch):
     ]
     calls: list = []
     monkeypatch.setattr(
-        lombardia.httpx, "Client", lambda *a, **k: _FakeClient(rows, calls)
+        http.httpx, "Client", lambda *a, **k: _FakeClient(rows, calls)
     )
     raws = list(lombardia.LombardiaSource().fetch())
     assert {r.id for r in raws} == {"lombardia:A", "lombardia:B"}

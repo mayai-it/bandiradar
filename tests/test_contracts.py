@@ -55,7 +55,7 @@ def test_ted_contract(monkeypatch):
         assert request.method == "POST"  # TED search is a POST
         return httpx.Response(200, json=cassette)
 
-    monkeypatch.setattr(ted.httpx, "Client", _client_factory(handler))
+    monkeypatch.setattr(http_mod.httpx, "Client", _client_factory(handler))
     raws = list(ted.TedSource().fetch(limit=10))
 
     assert [r.id for r in raws] == [expected_id]  # envelope parsed -> one RawDoc
@@ -78,7 +78,7 @@ def test_incentivi_contract(monkeypatch):
         calls.append(request)
         return httpx.Response(200, json=cassette)
 
-    monkeypatch.setattr(incentivi.httpx, "Client", _client_factory(handler))
+    monkeypatch.setattr(http_mod.httpx, "Client", _client_factory(handler))
     raws = list(incentivi.IncentiviSource().fetch(limit=10))
 
     assert len(raws) == 1  # response.response.docs parsed; numFound stops paging
@@ -102,7 +102,7 @@ def test_lombardia_contract(monkeypatch):
     def handler(request):
         return httpx.Response(200, json=rows)
 
-    monkeypatch.setattr(lombardia.httpx, "Client", _client_factory(handler))
+    monkeypatch.setattr(http_mod.httpx, "Client", _client_factory(handler))
     raws = list(lombardia.LombardiaSource().fetch(limit=10))
 
     expected = {f"lombardia:{r['codice_bando']}" for r in rows}
@@ -128,7 +128,7 @@ def test_lazio_contract(monkeypatch):
             return httpx.Response(200, json=[])
         return httpx.Response(200, json=posts)
 
-    monkeypatch.setattr(wordpress.httpx, "Client", _client_factory(handler))
+    monkeypatch.setattr(http_mod.httpx, "Client", _client_factory(handler))
     src = get("lazio")
     raws = list(src.fetch(limit=10))
 
@@ -172,7 +172,7 @@ def test_toscana_contract_crawl(monkeypatch):
         return httpx.Response(200, text=detail_html)  # a bando detail page
 
     # Patch httpx.Client globally (toscana builds its own client for list+detail).
-    monkeypatch.setattr(ted.httpx, "Client", _client_factory(handler))
+    monkeypatch.setattr(http_mod.httpx, "Client", _client_factory(handler))
     src = get("toscana")
     raws = list(src.fetch(client=_FakeLLM(), cache=InMemoryExtractionCache(), limit=2))
 

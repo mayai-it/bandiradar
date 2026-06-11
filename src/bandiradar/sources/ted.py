@@ -17,8 +17,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import httpx
-
 from bandiradar import http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import ProgressFn, register
@@ -239,7 +237,7 @@ class TedSource:
         cap = limit if limit is not None else _MAX_NOTICES
         page = 1
         seen = 0
-        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+        with http.client() as client:
             while seen < cap and (max_pages is None or page <= max_pages):
                 body = {
                     "query": query,
@@ -257,11 +255,9 @@ class TedSource:
                     ),
                     what="TED search",
                 )
-                try:
-                    response.raise_for_status()
-                except httpx.HTTPError as exc:
-                    raise RuntimeError(f"TED search failed: {exc}") from exc
-
+                # Classified raise: a 403 (UA/IP block) -> kind "blocked", not
+                # "unknown", so the monitor can tell a block from an outage.
+                http.raise_for_status(response, what="TED search")
                 data = response.json()
                 notices = data.get("notices") or []
                 if not notices:

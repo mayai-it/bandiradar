@@ -17,8 +17,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-import httpx
-
 from bandiradar import http, resources
 from bandiradar.matching.llm import LLMClient, get_client
 from bandiradar.models import (
@@ -159,14 +157,12 @@ class ToscanaSource:
 
     def _listing_json(self, recipe: CrawlRecipe) -> Any:
         """Fetch the raw WP-REST listing JSON for a recipe (the key-less crawl)."""
-        with httpx.Client(
-            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
-        ) as client:
+        with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
                 lambda: client.get(recipe.listing_url, params=recipe.params),
                 what="Toscana listing",
             )
-            resp.raise_for_status()
+            http.raise_for_status(resp, what="Toscana listing")
             return resp.json()
 
     def _list_details(
@@ -219,13 +215,11 @@ class ToscanaSource:
             store.close()
 
     def _fetch_text(self, url: str) -> str:
-        with httpx.Client(
-            timeout=http.DEFAULT_TIMEOUT, follow_redirects=True
-        ) as client:
+        with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
                 lambda: client.get(url), what=f"Toscana detail {url}"
             )
-            resp.raise_for_status()
+            http.raise_for_status(resp, what=f"Toscana detail {url}")
             return html_to_text(resp.text)
 
     def fetch(

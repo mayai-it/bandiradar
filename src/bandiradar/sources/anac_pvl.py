@@ -38,8 +38,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-import httpx
-
 from bandiradar import cpv, http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import ProgressFn, register
@@ -482,7 +480,7 @@ class AnacPvlSource:
         kept = 0
         scanned = 0
         stop = "window-end"
-        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+        with http.client() as client:
             while True:
                 if kept >= cap:
                     stop = "limit"
@@ -495,11 +493,7 @@ class AnacPvlSource:
                     lambda params=params: client.get(AVVISI_URL, params=params),
                     what="ANAC PVL fetch",
                 )
-                try:
-                    response.raise_for_status()
-                except httpx.HTTPError as exc:
-                    raise RuntimeError(f"ANAC PVL fetch failed: {exc}") from exc
-
+                http.raise_for_status(response, what="ANAC PVL fetch")
                 body = response.json()
                 scanned += 1
                 content = body.get("content") or []

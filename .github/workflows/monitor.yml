@@ -24,6 +24,9 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    # The whole run should finish in ~5 min (one fetch + N skip-fetch matches);
+    # 60 is a generous ceiling so a hung source can't pin a runner indefinitely.
+    timeout-minutes: 60
     env:
       # Optional: present => LLM scoring + healer ON; absent => fully keyless.
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -80,20 +83,54 @@ jobs:
           fi
           mkdir -p state/feeds
 
-      - name: Watch every bundled profile (fetches all sources incl. toscana)
+      - name: Endpoint reachability probe (diagnose 403 / timeout from the runner)
         run: |
           set -uo pipefail
-          # One watch per profile: a single invocation writes BOTH the RSS file and
-          # pure-JSON stdout (the "wrote RSS feed" line is routed to stderr when
-          # --json is set). `|| true` so one source/profile failure never aborts the
-          # loop — partial failure is surfaced in STATUS.md, not the exit code.
+          # Best-effort, BEFORE the watches: show the HTTP status the GitHub runner
+          # gets from the flaky endpoints, using OUR identifying User-Agent. A 403
+          # here (with the honest UA) points to an IP block, not a UA block; a
+          # timeout/000 points to a network reach problem — either way we learn it
+          # in seconds instead of waiting out the watch retries.
+          ua="bandiradar-monitor-probe (+https://github.com/mayai-it/bandiradar)"
+          probe() {
+            code=$(curl -sS -o /dev/null -m 15 -A "$ua" \
+              -w "%{http_code}" "$2" 2>/dev/null || echo "000(curl-error)")
+            echo "  probe $1: HTTP $code  ($2)"
+          }
+          echo "Endpoint reachability from this runner:"
+          probe TED       "https://api.ted.europa.eu/v3/notices/search"
+          probe incentivi "https://www.incentivi.gov.it/solr/coredrupal/select"
+
+      - name: Watch every bundled profile (single fetch, rest reuse the DB)
+        run: |
+          set -uo pipefail
+          # FETCH ONCE per run: the FIRST profile does the live fetch of every
+          # source; the rest pass --skip-fetch and match the data already in the DB
+          # (the per-profile delta stays correct — it is computed from the store's
+          # change-detection against each profile's own marker). This turns the old
+          # 8x redundant fetch (30+ min) into one (~5 min).
+          #
+          # A single watch invocation writes BOTH the RSS file and pure-JSON stdout
+          # (the "wrote RSS feed" line goes to stderr when --json is set). stderr is
+          # tee'd to the Actions log for live progress AND saved to <name>.log.
+          # `|| true` so one source/profile failure never aborts the loop — partial
+          # failure is surfaced in STATUS.md, not the exit code.
           IFS=',' read -ra names <<< "$PROFILES"
+          first=1
           for name in "${names[@]}"; do
             echo "::group::watch $name"
-            uv run bandiradar watch --profile "$name" --mode "$MODE" \
+            skip="--skip-fetch"
+            if [ "$first" = "1" ]; then
+              skip=""           # first profile performs the one live fetch
+              first=0
+              echo "(fetching all sources for this run)"
+            else
+              echo "(reusing the shared fetch via --skip-fetch)"
+            fi
+            uv run bandiradar watch --profile "$name" --mode "$MODE" $skip \
               --rss "state/feeds/$name.xml" --json \
-              > "state/feeds/$name.json" 2> "state/feeds/$name.log" || true
-            tail -n 3 "state/feeds/$name.log" || true
+              > "state/feeds/$name.json" \
+              2> >(tee "state/feeds/$name.log" >&2) || true
             echo "::endgroup::"
           done
 

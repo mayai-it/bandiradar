@@ -423,6 +423,12 @@ def watch(
     json_out: bool = typer.Option(False, "--json", help="JSON to stdout"),
     rss: str | None = typer.Option(None, "--rss", help="Write RSS feed to PATH"),
     db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    skip_fetch: bool = typer.Option(
+        False,
+        "--skip-fetch",
+        help="Skip the live fetch; match the data already in the DB (delta stays "
+        "per-profile correct). For multi-profile runs that fetched once already.",
+    ),
 ):
     """Show NEW or AMENDED matches since the last watch run (a monitor loop).
 
@@ -445,6 +451,7 @@ def watch(
             fetch_limit=limit,
             max_pages=max_pages,
             progress=_progress_sink(quiet),
+            fetch=not skip_fetch,
             **_cutoff_kwargs(mode, min_score),
         )
     except Exception as exc:  # noqa: BLE001

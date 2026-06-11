@@ -20,12 +20,33 @@ All notable changes to BandiRadar are documented here. Format loosely follows
   crawl-recipe state (`ok`/`drift`/`healed`/`flagged`) from `crawl_recipes` +
   `crawl_golden` + the live `doctor --json` crawl-health. Tested in
   `tests/test_monitor_status.py`.
+- `run_watch(fetch=False)` / `watch --skip-fetch` — skip the live fetch and match
+  the data already in the DB. The per-profile delta stays correct (it is computed
+  from the store's change-detection against each profile's own marker, not from the
+  fetch result). Lets a multi-profile run fetch every source ONCE and reuse it.
+- Identifying `User-Agent` on every live request (`http.client()` factory:
+  `bandiradar/<version> (+repo)` + a fail-fast 10s connect timeout), plus a
+  `blocked` structured `FetchErrorKind` (401/403/451) via `http.raise_for_status`,
+  so a server refusal reads distinctly from an outage.
 
 ### Changed
 - `watch --rss PATH --json` now keeps **stdout pure JSON** — the "wrote RSS feed"
   confirmation is routed to stderr when `--json` is set — so one invocation writes
   both the RSS file and a valid JSON feed (presentation-only; no business logic in
   `cli.py`).
+- The monitor workflow fetches **once per run** (first profile fetches, the rest
+  `--skip-fetch`), tees watch stderr to the Actions log, adds `timeout-minutes: 60`,
+  and runs a pre-flight reachability probe of the TED + incentivi endpoints.
+
+### Fixed
+- **Monitor run time ~30+ min → ~5 min.** Every `watch` re-fetched all sources for
+  each of the 8 profiles; now the run fetches once and the rest reuse the DB.
+- **TED 403 from CI** is no longer a generic `unknown` error: the honest User-Agent
+  rules out a UA block, and a persistent (datacenter-IP) 403 is classified `blocked`
+  and shown as such in `STATUS.md` while every other source still runs.
+- **Slow-source blowups capped.** A short connect timeout + a cumulative
+  `DEFAULT_MAX_ELAPSED` budget in `with_retry`/`stream_with_retry` stop a
+  timing-out host (e.g. incentivi `ConnectTimeout`) from burning minutes of retries.
 
 ## [0.4.0] — 2026-06-09 — Coverage & self-healing
 

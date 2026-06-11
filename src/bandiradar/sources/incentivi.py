@@ -31,8 +31,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-import httpx
-
 from bandiradar import http, resources
 from bandiradar.models import (
     Kind,
@@ -214,7 +212,7 @@ class IncentiviSource:
         start = 0
         page = 0
         seen = 0
-        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+        with http.client() as client:
             while seen < cap and (max_pages is None or page < max_pages):
                 page += 1
                 # Same parameters the open-data page uses for its official export
@@ -232,13 +230,7 @@ class IncentiviSource:
                     lambda params=params: client.get(INCENTIVI_DATA_URL, params=params),
                     what="incentivi.gov.it download",
                 )
-                try:
-                    response.raise_for_status()
-                except httpx.HTTPError as exc:
-                    raise RuntimeError(
-                        f"incentivi.gov.it download failed: {exc}"
-                    ) from exc
-
+                http.raise_for_status(response, what="incentivi.gov.it download")
                 payload = response.json().get("response", {})
                 docs = payload.get("docs") or []
                 if not docs:

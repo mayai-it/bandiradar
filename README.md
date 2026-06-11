@@ -509,6 +509,18 @@ if it reproduces the golden exactly). The data branch is kept **flat** — one
 force-pushed commit per run, so generated state never bloats the repo history. A run
 fails only when **every** source fails; partial failures are warnings in `STATUS.md`.
 
+It fetches **once per run** (the first profile fetches every source; the others
+reuse the DB via `watch --skip-fetch`), so the whole job takes **~5 minutes**, not
+30+. Every request sends an identifying `User-Agent` and a short connect timeout.
+
+> **Known limit — TED from CI.** The TED API (`api.ted.europa.eu`) sometimes
+> returns **403 Forbidden** to GitHub-hosted runners. With our honest User-Agent set,
+> a persistent 403 indicates a **datacenter-IP block** we can't fix in code — so the
+> failure is classified as the structured kind **`blocked`** (not a generic error)
+> and shown as such in `STATUS.md`, while every other source still runs. TED works
+> fine from a residential IP / local runs. A pre-flight step in the workflow curls
+> TED + incentivi and logs the HTTP status so a block or timeout is visible upfront.
+
 ## AI agents (MCP)
 
 BandiRadar ships a thin [MCP](https://modelcontextprotocol.io) server (FastMCP),

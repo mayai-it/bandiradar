@@ -87,23 +87,40 @@ and the per-source override/golden config lives in `recipe_store.py` (auditable:
 (GIF in the README).
 
 ## Live monitor (GitHub Actions — self-maintaining)
-`.github/workflows/monitor.yml` runs daily (cron `0 6 * * *`) + on demand. It
-checks out an orphan **`monitor-data`** branch into `./state/` (created empty if
-absent), points the DB at `state/bandiradar.db` (via the existing `BANDIRADAR_DB`
-env — already honoured by `storage._default_db_path`), runs `bandiradar watch` for
-EVERY bundled profile (all sources incl. `toscana`, so the crawl drift-check runs in
-prod), generates `state/STATUS.md`, and force-pushes a SINGLE flat commit to
-`monitor-data` (generated state must not bloat history). **Zero secrets** (guardrail
-1): keyless ⇒ `--mode recall` + offline heuristic + drift detect-only; the optional
-`ANTHROPIC_API_KEY` secret ⇒ LLM scoring + healer active. The run fails (exit≠0)
-ONLY if EVERY source failed; partial failures are warnings in `STATUS.md`.
+`.github/workflows/monitor.yml` runs daily (cron `0 6 * * *`) + on demand
+(`timeout-minutes: 60`). It checks out an orphan **`monitor-data`** branch into
+`./state/` (created empty if absent), points the DB at `state/bandiradar.db` (via the
+existing `BANDIRADAR_DB` env — already honoured by `storage._default_db_path`), runs
+`bandiradar watch` for EVERY bundled profile (all sources incl. `toscana`, so the
+crawl drift-check runs in prod), generates `state/STATUS.md`, and force-pushes a
+SINGLE flat commit to `monitor-data` (generated state must not bloat history). **Zero
+secrets** (guardrail 1): keyless ⇒ `--mode recall` + offline heuristic + drift
+detect-only; the optional `ANTHROPIC_API_KEY` secret ⇒ LLM scoring + healer active.
+The run fails (exit≠0) ONLY if EVERY source failed; partial failures are warnings in
+`STATUS.md`.
 
+- **Fetch ONCE per run, not per profile.** `run_watch(fetch=False)` (CLI:
+  `watch --skip-fetch`) SKIPS the live fetch and matches the data already in the DB.
+  The workflow's FIRST profile fetches every source once; the rest pass
+  `--skip-fetch`. The per-profile delta stays correct because it is computed from the
+  store's change-detection (`list_new` against THIS profile's own marker), NOT from
+  the fetch result — so each profile still sees exactly what is new/amended since its
+  last watch. (Was the dominant cost: 8 profiles × full live fetch ≈ 30+ min → now
+  ~5 min.) `--skip-fetch` is a thin pass-through; NO logic added to `cli.py`.
 - **One watch invocation writes both feed files.** `watch --rss X --json` writes the
   RSS file AND emits pure JSON to stdout — the "wrote RSS feed" confirmation is
   routed to **stderr** when `--json` is set (cli.py), so the redirected
-  `state/feeds/<p>.json` stays valid JSON. Two invocations would NOT work: `watch`
-  advances the per-profile marker, so the second would see an empty delta. This is a
-  presentation-only fix — NO business logic was added to `cli.py`.
+  `state/feeds/<p>.json` stays valid JSON. (Two invocations would NOT work: `watch`
+  advances the per-profile marker, so the second would see an empty delta.)
+- **Identifying User-Agent + classified blocks.** Every live request goes through
+  `http.client()` (a factory that sets `User-Agent: bandiradar/<ver> (+repo)` and a
+  fail-fast 10s connect timeout) — some endpoints (TED) 403 the default
+  `python-httpx` UA. A refusing 4xx (401/403/451) is classified as the structured
+  kind **`blocked`** (not `unknown`) via `http.raise_for_status`, so STATUS tells a
+  block from an outage. `with_retry`/`stream_with_retry` also cap cumulative
+  wall-clock per request (`DEFAULT_MAX_ELAPSED`) so a timing-out host can't burn
+  minutes. A workflow step curls TED + incentivi before the watches to surface a
+  runner-side 403/timeout immediately.
 - **`scripts/monitor_status.py` is pure composition** (no network, no engine logic):
   per-source esito/conteggi from the `runs` table (the persisted `SourceResult`),
   new-match counts from each `feeds/<p>.json`, and crawl-recipe state from

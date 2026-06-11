@@ -19,8 +19,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-import httpx
-
 from bandiradar import http, resources
 from bandiradar.models import Kind, Opportunity, RawDoc, default_status
 from bandiradar.sources.base import ProgressFn, register
@@ -133,7 +131,7 @@ class LombardiaSource:
         offset = 0
         page = 0
         seen: set[str] = set()
-        with httpx.Client(timeout=http.DEFAULT_TIMEOUT) as client:
+        with http.client() as client:
             while len(seen) < cap and (max_pages is None or page < max_pages):
                 page += 1
                 params = {
@@ -148,11 +146,7 @@ class LombardiaSource:
                     lambda params=params: client.get(LOMBARDIA_DATA_URL, params=params),
                     what="Lombardia SODA fetch",
                 )
-                try:
-                    response.raise_for_status()
-                except httpx.HTTPError as exc:
-                    raise RuntimeError(f"Lombardia SODA fetch failed: {exc}") from exc
-
+                http.raise_for_status(response, what="Lombardia SODA fetch")
                 rows = response.json()
                 if not rows:
                     break

@@ -25,18 +25,85 @@ from contextlib import contextmanager
 
 import httpx
 
+from bandiradar import __version__
 from bandiradar.models import FetchErrorKind
 
 DEFAULT_TIMEOUT = 60.0
+# A short connect timeout so an unreachable host fails fast (was the dominant cost:
+# a 60s connect timeout x 5 attempts ≈ 5 min). Read stays at DEFAULT_TIMEOUT.
+DEFAULT_CONNECT_TIMEOUT = 10.0
 DEFAULT_MAX_RETRIES = 4
+# Hard ceiling on cumulative wall-clock per logical request (across all retries),
+# so a host that keeps timing out can't burn minutes. The per-attempt timeout still
+# applies; this just bounds the *sum* of attempts + backoff.
+DEFAULT_MAX_ELAPSED = 120.0
 _BACKOFF_BASE = 0.5  # seconds; attempt n waits base * 2**n (capped)
 _BACKOFF_CAP = 30.0
+
+# An honest, identifying User-Agent on every live request (some endpoints — e.g.
+# TED — 403 the default ``python-httpx/x`` UA). Sent on ALL sources via `client()`.
+USER_AGENT = f"bandiradar/{__version__} (+https://github.com/mayai-it/bandiradar)"
+DEFAULT_HEADERS: dict[str, str] = {"User-Agent": USER_AGENT}
+
+# 4xx that mean "the server is refusing us" (UA/IP/geo block, auth) — distinct from
+# a transient outage. Surfaced as the structured kind "blocked", not "unknown".
+_BLOCKED_STATUSES = frozenset({401, 403, 451})
 
 # Transient httpx exceptions worth retrying (timeouts + connection/transport).
 _TRANSIENT_EXC = (httpx.TimeoutException, httpx.TransportError)
 
-# Inject-able sleep so tests can run with zero real delay (monkeypatch this).
+# Inject-able sleep + clock so tests run with zero real delay (monkeypatch these).
 _sleep = time.sleep
+_monotonic = time.monotonic
+
+
+def default_timeout() -> httpx.Timeout:
+    """The shared timeout: a short connect bound + the longer read budget."""
+    return httpx.Timeout(DEFAULT_TIMEOUT, connect=DEFAULT_CONNECT_TIMEOUT)
+
+
+def client(
+    *,
+    timeout: float | httpx.Timeout | None = None,
+    headers: dict[str, str] | None = None,
+    **kwargs: object,
+) -> httpx.Client:
+    """Build an ``httpx.Client`` that ALWAYS sends the identifying User-Agent and a
+    fail-fast connect timeout. Use this instead of ``httpx.Client(...)`` directly so
+    every source behaves the same. Caller headers override the defaults."""
+    merged = {**DEFAULT_HEADERS, **(headers or {})}
+    return httpx.Client(
+        timeout=timeout if timeout is not None else default_timeout(),
+        headers=merged,
+        **kwargs,  # type: ignore[arg-type]
+    )
+
+
+def status_kind(status: int) -> FetchErrorKind:
+    """Map a non-2xx status to a structured kind (no string-matching downstream)."""
+    if status == 429:
+        return "rate_limited"
+    if status in _BLOCKED_STATUSES:
+        return "blocked"
+    if status >= 500:
+        return "unavailable"
+    return "invalid"  # other 4xx (bad request / not found) = bad call, not an outage
+
+
+def raise_for_status(response: httpx.Response, *, what: str) -> httpx.Response:
+    """Like ``response.raise_for_status()`` but raises a CLASSIFIED ``FetchError`` so
+    a 403 block reads as ``blocked`` (not ``unknown``). Returns the response on 2xx.
+
+    Delegates to the response's own ``raise_for_status`` and only re-wraps the raised
+    ``HTTPStatusError`` — so any HTTP client (incl. test doubles) works unchanged."""
+    try:
+        response.raise_for_status()
+    except httpx.HTTPStatusError as exc:
+        status = exc.response.status_code
+        raise FetchError(
+            f"{what} failed: HTTP {status}", kind=status_kind(status)
+        ) from exc
+    return response
 
 
 class FetchError(RuntimeError):
@@ -80,6 +147,7 @@ def with_retry(
     *,
     what: str,
     max_retries: int = DEFAULT_MAX_RETRIES,
+    max_elapsed: float = DEFAULT_MAX_ELAPSED,
 ) -> httpx.Response:
     """Call ``send`` (one HTTP request), retrying transient failures with backoff.
 
@@ -87,10 +155,12 @@ def with_retry(
     ``httpx.Response`` (e.g. ``lambda: client.get(url, params=params)``). On 429 a
     ``Retry-After`` header is honored; otherwise exponential backoff is used.
     Returns the first non-retryable response; raises :class:`FetchError` once
-    ``max_retries`` retries are used up.
+    ``max_retries`` retries are used up OR the cumulative ``max_elapsed`` budget is
+    spent (so a persistently-timing-out host can't burn minutes).
     """
     last_error = "unknown error"
     last_kind: FetchErrorKind = "unknown"
+    start = _monotonic()
     for attempt in range(max_retries + 1):
         try:
             response = send()
@@ -108,11 +178,11 @@ def with_retry(
                 delay = _retry_after_seconds(response)
             if delay is None:
                 delay = _backoff_seconds(attempt)
-        if attempt >= max_retries:
+        if attempt >= max_retries or _monotonic() - start >= max_elapsed:
             break
         _sleep(delay)
     raise FetchError(
-        f"{what} failed after {max_retries + 1} attempts ({last_error})",
+        f"{what} failed after {attempt + 1} attempts ({last_error})",
         kind=last_kind,
     )
 
@@ -124,20 +194,25 @@ def stream_with_retry(
     *,
     what: str,
     max_retries: int = DEFAULT_MAX_RETRIES,
-    timeout: float = DEFAULT_TIMEOUT,
+    max_elapsed: float = DEFAULT_MAX_ELAPSED,
+    timeout: float | httpx.Timeout | None = None,
     **kwargs: object,
 ) -> Iterator[httpx.Response]:
     """Open a streaming request, retrying transient failures on ESTABLISHMENT.
 
     Yields an open ``httpx.Response`` for byte streaming. Only the connection +
     initial status are retried (a failure mid-stream cannot be resumed); that
-    partial case is handled at the run level by progressive save. Raises
-    :class:`FetchError` when retries are exhausted.
+    partial case is handled at the run level by progressive save. Sends the shared
+    identifying User-Agent (caller ``headers`` override). Raises :class:`FetchError`
+    when retries OR the cumulative ``max_elapsed`` budget are exhausted.
     """
+    kwargs["headers"] = {**DEFAULT_HEADERS, **(kwargs.get("headers") or {})}  # type: ignore[dict-item]
+    effective_timeout = timeout if timeout is not None else default_timeout()
     last_error = "unknown error"
     last_kind: FetchErrorKind = "unknown"
+    start = _monotonic()
     for attempt in range(max_retries + 1):
-        cm = httpx.stream(method, url, timeout=timeout, **kwargs)
+        cm = httpx.stream(method, url, timeout=effective_timeout, **kwargs)
         try:
             response = cm.__enter__()
         except _TRANSIENT_EXC as exc:
@@ -156,14 +231,14 @@ def stream_with_retry(
                 _retry_after_seconds(response) if response.status_code == 429 else None
             )
             cm.__exit__(None, None, None)
-            if attempt >= max_retries:
+            if attempt >= max_retries or _monotonic() - start >= max_elapsed:
                 break
             _sleep(delay if delay is not None else _backoff_seconds(attempt))
             continue
-        if attempt >= max_retries:
+        if attempt >= max_retries or _monotonic() - start >= max_elapsed:
             break
         _sleep(_backoff_seconds(attempt))
     raise FetchError(
-        f"{what} failed after {max_retries + 1} attempts ({last_error})",
+        f"{what} failed after {attempt + 1} attempts ({last_error})",
         kind=last_kind,
     )

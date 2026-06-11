@@ -5,6 +5,7 @@ capture (captured 2026-06-08; scadenze span 2026-06-05 .. 2026-07-06)."""
 
 from datetime import UTC, datetime
 
+from bandiradar import http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import anac_pvl as pvl
 from bandiradar.sources.base import get, list_sources
@@ -255,7 +256,7 @@ class _FakePager:
 
 
 def _patch_client(monkeypatch, calls, **kw):
-    monkeypatch.setattr(pvl.httpx, "Client", lambda *a, **k: _FakePager(calls, **kw))
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _FakePager(calls, **kw))
 
 
 def test_default_fetch_stops_at_page_cap(monkeypatch):

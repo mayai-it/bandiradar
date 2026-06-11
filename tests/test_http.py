@@ -129,3 +129,71 @@ def test_fetch_error_kind_unavailable_on_connection_error(sleeps):
 
 def test_fetch_error_default_kind_is_unknown():
     assert http.FetchError("boom").kind == "unknown"
+
+
+# --------------------------------------------------------------------------- #
+# blocked classification (403 etc. -> "blocked", not "unknown")
+# --------------------------------------------------------------------------- #
+
+
+def test_status_kind_maps_blocked_and_others():
+    assert http.status_kind(401) == "blocked"
+    assert http.status_kind(403) == "blocked"  # the TED case
+    assert http.status_kind(451) == "blocked"
+    assert http.status_kind(429) == "rate_limited"
+    assert http.status_kind(500) == "unavailable"
+    assert http.status_kind(404) == "invalid"
+
+
+def _resp(status: int) -> httpx.Response:
+    return httpx.Response(status, request=httpx.Request("GET", "https://x"))
+
+
+def test_raise_for_status_blocks_on_403():
+    with pytest.raises(http.FetchError) as ei:
+        http.raise_for_status(_resp(403), what="TED search")
+    assert ei.value.kind == "blocked"
+    assert "403" in str(ei.value)
+
+
+def test_raise_for_status_passes_2xx_through():
+    ok = _resp(200)
+    assert http.raise_for_status(ok, what="x") is ok
+
+
+# --------------------------------------------------------------------------- #
+# total-time cap (a persistently-timing-out host can't burn minutes)
+# --------------------------------------------------------------------------- #
+
+
+def test_with_retry_stops_when_elapsed_budget_spent(monkeypatch, sleeps):
+    # monotonic jumps past the budget right after the first attempt.
+    clock = iter([0.0] + [500.0] * 20)
+    monkeypatch.setattr(http, "_monotonic", lambda: next(clock))
+    calls = {"n": 0}
+
+    def send():
+        calls["n"] += 1
+        raise httpx.ConnectError("down")
+
+    with pytest.raises(http.FetchError) as ei:
+        http.with_retry(send, what="x", max_retries=5, max_elapsed=100.0)
+    assert calls["n"] == 1  # stopped after one attempt, not all 6
+    assert ei.value.kind == "unavailable"
+
+
+# --------------------------------------------------------------------------- #
+# client factory: identifying User-Agent + fail-fast connect timeout
+# --------------------------------------------------------------------------- #
+
+
+def test_client_sends_identifying_user_agent():
+    with http.client() as c:
+        assert c.headers["user-agent"] == http.USER_AGENT
+        assert "bandiradar/" in c.headers["user-agent"]
+
+
+def test_default_timeout_has_short_connect_bound():
+    t = http.default_timeout()
+    assert t.connect == http.DEFAULT_CONNECT_TIMEOUT
+    assert t.read == http.DEFAULT_TIMEOUT

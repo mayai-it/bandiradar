@@ -15,6 +15,7 @@ from typing import Protocol, runtime_checkable
 
 import httpx
 
+from bandiradar import http
 from bandiradar.models import Opportunity
 
 logger = logging.getLogger(__name__)
@@ -69,7 +70,7 @@ def extract_pdf_text(data: bytes) -> str:
 def fetch_and_extract(url: str, client: httpx.Client | None = None) -> str:
     """GET ``url`` and extract PDF text. Non-PDF / HTTP errors -> "" (never raises)."""
     owns_client = client is None
-    client = client or httpx.Client(timeout=_FETCH_TIMEOUT, follow_redirects=True)
+    client = client or http.client(timeout=_FETCH_TIMEOUT, follow_redirects=True)
     try:
         response = client.get(url)
         response.raise_for_status()
