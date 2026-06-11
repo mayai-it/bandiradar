@@ -107,9 +107,7 @@ def test_fetch_dedupes_lotti_and_hits_soda(monkeypatch):
         {"codice_bando": "B", "n_lotto": "0", "oggetto_dell_appalto": "y"},
     ]
     calls: list = []
-    monkeypatch.setattr(
-        http.httpx, "Client", lambda *a, **k: _FakeClient(rows, calls)
-    )
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _FakeClient(rows, calls))
     raws = list(lombardia.LombardiaSource().fetch())
     assert {r.id for r in raws} == {"lombardia:A", "lombardia:B"}
     url, params = calls[0]

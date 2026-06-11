@@ -159,8 +159,6 @@ def test_fetch_queries_official_export_endpoint(monkeypatch):
 def test_fetch_since_filters_by_open_date(monkeypatch):
     docs = [r.payload for r in incentivi.load_fixture()[:1]]
     payload = {"response": {"docs": docs, "numFound": 1}}
-    monkeypatch.setattr(
-        http.httpx, "Client", lambda *a, **k: _FakeClient(payload, [])
-    )
+    monkeypatch.setattr(http.httpx, "Client", lambda *a, **k: _FakeClient(payload, []))
     future = datetime(2099, 1, 1, tzinfo=UTC)
     assert list(incentivi.IncentiviSource().fetch(since=future)) == []
