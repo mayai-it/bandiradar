@@ -1,0 +1,670 @@
+{
+ "_note": "Recorded WP REST payload — euroinfosicilia.it category 321 'Bandi e Avvisi' (FESR/FSC Sicilia). Trimmed to mapper-relevant fields.",
+ "_source": "https://www.euroinfosicilia.it/wp-json/wp/v2/posts?categories=321&orderby=date&order=desc",
+ "_captured": "2026-06-12",
+ "posts": [
+  {
+   "id": 162453,
+   "title": {
+    "rendered": "FSC 2021/2027 – Linea di intervento 03.02 – Turismo e Ospitalità – Avviso per la concessione di agevolazioni imprese del settore turistico alberghiero ed extra-alberghiero – Proroga 28/2/2026"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-2021-2027-avviso-agevolazioni-imprese-settore-alberghiero-ed-extra-alberghiero-proroga-28-2-2026/",
+   "date": "2026-02-27T10:15:57",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo, dello Sport e dello Spettacolo pubblica il <strong>DDG n. 623/S11 del 26/02/2026</strong> con il quale è modificato l’art. 13, punto 2 dell’<strong>Avviso “Agevolazioni per le imprese del settore turistico alberghiero ed extra-alberghiero”</strong>, approvato con DDG n. 4613 del 19/12/2024 e con <a href=\"https://www.euroinfosicilia.it/fsc-2021-2027-linea-di-intervento-03-02-turismo-e-ospitalita-approvazione-avviso-per-la-concessione-di-agevolazioni-alle-imprese-del-settore-turistico-alberghiero-ed-extra-alberghiero/\" target=\"_blank\" rel=\"noopener\">DDG n. 2106 del 25/06/2025</a>, relativamente al termine di scadenza per la presentazione delle domande di agevolazione, il quale è prorogato <strong>fino alle ore 12:00 del 28/02/2026</strong>.</p>\n<p>L’intervento è a valere sul <strong>FSC 2021/2027 – Area tematica 03 – Linea di intervento 03.02 Turismo e Ospitalità.</strong></p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo, dello Sport e dello Spettacolo pubblica il DDG n. 623/S11 del 26/02/2026 con il quale è modificato l’art. 13, punto 2 dell’Avviso “Agevolazioni per le imprese del settore turistico alberghiero ed extra-alberghiero”, [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-162453",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-fsc-sicilia-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-proroga",
+    "tag-settore-turistico-alberghiero",
+    "tag-turismo-e-ospitalita",
+    "dipartimenti-turismo",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    332,
+    335
+   ]
+  },
+  {
+   "id": 159821,
+   "title": {
+    "rendered": "PR FESR 2021/2027 – Azione 4.6.2 &#8211; Promozione del turismo esperienziale e responsabile &#8211; Manifestazione interesse – Consultazione operatori economici"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-manifestazione-di-interesse/",
+   "date": "2026-01-29T12:58:41",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo, in relazione al Quadro generale di selezione operazioni a titolarità approvato con DDG n. 2493 del 23/07/2025, pubblica un  <strong>avviso per manifestazione di interesse di consultazione economica</strong> con cui  intende realizzare azioni ed attività utili a rafforzare le filiere settoriali attraverso:</p>\n<ul>\n<li>Azioni territoriali di sensibilizzazione;</li>\n<li>Interventi per la promozione del turismo slow ed esperienziale.</li>\n</ul>\n<p>Il dettaglio specifico delle<strong> attività</strong> è compiutamente specificato nell’Avviso allegato. Le stesse dovranno essere previste e svolte, indicativamente, da aprile a novembre 2026.</p>\n<p>Al fine di selezionare soggetti che per documentate esperienze pregresse siano idonei alla esecuzione delle relative prestazioni contrattuali, gli operatori economici interessati potranno <strong>presentare la propria candidatura</strong> relativamente alla esecuzione di una o più delle predette azioni e attività.</p>\n<p><strong>Sono ammessi</strong> a partecipare gli operatori economici di cui all’art. 65 c.1, del D.Lgs. 36/2023, nei cui confronti non ricorrano cause di esclusione, abilitate e attive sul MEPA alle categorie cui sono afferenti i sopra richiesti servizi.</p>\n<p>Il termine per la presentazione delle candidature è: <strong>ore 10:00 del 27/02/2026</strong> alla mail:<br />\n<a href=\"marketing.turismo@regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">marketing.turismo@regione.sicilia.it. </a></p>\n<p class=\"p2\">Il <strong>Responsabile Unico del Progetto</strong> è Sergio Scaffidi – Servizio 2 Promozione Turistica ed Incoming del Dipartimento Turismo, Sport e Spettacolo.</p>\n<p><strong>Per i</strong><span class=\"s1\"><strong>nformazioni</strong> sulla procedura </span>ed eventuali chiarimenti: tel. 0917078066, 3666679207 mail: <a href=\"marketing.turismo@regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">marketing.turismo@regione.sicilia.it</a>.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo, in relazione al Quadro generale di selezione operazioni a titolarità approvato con DDG n. 2493 del 23/07/2025, pubblica un  avviso per manifestazione di interesse di consultazione economica [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-159821",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-pr-fesr-21-27",
+    "category-documenti",
+    "tag-azione-4-6-2",
+    "tag-manifestazione-interesse",
+    "tag-turismo-esperienziale",
+    "dipartimenti-turismo",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    330,
+    336
+   ]
+  },
+  {
+   "id": 158722,
+   "title": {
+    "rendered": "PR FESR 2021/2027 &#8211; Azione 4.6.2 – Promozione del turismo esperienziale e responsabile &#8211; Avviso progetti a regia regionale &#8211; Graduatoria definitiva &#8211; Rettifica allegato A"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-azione-4-6-2-avviso-progetti-a-regia-regionale-promozione-del-turismo-esperienziale-graduat-def-rettifica-all-a/",
+   "date": "2026-01-09T11:00:06",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica il <strong>DDG n. 4771 del 22/12/2025</strong> con cui  è stato <strong>rettificato</strong> il contenuto dell’All. A) del DDG n. 4630 del 16/12/2025, di approvazione della <strong>graduatoria definitiva</strong> dell’<strong>Avviso per la selezione di proposte progettuali a regia regionale</strong> per la <strong>Promozione del turismo esperienziale e responsabile</strong>, a valere sul <strong>PR FESR 2021/2027 &#8211; Azione 4.6.2</strong>, restando inalterati ed efficaci i contenuti del DDG 4630 non emendati.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica il DDG n. 4771 del 22/12/2025 con cui  è stato rettificato il contenuto dell’All. A) del DDG n. 4630 del 16/12/2025, di approvazione della graduatoria definitiva [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-158722",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "category-graduatorie",
+    "tag-avviso",
+    "tag-azione-4-6-2",
+    "tag-graduatoria-definitiva",
+    "tag-rettifica",
+    "tag-turismo-esperienziale",
+    "dipartimenti-turismo",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    330,
+    335,
+    338
+   ]
+  },
+  {
+   "id": 157367,
+   "title": {
+    "rendered": "PR FESR 2021/2027 &#8211; Azione 1.3.3 &#8211; Fiere 1° semestre 2026 &#8211; Avviso"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-3-3-fiere-1-semestre-2026-avviso/",
+   "date": "2025-12-11T22:53:29",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica il <strong>DDG n. 4371/S11 del 09/12/2025</strong> con il quale è approvato l’<strong>Avviso</strong> per la selezione di <strong>MPMI (Micro, Piccole e Medie Imprese) </strong> siciliane interessate a partecipare  alle <strong>manifestazioni fieristiche del 1° semestre 2026</strong>.</p>\n<p><strong>Le domande</strong> devono essere presentate esclusivamente per via telematica accedendo alla piattaforma dedicata <a href=\"https://fit.regione.sicilia.it/\" target=\"_blank\" rel=\"noopener\">https://fit.regione.sicilia.it/</a> mediante SPID o CIE.</p>\n<p><strong>La spesa</strong> necessaria troverà la copertura sulle risorse del capitolo del bilancio finanziario della Regione Siciliana 872066 “Spese in conto capitale per contributi agli investimenti ad altre imprese a valere sul <strong>PR FESR 2021/2027 – Azione 1.3.3 &#8211;</strong>Sostegno alle PMI per la crescita sui mercati internazionali”.</p>\n<p class=\"p1\">L&#8217;aiuto sarà concesso sulla base di una procedura di <strong>valutazione a graduatoria</strong>.</p>\n<p><strong>I termini di presentazione delle domande</strong> sono i seguenti: <strong>dal 19/12/2025 al 29/12/2025.</strong></p>\n<h2>AGGIORNAMENTO (19/01/2026):</h2>\n<p>Con <strong>DDG n. 20/S11 del 13/01/2026 </strong>sono <strong>riaperti i termini</strong> per la presentazione delle istanze per partecipare alla <strong>manifestazione fieristica BIT</strong>, che si terrà a Milano dal 10 al 12 febbraio 2026, le quali dovranno essere trasmesse mediante l’apposita piattaforma <strong>dalle ore 12:00 del 19/01/2026 alle ore 12:00 del 21/01/2026.</strong></p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica il DDG n. 4371/S11 del 09/12/2025 con il quale è approvato l’Avviso per la selezione di MPMI (Micro, Piccole e Medie Imprese)  siciliane interessate a partecipare [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-157367",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-azione-1-3-3",
+    "tag-manifestazione-fieristica",
+    "dipartimenti-turismo",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 154744,
+   "title": {
+    "rendered": "FSC e PR FESR 2021/2027 – Centrale unica di committenza – Avviso di gara per la fornitura di pick-up antincendio al Corpo forestale"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-pr-fesr-21-27-cuc-avviso-gara-fornitura-mezzi-attrezzatura-antincendio-pick-aib-corpo-forestale/",
+   "date": "2025-11-17T23:35:18",
+   "content": {
+    "rendered": "<p>La <strong>Centrale unica di committenza</strong> per l&#8217;acquisizione di beni e servizi della Regione, con <strong>DD n. 263 del 06/11/2025</strong>, ha indetto, ai sensi degli artt. 71 e 108 comma 2 del D. Lgs n. 36/2023, su richiesta del <strong>Comando del Corpo forestale</strong>, una <strong>procedura aperta</strong> suddivisa in due lotti per l’affidamento di contratti d’appalto relativi alla <strong>fornitura di mezzi e attrezzature antincendio</strong>, in particolare <strong>pick-up</strong>, secondo le previsioni del piano regionale AIB.</p>\n<p>Il criterio di aggiudicazione sarà quello dell&#8217;offerta economicamente più vantaggiosa sulla base del miglior rapporto qualità-prezzo. La <strong>scadenza</strong> per la presentazione delle offerte è fissata alle ore 13 del <strong>12 dicembre 2025</strong>.</p>\n<p>In dettaglio, il <strong>lotto 1</strong>, finanziato a valere sulle risorse dell’<strong>FSC 2021/2027</strong>, attraverso l’Accordo per lo sviluppo e la coesione della Regione Siciliana (linea d’intervento 05.05), riguarda la fornitura di <strong>70 pick-up</strong> a cabina doppia 4 porte con serbatoio da 400 litri e allestimento antincendio (1<sup>a</sup> fase). L’importo a base d’asta è di € 5.113.500 (CUP <span data-olk-copy-source=\"MessageBody\">G69I24000730001</span>, CIG <span data-olk-copy-source=\"MessageBody\">B8FBEF8D22</span>).</p>\n<p>Il <strong>lotto 2</strong> si riferisce alla fornitura di n. <strong>140 pick-up</strong> a cabina doppia 4 porte con serbatoio da 400 litri e allestimento antincendio (2<sup>a</sup> fase), ed è invece finanziato con risorse del <strong>PR FESR 2021/2027</strong>, nell&#8217;ambito dell’azione 2.4.4 (CUP <span data-olk-copy-source=\"MessageBody\">G69I25000610009</span>, CIG <span data-olk-copy-source=\"MessageBody\">B8FBFF9DF5</span>). L’importo a base d’asta è di € 10.227.000.</p>\n<p><em>La <a href=\"https://appalti.regionesiciliana.lavoripubblici.sicilia.it/gare/dettaglio.php?codice=2696\" target=\"_blank\" rel=\"noopener\"><strong>procedura di gara</strong></a> è stata avviata sulla <strong>piattaforma telematica <a href=\"https://appalti.regionesiciliana.lavoripubblici.sicilia.it/\" target=\"_blank\" rel=\"noopener\">Tuttogare</a></strong>. Sono allegati a questa news il DD n. 262 del 06/11/2025 di indizione della procedura e il relativo avviso, che sono inoltre consultabili, insieme al resto della documentazione (tra cui disciplinare di gara e capitolati tecnici), nella <a href=\"https://www.regione.sicilia.it/istituzioni/regione/strutture-regionali/assessorato-economia/ufficio-speciale-centrale-unica-committenza-l-acquisizione-beni-servizi/fornitura-mezzi-ed-attrezzature-antincendio-secondo-previsioni\" target=\"_blank\" rel=\"noopener\"><strong>pagina dedicata</strong></a> sul sito web della Centrale unica di committenza per l’acquisizione di beni e servizi.</em></p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>La Centrale unica di committenza per l&#8217;acquisizione di beni e servizi della Regione, con DD n. 263 del 06/11/2025, ha indetto, ai sensi degli artt. 71 e 108 comma 2 del D. Lgs n. 36/2023, su richiesta [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-154744",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-fsc-sicilia-21-27",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-antincendio",
+    "tag-fornitura-mezzi",
+    "tag-rischio-incendi",
+    "dipartimenti-comando-del-corpo-forestale",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "programmi-pr-fesr-sicilia-2021-2027"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    332,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 154734,
+   "title": {
+    "rendered": "FSC e PR FESR 2021/2027 &#8211; Centrale unica di committenza &#8211; Avviso di gara per la fornitura di autocarri antincendio al Corpo forestale"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-e-pr-fesr-2021-2027-centrale-unica-di-committenza-avviso-di-gara-per-la-fornitura-di-fornitura-di-mezzi-e-attrezzature-antincendio-per-il-corpo-forestale/",
+   "date": "2025-11-17T23:25:08",
+   "content": {
+    "rendered": "<p>La <strong>Centrale unica di committenza</strong> per l&#8217;acquisizione di beni e servizi della Regione, con <strong>DD n. 262 del 06/11/2025</strong>, ha indetto, ai sensi degli artt. 71 e 108 comma 2 del D. Lgs n. 36/2023, su richiesta del <strong>Comando del Corpo forestale</strong>, una <strong>procedura aperta</strong> suddivisa in due lotti per l’affidamento di contratti d’<strong>appalto</strong> relativi alla <strong>fornitura di mezzi e attrezzature antincendio</strong>, in particolare <strong>autocarri</strong>, secondo le previsioni del piano regionale AIB.</p>\n<p>Il criterio di aggiudicazione sarà quello dell&#8217;offerta economicamente più vantaggiosa sulla base del miglior rapporto qualità-prezzo. La <strong>scadenza</strong> per la presentazione delle offerte è fissata alle ore 13 del <strong>12 dicembre 2025</strong>.</p>\n<p>In dettaglio, il <strong>lotto 1</strong>, finanziato a valere sulle risorse dell’<strong>FSC 2021/2027</strong>, attraverso l’Accordo per lo sviluppo e la coesione della Regione Siciliana (linea d’intervento 05.05), riguarda la fornitura di <strong>39 autocarri AIB 4&#215;4</strong> a cabina doppia con serbatoio da 3.000 litri e allestimento antincendio (1<sup>a</sup> fase). L’importo a base d’asta è di € 14.625.000 (CUP G69I24000720002, CIG B8FBF653D6).</p>\n<p>Il <strong>lotto 2</strong> si riferisce alla fornitura di n. <strong>51 autocarri AIB 4&#215;4</strong> a cabina doppia con serbatoio da 3.000 litri e allestimento antincendio (2<sup>a</sup> fase), ed è invece finanziato con risorse del <strong>PR FESR 2021/2027</strong>, all’interno dell’azione 2.4.4 (CUP G69I25000600009, CIG B8FBF664A9). L’importo a base d’asta è di € 19.125.000.</p>\n<p><em>La <strong><a href=\"https://appalti.regionesiciliana.lavoripubblici.sicilia.it/gare/dettaglio.php?codice=2695\" target=\"_blank\" rel=\"noopener\">procedura di gara</a></strong> è stata avviata sulla <strong>piattaforma telematica <a href=\"https://appalti.regionesiciliana.lavoripubblici.sicilia.it/\" target=\"_blank\" rel=\"noopener\">Tuttogare</a></strong>. Sono allegati a questa news il DD n. 262 del 06/11/2025 di indizione della procedura e il relativo avviso, che sono inoltre consultabili, insieme al resto della documentazione (tra cui disciplinare di gara e capitolati tecnici), nella <strong><a href=\"https://www.regione.sicilia.it/istituzioni/regione/strutture-regionali/assessorato-economia/ufficio-speciale-centrale-unica-committenza-l-acquisizione-beni-servizi/l-affidamento-fornitura-mezzi-ed-attrezzature-antincendio-secondo\" target=\"_blank\" rel=\"noopener\">pagina dedicata</a></strong> sul sito web della Centrale unica di committenza per l’acquisizione di beni e servizi.</em></p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>La Centrale unica di committenza per l&#8217;acquisizione di beni e servizi della Regione, con DD n. 262 del 06/11/2025, ha indetto, ai sensi degli artt. 71 e 108 comma 2 del D. Lgs n. 36/2023, su richiesta [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-154734",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-fsc-sicilia-21-27",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-antincendio",
+    "tag-fornitura-mezzi",
+    "tag-rischio-incendi",
+    "dipartimenti-comando-del-corpo-forestale",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "programmi-pr-fesr-sicilia-2021-2027"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    332,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 154585,
+   "title": {
+    "rendered": "Programma Interreg Next Italia-Tunisia 2021/2027 &#8211; Avviso di selezione per il conferimento di un incarico di esperto coordinatore del Segretariato congiunto"
+   },
+   "link": "https://www.euroinfosicilia.it/programma-interreg-next-vi-a-italia-tunisia-2021-2027-avviso-pubblico-selezione-di-un-esperto-coordinatore-del-segretariato-congiunto/",
+   "date": "2025-11-14T14:12:52",
+   "content": {
+    "rendered": "<p>Il <strong>dipartimento Programmazione</strong> della Regione siciliana, in qualità di <strong>autorità di gestione</strong> dell’Interreg Next <strong><a href=\"https://www.italietunisie.eu/\">Italia-Tunisia 2021-2027</a></strong>, con <strong>DDG n. 728 DRP del 29/10/2025</strong> indice una procedura per il conferimento, mediante <strong>selezione comparativa</strong>, di un incarico di<strong> esperto coordinatore del Segretariato congiunto </strong>del Programma.</p>\n<p>Le <strong>istanze</strong> di partecipazione dovranno essere sottoscritte con <strong>firma digitale</strong> e presentate esclusivamente in <strong>formato elettronico</strong> all’indirizzo di posta elettronica certificata (Certmail) <a href=\"mailto:dipartimento.programmazione@certmail.regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">dipartimento.programmazione@certmail.regione.sicilia.it</a>, indicando nell’<strong>oggetto</strong>: “Avviso pubblico per il conferimento, mediante procedura di selezione comparativa, di un incarico di esperto coordinatore del Segretariato Congiunto del Programma di Cooperazione Interreg NEXT VI – A Italia-Tunisia 2021-2027 – NOME E COGNOME DEL CANDIDATO/DELLA CANDIDATA”, improrogabilmente <strong>entro il 30° giorno</strong> successivo a quello di <strong>pubblicazione</strong> dell’avviso nella <strong>Gazzetta ufficiale</strong> della Regione siciliana, pena l’esclusione.</p>\n<p>L’avviso è stato pubblicato, per estratto, nella <strong>Gurs</strong> (serie concorsi) del 14 novembre 2025, e pertanto la<strong> scadenza</strong> è fissata alle<strong> ore 23:59 del 15/12/2025</strong>.</p>\n<p><strong>Fanno fede</strong> il <strong>testo in lingua italiana</strong> dell’avviso e, ai fini della ricevibilità, la <strong>data di ricezione</strong> della domanda di partecipazione all’indirizzo di posta elettronica certificata indicato.</p>\n<p><strong>Responsabile del procedimento</strong> relativo al Programma Interreg Italia-Tunisia è la dirigente dell’<strong>Area 7</strong> del <a href=\"https://www.euroinfosicilia.it/dipartimento-della-programmazione/\">dipartimento Programmazione</a>, <strong>Daniela Segreto</strong>. Eventuali <strong>richieste di chiarimento</strong> possono essere effettuate chiamando ai numeri telefonici 091 7070033/289 o per email, agli indirizzi <a href=\"mailto:daniela.segreto@regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">daniela.segreto@regione.sicilia.it</a> e <a href=\"mailto:area7programmazione@regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">area7programmazione@regione.sicilia.it</a>.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il dipartimento Programmazione della Regione siciliana, in qualità di autorità di gestione dell’Interreg Next Italia-Tunisia 2021-2027, con DDG n. 728 DRP del 29/10/2025 indice una procedura per il conferimento, mediante selezione comparativa, di un incarico di [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-154585",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-altri-programmi",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-decreti",
+    "tag-avviso",
+    "tag-esperto",
+    "dipartimenti-programmazione",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "destinatari-media",
+    "programmi-programmazione-20212027",
+    "programmi-programmi-cooperazione-territoriale-europea"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    322,
+    321,
+    341,
+    335
+   ]
+  },
+  {
+   "id": 154056,
+   "title": {
+    "rendered": "FSC 2021/2027- Linea di intervento 03.02 &#8211; Turismo e Ospitalità &#8211; Avviso per la concessione di agevolazioni per le imprese del settore turistico alberghiero ed extra-alberghiero – Proroga al 16 dicembre 2025"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-2021-2027-li-03-02-avviso-agevolazioni-imprese-settore-turistico-alberghiero-ed-extra-alberghiero-proroga-16-12-2025/",
+   "date": "2025-11-10T12:58:24",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo, dello Sport e dello Spettacolo pubblica il <strong>DDG n. 3791/S11 del 07/11/2025 </strong> con il quale, relativamente  all&#8217;<strong>Avviso,</strong> a valere sull&#8217;FSC 2021/2027 &#8211; Linea di intervento 03.02, per la concessione di <strong>“Agevolazioni per le imprese del settore turistico alberghiero ed extra-alberghiero”</strong>, approvato con DDG n. 4613 del 19/12/2024 e con DDG n. 2106 del 25/06/2025, così come rimodulato con DDG n. 3295 del 06.10.2025, <strong>proroga</strong> i termini di scadenza per la presentazione delle domande <strong>alle ore 17:00 del 16/12/2025.</strong></p>\n<h2><em>AGGIORNAMENTO (27/02/2026):</em></h2>\n<p>Il Dipartimento del Turismo, dello Sport e dello Spettacolo pubblica il <strong>DDG n. 623/S11 del 26/02/2026</strong> con il quale sono <strong><a href=\"https://euroinfosicilia.it/fsc-2021-2027-avviso-agevolazioni-imprese-settore-alberghiero-ed-extra-alberghiero-proroga-28-2-2026/\">prorogati alle ore 12:00 del 28/02/2026</a></strong> i termini di presentazione delle domande.</p>\n<h2><em>AGGIORNAMENTO (2</em><em>6/11/2025)</em></h2>\n<p class=\"p1\">Con <strong>DDG n. 4037/S11 del 25/11/2025 </strong>sono ulteriormente prorogati i termini di presentazione delle istanze, differiti <strong>alle ore 17:00 del novantesimo giorno successivo alla pubblicazione del presente provvedimento sulla Gazzetta Ufficiale della Regione Siciliana, ovvero al 26/02/2026</strong>. Inoltre, sono state apportate alcune <a href=\"https://euroinfosicilia.it/fsc-2021-2027-li-03-02-agevolazioni-imprese-alberghiere-ed-extra-alberghiere-modifica-avviso-e-proroga/\" target=\"_blank\" rel=\"noopener\">modifiche all’Avviso</a>.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo, dello Sport e dello Spettacolo pubblica il DDG n. 3791/S11 del 07/11/2025  con il quale, relativamente  all&#8217;Avviso, a valere sull&#8217;FSC 2021/2027 &#8211; Linea di intervento 03.02, per la concessione di “Agevolazioni per [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-154056",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-fsc-sicilia-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-proroga",
+    "tag-settore-turistico-alberghiero",
+    "tag-turismo-e-ospitalita",
+    "dipartimenti-turismo",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    332,
+    335
+   ]
+  },
+  {
+   "id": 152617,
+   "title": {
+    "rendered": "PR FESR 2021/2027 – Azione 2.1.2 – Riqualificazione energetica nelle imprese – Avviso pubblico “Sicilia efficiente: meno consumi, più futuro” &#8211; Modifica Appendice 1 &#8220;Criteri di valutazione&#8221;"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-2-1-2-riqualificazione-energetica-nelle-imprese-avviso-pubblico-sicilia-efficiente-meno-consumi-piu-futuro-modifica-appendi/",
+   "date": "2025-10-24T11:28:33",
+   "content": {
+    "rendered": "<p>Il Dipartimento delle Attività Produttive con <strong>DDG n. 2873 del 23/10/2025</strong> ha <strong>approvato</strong> la <strong>modifica</strong> all’<strong>Appendice</strong> 1 &#8220;Criteri di valutazione&#8221; dell’Avviso pubblico ”Sicilia efficiente: meno consumi, più futuro” approvato con DDG n. 2792 del 15/10/2025 a valere sull’Azione 2.1.2 del PR FESR 2021/2027 &#8220;Riqualificazione energetica nelle imprese&#8221;.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento delle Attività Produttive con DDG n. 2873 del 23/10/2025 ha approvato la modifica all’Appendice 1 &#8220;Criteri di valutazione&#8221; dell’Avviso pubblico ”Sicilia efficiente: meno consumi, più futuro” approvato con DDG n. 2792 del 15/10/2025 a [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-152617",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-azione-2-1-2",
+    "tag-modifica",
+    "dipartimenti-attivita-produttive",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-innovazione",
+    "argomenti-sostenibilita-ambientale-ed-energia"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 149911,
+   "title": {
+    "rendered": "PR FESR 2021/2027 – Azione 4.6.2 &#8211; Azioni di sensibilizzazione territoriale Anno 2025/2026 &#8211; Consultazione operatori economici"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-azioni-di-sensibilizzazione-territoriale-anno-2025-2026-consultazione-operatori-economici-avviso/",
+   "date": "2025-09-16T11:46:19",
+   "content": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica l&#8217; <strong>Avviso n. 31331 del 09/09/2025</strong>, con cui  in attuazione con quanto previsto dalle azioni esecutive a valere sul PR FESR Sicilia 2021/2027, approvate con DDG 2493 del 23.07.2025, si <strong>invitano</strong> gli <strong>operatori</strong> interessati a sottoporre un’apposita progettualità che abbia come fine quello di valorizzare il segmento dello <strong>spettacolo dal vivo del territorio siciliano</strong>.</p>\n<p>Le proposte dovranno presentarsi entro le ore 8:00 del 25/09/2025 al seguente indirizzo PEC: dipartimento.turismo@certmail.regione.sicilia.it &#8211; <strong>PR FESR 2021/2027 &#8211; Azione 4.6.2</strong>.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento del Turismo dello Sport e dello Spettacolo pubblica l&#8217; Avviso n. 31331 del 09/09/2025, con cui  in attuazione con quanto previsto dalle azioni esecutive a valere sul PR FESR Sicilia 2021/2027, approvate con DDG [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-149911",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-pr-fesr-21-27",
+    "category-comunicato",
+    "category-documenti",
+    "tag-avviso",
+    "tag-azione-4-6-2",
+    "tag-operatori-economici",
+    "tag-sensibilizzazione-territoriale",
+    "dipartimenti-turismo",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    330,
+    334,
+    336
+   ]
+  },
+  {
+   "id": 148320,
+   "title": {
+    "rendered": "FSC 2021/2027 &#8211; Linea di intervento 03.02 &#8211; Contributi imprese di produzione cinematografiche e audiovisive &#8211; Direttiva anni 2025–2027 &#8211; Avviso pubblico"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-2021-2027-contributi-imprese-di-produzione-cinematografiche-2025-2027-avviso-pubblico/",
+   "date": "2025-08-26T11:50:33",
+   "content": {
+    "rendered": "<p>Il Dipartimento Turismo, Sport e Spettacolo &#8211; <strong>Servizio 9 Sicilia Film Commission</strong> pubblica il <strong>DDG n. 4542/S.9 del 17/12/2024</strong>  con il quale viene approvato l&#8217;<strong>Avviso Pubblico</strong> per la concessione di contributi a sostegno delle <strong>produzioni cinematografiche e audiovisive per gli anni 2025-2027</strong>, unitamente all&#8217;annesso modello di Dossier di Candidatura.</p>\n<p>Gli interventi che saranno agevolati con l&#8217;Avviso Pubblico trovano copertura sulle risorse del Capitolo 872077 “Fondo Sviluppo e Coesione (FSC) 2021-2027 &#8211; Accordo per la coesione per la Regione Siciliana &#8211; Area tematica 03 Competitività Imprese &#8211; Linea di intervento 03.02 Turismo e Ospitalità, a valere del quale è adottata la prenotazione di impegno dell&#8217;importo di € 2.000.000,00 per l&#8217;esercizio finanziario 2025 di € 1.956.024,49 per l&#8217;esercizio finanziario 2026.</p>\n<p>L’espletamento delle procedure di cofinanziamento avverrà attraverso l’apertura di singole ed autonome finestre temporali di presentazione delle istanze di candidatura per ciascun anno solare del trimestre 2025-2027, secondo la seguente articolazione:<br />\n<strong>• ANNO 2025: dal 01 febbraio al 15 marzo</strong><br />\n<strong>• ANNO 2026: dal 02 febbraio al 16 marzo</strong><br />\n<strong>• ANNO 2027: dal 01 febbraio al 15 marzo</strong></p>\n<p><strong>Le istanze</strong> potranno essere validamente presentate unicamente a mezzo di posta elettronica certificata (PEC) all’indirizzo <a href=\"mailto:dipartimento.turismo@certmail.regione.sicilia.it\" target=\"_blank\" rel=\"noopener\"><strong>dipartimento.turismo@certmail.regione.sicilia.it</strong></a> nell’intervallo di tempo scandito dalle finestre annuali sopra indicate.</p>\n<p>Per il 2026 ed il 2027, l’Amministrazione si riserva la facoltà di modificare le suddette finestre temporali mediante l’adozione di apposito Decreto del Dirigente Generale del Dipartimento regionale del Turismo, dello Sport e dello Spettacolo, che sarà pubblicato, per estratto, sullaGazzetta Ufficiale della Regione Siciliana.</p>\n<p>&nbsp;</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento Turismo, Sport e Spettacolo &#8211; Servizio 9 Sicilia Film Commission pubblica il DDG n. 4542/S.9 del 17/12/2024  con il quale viene approvato l&#8217;Avviso Pubblico per la concessione di contributi a sostegno delle produzioni cinematografiche [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-148320",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-fsc-sicilia-21-27",
+    "category-decreti",
+    "category-documenti",
+    "tag-avviso",
+    "tag-produzioni-cinematografiche",
+    "tag-sicilia-film-commission",
+    "dipartimenti-turismo",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "argomenti-turismo"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    332,
+    335,
+    336
+   ]
+  },
+  {
+   "id": 146163,
+   "title": {
+    "rendered": "PR FESR 2021/2027 – Azione 1.4.1 – Sviluppare le competenze per la specializzazione intelligente, la transizione industriale e l’imprenditorialità – Rettifica Avviso pubblico Riqualificazione Capitale Umano"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-4-1-rettifica-avviso-riqualificazione-capitale-umano/",
+   "date": "2025-08-08T09:51:27",
+   "content": {
+    "rendered": "<p>Con <strong>DDG n. 2215 del 07/08/2025</strong> il Dipartimento delle Attività Produttive ha <strong>rettificato l’Avviso pubblico Riqualificazione Capitale Umano, </strong>approvato con DDG n. 2094 del 29/07/2025 a valere sull’<strong>Azione 1.4.1</strong> del PR FESR 2021/2027 per sostenere iniziative rivolte alle micro, piccole e medie imprese siciliane (<strong>MPMI</strong>), organizzate in aggregazioni costituite o costituende, finalizzate alla riqualificazione e allo sviluppo delle competenze del capitale umano.</p>\n<p>Sono stati corretti refusi materiali presenti nel testo e <strong>aggiornati i termini di apertura e chiusura della piattaforma</strong> per la presentazione delle domande di aiuto, come indicato all’art. 4.3 dello stesso Avviso.</p>\n<p class=\"p2\"><strong>Le domande</strong> di accesso alle agevolazioni devono essere inviate a partire <strong>dalle ore 12:00 del</strong> <span class=\"s1\"><b>24/09/2025 </b></span>sino alle ore <strong>12:00 del <span class=\"s1\">04/11/2025</span><span class=\"s2\">.</span></strong></p>\n<div class=\"col-lg-12 px-0 wysiwig-text\">\n<h2><em>AGGIORNAMENTO (30/10/2025): </em></h2>\n<p>Il Dipartimento della Attività Produttive con <strong>DDG n. 3006 del 30/10/2025</strong> ha <strong>prorogato</strong> alle <strong>ore 12:00</strong> del <strong>28 novembre 2025</strong> la <strong>scadenza</strong> per la <strong>presentazione</strong> delle <strong>istanze.</strong></p>\n</div>\n<div id=\"aggiornamenti\" class=\"it-page-section olo-it-page-section active\"></div>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Con DDG n. 2215 del 07/08/2025 il Dipartimento delle Attività Produttive ha rettificato l’Avviso pubblico Riqualificazione Capitale Umano, approvato con DDG n. 2094 del 29/07/2025 a valere sull’Azione 1.4.1 del PR FESR 2021/2027 per sostenere iniziative [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-146163",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-azione-1-4-1",
+    "tag-riqualificazione-capitale-umano",
+    "dipartimenti-attivita-produttive",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-competitivita-e-sviluppo-economico",
+    "argomenti-innovazione"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 145569,
+   "title": {
+    "rendered": "PR FESR 2021/2027 – Azione 2.1.3 &#8211; Riduzione dei consumi energetici delle reti di illuminazione pubblica &#8211; Avviso Pubblico"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-2-1-3-riduzione-dei-consumi-energetici-delle-reti-di-illuminazione-pubblica-avviso-pubblico/",
+   "date": "2025-08-01T10:19:29",
+   "content": {
+    "rendered": "<p>Il Dipartimento Energia pubblica il <strong>DDG n. 1558 del 04/07/2025</strong> con il quale è approvato l’<strong>Avviso</strong> relativo alla componente non territorializzata dell’<strong>Azione 2.1.3</strong> del PR FESR Sicilia 2021/2027, che è finalizzata ad una procedura valutativa a graduatoria per il co-finanziamento di interventi finalizzati all’eco-efficientamento e alla riduzione dei consumi di energia primaria negli edifici e nelle strutture pubbliche.<b><br />\n</b></p>\n<p class=\"p1\">Sono <strong>ammissibili al contributo finanziario</strong> le operazioni di ammodernamento della rete di illuminazione pubblica attraverso interventi di riqualificazione energetica degli impianti, efficientamento tecnologico, installazione di sistemi automatici di regolazione e servizi tecnologici integrati.</p>\n<p class=\"p1\"><strong>La dotazione finanziaria</strong> dell&#8217;Avviso è pari a euro 28.622.466,21.</p>\n<p class=\"p1\"><strong>Le domande</strong> devono essere inviate attraverso applicativo informatico/PEC all&#8217;indirizzo <a href=\"mailto:dipartimento.energia@certmail.regione.sicilia.it\" target=\"_blank\" rel=\"noopener\">dipartimento.energia@certmail.regione.sicilia.it</a> <strong>entro e non oltre le ore 23:59 del novantesimo giorno successivo</strong> alla data di pubblicazione del presente Avviso nella Gazzetta Ufficiale della Regione Siciliana.</p>\n<p>&nbsp;</p>\n<p><em><strong>Aggiornamento 30/10/2025</strong></em></p>\n<p>Il Dipartimento Energia con DDG n. 2396 del 23/10/2025 <strong>proroga</strong> alle<strong> 23:59</strong> del <strong>21/11/2025</strong> il <strong>termine</strong> per la <strong>presentazione</strong> delle <strong>istanze.</strong></p>\n<p>&nbsp;</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento Energia pubblica il DDG n. 1558 del 04/07/2025 con il quale è approvato l’Avviso relativo alla componente non territorializzata dell’Azione 2.1.3 del PR FESR Sicilia 2021/2027, che è finalizzata ad una procedura valutativa a [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-145569",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-azione-2-1-3",
+    "tag-efficientamento-energetico",
+    "tag-illuminazione-pubblica",
+    "dipartimenti-energia",
+    "destinatari-enti-pubblici",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-sostenibilita-ambientale-ed-energia"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    330,
+    335
+   ]
+  },
+  {
+   "id": 145572,
+   "title": {
+    "rendered": "PR FESR 2021/2027 &#8211; Azione 4.3.1 &#8211; Interventi di adeguamento, rifunzionalizzazione e ristrutturazione di edifici pubblici da adibire all’erogazione di servizi non residenziali destinati ai minori – Riapprovazione graduatoria definitiva"
+   },
+   "link": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-3-1-interventi-di-adeguamento-rifunzionalizzazione-e-ristrutturazione-di-edifici-pubblici-da-adibire-allerogazione-di-servizi-non-residenziali-destinati-ai-min/",
+   "date": "2025-07-31T12:59:31",
+   "content": {
+    "rendered": "<p>Il Dipartimento della Famiglia e delle Politiche Sociali pubblica il <strong>DDG. n. 2304 del 31/07/2025</strong> di <strong>scioglimento</strong> della <strong>riserva</strong> e <strong>riapprovazione</strong> della <strong>graduatoria</strong> definitiva delle <strong>operazioni ammesse</strong> al finanziamento di cui al <strong>DDG n. 1762 del 23/06/2025</strong> a valere dell’<strong>Avviso 4.3.1</strong> &#8211; Interventi di adeguamento, rifunzionalizzazione e ristrutturazione (comprese forniture e arredi) di edifici pubblici da adibire all’erogazione di servizi non residenziali destinati ai minori (centri sociali aggregativi diurni rivolti alla popolazione di fascia di età 4-18 anni per attività socio – educativa e ludica), parte integrante del presente provvedimento.</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento della Famiglia e delle Politiche Sociali pubblica il DDG. n. 2304 del 31/07/2025 di scioglimento della riserva e riapprovazione della graduatoria definitiva delle operazioni ammesse al finanziamento di cui al DDG n. 1762 del [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-145572",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-pr-fesr-21-27",
+    "category-decreti",
+    "category-graduatorie",
+    "tag-avviso",
+    "tag-azione-4-3-1",
+    "tag-graduatoria-definitiva",
+    "dipartimenti-famiglia-e-politiche-sociali",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-pr-fesr-sicilia-2021-2027",
+    "argomenti-politiche-coesione"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    330,
+    335,
+    338
+   ]
+  },
+  {
+   "id": 145532,
+   "title": {
+    "rendered": "FSC 2021/2027 – Linea di intervento 04.01 – Efficienza energetica reti di illuminazione pubblica – Avviso Pubblico"
+   },
+   "link": "https://www.euroinfosicilia.it/fsc-2021-2027-linea-di-intervento-04-01-efficienza-energetica-reti-di-illuminazione-pubblica-avviso-pubblico/",
+   "date": "2025-07-31T12:24:52",
+   "content": {
+    "rendered": "<p>Il Dipartimento Energia pubblica il <strong>DDG 1559 del 04/07/2025</strong> con il quale è stato <strong>approvato</strong> l’<strong>Avviso</strong> relativo all’attuazione della linea di intervento 04.01. del FSC Sicilia 2021/2027, che è finalizzata ad una <strong>procedura</strong> valutativa a <strong>graduatoria</strong> per il co-finanziamento di <strong>iniziative</strong> riguardanti la <strong>progettazione</strong> e <strong>realizzazione</strong> di interventi finalizzati all’<strong>eco-efficientamento</strong> e alla <strong>riduzione</strong> dei <strong>consumi</strong> di <strong>energia</strong> primaria negli <strong>edifici</strong> e nelle <strong>strutture pubbliche</strong> nella titolarità delle amministrazioni comunali siciliane. Il Dipartimento <strong>pubblica</strong> altresì l&#8217;<strong>errata corrige</strong> prot. 26404 del 22/07/2025.</p>\n<h2>AGGIORNAMENTO (23/10/2025)</h2>\n<p>Come da formale richiesta del dipartimento Energia, si precisa che il novantesimo giorno successivo alla pubblicazione in Gurs, indicato dall&#8217;Avviso come termine per la presentazione delle istanze, è il 23 ottobre 2025 (e non, come precedentemente riportato per mero errore materiale, il 24 ottobre).</p>\n",
+    "protected": false
+   },
+   "excerpt": {
+    "rendered": "<p>Il Dipartimento Energia pubblica il DDG 1559 del 04/07/2025 con il quale è stato approvato l’Avviso relativo all’attuazione della linea di intervento 04.01. del FSC Sicilia 2021/2027, che è finalizzata ad una procedura valutativa a graduatoria [&hellip;]</p>\n",
+    "protected": false
+   },
+   "class_list": [
+    "post-145532",
+    "post",
+    "type-post",
+    "status-publish",
+    "format-standard",
+    "hentry",
+    "category-bandi",
+    "category-bandi-e-avvisi-chiusi",
+    "category-fsc-sicilia-21-27",
+    "category-decreti",
+    "tag-avviso",
+    "tag-efficientamento-energetico",
+    "tag-illuminazione-pubblica",
+    "tag-linea-di-intervento-04-01",
+    "dipartimenti-energia",
+    "destinatari-enti-pubblici",
+    "destinatari-imprese",
+    "programmi-fondo-sviluppo-coesione",
+    "argomenti-sostenibilita-ambientale-ed-energia"
+   ],
+   "status": "publish",
+   "type": "post",
+   "categories": [
+    321,
+    341,
+    332,
+    335
+   ]
+  }
+ ]
+}

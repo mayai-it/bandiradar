@@ -132,8 +132,11 @@ jobs:
             echo "  probe $1: HTTP $code  ($2)"
           }
           echo "Endpoint reachability from this runner:"
-          probe TED       "https://api.ted.europa.eu/v3/notices/search"
-          probe incentivi "https://www.incentivi.gov.it/solr/coredrupal/select"
+          probe TED            "https://api.ted.europa.eu/v3/notices/search"
+          probe incentivi      "https://www.incentivi.gov.it/solr/coredrupal/select"
+          probe sicilia        "https://www.euroinfosicilia.it/wp-json/wp/v2/posts?categories=321&per_page=1"
+          probe emilia_romagna "https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?portal_type=Bando&b_size=1"
+          probe trentino       "https://dati.trentino.it/api/3/action/package_show?id=calendario-degli-avvisi-e-degli-inviti-a-partecipare-bandi-feasr"
 
       - name: Watch every bundled profile (single fetch, rest reuse the DB)
         # Budget the long part HERE, not on the job: if scoring backlogs, this step

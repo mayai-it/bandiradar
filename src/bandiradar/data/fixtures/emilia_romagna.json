@@ -1,0 +1,537 @@
+{
+ "_note": "Recorded Plone REST @search payload — politicheterritoriali.regione.emilia-romagna.it, portal_type=Bando, fullobjects. Trimmed to mapper-relevant fields.",
+ "_source": "https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?portal_type=Bando&fullobjects=true&sort_on=scadenza_bando&sort_order=descending",
+ "_captured": "2026-06-12",
+ "items": [
+  {
+   "UID": "e4e2463776b54626bc0c4d5ef887103d",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperative-comunita/elenco-regionale-delle-cooperative-di-comunita-terza-finestra",
+   "title": "Avviso per iscrizione all'elenco regionale delle cooperative di comunità",
+   "description": "Legge regionale n.12/2022 - 3^ finestra temporale",
+   "effective": "2025-09-01T13:13:56+00:00",
+   "apertura_bando": "2026-06-01T07:00:00",
+   "scadenza_bando": null,
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "open",
+    "Attivo"
+   ],
+   "tipologia_bando": "Accreditamenti, albi, elenchi",
+   "destinatari": [
+    "Cooperative"
+   ],
+   "materie": [
+    "Agricoltura e sviluppo delle aree rurali",
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "30334a5b3dac437d917a0ec73eb6e4a7",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cittadinanza-europea/bando-per-la-promozione-della-cittadinanza-europea-2026",
+   "title": "Bando per la promozione della cittadinanza europea 2026",
+   "description": "Contributi per iniziative promosse da enti locali e associazioni",
+   "effective": "2026-03-25T09:25:00+00:00",
+   "apertura_bando": "2026-03-26T10:00:00",
+   "scadenza_bando": "2026-05-20T14:00:00+00:00",
+   "chiusura_procedimento_bando": "2026-07-30",
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Cultura",
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "1898812e486d4f32b96142ef72f77e80",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperazione-internazionale/bando-per-la-cooperazione-internazionale-2026",
+   "title": "Bando per la cooperazione internazionale 2026",
+   "description": "Per progetti con i Paesi emergenti del sud del mondo - lotto n.1",
+   "effective": "2026-03-11T10:00:00+00:00",
+   "apertura_bando": "2026-03-11T10:00:00",
+   "scadenza_bando": "2026-04-27T15:00:00+00:00",
+   "chiusura_procedimento_bando": "2026-07-27",
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Diritti e sociale",
+    "Estero",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "bc59e7f2d16b44848312660d100914ea",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperazione-internazionale/bando-per-palestina-ucraina-2026",
+   "title": "Bando per emergenza in Palestina e Ucraina 2026",
+   "description": "Per la presentazione di progetti di emergenza - lotto n.2",
+   "effective": "2026-03-11T10:00:00+00:00",
+   "apertura_bando": "2026-03-11T10:02:15",
+   "scadenza_bando": "2026-04-10T11:00:00+00:00",
+   "chiusura_procedimento_bando": "2026-06-08",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "00c563a3849f4874bda6a8e52acd66cc",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/pace/bando-per-la-promozione-di-una-cultura-della-pace-2026",
+   "title": "Bando per la promozione di una cultura della pace 2026",
+   "description": "Contributi per enti locali, terzo settore e organizzazioni della società civile su pace, intercultura, diritti, dialogo interreligioso e cittadinanza globale",
+   "effective": "2026-02-24T14:07:31+00:00",
+   "apertura_bando": "2026-02-26T11:00:00",
+   "scadenza_bando": "2026-03-26T15:00:00+00:00",
+   "chiusura_procedimento_bando": "2026-06-26",
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici",
+    "Scuole",
+    "Università",
+    "Enti di formazione"
+   ],
+   "materie": [
+    "Cultura",
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "54bf75fd28084c189c15a9ce9a121f4e",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/giustizia/secondo_avviso-manifestazione-di-interesse-uffici-di-prossimita",
+   "title": "Secondo avviso di manifestazione di interesse per gli uffici di prossimità - Patto per la giustizia",
+   "description": "Rivolto ai Comuni e alle Unioni di Comuni per l'attivazione dei punti di accesso sul territorio regionale",
+   "effective": "2026-01-20T14:45:00+00:00",
+   "apertura_bando": "2026-01-20T14:45:00",
+   "scadenza_bando": "2026-02-12T22:55:00+00:00",
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Manifestazioni di interesse",
+   "destinatari": [
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Diritti e sociale",
+    "Innovazione e ICT",
+    "Riordino istituzionale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "88d1ea07b20449b3a43885a7f8bf6917",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperative-comunita/iscrizione-allelenco-regionale-delle-cooperative-di-comunita-seconda-finestra",
+   "title": "Iscrizione all'elenco regionale delle cooperative di comunità - seconda finestra temporale",
+   "description": "Legge regionale n.12/2022 ",
+   "effective": "2025-09-01T13:13:56+00:00",
+   "apertura_bando": "2025-09-01T07:00:00",
+   "scadenza_bando": "2026-01-16T14:00:00+00:00",
+   "chiusura_procedimento_bando": "2026-04-16",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Accreditamenti, albi, elenchi",
+   "destinatari": [
+    "Cooperative"
+   ],
+   "materie": [
+    "Agricoltura e sviluppo delle aree rurali",
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "fd254de3b38c4ef88972f4e130f3ff45",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperative-comunita/bando-per-le-cooperative-di-comunita-2025",
+   "title": "Bando per le cooperative di comunità 2025",
+   "description": "Contributi per la promozione ed il sostegno delle cooperative di comunità. Legge regionale n. 12/2022",
+   "effective": "2025-07-11T14:15:12+00:00",
+   "apertura_bando": "2025-07-14T09:00:00",
+   "scadenza_bando": "2025-08-28T10:00:00+00:00",
+   "chiusura_procedimento_bando": "2025-10-10",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Cooperative"
+   ],
+   "materie": [
+    "Agricoltura e sviluppo delle aree rurali",
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "906a504c2cd24949b0222b43aaf610ea",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cittadinanza-europea/bando-per-la-promozione-della-cittadinanza-europea-2025",
+   "title": "Bando per la promozione della cittadinanza europea 2025",
+   "description": "Contributi per iniziative promosse da enti locali e associazioni",
+   "effective": "2025-05-14T09:16:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-06-10T14:00:00+00:00",
+   "chiusura_procedimento_bando": "2025-07-28",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Cultura",
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "53e535b4d4d0404d85e50430b3741374",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/legge-5/avviso-per-manifestazioni-di-interesse-per-nuovi-programmi-territoriali",
+   "title": "Avviso per manifestazioni di interesse per Nuovi programmi territoriali",
+   "description": "Fondo per lo sviluppo e la coesione 2021-2027 - Legge regionale n.5/2018",
+   "effective": "2024-11-06T10:36:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-06-09T14:00:00+00:00",
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio",
+    "Innovazione e ICT",
+    "Istruzione e formazione",
+    "Mobilità e trasporti"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "5c4e121c50f3430480629e80fefbdb97",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperazione-internazionale/bando-per-la-cooperazione-internazionale-2025",
+   "title": "Bando per la cooperazione internazionale 2025",
+   "description": "Per progetti con i Paesi emergenti del sud del mondo - lotto n.1",
+   "effective": "2025-04-08T11:00:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-05-20T14:00:00+00:00",
+   "chiusura_procedimento_bando": "2025-07-21",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Diritti e sociale",
+    "Estero",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "d60968e739c24a0b91cee00d9e87af65",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/pace/bando-per-la-promozione-di-una-cultura-della-pace-2025",
+   "title": "Bando per la promozione di una cultura della pace 2025",
+   "description": "Contributi per enti locali, terzo settore e organizzazioni della società civile su pace, intercultura, diritti, dialogo interreligioso e cittadinanza globale",
+   "effective": "2025-03-31T11:47:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-05-15T13:00:00+00:00",
+   "chiusura_procedimento_bando": "2025-08-04",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Cultura",
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "70e95f61c73c4a999a35031be02319db",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperative-comunita/avviso-per-iscrizione-allelenco-delle-cooperative-di-comunita",
+   "title": "Avviso per iscrizione all'elenco delle cooperative di comunità",
+   "description": "Legge regionale n.12/2022 - iscrizione all'Elenco regionale",
+   "effective": "2024-10-01T10:03:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-05-09T21:55:00+00:00",
+   "chiusura_procedimento_bando": "2025-06-26",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Accreditamenti, albi, elenchi",
+   "destinatari": [
+    "Cooperative"
+   ],
+   "materie": [
+    "Agricoltura e sviluppo delle aree rurali",
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "b9de291e4416468d9281a8173a77357d",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/cooperazione-internazionale/bando-per-emergenza-in-ucraina-e-palestina",
+   "title": "Bando per emergenza in Ucraina e Palestina",
+   "description": "Per aiuti umanitari e assistenza alla popolazione, sfollati e profughi - lotto n.2",
+   "effective": "2025-04-08T11:00:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-05-06T14:00:00+00:00",
+   "chiusura_procedimento_bando": "2025-06-23",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Enti del Terzo settore",
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Diritti e sociale"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "3930ae08043c44cd922a903c550381c2",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/legge-5/avviso-per-manifestazioni-di-interesse-per-comuni-fragili-fsc-21-27",
+   "title": "Avviso per manifestazioni di interesse per Comuni fragili",
+   "description": "Fondo per lo sviluppo e coesione 2021-2027- Legge regionale n.5/2018",
+   "effective": "2024-11-13T14:29:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-04-30T14:00:00+00:00",
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Manifestazioni di interesse",
+   "destinatari": [
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio",
+    "Innovazione e ICT",
+    "Istruzione e formazione",
+    "Mobilità e trasporti"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "a25fe30f793b44eabf713aacd6d7ea0b",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/bando-dispositivi-per-alluvioni",
+   "title": "Bando per l'acquisto di dispositivi di protezione dalle alluvioni",
+   "description": "Legge regionale n.13 del 2023",
+   "effective": "2024-10-29T12:33:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2025-01-31T15:00:00+00:00",
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Agevolazioni, finanziamenti, contributi",
+   "destinatari": [
+    "Cittadini"
+   ],
+   "materie": [
+    "Ambiente",
+    "Beni immobili e mobili",
+    "Edilizia e rigenerazione urbana"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "dd4a21ffec9b4d069703d2e52f275e4e",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/legge-5/avviso-per-manifestazioni-di-interesse-per-stami-strategie-territoriali-per-le-aree-montane-e-interne",
+   "title": "Avviso per manifestazioni di interesse per Stami (Strategie Territoriali per le Aree Montane e Interne)",
+   "description": "Legge regionale n.5/2018",
+   "effective": "2024-07-30T11:00:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2024-11-15T15:00:00+00:00",
+   "chiusura_procedimento_bando": null,
+   "bando_state": [
+    "inProgress",
+    "In corso"
+   ],
+   "tipologia_bando": "Manifestazioni di interesse",
+   "destinatari": [
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Diritti e sociale",
+    "Edilizia e rigenerazione urbana",
+    "Imprese e commercio",
+    "Innovazione e ICT",
+    "Istruzione e formazione",
+    "Mobilità e trasporti"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  },
+  {
+   "UID": "d376f6783c3d4bca8fe4232a731e4226",
+   "@id": "https://politicheterritoriali.regione.emilia-romagna.it/leggi-atti-bandi/bandi/legge-5/avviso-per-unioni-avanzate-nellambito-del-programma-straordinario-di-investimento-2024",
+   "title": "Avviso per Unioni avanzate nell'ambito del programma straordinario di investimento 2024",
+   "description": "Atto di indirizzo 2021-2023 - legge regionale n.5/2018",
+   "effective": "2024-06-10T10:00:00+00:00",
+   "apertura_bando": null,
+   "scadenza_bando": "2024-10-16T16:00:00+00:00",
+   "chiusura_procedimento_bando": "2024-11-16",
+   "bando_state": [
+    "closed",
+    "Chiuso"
+   ],
+   "tipologia_bando": "Manifestazioni di interesse",
+   "destinatari": [
+    "Enti pubblici"
+   ],
+   "materie": [
+    "Ambiente",
+    "Beni immobili e mobili",
+    "Edilizia e rigenerazione urbana",
+    "Innovazione e ICT"
+   ],
+   "ente_bando": null,
+   "review_state": "published",
+   "text": {
+    "data": ""
+   }
+  }
+ ]
+}

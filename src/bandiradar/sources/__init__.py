@@ -12,8 +12,13 @@ bandiradar.sources``.
 
 from bandiradar.sources import anac as anac  # noqa: F401  (registration side effect)
 from bandiradar.sources import anac_pvl as anac_pvl  # noqa: F401  (registration)
+from bandiradar.sources import (  # noqa: F401  (registration)
+    emilia_romagna as emilia_romagna,
+)
 from bandiradar.sources import incentivi as incentivi  # noqa: F401  (registration)
 from bandiradar.sources import lazio as lazio  # noqa: F401  (registration)
 from bandiradar.sources import lombardia as lombardia  # noqa: F401  (registration)
+from bandiradar.sources import sicilia as sicilia  # noqa: F401  (registration)
 from bandiradar.sources import ted as ted  # noqa: F401  (registration side effect)
 from bandiradar.sources import toscana as toscana  # noqa: F401  (registration)
+from bandiradar.sources import trentino as trentino  # noqa: F401  (registration)

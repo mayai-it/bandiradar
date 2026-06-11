@@ -58,9 +58,9 @@ The map that matters: not "what exists" but "what is openly reachable, and how f
 
 ---
 
-## 3. What BandiRadar covers today (v0.4.0)
+## 3. What BandiRadar covers today (v0.6.0)
 
-Seven source adapters, each with an honest scope. Tenders **and** grants normalize
+Ten source adapters, each with an honest scope. Tenders **and** grants normalize
 into one canonical `Opportunity` model — something neither national hub does (PNCP and
 incentivi.gov.it are separate silos).
 
@@ -73,6 +73,9 @@ incentivi.gov.it are separate silos).
 | `lombardia` | tender | ✅ | Regional procurement | Socrata SODA dataset (sample regional source). |
 | `lazio` | incentive | ✅ | Regional incentives | LazioInnova bandi over a WP‑REST adapter. |
 | `toscana` | incentive | ✅ | Regional incentives | LLM‑assisted scraper (no clean API). |
+| `sicilia` | incentive | ✅ | Regional FESR/FSC incentives | EuroInfoSicilia, standard WP posts (category filter) over the WP base. |
+| `emilia_romagna` | incentive | ✅ | Regional incentives | Plone `Bando` content type (plone.restapi); structured `scadenza_bando`. |
+| `trentino` | incentive | ✅ | Provincial FEASR incentives | dati.trentino.it CKAN open‑data CSV; carries currently‑open bandi. |
 
 ---
 

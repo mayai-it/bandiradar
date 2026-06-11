@@ -20,7 +20,7 @@ import html
 import json
 import re
 from collections.abc import Iterable, Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -104,14 +104,23 @@ def _wp_pages(
     per_page: int,
     since: datetime | None,
     max_pages: int | None = None,
+    extra_params: dict[str, Any] | None = None,
 ) -> Iterator[tuple[int, list[dict[str, Any]]]]:
     """Yield ``(page_number, posts)`` pages of WP posts (reusable WP-REST paging).
 
-    Retries transient HTTP failures with backoff; a 400 means "past the last page".
+    ``extra_params`` are static WP-REST query params merged into every page request
+    (e.g. ``{"categories": 321}`` to read a standard ``posts`` endpoint filtered to a
+    bandi category, instead of a dedicated custom-post-type endpoint). It only shapes
+    the QUERY, never the mapping. Retries transient HTTP failures with backoff; a 400
+    means "past the last page".
     """
     page = 1
     while max_pages is None or page <= max_pages:
-        params: dict[str, Any] = {"per_page": per_page, "page": page}
+        params: dict[str, Any] = {
+            **(extra_params or {}),
+            "per_page": per_page,
+            "page": page,
+        }
         if since is not None:
             params["after"] = since.astimezone(UTC).isoformat()
         response = http.with_retry(
@@ -142,6 +151,10 @@ class WordPressBandiSource:
     keyword_taxonomies: tuple[str, ...] = ("tematiche-", "destinatari-")
     per_page: int = 100
     fixture_name: str = ""
+    # Static WP-REST query params merged into every page request (config, not code).
+    # Lets a region read the standard ``posts`` endpoint filtered to a bandi category
+    # (e.g. ``{"categories": 321}``) instead of a dedicated custom-post-type endpoint.
+    extra_params: dict[str, Any] = field(default_factory=dict)
 
     def _fixture_path(self):
         return resources.fixture(self.fixture_name or f"{self.id}.json")
@@ -221,7 +234,12 @@ class WordPressBandiSource:
         seen = 0
         with http.client(follow_redirects=True) as client:
             for page, posts in _wp_pages(
-                client, self.data_url, self.per_page, since, max_pages
+                client,
+                self.data_url,
+                self.per_page,
+                since,
+                max_pages,
+                extra_params=self.extra_params,
             ):
                 for post in posts:
                     if seen >= cap:

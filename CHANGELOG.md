@@ -4,6 +4,33 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.6.0] — 2026-06-12 — Regional coverage wave 1
+
+### Added
+- **`sicilia`** — Regione Siciliana / EuroInfoSicilia FESR/FSC incentives
+  (`kind="incentive"`), key-less. The portal exposes bandi as STANDARD WordPress
+  posts under the "Bandi e Avvisi" category (id 321), so the shared
+  `WordPressBandiSource` base was extended MINIMALLY with an `extra_params` config
+  (e.g. `{"categories": 321}`) to query the `/posts` endpoint with a category filter —
+  no mapping fork. Real fixture + test.
+- **`emilia_romagna`** — Regione Emilia-Romagna / Politiche territoriali incentives
+  (`kind="incentive"`), key-less, via a NEW reusable `PloneBandoSource`
+  (`sources/plone.py`). Many Italian PAs run Plone with the AGID `Bando` content type
+  over plone.restapi (`@search?portal_type=Bando&fullobjects`), which carries a
+  STRUCTURED `scadenza_bando` deadline (no text-parsing) plus `tipologia_bando`,
+  `bando_state`, etc. Real fixture + test. (The old `fondieuropei.…` host now
+  redirects to `politicheterritoriali.regione.emilia-romagna.it`.)
+- **`trentino`** — Provincia Autonoma di Trento FEASR incentives
+  (`kind="incentive"`), key-less, from a `dati.trentino.it` CKAN open-data CSV
+  ("Calendario degli avvisi … Bandi FEASR") — dedicated open-data adapter (the
+  Lombardia-style pattern); parses status/open-close dates/importo/link and carries
+  currently-open bandi. Real fixture + test.
+- Pre-flight reachability probe in the monitor workflow now also covers the three new
+  endpoints.
+
+Source adapters: 7 → **10** (9 key-less + 1 LLM scraper). See README "Sources" and
+`docs/coverage-map.md`.
+
 ## [0.5.1] — 2026-06-11 — Monitor hardening
 
 ### Fixed

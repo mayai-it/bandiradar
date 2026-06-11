@@ -28,6 +28,11 @@ src/bandiradar/
     anac_pvl.py    # ANAC PVL — OPEN tenders, live, no-creds + fixture
     heal.py        # LLM crawl-recipe healer (re-derives a drifted recipe)
     llm_scraper.py # reusable LLM HTML extractor; re-exports the crawl spine
+    wordpress.py   # reusable WP-REST base (lazio, sicilia configs)
+    plone.py       # reusable Plone `Bando` base (emilia_romagna config)
+    sicilia.py     # EuroInfoSicilia FESR/FSC (WP base + categories filter)
+    emilia_romagna.py # ER Politiche territoriali (Plone Bando)
+    trentino.py    # Prov. Trento FEASR — CKAN open-data CSV adapter
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
@@ -61,10 +66,16 @@ bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
-## Sources (7)
-`anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio` are **key-less** (no
-credentials, public APIs/feeds); `toscana` is an **LLM scraper** (HTML portal, no
-clean data API — uses `sources/llm_scraper.py` + the self-healing crawl spine).
+## Sources (10)
+`anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio`, `sicilia`,
+`emilia_romagna`, `trentino` are **key-less** (no credentials, public APIs/feeds);
+`toscana` is an **LLM scraper** (HTML portal, no clean data API — uses
+`sources/llm_scraper.py` + the self-healing crawl spine). Two **reusable bases** keep
+many regions config-only: `sources/wordpress.py` (`WordPressBandiSource`) for WP-REST
+portals — `lazio`, and `sicilia` (standard `posts` + a `categories=<id>` filter via
+`extra_params`) — and `sources/plone.py` (`PloneBandoSource`) for Plone PAs running
+the AGID `Bando` content type (`emilia_romagna`; structured `scadenza_bando`, no
+text-parsing). `trentino` is a dedicated CKAN-CSV adapter (FEASR calendar).
 Note the two ANAC adapters are complementary, not duplicates:
 - **`anac_pvl`** = ANAC *Pubblicità a Valore Legale* — the **live feed of OPEN
   tenders** (`dataScadenza` in the future), no creds. This is the source of

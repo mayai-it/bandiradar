@@ -11,7 +11,7 @@
 > One normalized feed of **OPEN Italian tenders** (incl. sub-threshold gare) **+
 > incentives**, behind a crawl that **repairs itself** when a portal drifts.
 
-**Runs offline, zero secrets · 6 live key-less sources + 1 LLM-assisted scraper · includes live OPEN Italian tenders (incl. sub-threshold) · optional LLM Stage-2 · MIT**
+**Runs offline, zero secrets · 9 live key-less sources + 1 LLM-assisted scraper · includes live OPEN Italian tenders (incl. sub-threshold) · optional LLM Stage-2 · MIT**
 
 ## Coverage
 
@@ -25,11 +25,12 @@
 
 - **Two-stage matcher** — a deterministic prefilter + LLM relevance scoring, with
   a **zero-secrets offline heuristic fallback** (the LLM is optional).
-- **6 live, key-less sources** — TED (EU), incentivi.gov.it (national), `anac_pvl`
-  (national open tenders), Regione Lombardia and Regione Lazio (regional); plus ANAC
-  OCDS as a key-less **historical / awarded-contracts** feed (analysis, not open
-  calls). Regione Toscana is an **LLM-assisted scraper** (live fetch needs an LLM
-  key; `--sample` replays a recorded extraction offline).
+- **9 live, key-less sources** — TED (EU), incentivi.gov.it (national), `anac_pvl`
+  (national open tenders), and the regions Lombardia, Lazio, **Sicilia**, **Emilia-
+  Romagna** and **Trento (FEASR)**; plus ANAC OCDS as a key-less **historical /
+  awarded-contracts** feed (analysis, not open calls). Regione Toscana is an
+  **LLM-assisted scraper** (live fetch needs an LLM key; `--sample` replays a
+  recorded extraction offline).
 - **Live OPEN Italian tenders** (`anac_pvl`) — the national *Pubblicità a Valore
   Legale* feed of open, biddable gare, **incl. sub-threshold** ones TED never lists,
   **no credentials** — the biddable feed the other sources lack.
@@ -278,6 +279,9 @@ recall-oriented whatever the mode.
 | **`lombardia`** | Regione Lombardia — **regional / sub-threshold** public tenders (`kind="tender"`), from the *Osservatorio Regionale* (Socrata SODA). Carries CPV, value, and province. | ✅ Wired — Socrata SODA, no API key. |
 | **`lazio`** | Regione Lazio — **regional business incentives** (`kind="incentive"`), from the LazioInnova bandi portal (WordPress REST API). The source the MayAI dogfood profile matches. | ✅ Wired — WP REST, no API key. |
 | **`toscana`** | Regione Toscana — **regional business incentives** (`kind="incentive"`), from the Sviluppo Toscana bandi portal. First **LLM-assisted scraper**: the portal has no field API, so an LLM extracts the canonical fields from each bando page. | ⚠️ Wired — live `fetch()` **needs an LLM key**; fields are extracted from the portal's HTML bando pages. `--sample` replays a recorded extraction offline. |
+| **`sicilia`** | Regione Siciliana — **regional FESR/FSC incentives** (`kind="incentive"`), from EuroInfoSicilia. Standard WordPress posts under the "Bandi e Avvisi" category (config over the shared WP base + a `categories` filter). | ✅ Wired — WP REST, no API key. |
+| **`emilia_romagna`** | Regione Emilia-Romagna — **regional incentives** (`kind="incentive"`) from the Politiche territoriali portal. Plone `Bando` content type with a **structured `scadenza_bando` deadline** (no text-parsing). | ✅ Wired — plone.restapi `@search`, no API key. |
+| **`trentino`** | Provincia Autonoma di Trento — **FEASR rural-development incentives** (`kind="incentive"`), from a dati.trentino.it CKAN open-data CSV (carries currently-open bandi, with importo and open/close dates). | ✅ Wired — CKAN CSV, no API key. |
 | **`anac`** | ANAC / PNCP open-contracting (OCDS) data — **historical / awarded contracts** (> €40k, monthly), not open calls. Surfaces mostly-**closed** opportunities (the matcher drops them); its value is market/history analysis. Region is absent in the data → `national`. | ✅ Wired — streams the Open Contracting mirror (CC BY 4.0, no API key), **capped** at 500 releases/run. |
 
 ```bash
@@ -316,10 +320,14 @@ Source data licensing is consolidated under [Data and licenses](#data-and-licens
 
 ### Regional coverage
 
-WordPress-based regional portals (like LazioInnova) are **config-only** to add:
-`WordPressBandiSource` (`sources/wordpress.py`) captures the whole WP-REST pattern
-(fetch, pagination, scadenza parsing, taxonomy→keywords), so a new such region is
-a config entry + a fixture + a test, not new code.
+Two **reusable bases** make a sizeable share of Italian regions config-only:
+`WordPressBandiSource` (`sources/wordpress.py`) for WP-REST portals — Lazio
+(LazioInnova) and **Sicilia** (EuroInfoSicilia, standard posts + a `categories`
+filter) are configs over it — and `PloneBandoSource` (`sources/plone.py`) for the
+many PAs running Plone with the AGID `Bando` content type, where a **structured
+`scadenza_bando`** beats text-parsing — **Emilia-Romagna** is the reference config.
+Open-data tables get a dedicated adapter (Socrata for `lombardia`, a CKAN CSV for
+**`trentino`** FEASR). Each is a config/adapter + a fixture + a test, not core code.
 
 Honestly, though, that clean pattern is **rare** — most Italian regional agency
 portals are bespoke sites with no public open-bandi API, so each new region
@@ -551,9 +559,9 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
 
 - ✅ **Offline, zero-secret** — every demo above and the whole test suite run with
   no network and no API key.
-- ✅ **6 live key-less sources** — `incentivi`, `ted`, `anac_pvl`, `lombardia`,
-  `lazio` (open calls) plus `anac` (historical). `--sample` keeps them offline
-  against recorded real captures.
+- ✅ **9 live key-less sources** — `incentivi`, `ted`, `anac_pvl`, `lombardia`,
+  `lazio`, `sicilia`, `emilia_romagna`, `trentino` (open calls) plus `anac`
+  (historical). `--sample` keeps them offline against recorded real captures.
 - ✅ **Live OPEN Italian tenders** — `anac_pvl` (Pubblicità a Valore Legale) is the
   national feed of open, biddable gare, incl. sub-threshold ones TED never lists, no
   credentials; it keeps only still-open notices.
@@ -672,6 +680,16 @@ its operator requires you to honor:
   portal (`sviluppo.toscana.it`); detail-page links come from its WP REST listing
   and the fields are LLM-extracted from each public bando page. Source: Sviluppo
   Toscana / Regione Toscana; attribute the source when reusing.
+- **Regione Siciliana / EuroInfoSicilia** — FESR/FSC bandi published on
+  `euroinfosicilia.it` and read via its WordPress REST API (category "Bandi e
+  Avvisi"). Source: Regione Siciliana — EuroInfoSicilia; attribute the source.
+- **Regione Emilia-Romagna** — bandi published on the regional Politiche
+  territoriali portal (`politicheterritoriali.regione.emilia-romagna.it`) and read
+  via plone.restapi (`portal_type=Bando`). Source: Regione Emilia-Romagna; attribute
+  the source.
+- **Provincia Autonoma di Trento (CC BY 4.0)** — FEASR bandi calendar from the
+  `dati.trentino.it` CKAN open-data portal. Source: Provincia Autonoma di Trento;
+  attribute the source.
 - **ANAC public contracts (CC BY 4.0)** — via the
   [Open Contracting Data mirror](https://data.open-contracting.org/en/publication/117/);
   both the `anac` source and the intelligence track stream the gzipped JSONL
