@@ -194,6 +194,31 @@ issuer_name, kind, keyword_taxonomies)` + a fixture + a test. `sources/lazio.py`
 most regional portals are bespoke and need a dedicated adapter (CKAN/Socrata like
 `lombardia`, or HTML scraping); see `docs/regions.md` for the coverage map.
 
+**LLM HTML scraper + self-healing crawl.** When a regional portal has *no* clean
+data API and only HTML pages (e.g. `toscana`), an LLM reads each detail page and
+extracts the canonical fields (`sources/llm_scraper.py`), so a new region configures
+only its *crawl*, not a bespoke parser. The extraction (an LLM call) lives in
+`fetch()`; `to_opportunities` stays pure over the extracted fields. The fragile
+dependency of such a scraper is the **crawl** (the listing it walks to find detail
+pages), not the extraction — the LLM already adapts to HTML changes. So the crawl is
+modelled as a `CrawlRecipe`: **DATA, not code** (`crawl.py`, a stdlib, dependency-free
+spine; re-exported by `llm_scraper`). `validate_refs` detects DRIFT, and on drift the
+LLM healer (`sources/heal.py`) re-derives a candidate recipe — still DATA, never a
+code change. **Golden guard:** a candidate is ADOPTED only if it reproduces the
+recorded *golden* refs EXACTLY (`crawl.recipe_reproduces_golden`), via a single
+guarded `recipe_store.adopt()`; otherwise it is flagged for human review, never
+auto-applied. This keeps a self-modifying system honest — the LLM proposes, but a
+deterministic, un-bypassable socket decides. Recipes + golden persist in SQLite
+(`crawl_recipes`, `crawl_golden`); per-source overrides + golden config (auditable
+`{recipe, adopted_at, reason, validated_by}`) live in `recipe_store.py`.
+
+**CPV label resolver.** Some sources expose the CPV as the Italian *label* rather
+than the numeric code (notably `anac_pvl`), which would blind the prefilter's
+CPV-prefix gate. `bandiradar.cpv` resolves a label → official 8-digit CPV code via an
+exact normalized match against the packaged EU CPV 2008 vocabulary
+(`data/cpv_it.json`); pure + offline, often coarse (division/group level), with the
+label kept as keyword text when it doesn't resolve.
+
 ---
 
 ## 6. Matching engine (two stages)
@@ -288,7 +313,8 @@ Self-referential demo + free marketing.
 ## 8. Storage
 
 SQLite (stdlib, zero-config, agent-friendly). Tables: `opportunities`,
-`raw_docs`, `matches`, `runs`. Dedupe + **change detection** via `content_hash`:
+`raw_docs`, `matches`, `runs` (plus `crawl_recipes` + `crawl_golden` for the
+self-healing crawl, see §5). Dedupe + **change detection** via `content_hash`:
 a changed hash bumps `version` and stamps `updated_at`, making the row eligible to
 be re-surfaced (a tender *rettifica* should re-notify) via `list_new(since)` and
 the watch delta. The change signal is kept **out** of `status`, which is recomputed

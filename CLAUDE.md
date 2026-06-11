@@ -1,5 +1,7 @@
 # CLAUDE.md — bandiradar (open core)
 
+Internal status, roadmap and strategy live in ROADMAP.local.md (gitignored, local only — read it first if present).
+
 Project memory for coding agents. Read this fully before editing. The deep design
 lives in `ARCHITECTURE.md`; this file is the operational contract.
 
@@ -22,13 +24,20 @@ src/bandiradar/
   models.py        # pydantic: Opportunity, RawDoc, Profile, Match. THE contract.
   sources/
     base.py        # Source Protocol + registry
-    anac.py        # ANAC/PNCP (OCDS) adapter + fixture
+    anac.py        # ANAC/PNCP (OCDS) historical adapter + fixture
+    anac_pvl.py    # ANAC PVL — OPEN tenders, live, no-creds + fixture
+    heal.py        # LLM crawl-recipe healer (re-derives a drifted recipe)
+    llm_scraper.py # reusable LLM HTML extractor; re-exports the crawl spine
+  cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
+  crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
+  recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
   matching/
     prefilter.py   # Stage 1: pure deterministic filter
     relevance.py   # Stage 2: LLM scorer (+ offline fallback + cache)
     llm.py         # provider-agnostic LLM client
     prompts.py     # prompt templates
   storage.py       # SQLite store, dedupe, change detection
+                   #   + crawl_recipes + crawl_golden tables (self-healing crawl)
   core.py          # service layer that orchestrates the pipeline
   evaluation.py    # matching-quality eval: pure metrics + run over eval corpus
   cli.py           # Typer CLI (thin)
@@ -38,6 +47,8 @@ src/bandiradar/
     fixtures/      # recorded source payloads for offline tests / --sample
     profiles/      # example profiles (mayai.yaml, manifattura.yaml, …)
     eval/          # labelled eval set: opportunities.jsonl + gold.yaml
+    cpv_it.json    # official EU CPV 2008 vocabulary (Italian label → code)
+    comuni_it.json # ISTAT comuni table (region resolution for anac_pvl)
 tests/
 ```
 Runtime data lives INSIDE the package and is reached via `bandiradar.resources`
@@ -45,6 +56,31 @@ Runtime data lives INSIDE the package and is reached via `bandiradar.resources`
 bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
+
+## Sources (7)
+`anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio` are **key-less** (no
+credentials, public APIs/feeds); `toscana` is an **LLM scraper** (HTML portal, no
+clean data API — uses `sources/llm_scraper.py` + the self-healing crawl spine).
+Note the two ANAC adapters are complementary, not duplicates:
+- **`anac_pvl`** = ANAC *Pubblicità a Valore Legale* — the **live feed of OPEN
+  tenders** (`dataScadenza` in the future), no creds. This is the source of
+  currently-biddable gare.
+- **`anac`** = ANAC/PNCP **OCDS historical** data — *retrospective* (awarded
+  contracts), so mostly-closed; its value is the benchmark/historical track.
+
+## Self-healing crawl
+The crawl an LLM scraper depends on (the listing it walks) is the FRAGILE part, so
+it's modelled as a `CrawlRecipe` — **DATA, not code** (`crawl.py`, stdlib, no I/O).
+`validate_refs` detects DRIFT (the recipe no longer reproduces the live listing).
+On drift, the LLM healer (`sources/heal.py`) re-derives a candidate recipe (still
+DATA, not a code change) and it is **adopted ONLY if it reproduces the golden
+EXACTLY** — a single guarded `recipe_store.adopt()` behind
+`crawl.recipe_reproduces_golden()`, the deterministic socket the LLM cannot bypass.
+If it doesn't reproduce the golden, the recipe is flagged for human review, never
+auto-adopted. Recipes + golden persist in SQLite (`crawl_recipes`, `crawl_golden`)
+and the per-source override/golden config lives in `recipe_store.py` (auditable:
+`{recipe, adopted_at, reason, validated_by}`). Demo: `scripts/demo_self_heal.py`
+(GIF in the README).
 
 ## The canonical model is a contract
 `Opportunity` (see `models.py` / `ARCHITECTURE.md §4`) is the superset for
@@ -75,8 +111,9 @@ key (calibrated 0-100 scores); the offline heuristic can't threshold cleanly, so
 keyless = recall-oriented. Numbers: see README "Matching quality (measured)".
 
 ## Matching evaluation (`bandiradar eval`)
-Runs the matcher over the shipped labelled corpus (`data/eval/`) for the gold
-profiles and prints precision@5/@10, recall, FPR — per profile + macro-aggregate.
+Runs the matcher over the shipped labelled corpus (`data/eval/`, now 312
+opportunities — up from 292) for the gold profiles and prints precision@5/@10,
+recall, FPR — per profile + macro-aggregate.
 Offline by default (heuristic). If an LLM key is set it ALSO reports the LLM on the
 SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL but
 NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic

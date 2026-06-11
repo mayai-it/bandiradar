@@ -11,3 +11,6 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+# local private memory / working notes (never on GitHub)
+ROADMAP.local.md
+*.local.md
