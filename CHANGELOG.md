@@ -4,6 +4,29 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.5.0] — 2026-06-11 — Daily self-maintaining monitor
+
+### Added
+- **Live monitor** (`.github/workflows/monitor.yml`) — a daily GitHub Actions run
+  (cron `0 6 * * *` + manual dispatch) that fetches every key-less source (plus
+  `toscana`, so the self-healing crawl drift-check runs in production), watches
+  every bundled profile, and force-pushes RSS/JSON feeds + `STATUS.md` as a single
+  flat commit to an orphan `monitor-data` branch. **Zero secrets** (guardrail 1):
+  keyless ⇒ recall mode + offline heuristic + drift detect-only; the optional
+  `ANTHROPIC_API_KEY` secret ⇒ LLM scoring + the crawl healer. The run fails only
+  when EVERY source fails; partial failures are warnings in `STATUS.md`.
+- **`scripts/monitor_status.py`** — pure, offline `STATUS.md` generator: per-source
+  outcome/counts from the `runs` table, new-match counts from the feed JSONs, and
+  crawl-recipe state (`ok`/`drift`/`healed`/`flagged`) from `crawl_recipes` +
+  `crawl_golden` + the live `doctor --json` crawl-health. Tested in
+  `tests/test_monitor_status.py`.
+
+### Changed
+- `watch --rss PATH --json` now keeps **stdout pure JSON** — the "wrote RSS feed"
+  confirmation is routed to stderr when `--json` is set — so one invocation writes
+  both the RSS file and a valid JSON feed (presentation-only; no business logic in
+  `cli.py`).
+
 ## [0.4.0] — 2026-06-09 — Coverage & self-healing
 
 ### Added

@@ -458,7 +458,9 @@ def watch(
 
     if rss is not None:
         Path(rss).write_text(exporters.to_rss(delta), encoding="utf-8")
-        typer.echo(f"wrote RSS feed: {rss} ({len(delta)} items)")
+        # When --json is also set, stdout must stay pure JSON, so this operational
+        # confirmation goes to stderr (like the per-source summary above).
+        typer.echo(f"wrote RSS feed: {rss} ({len(delta)} items)", err=json_out)
     if json_out:
         typer.echo(exporters.to_json(delta))
     if not rss and not json_out:

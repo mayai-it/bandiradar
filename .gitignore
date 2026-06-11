@@ -7,6 +7,8 @@ __pycache__/
 *.gif
 !docs/self-heal.gif
 *.mp4
+# live-monitor worktree (the monitor-data branch is checked out here in CI)
+state/
 # build artifacts
 dist/
 build/

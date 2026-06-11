@@ -50,6 +50,10 @@ src/bandiradar/
     cpv_it.json    # official EU CPV 2008 vocabulary (Italian label → code)
     comuni_it.json # ISTAT comuni table (region resolution for anac_pvl)
 tests/
+scripts/
+  monitor_status.py    # live-monitor STATUS.md generator (pure, offline, tested)
+.github/workflows/
+  monitor.yml          # daily self-maintaining monitor (keyless; key→LLM+healer)
 ```
 Runtime data lives INSIDE the package and is reached via `bandiradar.resources`
 (importlib.resources) — never `Path(__file__).parents[...]` — so `--sample` and the
@@ -82,6 +86,32 @@ and the per-source override/golden config lives in `recipe_store.py` (auditable:
 `{recipe, adopted_at, reason, validated_by}`). Demo: `scripts/demo_self_heal.py`
 (GIF in the README).
 
+## Live monitor (GitHub Actions — self-maintaining)
+`.github/workflows/monitor.yml` runs daily (cron `0 6 * * *`) + on demand. It
+checks out an orphan **`monitor-data`** branch into `./state/` (created empty if
+absent), points the DB at `state/bandiradar.db` (via the existing `BANDIRADAR_DB`
+env — already honoured by `storage._default_db_path`), runs `bandiradar watch` for
+EVERY bundled profile (all sources incl. `toscana`, so the crawl drift-check runs in
+prod), generates `state/STATUS.md`, and force-pushes a SINGLE flat commit to
+`monitor-data` (generated state must not bloat history). **Zero secrets** (guardrail
+1): keyless ⇒ `--mode recall` + offline heuristic + drift detect-only; the optional
+`ANTHROPIC_API_KEY` secret ⇒ LLM scoring + healer active. The run fails (exit≠0)
+ONLY if EVERY source failed; partial failures are warnings in `STATUS.md`.
+
+- **One watch invocation writes both feed files.** `watch --rss X --json` writes the
+  RSS file AND emits pure JSON to stdout — the "wrote RSS feed" confirmation is
+  routed to **stderr** when `--json` is set (cli.py), so the redirected
+  `state/feeds/<p>.json` stays valid JSON. Two invocations would NOT work: `watch`
+  advances the per-profile marker, so the second would see an empty delta. This is a
+  presentation-only fix — NO business logic was added to `cli.py`.
+- **`scripts/monitor_status.py` is pure composition** (no network, no engine logic):
+  per-source esito/conteggi from the `runs` table (the persisted `SourceResult`),
+  new-match counts from each `feeds/<p>.json`, and crawl-recipe state from
+  `crawl_recipes`/`crawl_golden` + the live `doctor --json` crawl-health. Recipe
+  states: `healed` (override adopted this run) · `drift` (degraded/broken, keyless) ·
+  `flagged` (drift + key but heal couldn't reproduce the golden → human) · `ok`.
+  Tested offline in `tests/test_monitor_status.py`.
+
 ## The canonical model is a contract
 `Opportunity` (see `models.py` / `ARCHITECTURE.md §4`) is the superset for
 tenders AND grants. Do not break its field names/shape without updating
@@ -98,6 +128,10 @@ uv run bandiradar eval       # matching-quality metrics over the labelled corpus
 uv run bandiradar mcp        # start MCP server
 # optional semantic prefilter (downloads a model once); measure it:
 uv sync --extra embeddings && uv run bandiradar eval --embeddings
+# live-monitor status page (offline; reads the run's DB + feeds, no network):
+uv run python scripts/monitor_status.py --db state/bandiradar.db \
+  --feeds state/feeds --doctor state/doctor.json --profiles mayai,manifattura \
+  --out state/STATUS.md
 ```
 
 ## Operating-point modes

@@ -1,0 +1,145 @@
+name: monitor
+
+# Daily self-maintaining run: fetch every key-less source (+ toscana, so the
+# self-healing crawl drift-check runs in production), watch each bundled profile,
+# and publish RSS/JSON feeds + STATUS.md to the flat `monitor-data` branch.
+#
+# Zero secrets required (guardrail 1): keyless => recall mode, offline heuristic
+# matcher, crawl drift only DETECTED. If the optional ANTHROPIC_API_KEY secret is
+# present it is used for LLM scoring AND activates the crawl healer.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC daily
+  workflow_dispatch: {} # manual trigger
+
+# Needed to force-push the generated state to the monitor-data branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    env:
+      # Optional: present => LLM scoring + healer ON; absent => fully keyless.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # The monitor DB lives on the published branch (checked out at ./state).
+      BANDIRADAR_DB: state/bandiradar.db
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        # persist-credentials (default) leaves a token-authed `origin` so the
+        # state worktree can force-push monitor-data with no extra setup.
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Configure run (key presence, mode, profiles)
+        run: |
+          set -euo pipefail
+          if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+            echo "Key present -> LLM scoring + healer ON, balanced mode."
+            echo "BANDIRADAR_LLM_PROVIDER=anthropic" >> "$GITHUB_ENV"
+            echo "MODE=balanced" >> "$GITHUB_ENV"
+            echo "KEY_FLAG=--key-present" >> "$GITHUB_ENV"
+          else
+            echo "No key -> keyless, recall mode (offline heuristic, drift detect-only)."
+            echo "MODE=recall" >> "$GITHUB_ENV"
+            echo "KEY_FLAG=" >> "$GITHUB_ENV"
+          fi
+          PROFILES=$(ls src/bandiradar/data/profiles/*.yaml \
+            | xargs -n1 basename | sed 's/\.yaml$//' | paste -sd, -)
+          echo "PROFILES=$PROFILES" >> "$GITHUB_ENV"
+          echo "RUN_STARTED=$(date -u +%FT%TZ)" >> "$GITHUB_ENV"
+          echo "Profiles: $PROFILES"
+
+      - name: Check out (or create) the monitor-data branch at ./state
+        run: |
+          set -euo pipefail
+          git config user.name "bandiradar-monitor[bot]"
+          git config user.email "bandiradar-monitor@users.noreply.github.com"
+          git fetch origin monitor-data || true
+          if git rev-parse --verify --quiet origin/monitor-data >/dev/null 2>&1; then
+            echo "monitor-data exists -> checking it out into ./state"
+            git worktree add state origin/monitor-data
+            git -C state checkout -B monitor-data origin/monitor-data
+          else
+            echo "monitor-data missing -> creating an empty orphan branch in ./state"
+            git worktree add -d state
+            git -C state checkout --orphan monitor-data
+            git -C state rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p state/feeds
+
+      - name: Watch every bundled profile (fetches all sources incl. toscana)
+        run: |
+          set -uo pipefail
+          # One watch per profile: a single invocation writes BOTH the RSS file and
+          # pure-JSON stdout (the "wrote RSS feed" line is routed to stderr when
+          # --json is set). `|| true` so one source/profile failure never aborts the
+          # loop — partial failure is surfaced in STATUS.md, not the exit code.
+          IFS=',' read -ra names <<< "$PROFILES"
+          for name in "${names[@]}"; do
+            echo "::group::watch $name"
+            uv run bandiradar watch --profile "$name" --mode "$MODE" \
+              --rss "state/feeds/$name.xml" --json \
+              > "state/feeds/$name.json" 2> "state/feeds/$name.log" || true
+            tail -n 3 "state/feeds/$name.log" || true
+            echo "::endgroup::"
+          done
+
+      - name: Doctor probe (keyless live crawl-health -> drift signal)
+        run: |
+          set -uo pipefail
+          # Best-effort: doctor exits non-zero when a source needs a key / is
+          # unreachable; we only want its structured crawl_health, so never abort.
+          uv run bandiradar doctor --json > state/doctor.json 2>/dev/null || true
+
+      - name: Generate STATUS.md (fail only when ALL sources failed)
+        run: |
+          set -uo pipefail
+          uv run python scripts/monitor_status.py \
+            --db "$BANDIRADAR_DB" \
+            --feeds state/feeds \
+            --doctor state/doctor.json \
+            --profiles "$PROFILES" \
+            --out state/STATUS.md \
+            --run-started "$RUN_STARTED" \
+            $KEY_FLAG
+          echo "MONITOR_RC=$?" >> "$GITHUB_ENV"
+          echo "----- STATUS.md -----"
+          cat state/STATUS.md
+
+      - name: Publish to monitor-data (single flat commit, force-push)
+        if: always()
+        run: |
+          set -euo pipefail
+          [ -d state ] || { echo "no state worktree; nothing to publish"; exit 0; }
+          cd state
+          git add -A
+          # Rewrite to a SINGLE root commit each run so the data branch never grows
+          # a history that bloats the repo (it is generated state, not source).
+          git checkout --orphan _publish
+          git commit -m "monitor: ${RUN_STARTED:-run} [skip ci]" --quiet || {
+            echo "nothing to commit"; exit 0;
+          }
+          git branch -M monitor-data
+          git push -f origin monitor-data
+
+      - name: Enforce verdict (fail the run only if every source failed)
+        if: always()
+        run: |
+          if [ "${MONITOR_RC:-0}" != "0" ]; then
+            echo "::error::All sources failed this run — see state/STATUS.md."
+            exit 1
+          fi
+          echo "Run OK (or partial failure surfaced in STATUS.md)."

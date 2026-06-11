@@ -487,6 +487,28 @@ uv run bandiradar watch --profile mayai --source incentivi --sample --rss ~/feed
 Managed delivery (WhatsApp/email/alerts), scheduling SaaS, and multi-tenant
 hosting live in `bandiradar-pro`.
 
+### Live monitor (runs itself, daily)
+
+This repo monitors itself. A GitHub Actions workflow
+([`.github/workflows/monitor.yml`](.github/workflows/monitor.yml)) runs **every day
+at 06:00 UTC** (and on demand): it fetches every key-less source — plus `toscana`,
+so the [self-healing crawl](#self-healing-crawl) drift-check runs in production —
+watches **every bundled profile**, and publishes the results to the orphan
+[**`monitor-data`** branch](../../tree/monitor-data):
+
+- `feeds/<profile>.xml` / `feeds/<profile>.json` — the new/amended matches per profile;
+- [`STATUS.md`](../../blob/monitor-data/STATUS.md) — run date, per-source outcome +
+  counts, new matches per profile, and the crawl-recipe state (`ok` / `drift` /
+  `healed` / `flagged`).
+
+It runs **with zero secrets** (guardrail 1): keyless ⇒ recall mode + offline
+heuristic matcher, and crawl drift is only *detected*. Add the optional
+`ANTHROPIC_API_KEY` repo secret and the same workflow scores with the LLM **and**
+activates the crawl **healer** (a drifted recipe is auto-re-derived and adopted only
+if it reproduces the golden exactly). The data branch is kept **flat** — one
+force-pushed commit per run, so generated state never bloats the repo history. A run
+fails only when **every** source fails; partial failures are warnings in `STATUS.md`.
+
 ## AI agents (MCP)
 
 BandiRadar ships a thin [MCP](https://modelcontextprotocol.io) server (FastMCP),
