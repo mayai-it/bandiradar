@@ -10,7 +10,8 @@ import yaml
 import synthetic_source as synthetic
 from bandiradar import resources
 from bandiradar.matching import relevance
-from bandiradar.models import Match, Opportunity, Profile
+from bandiradar.models import Match, Opportunity, Profile, RawDoc
+from bandiradar.recipe_store import RecipeStore
 from bandiradar.storage import SqliteScoreCache, Store
 
 NOW = datetime(2026, 6, 3, 0, 0, tzinfo=UTC)
@@ -400,3 +401,68 @@ def test_migrate_is_idempotent(tmp_path):
         assert "cache_key" in cols
     finally:
         store.close()
+
+
+# --------------------------------------------------------------------------- #
+# Retention: prune() drops stale bulk, preserves the paid value.
+# --------------------------------------------------------------------------- #
+
+
+def test_prune_drops_closed_raw_docs_and_old_runs_preserves_value(store):
+    base = first_opp()
+
+    def mk(opp_id: str, deadline, raw_id: str) -> None:
+        store.save_raw_doc(
+            RawDoc(id=raw_id, source="synthetic", fetched_at=NOW, payload={"x": 1})
+        )
+        opp = base.model_copy(
+            update={"id": opp_id, "deadline": deadline, "raw_ref": raw_id}
+        )
+        store.upsert_opportunity(opp, now=NOW)
+
+    mk("synthetic:old", NOW - timedelta(days=200), "raw:old")  # long closed -> prune
+    mk("synthetic:recent", NOW - timedelta(days=10), "raw:recent")  # closed, keep
+    mk("synthetic:open", NOW + timedelta(days=30), "raw:open")  # open, keep
+    mk("synthetic:nodl", None, "raw:nodl")  # no deadline, keep
+
+    # Value to PROTECT: score cache, watch marker, crawl golden.
+    mayai = load_profile("mayai.yaml")
+    cached = relevance.score(base, mayai, now=NOW)
+    store.save_match(cached, cache_key="k1")
+    store.set_watch_marker("pv-keep", NOW)
+    RecipeStore(store).set_golden("toscana", [("1", "https://x/1", "B1")])
+    matches_before = store.conn.execute("SELECT COUNT(*) FROM matches").fetchone()[0]
+
+    # Old vs recent run-audit rows.
+    old_run = store.start_run("synthetic", started_at=NOW - timedelta(days=120))
+    store.finish_run(old_run, 1, 0, 0, finished_at=NOW - timedelta(days=120))
+    new_run = store.start_run("synthetic", started_at=NOW - timedelta(days=5))
+    store.finish_run(new_run, 1, 0, 0, finished_at=NOW - timedelta(days=5))
+
+    stats = store.prune(closed_before_days=90, runs_before_days=30, now=NOW)
+
+    # raw_docs: only the long-closed one is gone.
+    assert store.get_raw_doc("raw:old") is None
+    assert store.get_raw_doc("raw:recent") is not None
+    assert store.get_raw_doc("raw:open") is not None
+    assert store.get_raw_doc("raw:nodl") is not None
+    assert stats["raw_docs"] == 1
+
+    # runs: old gone, recent kept.
+    assert store.get_run(old_run) is None
+    assert store.get_run(new_run) is not None
+    assert stats["runs"] == 1
+
+    # The opportunity ROWS survive (dedup ledger) — only their raw payloads went.
+    assert store.get_opportunity("synthetic:old") is not None
+
+    # Paid value untouched: score cache, watch marker, crawl golden.
+    matches_after = store.conn.execute("SELECT COUNT(*) FROM matches").fetchone()[0]
+    assert matches_after == matches_before == 1
+    assert store.get_watch_marker("pv-keep") == NOW
+    assert RecipeStore(store).get_golden("toscana") is not None
+
+
+def test_prune_is_safe_on_empty_db(store):
+    stats = store.prune(now=NOW)
+    assert stats == {"raw_docs": 0, "runs": 0}

@@ -15,6 +15,7 @@ from typing import Protocol, runtime_checkable
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from bandiradar import config
 from bandiradar.matching.llm import LLMClient, get_client
 from bandiradar.matching.prefilter import (
     cpv_match,
@@ -80,6 +81,30 @@ class InMemoryScoreCache:
 
     def set(self, key: CacheKey, match: Match) -> None:
         self._store[key] = match
+
+
+class LLMBudget:
+    """Per-run cap on NEW LLM scorings (cache misses) — a spike guard.
+
+    A cache HIT is free (no spend); the deterministic heuristic backend is never
+    capped (it has no per-call cost). When the cap is reached, further cache-miss
+    items are DEFERRED — left WITHOUT a score this run (NOT heuristic-scored inside
+    an LLM run), so they re-score in a later run once the cache fills (the cost
+    amortizes itself). ``limit=None`` => unlimited (the default; behaviour
+    unchanged). ``scored``/``deferred`` are surfaced so a run can report them."""
+
+    def __init__(self, limit: int | None = None) -> None:
+        self.limit = limit
+        self.scored = 0
+        self.deferred = 0
+
+    @classmethod
+    def from_env(cls) -> LLMBudget:
+        return cls(config.llm_budget())
+
+    def allow(self) -> bool:
+        """True while there is budget for one more new LLM scoring."""
+        return self.limit is None or self.scored < self.limit
 
 
 # --------------------------------------------------------------------------- #
@@ -359,6 +384,15 @@ def score(
     return _with_enrichment(match, opportunity, benchmarks)
 
 
+def _active_backend(client: LLMClient | None) -> LLMClient | None:
+    """Resolve the backend the way :func:`score` does (None => heuristic)."""
+    if client is HEURISTIC:
+        return None
+    if client is not None:
+        return client
+    return get_client()
+
+
 def score_all(
     opportunities: list[Opportunity],
     profile: Profile,
@@ -367,18 +401,35 @@ def score_all(
     now: datetime | None = None,
     benchmarks=None,
     full_text: bool = False,
+    budget: LLMBudget | None = None,
 ) -> list[Match]:
-    """Score many opportunities, sorted by score descending."""
-    matches = [
-        score(
-            opp,
-            profile,
-            client=client,
-            cache=cache,
-            now=now,
-            benchmarks=benchmarks,
-            full_text=full_text,
+    """Score many opportunities, sorted by score descending.
+
+    With an ``LLMBudget`` AND a real LLM backend, NEW scorings (cache misses) are
+    capped: once spent, remaining cache-miss items are DEFERRED (no Match this run,
+    ``budget.deferred`` incremented) rather than heuristic-scored — they re-score in
+    a later run as the cache fills. Cache hits and the heuristic backend ignore the
+    budget entirely, so the default (``budget=None``) path is unchanged."""
+    active = _active_backend(client)
+    matches: list[Match] = []
+    for opp in opportunities:
+        if budget is not None and active is not None:
+            key = cache_key(opp, profile, _model_id(active), full_text=full_text)
+            cached = cache.get(key) if cache is not None else None
+            if cached is None:  # a cache miss would cost a real LLM call
+                if not budget.allow():
+                    budget.deferred += 1
+                    continue  # defer: no score this run
+                budget.scored += 1
+        matches.append(
+            score(
+                opp,
+                profile,
+                client=client,
+                cache=cache,
+                now=now,
+                benchmarks=benchmarks,
+                full_text=full_text,
+            )
         )
-        for opp in opportunities
-    ]
     return sorted(matches, key=lambda m: m.score, reverse=True)

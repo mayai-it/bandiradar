@@ -32,6 +32,10 @@ jobs:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       # The monitor DB lives on the published branch (checked out at ./state).
       BANDIRADAR_DB: state/bandiradar.db
+      # Spike guard: at most this many NEW LLM scorings (cache misses) per profile
+      # run; the rest defer to later runs (the score cache amortizes them). Keyless
+      # runs ignore it. Unset => unlimited.
+      BANDIRADAR_LLM_BUDGET: "1500"
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -132,6 +136,12 @@ jobs:
           probe incentivi "https://www.incentivi.gov.it/solr/coredrupal/select"
 
       - name: Watch every bundled profile (single fetch, rest reuse the DB)
+        # Budget the long part HERE, not on the job: if scoring backlogs, this step
+        # is cut at 45 min but doctor + STATUS + publish (below, if: always) still
+        # get their ~15 min — so a slow run can never leave a stale STATUS published
+        # next to fresh data. A truncated loop is surfaced honestly in STATUS.md
+        # (profiles without a .stats.json sidecar are flagged "incomplete").
+        timeout-minutes: 45
         run: |
           set -uo pipefail
           # FETCH ONCE per run: the FIRST profile does the live fetch of every
@@ -143,8 +153,9 @@ jobs:
           # A single watch invocation writes BOTH the RSS file and pure-JSON stdout
           # (the "wrote RSS feed" line goes to stderr when --json is set). stderr is
           # tee'd to the Actions log for live progress AND saved to <name>.log.
-          # `|| true` so one source/profile failure never aborts the loop — partial
-          # failure is surfaced in STATUS.md, not the exit code.
+          # --stats-out writes a {scored, deferred} sidecar ON COMPLETION (also the
+          # monitor's per-profile completion marker). `|| true` so one source/profile
+          # failure never aborts the loop — partial failure is surfaced in STATUS.md.
           IFS=',' read -ra names <<< "$PROFILES"
           first=1
           for name in "${names[@]}"; do
@@ -159,19 +170,33 @@ jobs:
             fi
             uv run bandiradar watch --profile "$name" --mode "$MODE" $skip \
               --rss "state/feeds/$name.xml" --json \
+              --stats-out "state/feeds/$name.stats.json" \
               > "state/feeds/$name.json" \
               2> >(tee "state/feeds/$name.log" >&2) || true
             echo "::endgroup::"
           done
 
       - name: Doctor probe (keyless live crawl-health -> drift signal)
+        if: always() # run even if the watch step was cut by its timeout
         run: |
           set -uo pipefail
           # Best-effort: doctor exits non-zero when a source needs a key / is
           # unreachable; we only want its structured crawl_health, so never abort.
           uv run bandiradar doctor --json > state/doctor.json 2>/dev/null || true
 
+      - name: Prune the DB (retention) before publishing
+        if: always() # keep the published DB under GitHub's 100 MB blob limit
+        run: |
+          set -uo pipefail
+          # Drop raw_docs of long-closed opportunities + old run-audit rows, then
+          # VACUUM. NEVER touches the score cache, watch markers, or crawl recipes.
+          # Best-effort: a prune hiccup must not block publishing the status.
+          [ -f "$BANDIRADAR_DB" ] || { echo "no DB yet; skip prune"; exit 0; }
+          uv run bandiradar prune --closed-before-days 90 --runs-before-days 30 \
+            || echo "::warning::prune failed; publishing without it"
+
       - name: Generate STATUS.md (fail only when ALL sources failed)
+        if: always() # always produce a truthful STATUS, even after a truncated loop
         run: |
           set -uo pipefail
           uv run python scripts/monitor_status.py \

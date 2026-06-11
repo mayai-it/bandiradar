@@ -429,6 +429,12 @@ def watch(
         help="Skip the live fetch; match the data already in the DB (delta stays "
         "per-profile correct). For multi-profile runs that fetched once already.",
     ),
+    stats_out: str | None = typer.Option(
+        None,
+        "--stats-out",
+        help="Write per-run scoring stats JSON {scored, deferred} to PATH (also a "
+        "completion marker for the monitor; written only on a completed run).",
+    ),
 ):
     """Show NEW or AMENDED matches since the last watch run (a monitor loop).
 
@@ -438,6 +444,7 @@ def watch(
     """
     store = core.Store(db)
     quiet = json_out or rss is not None
+    budget = core.LLMBudget.from_env()  # spike guard; unlimited unless env-capped
     try:
         company = core.load_profile(profile)
         fetch_results, delta = core.run_watch(
@@ -452,6 +459,7 @@ def watch(
             max_pages=max_pages,
             progress=_progress_sink(quiet),
             fetch=not skip_fetch,
+            llm_budget=budget,
             **_cutoff_kwargs(mode, min_score),
         )
     except Exception as exc:  # noqa: BLE001
@@ -459,6 +467,12 @@ def watch(
         raise typer.Exit(1) from exc
     finally:
         store.close()
+
+    if stats_out is not None:
+        Path(stats_out).write_text(
+            json.dumps({"scored": budget.scored, "deferred": budget.deferred}),
+            encoding="utf-8",
+        )
 
     # Per-source fetch summary is operational -> stderr (keeps stdout = matches/feed).
     typer.echo(_source_summary(fetch_results), err=True)
@@ -481,6 +495,36 @@ def watch(
     code = core.fetch_exit_code(fetch_results)
     if code:
         raise typer.Exit(code)
+
+
+@app.command()
+def prune(
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    closed_before_days: int = typer.Option(
+        90, "--closed-before-days", help="Drop raw_docs of opps closed > N days ago"
+    ),
+    runs_before_days: int = typer.Option(
+        30, "--runs-before-days", help="Drop run-audit rows older than N days"
+    ),
+    json_out: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Retention: drop stale raw_docs + old runs and VACUUM (reclaim DB space).
+
+    Never touches the score cache, watch markers, or crawl recipes/golden.
+    """
+    store = core.Store(db)
+    try:
+        stats = store.prune(
+            closed_before_days=closed_before_days, runs_before_days=runs_before_days
+        )
+    finally:
+        store.close()
+    if json_out:
+        typer.echo(json.dumps(stats))
+    else:
+        typer.echo(
+            f"pruned: raw_docs={stats['raw_docs']} runs={stats['runs']} (VACUUM done)"
+        )
 
 
 @app.command()

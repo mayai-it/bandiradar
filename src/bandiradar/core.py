@@ -21,7 +21,7 @@ from bandiradar.http import FetchError
 from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, Embedder
 from bandiradar.matching.llm import LLMClient, client_status
 from bandiradar.matching.prefilter import prefilter
-from bandiradar.matching.relevance import score_all
+from bandiradar.matching.relevance import LLMBudget, score_all
 from bandiradar.matching.rerank import RERANK_TOP_N, rerank
 from bandiradar.models import (
     DoctorEnv,
@@ -500,6 +500,7 @@ def run_match(
     full_text: bool = False,
     embedder: Embedder | None = None,
     sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
+    llm_budget: LLMBudget | None = None,
 ) -> list[tuple[Opportunity, Match]]:
     """Prefilter + score stored opportunities, ranked by score descending.
 
@@ -560,6 +561,9 @@ def run_match(
             now=now,
             benchmarks=benchmark_store,
             full_text=full_text,
+            # None => create from env (BANDIRADAR_LLM_BUDGET), so the cap applies to
+            # any caller (CLI/MCP); a caller that wants the counts passes its own.
+            budget=llm_budget if llm_budget is not None else LLMBudget.from_env(),
         )
     finally:
         if benchmark_store is not None:
@@ -697,6 +701,7 @@ def run_watch(
     max_pages: int | None = None,
     progress: ProgressFn | None = None,
     fetch: bool = True,
+    llm_budget: LLMBudget | None = None,
 ) -> tuple[list[SourceResult], list[tuple[Opportunity, Match]]]:
     """Monitor loop: fetch (per-source isolated) + dedupe/change-detect, then return
     ONLY matches whose opportunity is NEW or AMENDED since the last watch run.
@@ -750,6 +755,7 @@ def run_watch(
         now=moment,
         with_benchmarks=with_benchmarks,
         with_documents=with_documents,
+        llm_budget=llm_budget,
     )
     delta = [(opp, match) for opp, match in ranked if opp.id in changed_ids]
 

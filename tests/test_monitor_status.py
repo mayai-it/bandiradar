@@ -215,6 +215,11 @@ def test_build_status_end_to_end(db, tmp_path):
     feeds.mkdir()
     (feeds / "mayai.json").write_text(json.dumps([{"opportunity_id": "incentivi:1"}]))
     (feeds / "manifattura.json").write_text("[]")
+    # Both profiles COMPLETED (stats sidecar present) -> real counts, no truncation.
+    (feeds / "mayai.stats.json").write_text(json.dumps({"scored": 3, "deferred": 0}))
+    (feeds / "manifattura.stats.json").write_text(
+        json.dumps({"scored": 1, "deferred": 0})
+    )
 
     doctor = tmp_path / "doctor.json"
     doctor.write_text(
@@ -236,6 +241,7 @@ def test_build_status_end_to_end(db, tmp_path):
     assert "`incentivi`" in md and "`toscana`" in md
     assert "keyless" in md  # llm_active=False -> keyless/recall banner
     assert "partial" in md  # the lazio warning surfaces
+    assert "truncated" not in md.lower()  # both profiles completed
     # mayai had 1 new match, manifattura 0
     assert "| `mayai` | 1 |" in md
     assert "| `manifattura` | 0 |" in md
@@ -248,6 +254,7 @@ def test_build_status_all_failed_verdict(db, tmp_path):
     _finished_run(db, "toscana", status="failed", error="y", error_kind="unavailable")
     feeds = tmp_path / "feeds"
     feeds.mkdir()
+    (feeds / "mayai.stats.json").write_text(json.dumps({"scored": 0, "deferred": 0}))
     md, failed = ms.build_status(
         db_path=db.db_path,
         feeds_dir=feeds,
@@ -259,7 +266,47 @@ def test_build_status_all_failed_verdict(db, tmp_path):
     )
     assert failed is True
     assert "ALL sources failed" in md
-    assert "| `mayai` | n/a |" in md  # no feed written -> n/a
+    assert "| `mayai` | n/a |" in md  # completed but no feed written -> n/a
+
+
+def test_build_status_flags_truncated_run(db, tmp_path):
+    # 3 expected profiles, only 1 completed (a stats sidecar) -> truncated banner +
+    # the missing ones flagged "incomplete" (NOT shown with a stale figure).
+    _finished_run(db, "incentivi", fetched=5, new=2, status="ok")
+    feeds = tmp_path / "feeds"
+    feeds.mkdir()
+    (feeds / "mayai.json").write_text(json.dumps([{"opportunity_id": "a"}]))
+    (feeds / "mayai.stats.json").write_text(json.dumps({"scored": 7, "deferred": 4}))
+    # manifattura was reached but killed mid-scoring: feed exists, NO sidecar.
+    (feeds / "manifattura.json").write_text("[]")
+    # consulenza never ran: nothing.
+
+    md, failed = ms.build_status(
+        db_path=db.db_path,
+        feeds_dir=feeds,
+        profiles=["mayai", "manifattura", "consulenza"],
+        doctor_json=None,
+        run_date="2026-06-11",
+        run_started=datetime.now(UTC),
+        llm_active=True,
+    )
+    assert "Run truncated" in md
+    assert "1/3 profiles completed" in md
+    assert "7 scored, 4 deferred" in md  # only the completed profile's stats counted
+    assert "| `mayai` | 1 |" in md
+    assert "| `manifattura` | ⚠️ incomplete |" in md
+    assert "| `consulenza` | ⚠️ incomplete |" in md
+
+
+def test_scoring_stats_reads_sidecars(tmp_path):
+    feeds = tmp_path / "feeds"
+    feeds.mkdir()
+    (feeds / "a.stats.json").write_text(json.dumps({"scored": 10, "deferred": 2}))
+    (feeds / "b.stats.json").write_text("not json")  # corrupt -> None
+    stats = ms.scoring_stats(feeds, ["a", "b", "c"])
+    assert stats["a"] == {"scored": 10, "deferred": 2}
+    assert stats["b"] is None  # corrupt
+    assert stats["c"] is None  # missing -> not completed
 
 
 def test_render_is_pure(db):
@@ -270,6 +317,7 @@ def test_render_is_pure(db):
         runs=runs,
         states=[],
         match_counts={"p": 1},
+        stats={"p": {"scored": 0, "deferred": 0}},
         llm_active=True,
     )
     assert ms.render_status(**kw) == ms.render_status(**kw)

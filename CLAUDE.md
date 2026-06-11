@@ -99,6 +99,28 @@ detect-only; the optional `ANTHROPIC_API_KEY` secret ⇒ LLM scoring + healer ac
 The run fails (exit≠0) ONLY if EVERY source failed; partial failures are warnings in
 `STATUS.md`.
 
+- **A long run must never eat STATUS/publish.** The budget is at the STEP, not the
+  job: the watch loop has `timeout-minutes: 45` (job stays 60), and doctor + prune +
+  STATUS + publish run `if: always()` — so a scoring backlog can't leave a stale
+  STATUS published next to fresh data. A truncated loop is surfaced HONESTLY:
+  `watch --stats-out <p>.stats.json` writes a `{scored,deferred}` sidecar ONLY on
+  completion, so `monitor_status` deduces truncation from missing sidecars and prints
+  "⚠️ Run truncated: X/N profiles completed" (incomplete profiles show "incomplete",
+  never a stale figure).
+- **LLM spend cap per run (spike guard, default OFF).** `BANDIRADAR_LLM_BUDGET`
+  (`config.llm_budget()` → `relevance.LLMBudget`, threaded `run_watch`→`run_match`→
+  `score_all`) caps NEW LLM scorings (cache MISSES) per run. Over the cap, cache-miss
+  items are DEFERRED (no Match this run — NOT heuristic-mixed inside an LLM run) and
+  re-score in a later run as the cache fills. Cache hits + the heuristic backend are
+  never capped; unset/`≤0` = unlimited (default unchanged). The workflow sets `1500`;
+  `scored`/`deferred` surface via the stats sidecar → STATUS.
+- **DB retention (`storage.prune` + `bandiradar prune`).** Before publish, drop
+  `raw_docs` of opportunities closed > N days (default 90) + `runs` older than M days
+  (default 30), then `VACUUM`. NEVER touches the score cache (`matches` — the paid
+  value), `watch_state`, or `crawl_recipes`/`crawl_golden`; keeps the `opportunities`
+  dedup ledger. *Measured on the prod DB: 52.3 MB → 39.1 MB (−13 MB) on the first
+  run* — keeps the published branch under GitHub's 100 MB blob limit. It's a tested
+  method + a thin CLI command (no inline bash).
 - **Fetch ONCE per run, not per profile.** `run_watch(fetch=False)` (CLI:
   `watch --skip-fetch`) SKIPS the live fetch and matches the data already in the DB.
   The workflow's FIRST profile fetches every source once; the rest pass

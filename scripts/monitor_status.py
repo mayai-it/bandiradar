@@ -211,6 +211,26 @@ def count_matches(feed_json: Path) -> int | None:
     return None
 
 
+def scoring_stats(feeds_dir: Path, profiles: list[str]) -> dict[str, dict | None]:
+    """Per-profile ``{scored, deferred}`` from ``<profile>.stats.json``.
+
+    The sidecar is written by ``watch --stats-out`` ONLY when a run completes, so it
+    doubles as a completion marker: ``None`` means that profile did NOT finish (the
+    run was truncated before reaching it, or it was killed mid-scoring)."""
+    out: dict[str, dict | None] = {}
+    for prof in profiles:
+        p = feeds_dir / f"{prof}.stats.json"
+        if not p.exists():
+            out[prof] = None
+            continue
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+            out[prof] = data if isinstance(data, dict) else None
+        except json.JSONDecodeError:
+            out[prof] = None
+    return out
+
+
 def crawl_health_from_doctor(doctor_json: Path | None) -> dict[str, str | None]:
     """Map source -> live crawl_health from a ``doctor --json`` report (keyless)."""
     if doctor_json is None or not doctor_json.exists():
@@ -258,9 +278,16 @@ def render_status(
     runs: dict[str, SourceRow],
     states: list[RecipeState],
     match_counts: dict[str, int | None],
+    stats: dict[str, dict | None],
     llm_active: bool,
 ) -> str:
     """Compose the Markdown page. Pure: same inputs -> same bytes."""
+    expected = sorted(stats)
+    completed = [p for p in expected if stats.get(p) is not None]
+    truncated = bool(expected) and len(completed) < len(expected)
+    scored = sum((stats[p] or {}).get("scored", 0) for p in completed)
+    deferred = sum((stats[p] or {}).get("deferred", 0) for p in completed)
+
     lines: list[str] = []
     lines.append("# BandiRadar — live monitor status")
     lines.append("")
@@ -268,6 +295,17 @@ def render_status(
     mode = "LLM scoring + healer ON" if llm_active else "keyless (recall mode)"
     lines.append(f"- **Run:** {run_date}")
     lines.append(f"- **Mode:** {mode}")
+    if truncated:
+        lines.append(
+            f"- **⚠️ Run truncated:** {len(completed)}/{len(expected)} profiles "
+            "completed — figures below cover only the completed profiles; the rest "
+            "were cut short (e.g. step timeout) and are NOT republished as fresh."
+        )
+    if scored or deferred:
+        lines.append(
+            f"- **LLM scoring:** {scored} scored, {deferred} deferred to a later "
+            "run (per-run budget; the score cache amortizes them)."
+        )
     failed = sum(1 for r in runs.values() if r.failed)
     partial = sum(1 for r in runs.values() if r.status == "partial")
     if all_failed(runs):
@@ -305,8 +343,12 @@ def render_status(
     lines.append("| Profile | New/amended matches |")
     lines.append("|---|---:|")
     for prof in sorted(match_counts):
-        n = match_counts[prof]
-        lines.append(f"| `{prof}` | {'n/a' if n is None else n} |")
+        if stats.get(prof) is None:  # did not complete -> don't show a stale figure
+            cell = "⚠️ incomplete"
+        else:
+            n = match_counts[prof]
+            cell = "n/a" if n is None else str(n)
+        lines.append(f"| `{prof}` | {cell} |")
     if not match_counts:
         lines.append("| _no profiles_ | |")
     lines.append("")
@@ -371,11 +413,13 @@ def build_status(
     match_counts = {
         prof: count_matches(feeds_dir / f"{prof}.json") for prof in profiles
     }
+    stats = scoring_stats(feeds_dir, profiles)
     md = render_status(
         run_date=run_date,
         runs=runs,
         states=states,
         match_counts=match_counts,
+        stats=stats,
         llm_active=llm_active,
     )
     return md, all_failed(runs)

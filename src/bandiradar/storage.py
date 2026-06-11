@@ -18,7 +18,7 @@ import hashlib
 import json
 import os
 import sqlite3
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Literal
 
@@ -474,6 +474,50 @@ class Store:
             (profile_version, _to_text(when)),
         )
         self.conn.commit()
+
+    # ------------------------------------------------------------- retention
+    def prune(
+        self,
+        *,
+        closed_before_days: int = 90,
+        runs_before_days: int = 30,
+        now: datetime | None = None,
+        vacuum: bool = True,
+    ) -> dict[str, int]:
+        """Drop data that is no longer useful, then optionally VACUUM to reclaim space.
+
+        Targets ONLY low-value bulk that re-accumulates:
+          * ``raw_docs`` of opportunities whose deadline passed > ``closed_before_days``
+            ago (the untouched source payloads — the largest rows; the normalized
+            Opportunity row is kept as the dedup/change-detection ledger);
+          * ``runs`` rows older than ``runs_before_days`` (per-source run audit).
+
+        NEVER touches the things worth keeping: the score cache (``matches`` — the
+        paid LLM value), ``watch_state`` markers, ``crawl_recipes`` / ``crawl_golden``,
+        or the embeddings/document/extraction caches. Returns the counts removed.
+        """
+        moment = _now(now)
+        closed_cutoff = _to_text(moment - timedelta(days=closed_before_days))
+        runs_cutoff = _to_text(moment - timedelta(days=runs_before_days))
+
+        # raw_docs linked from a long-closed opportunity (Opportunity.raw_ref -> id).
+        # deadline is stored as normalized UTC ISO text, so a lexicographic `<` over
+        # the cutoff ISO is a correct chronological comparison.
+        raw_deleted = self.conn.execute(
+            "DELETE FROM raw_docs WHERE id IN ("
+            "  SELECT json_extract(data, '$.raw_ref') FROM opportunities"
+            "  WHERE deadline IS NOT NULL AND deadline < ?"
+            ")",
+            (closed_cutoff,),
+        ).rowcount
+        runs_deleted = self.conn.execute(
+            "DELETE FROM runs WHERE started_at IS NOT NULL AND started_at < ?",
+            (runs_cutoff,),
+        ).rowcount
+        self.conn.commit()
+        if vacuum:
+            self.conn.execute("VACUUM")  # reclaim freed pages -> smaller file
+        return {"raw_docs": raw_deleted, "runs": runs_deleted}
 
 
 class SqliteScoreCache:

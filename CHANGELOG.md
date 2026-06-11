@@ -4,7 +4,7 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
-## [0.5.1] — 2026-06-11 — Honest LLM client status
+## [0.5.1] — 2026-06-11 — Monitor hardening
 
 ### Fixed
 - **No more fake "LLM ON".** With `ANTHROPIC_API_KEY` set, the monitor declared LLM
@@ -23,6 +23,28 @@ All notable changes to BandiRadar are documented here. Format loosely follows
   - `STATUS.md`'s `Mode` line (and the `flagged`-vs-`drift` recipe state) now reflect
     the REAL client via `monitor_status.py --llm-active` (set by the workflow only
     after the guard verifies it), not mere key presence.
+- **A long run can no longer eat STATUS/publish.** An LLM-scoring backlog (~2000 TED
+  items) overran the 60-min job and was cancelled at the STATUS step, so `if: always`
+  published a stale `STATUS.md` next to fresh data. The budget is now at the STEP: the
+  watch loop has `timeout-minutes: 45` (job stays 60) and doctor + prune + STATUS +
+  publish run `if: always()`, so they always get their slice. A truncated loop is
+  surfaced HONESTLY: `watch --stats-out <p>.stats.json` writes a `{scored,deferred}`
+  sidecar ONLY on completion, so `monitor_status.py` deduces truncation from missing
+  sidecars and prints "⚠️ Run truncated: X/N profiles completed" — incomplete profiles
+  show "incomplete", never a stale figure.
+- **LLM spend cap per run (spike guard, default unchanged).** `BANDIRADAR_LLM_BUDGET`
+  (`config.llm_budget()` → `relevance.LLMBudget`, threaded `run_watch`→`run_match`→
+  `score_all`) caps NEW LLM scorings (cache MISSES) per run; over the cap, cache-miss
+  items are DEFERRED (no Match this run — never heuristic-mixed inside an LLM run) and
+  re-score in a later run as the cache fills. Cache hits and the heuristic backend are
+  never capped; unset/`≤0` = unlimited. The monitor sets `1500`; `scored`/`deferred`
+  surface via the sidecar into `STATUS.md`.
+- **DB retention keeps the published branch under GitHub's 100 MB limit.**
+  `storage.prune()` (+ a thin `bandiradar prune` command, no inline bash) drops
+  `raw_docs` of opportunities closed > N days (default 90) and `runs` older than M days
+  (default 30), then `VACUUM`s. It NEVER touches the score cache (the paid LLM value),
+  watch markers, or crawl recipes/golden, and keeps the `opportunities` dedup ledger.
+  Measured on the production DB: **52.3 MB → 39.1 MB (−13 MB)** on the first run.
 
 ## [0.5.0] — 2026-06-11 — Daily self-maintaining monitor
 

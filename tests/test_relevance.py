@@ -277,3 +277,84 @@ def test_documents_run_does_not_reuse_bare_score():
     with_docs = opp.model_copy(update={"document_text": "extra requirements text"})
     score(with_docs, mayai, client=spy, cache=cache, now=NOW)
     assert spy.calls == 2  # no false reuse of the bare score
+
+
+# --------------------------------------------------------------------------- #
+# LLM budget — cap NEW scorings (cache misses) per run; defer the rest.
+# --------------------------------------------------------------------------- #
+
+
+def test_llm_budget_caps_new_scorings_and_defers_rest():
+    opps = list(opps_by_id().values())
+    assert len(opps) >= 4
+    mayai = load_profile("mayai.yaml")
+    cache = InMemoryScoreCache()
+    spy = _SpyClient()
+    budget = relevance.LLMBudget(limit=2)
+
+    matches = relevance.score_all(
+        opps, mayai, client=spy, cache=cache, now=NOW, budget=budget
+    )
+
+    assert spy.calls == 2  # only 2 real LLM calls
+    assert budget.scored == 2
+    assert budget.deferred == len(opps) - 2
+    assert len(matches) == 2  # deferred items get NO match this run...
+    assert all(m.score == 77 for m in matches)  # ...and are never heuristic-mixed
+
+
+def test_llm_budget_amortizes_over_runs():
+    opps = list(opps_by_id().values())
+    mayai = load_profile("mayai.yaml")
+    cache = InMemoryScoreCache()
+    spy = _SpyClient()
+
+    # Run 1: budget 2 -> 2 scored + cached, the rest deferred.
+    relevance.score_all(
+        opps, mayai, client=spy, cache=cache, now=NOW, budget=relevance.LLMBudget(2)
+    )
+    # Run 2: the 2 cached are FREE hits; the budget scores 2 NEW ones.
+    b2 = relevance.LLMBudget(limit=2)
+    matches2 = relevance.score_all(
+        opps, mayai, client=spy, cache=cache, now=NOW, budget=b2
+    )
+    assert b2.scored == 2  # 2 new this run
+    assert spy.calls == 4  # 2 (run1) + 2 (run2); cached hits cost nothing
+    assert len(matches2) == 4  # 2 cache hits + 2 new
+
+
+def test_llm_budget_none_scores_everything():
+    opps = list(opps_by_id().values())
+    mayai = load_profile("mayai.yaml")
+    spy = _SpyClient()
+    matches = relevance.score_all(
+        opps, mayai, client=spy, cache=InMemoryScoreCache(), now=NOW, budget=None
+    )
+    assert len(matches) == len(opps)
+    assert spy.calls == len(opps)
+
+
+def test_llm_budget_does_not_constrain_heuristic():
+    # The heuristic backend has no per-call cost, so the budget never defers it.
+    opps = list(opps_by_id().values())
+    mayai = load_profile("mayai.yaml")
+    budget = relevance.LLMBudget(limit=1)
+    matches = relevance.score_all(
+        opps,
+        mayai,
+        client=HEURISTIC,
+        cache=InMemoryScoreCache(),
+        now=NOW,
+        budget=budget,
+    )
+    assert len(matches) == len(opps)  # all scored by the heuristic
+    assert budget.scored == 0 and budget.deferred == 0
+
+
+def test_llm_budget_from_env(monkeypatch):
+    monkeypatch.setenv("BANDIRADAR_LLM_BUDGET", "1500")
+    assert relevance.LLMBudget.from_env().limit == 1500
+    monkeypatch.delenv("BANDIRADAR_LLM_BUDGET", raising=False)
+    assert relevance.LLMBudget.from_env().limit is None  # unset => unlimited
+    monkeypatch.setenv("BANDIRADAR_LLM_BUDGET", "0")
+    assert relevance.LLMBudget.from_env().limit is None  # non-positive => unlimited

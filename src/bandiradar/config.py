@@ -71,3 +71,21 @@ def api_key(provider: str) -> str | None:
         return None
     key = os.environ.get(env_name)
     return key or None
+
+
+def llm_budget() -> int | None:
+    """Max NEW LLM scorings (cache misses) per run, from ``BANDIRADAR_LLM_BUDGET``.
+
+    ``None`` (unset / blank / non-positive / unparseable) = UNLIMITED — the default,
+    so behaviour is unchanged unless explicitly capped. A positive int bounds how
+    many cache-miss opportunities are scored by the LLM in one run (a spike guard);
+    the rest are deferred to later runs (the score cache amortizes them). Heuristic
+    scoring is unaffected (it has no per-call cost)."""
+    raw = os.environ.get("BANDIRADAR_LLM_BUDGET", "").strip()
+    if not raw:
+        return None
+    try:
+        value = int(raw)
+    except ValueError:
+        return None
+    return value if value > 0 else None
