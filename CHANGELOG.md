@@ -4,6 +4,26 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.5.1] — 2026-06-11 — Honest LLM client status
+
+### Fixed
+- **No more fake "LLM ON".** With `ANTHROPIC_API_KEY` set, the monitor declared LLM
+  scoring active even when the `anthropic` SDK was not installed (`uv sync` without
+  `--extra anthropic`), so `matching/llm.get_client()` returned `None` silently and
+  scoring fell back to the heuristic under the (invalid-for-heuristic) `--mode
+  balanced`, with toscana failing on a misleading "requires provider + key".
+  - The monitor workflow now installs `uv sync --extra anthropic` when the key is
+    present, and a guard step fails the run immediately (with the honest reason) if
+    the key is set but no LLM client can be built — never a silent fallback.
+  - New `matching.llm.client_status()` (a pure diagnostic alongside `get_client`,
+    NOT changing its `→ None` fallback contract) reports WHY the client is unavailable,
+    distinguishing "no provider/key configured" from "`<provider>` SDK not installed
+    — run: uv sync --extra `<provider>`". It drives the LLM-scraper error message and
+    `doctor`'s note.
+  - `STATUS.md`'s `Mode` line (and the `flagged`-vs-`drift` recipe state) now reflect
+    the REAL client via `monitor_status.py --llm-active` (set by the workflow only
+    after the guard verifies it), not mere key presence.
+
 ## [0.5.0] — 2026-06-11 — Daily self-maintaining monitor
 
 ### Added

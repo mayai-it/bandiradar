@@ -44,26 +44,56 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync
+        run: |
+          set -euo pipefail
+          # When the key is present we WILL use the LLM, so the anthropic SDK must be
+          # installed — `uv sync` alone omits it (it is an optional extra). Without
+          # this the run would silently fall back to the heuristic. (See the guard.)
+          if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+            echo "Key present -> installing with --extra anthropic."
+            uv sync --extra anthropic
+          else
+            uv sync
+          fi
 
-      - name: Configure run (key presence, mode, profiles)
+      - name: Configure run (mode, profiles)
         run: |
           set -euo pipefail
           if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
-            echo "Key present -> LLM scoring + healer ON, balanced mode."
+            echo "Key present -> LLM scoring + healer, balanced mode (pending guard)."
             echo "BANDIRADAR_LLM_PROVIDER=anthropic" >> "$GITHUB_ENV"
             echo "MODE=balanced" >> "$GITHUB_ENV"
-            echo "KEY_FLAG=--key-present" >> "$GITHUB_ENV"
           else
             echo "No key -> keyless, recall mode (offline heuristic, drift detect-only)."
             echo "MODE=recall" >> "$GITHUB_ENV"
-            echo "KEY_FLAG=" >> "$GITHUB_ENV"
           fi
+          # Default: LLM inactive. The guard below UPGRADES this to --llm-active only
+          # after proving the client is really buildable, so STATUS.md can never show
+          # a fake "LLM ON".
+          echo "LLM_FLAG=" >> "$GITHUB_ENV"
           PROFILES=$(ls src/bandiradar/data/profiles/*.yaml \
             | xargs -n1 basename | sed 's/\.yaml$//' | paste -sd, -)
           echo "PROFILES=$PROFILES" >> "$GITHUB_ENV"
           echo "RUN_STARTED=$(date -u +%FT%TZ)" >> "$GITHUB_ENV"
           echo "Profiles: $PROFILES"
+
+      - name: Guard — LLM client must be REAL when a key is set (no fake "LLM ON")
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        run: |
+          set -euo pipefail
+          # The key is set, so the LLM MUST be usable. If get_client() can't build a
+          # client (e.g. SDK missing), FAIL the run now with the honest reason rather
+          # than silently scoring with the heuristic under --mode balanced.
+          status=$(uv run python -c \
+            "from bandiradar.matching.llm import client_status; print(client_status())")
+          echo "LLM client status: $status"
+          if ! uv run python -c \
+            "from bandiradar.matching.llm import get_client; import sys; sys.exit(0 if get_client() else 1)"; then
+            echo "::error::ANTHROPIC_API_KEY is set but no LLM client could be built ($status)."
+            exit 1
+          fi
+          echo "LLM client OK -> activating LLM scoring + healer."
+          echo "LLM_FLAG=--llm-active" >> "$GITHUB_ENV"
 
       - name: Check out (or create) the monitor-data branch at ./state
         run: |
@@ -151,7 +181,7 @@ jobs:
             --profiles "$PROFILES" \
             --out state/STATUS.md \
             --run-started "$RUN_STARTED" \
-            $KEY_FLAG
+            $LLM_FLAG
           echo "MONITOR_RC=$?" >> "$GITHUB_ENV"
           echo "----- STATUS.md -----"
           cat state/STATUS.md

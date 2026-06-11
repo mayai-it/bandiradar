@@ -19,7 +19,7 @@ import yaml
 from bandiradar import config, resources
 from bandiradar.http import FetchError
 from bandiradar.matching.embeddings import EMBEDDING_SIM_THRESHOLD, Embedder
-from bandiradar.matching.llm import LLMClient
+from bandiradar.matching.llm import LLMClient, client_status
 from bandiradar.matching.prefilter import prefilter
 from bandiradar.matching.relevance import score_all
 from bandiradar.matching.rerank import RERANK_TOP_N, rerank
@@ -398,7 +398,8 @@ def run_doctor(
             # The crawl is key-less, so probe its health even without an LLM key —
             # a drifted listing is visible here, not hidden behind "needs key".
             crawl = _probe_crawl(s)
-            note = "LLM provider/key not configured — not probed"
+            # Honest reason (e.g. "anthropic SDK not installed" vs "not configured").
+            note = f"LLM not active ({client_status()}) — not probed"
             if crawl is not None:
                 note += f"; crawl: {crawl}"
             source_results.append(

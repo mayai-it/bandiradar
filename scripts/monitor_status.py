@@ -129,16 +129,16 @@ def derive_recipe_state(
     crawl_health: str | None,
     audit: dict | None,
     healed_this_run: bool,
-    key_present: bool,
+    llm_active: bool,
     has_golden: bool = False,
 ) -> str:
     """Map persisted + live crawl signals to one of ok|drift|healed|flagged|unknown.
 
     Precedence (the LIVE probe wins over the persisted fallback):
       * a recipe ADOPTED during this run (audit, drift-heal) -> ``healed``;
-      * a live drifted crawl (``degraded``/``broken``) -> ``flagged`` when an LLM key
-        is present (the healer ran but could NOT auto-adopt -> needs a human) else
-        ``drift`` (keyless: drift is only DETECTED, never healed);
+      * a live drifted crawl (``degraded``/``broken``) -> ``flagged`` when the LLM is
+        ACTIVE (the healer ran but could NOT auto-adopt -> needs a human) else
+        ``drift`` (no live LLM: drift is only DETECTED, never healed);
       * a healthy live crawl -> ``ok``;
       * no live probe -> fall back to the DB: an override -> ``healed``, a golden
         snapshot (a past healthy crawl) -> ``ok``, otherwise -> ``unknown``.
@@ -146,7 +146,7 @@ def derive_recipe_state(
     if healed_this_run:
         return "healed"
     if crawl_health in ("degraded", "broken"):
-        return "flagged" if key_present else "drift"
+        return "flagged" if llm_active else "drift"
     if crawl_health == "ok":
         return "ok"
     # No live probe this run: fall back to what the DB knows.
@@ -163,7 +163,7 @@ def recipe_states(
     goldens: set[str],
     crawl_health: dict[str, str | None],
     run_started: datetime | None,
-    key_present: bool,
+    llm_active: bool,
 ) -> list[RecipeState]:
     """One RecipeState per crawl-bearing source (golden/override/live-probe union)."""
     sources = sorted(set(audits) | goldens | set(crawl_health))
@@ -178,7 +178,7 @@ def recipe_states(
             crawl_health=crawl_health.get(src),
             audit=audit,
             healed_this_run=healed_this_run,
-            key_present=key_present,
+            llm_active=llm_active,
             has_golden=src in goldens,
         )
         detail = None
@@ -258,13 +258,14 @@ def render_status(
     runs: dict[str, SourceRow],
     states: list[RecipeState],
     match_counts: dict[str, int | None],
-    key_present: bool,
+    llm_active: bool,
 ) -> str:
     """Compose the Markdown page. Pure: same inputs -> same bytes."""
     lines: list[str] = []
     lines.append("# BandiRadar — live monitor status")
     lines.append("")
-    mode = "LLM scoring + healer ON" if key_present else "keyless (recall mode)"
+    # Reflects the REAL LLM client (verified by the workflow), not just key presence.
+    mode = "LLM scoring + healer ON" if llm_active else "keyless (recall mode)"
     lines.append(f"- **Run:** {run_date}")
     lines.append(f"- **Mode:** {mode}")
     failed = sum(1 for r in runs.values() if r.failed)
@@ -349,7 +350,7 @@ def build_status(
     doctor_json: Path | None,
     run_date: str,
     run_started: datetime | None,
-    key_present: bool,
+    llm_active: bool,
 ) -> tuple[str, bool]:
     """Read all local state and render STATUS.md. Returns ``(markdown, all_failed)``."""
     conn = _connect(db_path)
@@ -365,7 +366,7 @@ def build_status(
         goldens=goldens,
         crawl_health=health,
         run_started=run_started,
-        key_present=key_present,
+        llm_active=llm_active,
     )
     match_counts = {
         prof: count_matches(feeds_dir / f"{prof}.json") for prof in profiles
@@ -375,7 +376,7 @@ def build_status(
         runs=runs,
         states=states,
         match_counts=match_counts,
-        key_present=key_present,
+        llm_active=llm_active,
     )
     return md, all_failed(runs)
 
@@ -394,9 +395,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="ISO timestamp of run start (gates 'healed this run'); default: now UTC",
     )
     p.add_argument(
-        "--key-present",
+        "--llm-active",
         action="store_true",
-        help="An LLM key was available (scoring + healer active)",
+        help="The LLM client is REALLY usable (provider+key set AND SDK importable, "
+        "as verified by the workflow) — scoring + healer active. Drives the Mode "
+        "line and flagged-vs-drift. Absent => keyless/recall.",
     )
     return p.parse_args(argv)
 
@@ -414,7 +417,7 @@ def main(argv: list[str] | None = None) -> int:
         doctor_json=Path(args.doctor) if args.doctor else None,
         run_date=run_date,
         run_started=run_started,
-        key_present=args.key_present,
+        llm_active=args.llm_active,
     )
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

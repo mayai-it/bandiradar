@@ -121,12 +121,23 @@ The run fails (exit≠0) ONLY if EVERY source failed; partial failures are warni
   wall-clock per request (`DEFAULT_MAX_ELAPSED`) so a timing-out host can't burn
   minutes. A workflow step curls TED + incentivi before the watches to surface a
   runner-side 403/timeout immediately.
+- **Real LLM, or fail loudly — never a fake "LLM ON".** A key set ≠ LLM usable: the
+  `anthropic` SDK is an optional extra, so `uv sync` alone would silently fall back to
+  the heuristic under `--mode balanced` (an invalid operating point for the heuristic).
+  Fixes: (1) the workflow installs `uv sync --extra anthropic` when the key is present;
+  (2) a guard step runs `get_client()` and FAILS the run if the key is set but no client
+  is buildable; (3) `matching.llm.client_status()` (a pure diagnostic beside
+  `get_client`, NOT changing its `→ None` fallback contract) returns the REASON —
+  distinguishing "no provider/key" from "`<provider>` SDK not installed — uv sync
+  --extra `<provider>`". That honest reason drives toscana's error and `doctor`'s note.
 - **`scripts/monitor_status.py` is pure composition** (no network, no engine logic):
   per-source esito/conteggi from the `runs` table (the persisted `SourceResult`),
   new-match counts from each `feeds/<p>.json`, and crawl-recipe state from
   `crawl_recipes`/`crawl_golden` + the live `doctor --json` crawl-health. Recipe
-  states: `healed` (override adopted this run) · `drift` (degraded/broken, keyless) ·
-  `flagged` (drift + key but heal couldn't reproduce the golden → human) · `ok`.
+  states: `healed` (override adopted this run) · `drift` (degraded/broken, no live LLM)
+  · `flagged` (drift + LLM active but heal couldn't reproduce the golden → human) ·
+  `ok`. The **`Mode` line + flagged-vs-drift reflect the REAL client** via `--llm-active`
+  (passed by the workflow only after the guard verifies it), NOT mere key presence.
   Tested offline in `tests/test_monitor_status.py`.
 
 ## The canonical model is a contract

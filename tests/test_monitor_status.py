@@ -98,17 +98,17 @@ def test_no_runs_is_not_all_failed(db):
 
 def test_recipe_state_healed_when_adopted_this_run():
     s = ms.derive_recipe_state(
-        crawl_health="ok", audit={"x": 1}, healed_this_run=True, key_present=True
+        crawl_health="ok", audit={"x": 1}, healed_this_run=True, llm_active=True
     )
     assert s == "healed"
 
 
 def test_recipe_state_drift_keyless_but_flagged_with_key():
     drift = ms.derive_recipe_state(
-        crawl_health="broken", audit=None, healed_this_run=False, key_present=False
+        crawl_health="broken", audit=None, healed_this_run=False, llm_active=False
     )
     flagged = ms.derive_recipe_state(
-        crawl_health="broken", audit=None, healed_this_run=False, key_present=True
+        crawl_health="broken", audit=None, healed_this_run=False, llm_active=True
     )
     assert drift == "drift"
     assert flagged == "flagged"
@@ -117,13 +117,13 @@ def test_recipe_state_drift_keyless_but_flagged_with_key():
 def test_recipe_state_ok_and_unknown():
     assert (
         ms.derive_recipe_state(
-            crawl_health="ok", audit=None, healed_this_run=False, key_present=False
+            crawl_health="ok", audit=None, healed_this_run=False, llm_active=False
         )
         == "ok"
     )
     assert (
         ms.derive_recipe_state(
-            crawl_health=None, audit=None, healed_this_run=False, key_present=False
+            crawl_health=None, audit=None, healed_this_run=False, llm_active=False
         )
         == "unknown"
     )
@@ -133,7 +133,7 @@ def test_recipe_state_ok_and_unknown():
             crawl_health=None,
             audit=None,
             healed_this_run=False,
-            key_present=False,
+            llm_active=False,
             has_golden=True,
         )
         == "ok"
@@ -154,7 +154,7 @@ def test_recipe_states_marks_healed_from_db_audit(db):
         goldens=ms.golden_sources(db.conn),
         crawl_health={"toscana": "ok"},
         run_started=PAST,  # adopted_at (now) >= PAST -> healed this run
-        key_present=True,
+        llm_active=True,
     )
     by = {s.source: s for s in states}
     assert by["toscana"].state == "healed"
@@ -228,13 +228,13 @@ def test_build_status_end_to_end(db, tmp_path):
         doctor_json=doctor,
         run_date="2026-06-11 06:00 UTC",
         run_started=datetime.now(UTC),
-        key_present=False,
+        llm_active=False,
     )
 
     assert failed is False  # not ALL sources failed
     assert "live monitor status" in md
     assert "`incentivi`" in md and "`toscana`" in md
-    assert "keyless" in md  # key_present=False -> recall mode banner
+    assert "keyless" in md  # llm_active=False -> keyless/recall banner
     assert "partial" in md  # the lazio warning surfaces
     # mayai had 1 new match, manifattura 0
     assert "| `mayai` | 1 |" in md
@@ -255,7 +255,7 @@ def test_build_status_all_failed_verdict(db, tmp_path):
         doctor_json=None,
         run_date="2026-06-11",
         run_started=datetime.now(UTC),
-        key_present=False,
+        llm_active=False,
     )
     assert failed is True
     assert "ALL sources failed" in md
@@ -270,7 +270,7 @@ def test_render_is_pure(db):
         runs=runs,
         states=[],
         match_counts={"p": 1},
-        key_present=True,
+        llm_active=True,
     )
     assert ms.render_status(**kw) == ms.render_status(**kw)
     assert "LLM scoring + healer ON" in ms.render_status(**kw)

@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from bandiradar import http, resources
-from bandiradar.matching.llm import LLMClient, get_client
+from bandiradar.matching.llm import LLMClient, client_status, get_client
 from bandiradar.models import (
     Kind,
     Opportunity,
@@ -242,10 +242,12 @@ class ToscanaSource:
         """
         client = client if client is not None else get_client()
         if client is None:
+            # Honest reason: distinguishes "not configured" from "SDK not installed"
+            # (e.g. uv sync without the anthropic extra), not always blaming the key.
             raise RuntimeError(
-                "LLM scraper requires an LLM provider + key — set "
-                "BANDIRADAR_LLM_PROVIDER and the API key (see .env.example). "
-                "Use --sample to run offline against the recorded fixture."
+                f"LLM scraper has no usable LLM client: {client_status()}. "
+                "Configure BANDIRADAR_LLM_PROVIDER + the API key (see .env.example), "
+                "or use --sample to run offline against the recorded fixture."
             )
         cap = limit if limit is not None else max_items
         # When we open our own extraction-cache Store, we OWN it and must close it

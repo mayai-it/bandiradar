@@ -126,30 +126,48 @@ class OpenAIClient:
         return _parse_json(response.choices[0].message.content or "")
 
 
-def get_client() -> LLMClient | None:
-    """Build the configured client, or ``None`` to signal the offline fallback."""
+def _resolve() -> tuple[LLMClient | None, str]:
+    """Resolve the configured client AND the reason, in one place.
+
+    Returns ``(client, "active")`` when a live client is available, else
+    ``(None, <human-readable reason for the offline fallback>)``. Crucially this
+    DISTINGUISHES "no provider/key configured" from "provider+key set but the SDK
+    is not installed" — so a misconfig (e.g. ``uv sync`` without ``--extra
+    anthropic``) is reported honestly instead of silently falling back."""
     provider = config.llm_provider()
     if provider in ("", "none"):
-        return None
+        return None, "no LLM provider configured — offline heuristic"
 
     model = config.llm_model(provider)
     if model is None:
-        return None  # unknown provider
+        return None, f"unknown LLM provider {provider!r}"
 
-    if provider == "anthropic":
-        if not config.api_key("anthropic"):
-            return None
-        if importlib.util.find_spec("anthropic") is None:
-            return None
-        _announce(provider, model)
-        return AnthropicClient(model)
+    if provider not in ("anthropic", "openai"):
+        return None, f"unsupported LLM provider {provider!r}"
 
-    if provider == "openai":
-        if not config.api_key("openai"):
-            return None
-        if importlib.util.find_spec("openai") is None:
-            return None
-        _announce(provider, model)
-        return OpenAIClient(model)
+    if not config.api_key(provider):
+        return None, f"{provider} provider set but its API key is missing"
 
-    return None
+    if importlib.util.find_spec(provider) is None:
+        return None, f"{provider} SDK not installed — run: uv sync --extra {provider}"
+
+    client = AnthropicClient(model) if provider == "anthropic" else OpenAIClient(model)
+    return client, "active"
+
+
+def get_client() -> LLMClient | None:
+    """Build the configured client, or ``None`` to signal the offline fallback."""
+    client, _reason = _resolve()
+    if client is not None:
+        _announce(config.llm_provider(), client.model)
+    return client
+
+
+def client_status() -> str:
+    """Human-readable LLM-client state: ``"active"`` or WHY it falls back offline.
+
+    A pure diagnostic (no SDK import, no announce, no network) for callers that need
+    to tell the user what is happening — e.g. the monitor's pre-flight guard and the
+    LLM-scraper's error message. Does NOT change the ``get_client() -> None`` fallback
+    contract; it just exposes the reason behind it."""
+    return _resolve()[1]

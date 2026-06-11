@@ -162,8 +162,11 @@ def test_fetch_respects_max_items():
 
 
 def test_fetch_without_llm_key_raises():
-    # conftest forces provider=none -> get_client() is None -> clear error.
-    with pytest.raises(RuntimeError, match="LLM scraper requires"):
+    # conftest forces provider=none -> get_client() is None -> clear, honest error
+    # that names the reason (here: no provider configured).
+    with pytest.raises(
+        RuntimeError, match="no usable LLM client: no LLM provider configured"
+    ):
         toscana.ToscanaSource().fetch()
 
 

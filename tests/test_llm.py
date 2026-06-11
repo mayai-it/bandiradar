@@ -102,3 +102,42 @@ def test_get_client_none_when_key_missing(monkeypatch):
     monkeypatch.setenv("BANDIRADAR_LLM_PROVIDER", "anthropic")
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     assert llm.get_client() is None
+
+
+# --------------------------------------------------------------------------- #
+# client_status(): the honest reason behind the get_client() fallback.
+# The key fix — "key present but SDK not installed" must NOT look like "no key".
+# --------------------------------------------------------------------------- #
+
+
+def test_client_status_no_provider():
+    # conftest forces provider=none.
+    assert "no LLM provider configured" in llm.client_status()
+    assert llm.get_client() is None
+
+
+def test_client_status_provider_set_but_no_key(monkeypatch):
+    monkeypatch.setenv("BANDIRADAR_LLM_PROVIDER", "anthropic")
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    assert "API key is missing" in llm.client_status()
+    assert llm.get_client() is None
+
+
+def test_client_status_key_present_but_sdk_missing(monkeypatch):
+    # The production bug: key IS set but `uv sync` omitted the anthropic extra.
+    monkeypatch.setenv("BANDIRADAR_LLM_PROVIDER", "anthropic")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+    monkeypatch.setattr(llm.importlib.util, "find_spec", lambda name: None)
+    status = llm.client_status()
+    assert "SDK not installed" in status
+    assert "uv sync --extra anthropic" in status
+    # Contract unchanged: still falls back to the heuristic (None), just honestly.
+    assert llm.get_client() is None
+
+
+def test_client_status_active_when_fully_configured(monkeypatch):
+    monkeypatch.setenv("BANDIRADAR_LLM_PROVIDER", "anthropic")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+    monkeypatch.setattr(llm.importlib.util, "find_spec", lambda name: object())
+    assert llm.client_status() == "active"
+    assert llm.get_client() is not None
