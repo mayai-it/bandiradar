@@ -162,7 +162,7 @@ class PloneBandoSource:
     ) -> Iterator[RawDoc]:
         cap = limit if limit is not None else self._MAX_RECORDS
         seen = 0
-        params: dict[str, Any] = {
+        params: dict[str, Any] | None = {
             "portal_type": "Bando",
             "fullobjects": "true",
             "b_size": self.b_size,
@@ -196,7 +196,9 @@ class PloneBandoSource:
                 page += 1
                 if progress is not None:
                     progress(f"{self.id}: batch {page}, {seen} fetched")
-                # Follow plone.restapi batching; the `next` link already carries the
-                # query, so drop our params after the first page.
+                # Follow plone.restapi batching: the `next` link already carries the
+                # FULL query (portal_type, b_start, …), so subsequent requests must
+                # pass params=None — `params={}` would REPLACE (wipe) the link's
+                # query string in httpx, refetching an unfiltered first page forever.
                 url = (body.get("batching") or {}).get("next")
-                params = {}
+                params = None

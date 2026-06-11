@@ -3,14 +3,22 @@
 No network: drives load_fixture() -> to_opportunities() against the recorded
 plone.restapi `@search?portal_type=Bando&fullobjects` capture. Exercises the
 reusable Plone base — notably the STRUCTURED `scadenza_bando` deadline (no text
-parsing) and the vocabulary-derived keywords.
+parsing), the vocabulary-derived keywords, and batching-link pagination (via a
+REAL httpx client over a MockTransport, since the params-wipe bug lived in
+httpx's request building, not in our parsing).
 """
 
+import functools
+import json
 from datetime import UTC, datetime
 
+import httpx
+
+from bandiradar import http
 from bandiradar.models import Opportunity, RawDoc
 from bandiradar.sources import emilia_romagna as er
 from bandiradar.sources.base import get, list_sources
+from bandiradar.sources.plone import PloneBandoSource
 
 # Capture (2026-06-12): scadenze span 2025-08 .. 2026-05 plus some open/rolling
 # bandi with no deadline; this NOW yields an open/closing_soon/closed mix.
@@ -75,3 +83,102 @@ def test_emilia_romagna_is_registered():
     assert source.id == "emilia_romagna"
     assert source.kind == "incentive"
     assert "emilia_romagna" in {s.id for s in list_sources()}
+
+
+# --------------------------------------------------------------------------- #
+# Pagination regression — the params={} wipe bug.
+#
+# After page 1 the loop follows `batching.next`, whose URL already carries the
+# FULL query (portal_type, b_start, …). Passing params={} to httpx REPLACES the
+# URL's query string with nothing, so page 2 was requested unfiltered, the server
+# answered with a listing whose `next` was always b_start=25, and the loop reread
+# the same page up to the cap (prod: fetched=2000 vs 73 real Bando). These tests
+# run a REAL httpx client over a MockTransport so the request-building semantics
+# (where the bug lived) are exercised, not faked.
+# --------------------------------------------------------------------------- #
+
+_BASE = "https://plone.example.test"
+
+
+def _bando(uid: str) -> dict:
+    return {"UID": uid, "@id": f"{_BASE}/bandi/{uid}", "title": uid}
+
+
+def _paged_handler(requests: list[httpx.Request]) -> httpx.MockTransport:
+    """Two filtered pages; an UNFILTERED request (lost query) loops forever."""
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        q = dict(request.url.params)
+        if q.get("portal_type") != "Bando":
+            # The exact prod failure mode: query wiped -> unfiltered listing whose
+            # `next` never advances. (The fix means we never land here.)
+            payload = {
+                "items": [_bando("unfiltered")],
+                "batching": {"next": f"{_BASE}/++api++/@search?b_start=25"},
+            }
+        elif "b_start" not in q:
+            payload = {
+                "items": [_bando("page1-a"), _bando("page1-b")],
+                "batching": {
+                    "next": f"{_BASE}/++api++/@search?portal_type=Bando"
+                    "&fullobjects=true&b_size=2&b_start=2"
+                },
+            }
+        else:
+            payload = {"items": [_bando("page2-a")]}  # no batching.next -> stop
+        return httpx.Response(
+            200, json=payload, headers={"content-type": "application/json"}
+        )
+
+    return httpx.MockTransport(handler)
+
+
+def _patch_real_client_with_transport(monkeypatch, transport: httpx.MockTransport):
+    """Route http.client() through REAL httpx with a mock transport injected."""
+    real_client = httpx.Client
+    monkeypatch.setattr(
+        http.httpx, "Client", functools.partial(real_client, transport=transport)
+    )
+
+
+def test_pagination_preserves_next_link_query_and_terminates(monkeypatch):
+    requests: list[httpx.Request] = []
+    _patch_real_client_with_transport(monkeypatch, _paged_handler(requests))
+    source = PloneBandoSource(
+        id="plone_test", region="X", issuer_name="X", base_url=_BASE, b_size=2
+    )
+
+    raws = list(source.fetch(limit=50))
+
+    # All three filtered items, no rereads, and the loop STOPPED without `next`.
+    assert [r.id for r in raws] == [
+        "plone_test:page1-a",
+        "plone_test:page1-b",
+        "plone_test:page2-a",
+    ]
+    assert len(requests) == 2
+    # THE regression: page 2's request must keep the next-link query intact —
+    # params={} must never again wipe portal_type/b_start off the URL.
+    page2 = dict(requests[1].url.params)
+    assert page2.get("portal_type") == "Bando"
+    assert page2.get("b_start") == "2"
+    assert page2.get("fullobjects") == "true"
+    # And no request ever went out unfiltered.
+    assert all(dict(r.url.params).get("portal_type") == "Bando" for r in requests)
+
+
+def test_pagination_unfiltered_loop_is_bounded_by_limit_not_infinite(monkeypatch):
+    # Belt-and-braces: even IF a future change loses the query again, the handler
+    # above simulates the never-advancing listing; assert the fixed code never
+    # fetches the 'unfiltered' marker at all.
+    requests: list[httpx.Request] = []
+    _patch_real_client_with_transport(monkeypatch, _paged_handler(requests))
+    source = PloneBandoSource(
+        id="plone_test", region="X", issuer_name="X", base_url=_BASE, b_size=2
+    )
+    raws = list(source.fetch(limit=10))
+    assert all(
+        json.loads(r.model_dump_json())["id"] != "plone_test:unfiltered" for r in raws
+    )
+    assert len(raws) == 3  # exactly the two real pages, then stop
