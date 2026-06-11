@@ -51,7 +51,7 @@ The map that matters: not "what exists" but "what is openly reachable, and how f
 | **PVL** — pubblicitalegale.anticorruzione.it | OPEN tenders (bandi di indizione) with deadlines | **Open** public JSON API, no credentials | near‑real‑time (held ≥ until deadline) | ✅ `anac_pvl` |
 | **ANAC OCDS open data** — dati.anticorruzione.it | Awarded/retrospective contracts > €40k (OCDS) | **Open**, CC‑BY 4.0 | monthly | ✅ `anac` (intelligence/benchmarks) |
 | **TED** — Tenders Electronic Daily | EU above‑threshold open tenders | **Open** anonymous API | daily | ✅ `ted` |
-| **incentivi.gov.it + RNA** | National catalogue of business incentives | **Open** IODL open‑data export | periodic | ✅ `incentivi` |
+| **incentivi.gov.it + RNA** | National catalogue of business incentives | **Open** IODL open‑data export | periodic | ✅ `incentivi` ⚠️ open, but unreachable from datacenter CI runners (firewall drops Azure IPs at connect → `ConnectTimeout`); works from residential/local IPs. A live‑monitor gap, not a source limit. |
 | **Regional portals** (Lombardia, Lazio, Toscana, …) | Regional tenders & incentives | **Mixed** — Socrata / WP‑REST / scrape‑only | varies | ⚠️ partial (3 regions sampled) |
 | **PNCP real‑time full API** | All tenders, live, sub‑threshold included | **Gated** — PDND accreditation + certified‑platform registry | real‑time | ❌ Pro / partnership lever |
 | **Tender documents** (capitolati/allegati) | Full tender specs & eligibility | **Gated** — 449+ heterogeneous SA portals, mostly login/JS | n/a | ❌ measured low‑ROI (see §4) |

@@ -513,13 +513,25 @@ It fetches **once per run** (the first profile fetches every source; the others
 reuse the DB via `watch --skip-fetch`), so the whole job takes **~5 minutes**, not
 30+. Every request sends an identifying `User-Agent` and a short connect timeout.
 
-> **Known limit — TED from CI.** The TED API (`api.ted.europa.eu`) sometimes
-> returns **403 Forbidden** to GitHub-hosted runners. With our honest User-Agent set,
-> a persistent 403 indicates a **datacenter-IP block** we can't fix in code — so the
-> failure is classified as the structured kind **`blocked`** (not a generic error)
-> and shown as such in `STATUS.md`, while every other source still runs. TED works
-> fine from a residential IP / local runs. A pre-flight step in the workflow curls
-> TED + incentivi and logs the HTTP status so a block or timeout is visible upfront.
+**Operational protections (v0.5.1).** With an LLM key, a per-run spend cap
+(`BANDIRADAR_LLM_BUDGET`) bounds new scorings — items beyond the cap are *deferred*
+and amortized by the score cache across the next runs, not dropped. Before each
+publish, `bandiradar prune` trims stale `raw_docs` of long-closed opportunities and
+old run rows (then `VACUUM`s) to keep the data branch well under GitHub's blob limit,
+without touching the score cache or crawl recipes. And the long step is time-boxed so
+doctor + STATUS + publish always run: if the run is **truncated**, `STATUS.md` says so
+(`⚠️ Run truncated: X/N profiles completed`) instead of republishing stale numbers.
+
+> **Known limit — incentivi.gov.it from CI.** `incentivi.gov.it` is open and
+> documented, but its export endpoint is **unreachable from GitHub-hosted runners**:
+> the connection times out (`ConnectTimeout`) because the site's firewall drops
+> Azure datacenter IP ranges at the connection level. This is **not fixable in
+> code** — the endpoint works fine from residential IPs / local runs (verified) — so
+> we accept it: the source is classified **`unavailable`** in `STATUS.md` and **every
+> other source still runs**. A pre-flight step in the workflow curls the incentivi
+> (and TED) endpoints and logs the HTTP status so the block is visible upfront.
+> *(TED's earlier 403 from CI was a different issue — a default-User-Agent block — and
+> is **fixed**: with our identifying User-Agent, TED now fetches from the runners.)*
 
 ## AI agents (MCP)
 
