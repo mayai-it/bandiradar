@@ -5,6 +5,10 @@ usable **open-bandi API**, and where coverage is still needed. This is a
 contributor map — if your region is "skipped", a community adapter is very
 welcome (see [CONTRIBUTING.md](../CONTRIBUTING.md) and the `add-a-source` skill).
 
+> The fuller per-territory recon (datacenter-IP reachability, LLM-scraper
+> candidates, motivated skips) lives in the
+> [coverage map § Regional portals — recon summary](coverage-map.md#regional-portals--recon-summary).
+
 **What "viable" means here:** the portal must expose *open* calls (future
 deadlines, not a retrospective beneficiary/awarded registry) over a *clean API*
 with enough content to match on (title + requirements/eligibility text + a way to
@@ -22,13 +26,13 @@ than faked.
 |---|---|---|---|
 | **Lazio** | lazioinnova.it | WP-REST `bandi` (content-rich, parseable scadenza) | ✅ **Built** (`lazio`) |
 | **Toscana** | sviluppo.toscana.it | WP-REST `bando` (links only) + HTML detail pages | ✅ **Built** (`toscana`) — REST `content` is empty + no deadline, so this is the first **LLM-assisted scraper**: fields are LLM-extracted from each bando's HTML page (live fetch needs an LLM key; `--sample` replays a recorded extraction) |
-| Sicilia | irfis.it | WordPress (Avada theme) | ⏭️ Skip — no bandi post type; bandi are pages/PDFs |
+| **Sicilia** | euroinfosicilia.it (FESR) | WP-REST: standard posts under a "Bandi e Avvisi" category | ✅ **Built** (`sicilia`, v0.6.0) — config over the WP base + a `categories` filter. (irfis.it, probed earlier, has no bandi post type.) |
 | Marche | regione.marche.it | reachable, not WP-REST | ⏭️ Skip — bespoke CMS, no clean bandi API |
 | Piemonte | finpiemonte.it | not WordPress (404 `/wp-json`) | ⏭️ Skip — no clean API found |
 | Veneto | venetosviluppo.it | not WordPress | ⏭️ Skip |
 | Liguria | filse.it | not WordPress | ⏭️ Skip |
 | Friuli-VG | regione.fvg.it | not WordPress | ⏭️ Skip |
-| Emilia-Romagna | art-er.it | not WordPress | ⏭️ Skip (regional CKAN `dati.emilia-romagna.it` is retrospective) |
+| **Emilia-Romagna** | politicheterritoriali.regione.emilia-romagna.it | Plone 6 REST: structured AGID `Bando` content type | ✅ **Built** (`emilia_romagna`, v0.6.0) — `PloneBandoSource`; structured `scadenza_bando`. (art-er.it and the retrospective regional CKAN, probed earlier, were not viable.) |
 | Umbria | sviluppumbria.it | not WordPress | ⏭️ Skip |
 | Abruzzo | regione.abruzzo.it | unreachable | ⏭️ Skip |
 | Campania | sviluppocampania.it | 401 on `/wp-json` | ⏭️ Skip — not open/clean |
@@ -37,7 +41,7 @@ than faked.
 | Calabria | fincalabra.it | not WordPress | ⏭️ Skip |
 | Sardegna | sardegnaimpresa.eu | not WordPress | ⏭️ Skip |
 | Molise | regione.molise.it | not WordPress | ⏭️ Skip |
-| Trento | provincia.tn.it | not WordPress (410) | ⏭️ Skip |
+| **Trento** | dati.trentino.it | CKAN open-data CSV (FEASR bandi calendar, currently-open calls) | ✅ **Built** (`trentino`, v0.6.0). (provincia.tn.it itself, probed earlier, exposes no API.) |
 | Bolzano | provincia.bz.it | not WordPress | ⏭️ Skip |
 | Valle d'Aosta | regione.vda.it | not WordPress | ⏭️ Skip |
 

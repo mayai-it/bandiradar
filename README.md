@@ -113,9 +113,9 @@ Real output on the bundled sample data:
 from a `pip install` too) or a **path** to your own profile YAML.
 
 Add `--json` for machine-readable output. Live opportunities come from the
-key-less sources (incentivi, TED, `anac_pvl` open tenders, Lombardia, Lazio);
-`anac` adds historical awarded-contract data (see [Sources](#sources) and
-[Status](#status)).
+9 key-less sources (incentivi, TED, `anac_pvl` open tenders, and the regions
+Lombardia, Lazio, Sicilia, Emilia-Romagna, Trentino); `anac` adds historical
+awarded-contract data (see [Sources](#sources) and [Status](#status)).
 
 ## Works across company types
 
@@ -613,9 +613,10 @@ which depends on this package — never the reverse.
   change-detection + CLI + MCP server.
 - Live sources: **TED** (EU open tenders), **incentivi.gov.it** (national
   incentives), **`anac_pvl`** (national OPEN tenders — Pubblicità a Valore Legale,
-  incl. sub-threshold), **Regione Lombardia** (CKAN/Socrata tenders) and **Regione
-  Lazio** (LazioInnova incentives), all key-less; **ANAC OCDS** wired as a capped,
-  key-less historical / awarded-contracts feed (analysis, not open calls).
+  incl. sub-threshold), and the regions **Lombardia** (Socrata tenders), **Lazio**
+  (LazioInnova incentives), **Sicilia** (EuroInfoSicilia FESR/FSC), **Emilia-Romagna**
+  (Plone `Bando`) and **Trentino** (CKAN FEASR), all key-less; **ANAC OCDS** wired as
+  a capped, key-less historical / awarded-contracts feed (analysis, not open calls).
 - **CPV resolver** (Italian CPV labels → official 8-digit EU codes) + region
   fallback (province → comune/ISTAT → buyer → national) — measured keyless recall
   gains on tender profiles.
@@ -633,8 +634,9 @@ which depends on this package — never the reverse.
   [Matching quality](#matching-quality-measured)).
 
 **Upcoming**
-- More community/regional source adapters (via the `Source` framework — Lombardy is
-  the first; other regions welcome).
+- More community/regional source adapters (via the `Source` framework — 6 regions
+  covered so far; the per-territory recon in the
+  [coverage map](docs/coverage-map.md) shows where help is welcome).
 - `bandiradar-pro` (private): dashboard, WhatsApp/email delivery, scheduling
   SaaS, multi-tenant hosting.
 
