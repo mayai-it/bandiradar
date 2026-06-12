@@ -9,4 +9,4 @@ contract. This package is the open (MIT) core; managed/delivery features live
 in the private ``bandiradar-pro``.
 """
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"

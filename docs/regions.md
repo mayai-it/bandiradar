@@ -36,10 +36,10 @@ than faked.
 | Umbria | sviluppumbria.it | not WordPress | ⏭️ Skip |
 | Abruzzo | regione.abruzzo.it | unreachable | ⏭️ Skip |
 | Campania | sviluppocampania.it | 401 on `/wp-json` | ⏭️ Skip — not open/clean |
-| Puglia | sistema.puglia.it | not WordPress | ⏭️ Skip (regional CKAN's active-gare dataset is empty) |
+| **Puglia** | pr2127.regione.puglia.it (Liferay) | News-list fragment with 'Bando aperto' badges; detail pages rich | ✅ **Built** (`puglia`, v0.9.0) — LLM scraper. (sistema.puglia.it is a frameset service registry, not viable.) |
 | Basilicata | sviluppobasilicata.it | not WordPress | ⏭️ Skip |
 | Calabria | fincalabra.it | not WordPress | ⏭️ Skip |
-| Sardegna | sardegnaimpresa.eu | not WordPress | ⏭️ Skip |
+| **Sardegna** | sardegnaimpresa.eu (Drupal 10) | Server-rendered /it/agevolazioni Views listing, structured per-item scadenza | ✅ **Built** (`sardegna`, v0.9.0) — LLM scraper. |
 | Molise | regione.molise.it | not WordPress | ⏭️ Skip |
 | **Trento** | dati.trentino.it | CKAN open-data CSV (FEASR bandi calendar, currently-open calls) | ✅ **Built** (`trentino`, v0.6.0). (provincia.tn.it itself, probed earlier, exposes no API.) |
 | Bolzano | provincia.bz.it | not WordPress | ⏭️ Skip |

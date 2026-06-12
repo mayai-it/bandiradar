@@ -4,6 +4,30 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.9.0] — 2026-06-12 — Regional coverage wave 2b
+
+### Added
+- **`puglia`** — Regione Puglia PR 2021-2027 avvisi, as an LLM scraper. Recon-first:
+  the historic `sistema.puglia.it` is an Oracle-Portal service registry whose
+  "Bandi Aperti" mixes 2010-era standing services with no scadenze, and its
+  per-bando mini-sites are framesets with no content in the DOM (not viable);
+  `por.regione.puglia.it` only holds the closed 2014-2020 cycle. The CURRENT
+  portal `pr2127.regione.puglia.it` serves its avvisi via a Liferay resource URL
+  returning a clean server-rendered `news-list-item` fragment with per-item
+  **"Bando aperto"/"Bando chiuso" badges** (and `delta=30` one-call pagination) —
+  the crawl keeps only items badged open, the LLM extracts each detail page.
+- **`sardegna`** — Regione Sardegna agevolazioni from Sardegna Impresa (Drupal 10),
+  as an LLM scraper. No jsonapi/RSS, but the `/it/agevolazioni` Views listing is
+  server-rendered (full official titles, structured per-item scadenza datetime) and
+  detail pages are labelled (Soggetti ammissibili, Data di scadenza, contributo).
+- Real recorded fixtures (live LLM extraction) + offline tests for both; listing
+  cassettes test the pure parsers (incl. Puglia's open-badge filter) and the
+  drift-to-broken path.
+
+Source adapters: 12 → **14** (9 key-less + 5 LLM scrapers); regional coverage
+8 → **10**. Pre-flight probes updated to the real listing endpoints
+(pr2127 elenco-avvisi, sardegnaimpresa /it/agevolazioni).
+
 ## [0.8.0] — 2026-06-12 — Regional coverage wave 2
 
 ### Added

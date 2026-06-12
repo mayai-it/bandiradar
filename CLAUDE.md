@@ -35,6 +35,8 @@ src/bandiradar/
     trentino.py    # Prov. Trento FEASR — CKAN open-data CSV adapter
     veneto.py      # Veneto SIU — LlmScraperSource (landing-seeded crawl)
     piemonte.py    # Piemonte Drupal — LlmScraperSource (Views, stato=Aperto)
+    puglia.py      # Puglia PR 21-27 — LlmScraperSource (Liferay fragment, badge)
+    sardegna.py    # Sardegna Impresa — LlmScraperSource (Views listing)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
@@ -68,11 +70,11 @@ bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
-## Sources (12)
+## Sources (14)
 `anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio`, `sicilia`,
 `emilia_romagna`, `trentino` are **key-less** (no credentials, public APIs/feeds);
-`toscana`, `veneto`, `piemonte` are **LLM scrapers** (HTML portals, no clean data
-API). Three **reusable bases** keep regions cheap to add: `sources/wordpress.py`
+`toscana`, `veneto`, `piemonte`, `puglia`, `sardegna` are **LLM scrapers** (HTML
+portals, no clean data API). Three **reusable bases** keep regions cheap to add: `sources/wordpress.py`
 (`WordPressBandiSource`) for WP-REST portals — `lazio`, and `sicilia` (standard
 `posts` + a `categories=<id>` filter via `extra_params`); `sources/plone.py`
 (`PloneBandoSource`) for Plone PAs running the AGID `Bando` content type
@@ -83,7 +85,10 @@ extraction/cache/mapper/fixture + crawl-drift DETECTION (golden + `validate_refs
 an HTML parse has no recipe to auto-heal → drift is human-flagged). `veneto` (SIU
 landing-seeded — the portal's JSON layer stonewalls bots) and `piemonte` (Drupal
 Views listing, server-side stato="Aperto" filter) are its first subclasses;
-`toscana` (WP-REST JSON listing) still wires the full CrawlRecipe healer.
+`toscana` (WP-REST JSON listing) still wires the full CrawlRecipe healer;
+`puglia` (PR-2021-2027 Liferay news-list fragment, "Bando aperto" badge filter —
+sistema.puglia.it is a frameset service registry, not viable) and `sardegna`
+(Sardegna Impresa Views listing) joined in wave 2b.
 `trentino` is a dedicated CKAN-CSV adapter (FEASR calendar).
 Note the two ANAC adapters are complementary, not duplicates:
 - **`anac_pvl`** = ANAC *Pubblicità a Valore Legale* — the **live feed of OPEN

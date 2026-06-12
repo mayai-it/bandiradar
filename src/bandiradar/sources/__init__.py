@@ -19,6 +19,8 @@ from bandiradar.sources import incentivi as incentivi  # noqa: F401  (registrati
 from bandiradar.sources import lazio as lazio  # noqa: F401  (registration)
 from bandiradar.sources import lombardia as lombardia  # noqa: F401  (registration)
 from bandiradar.sources import piemonte as piemonte  # noqa: F401  (registration)
+from bandiradar.sources import puglia as puglia  # noqa: F401  (registration)
+from bandiradar.sources import sardegna as sardegna  # noqa: F401  (registration)
 from bandiradar.sources import sicilia as sicilia  # noqa: F401  (registration)
 from bandiradar.sources import ted as ted  # noqa: F401  (registration side effect)
 from bandiradar.sources import toscana as toscana  # noqa: F401  (registration)
