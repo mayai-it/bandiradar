@@ -17,6 +17,7 @@ const ALLOWED_HOSTS = [
   "www.sviluppocampania.it",  // campania source — probe-first, route if runners are blocked
   "www.regione.fvg.it",       // wave-2 recon: blocked direct from runners
   "bandi.regione.veneto.it",  // veneto SIU — started blocking GitHub runners
+  "portalebandi.regione.basilicata.it", // basilicata — blocks runners, EU datacenter OK
   "www.regione.abruzzo.it",   // wave-2 recon: blocked direct from runners
 ];
 

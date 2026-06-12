@@ -48,7 +48,7 @@ jobs:
       # joined incentivi when euroinfosicilia started dropping runner IPs; fvg is
       # blocked direct but answers the fra1 relay — verified). Candidates are
       # probed via relay below BEFORE any routing decision.
-      BANDIRADAR_RELAY_HOSTS: www.incentivi.gov.it,www.euroinfosicilia.it,www.regione.fvg.it,bandi.regione.veneto.it
+      BANDIRADAR_RELAY_HOSTS: www.incentivi.gov.it,www.euroinfosicilia.it,www.regione.fvg.it,bandi.regione.veneto.it,portalebandi.regione.basilicata.it
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -182,6 +182,7 @@ jobs:
             probe_relay campania  "https://www.sviluppocampania.it/bandi-aperti/"
             probe_relay fvg       "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/ricerca.jsp?txtChiave=&onlyTagServizio=1&startsearch=vai"
             probe_relay veneto    "https://bandi.regione.veneto.it/Public/Index"
+            probe_relay basilicata "https://portalebandi.regione.basilicata.it/wp-json/wp/v2/avvisi-e-bandi?per_page=1"
             probe_relay abruzzo   "https://www.regione.abruzzo.it"
           else
             echo "  probes via relay: relay not configured — skipped"
