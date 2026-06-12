@@ -11,7 +11,7 @@
 > One normalized feed of **OPEN Italian tenders** (incl. sub-threshold gare) **+
 > incentives**, behind a crawl that **repairs itself** when a portal drifts.
 
-**Runs offline, zero secrets · 9 live key-less sources + 7 LLM-assisted scrapers · includes live OPEN Italian tenders (incl. sub-threshold) · optional LLM Stage-2 · MIT**
+**Runs offline, zero secrets · 9 live key-less sources + 10 LLM-assisted scrapers · includes live OPEN Italian tenders (incl. sub-threshold) · optional LLM Stage-2 · MIT**
 
 ## Coverage
 
@@ -28,10 +28,10 @@
 - **9 live, key-less sources** — TED (EU), incentivi.gov.it (national), `anac_pvl`
   (national open tenders), and the regions Lombardia, Lazio, **Sicilia**, **Emilia-
   Romagna** and **Trento (FEASR)**; plus ANAC OCDS as a key-less **historical /
-  awarded-contracts** feed (analysis, not open calls). **7 LLM-assisted scrapers**
-  for API-less portals — Toscana, **Veneto**, **Piemonte**, **Puglia**,
-  **Sardegna**, **FVG** and **Campania** (live fetch needs an LLM key; `--sample`
-  replays a recorded extraction offline).
+  awarded-contracts** feed (analysis, not open calls). **10 LLM-assisted scrapers**
+  for API-less portals — Toscana, Veneto, Piemonte, Puglia, Sardegna, FVG,
+  Campania, **Calabria**, **Basilicata** and **Liguria** (live fetch needs an LLM
+  key; `--sample` replays a recorded extraction offline).
 - **Live OPEN Italian tenders** (`anac_pvl`) — the national *Pubblicità a Valore
   Legale* feed of open, biddable gare, **incl. sub-threshold** ones TED never lists,
   **no credentials** — the biddable feed the other sources lack.
@@ -286,6 +286,9 @@ recall-oriented whatever the mode.
 | **`sardegna`** | Regione Sardegna — **regional agevolazioni** from Sardegna Impresa (Drupal). **LLM scraper** seeded by the server-rendered `/it/agevolazioni` Views listing (structured per-item scadenza). | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays a recorded extraction offline. |
 | **`fvg`** | Regione FVG — **contributi-bearing bandi in corso** from the regione.fvg.it bandi module, via the portal's own "misure contributive" filter (server-side). **LLM scraper**. *(CI: routed via the EU-pinned relay — the host drops runner IPs.)* | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays a recorded extraction offline. |
 | **`campania`** | Regione Campania — **curated open business bandi** from Sviluppo Campania (`/bandi-aperti/` media-image widgets; the FESR portal blocks even the relay). **LLM scraper**; honest scope: the curated open set is small (~6). | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays a recorded extraction offline. |
+| **`calabria`** | Regione Calabria — **PR 2021-2027 bandi** from Calabria Europa: the `bando` custom post type is OPEN over WP-REST (records carry only id/link/title), so the JSON listing seeds the crawl and the LLM extracts the rich detail pages. | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays offline. |
+| **`basilicata`** | Regione Basilicata — **all regional avvisi** from the dedicated portalebandi (open `avvisi-e-bandi` CPT over WP-REST; structured detail pages: Destinatari, Importo, giorni alla scadenza). The LLM classifies tenders vs incentives. | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays offline. |
+| **`liguria`** | Regione Liguria — **active contributi** from the portal's Joomla `publiccompetition` search, filtered server-side (tipologia "contributi" + stato "Attivi"; session cookie + CSRF token handled by the crawl). | ⚠️ Wired — live `fetch()` **needs an LLM key**; `--sample` replays offline. |
 | **`sicilia`** | Regione Siciliana — **regional FESR/FSC incentives** (`kind="incentive"`), from EuroInfoSicilia. Standard WordPress posts under the "Bandi e Avvisi" category (config over the shared WP base + a `categories` filter). | ✅ Wired — WP REST, no API key. |
 | **`emilia_romagna`** | Regione Emilia-Romagna — **regional incentives** (`kind="incentive"`) from the Politiche territoriali portal. Plone `Bando` content type with a **structured `scadenza_bando` deadline** (no text-parsing). | ✅ Wired — plone.restapi `@search`, no API key. |
 | **`trentino`** | Provincia Autonoma di Trento — **FEASR rural-development incentives** (`kind="incentive"`), from a dati.trentino.it CKAN open-data CSV (carries currently-open bandi, with importo and open/close dates). | ✅ Wired — CKAN CSV, no API key. |
@@ -584,9 +587,10 @@ Registration and an offline example session are in [`docs/MCP.md`](docs/MCP.md).
 - ✅ **Live OPEN Italian tenders** — `anac_pvl` (Pubblicità a Valore Legale) is the
   national feed of open, biddable gare, incl. sub-threshold ones TED never lists, no
   credentials; it keeps only still-open notices.
-- ✅ **7 LLM-assisted scrapers** — `toscana`, `veneto`, `piemonte`, `puglia`,
-  `sardegna`, `fvg`, `campania`: live `fetch()` extracts fields from each portal's
-  HTML bando pages with an LLM (needs a key); `--sample` replays offline.
+- ✅ **10 LLM-assisted scrapers** — `toscana`, `veneto`, `piemonte`, `puglia`,
+  `sardegna`, `fvg`, `campania`, `calabria`, `basilicata`, `liguria`: live
+  `fetch()` extracts fields from each portal's HTML bando pages with an LLM
+  (needs a key); `--sample` replays offline.
 - ✅ **Self-healing crawl** — a drifted scraper listing triggers an LLM that
   re-derives the crawl recipe (data, not code); it's adopted only when it exactly
   reproduces the last-good results, else human-flagged.
@@ -727,6 +731,16 @@ its operator requires you to honor:
   `sviluppocampania.it`; the public open-bandi page seeds the crawl and the fields
   are LLM-extracted from each public post. Source: Sviluppo Campania / Regione
   Campania; attribute the source when reusing.
+- **Regione Calabria / Calabria Europa** — bandi published on
+  `calabriaeuropa.regione.calabria.it` (PR 2021-2027) and read via its open
+  WP-REST `bando` type; fields LLM-extracted from each public page. Source:
+  Regione Calabria; attribute the source when reusing.
+- **Regione Basilicata** — avvisi published on
+  `portalebandi.regione.basilicata.it` and read via its open WP-REST type; fields
+  LLM-extracted from each public page. Source: Regione Basilicata; attribute.
+- **Regione Liguria** — bandi published on `regione.liguria.it`
+  (publiccompetition); the public filtered search seeds the crawl and fields are
+  LLM-extracted from each public page. Source: Regione Liguria; attribute.
 - **Regione Emilia-Romagna** — bandi published on the regional Politiche
   territoriali portal (`politicheterritoriali.regione.emilia-romagna.it`) and read
   via plone.restapi (`portal_type=Bando`). Source: Regione Emilia-Romagna; attribute

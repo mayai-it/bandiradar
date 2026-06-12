@@ -1,0 +1,209 @@
+{
+ "_note": "Recorded LLM extraction over live basilicata detail pages (real capture).",
+ "_source": "https://portalebandi.regione.basilicata.it/wp-json/wp/v2/avvisi-e-bandi?per_page=20&orderby=date&order=desc",
+ "_captured": "2026-06-12",
+ "records": [
+  {
+   "title": "Servizio di vigilanza ambientale marina e sicurezza in mare per le spiagge libere della Basilicata",
+   "summary": null,
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-19",
+   "keywords": [
+    "vigilanza ambientale",
+    "sicurezza in mare",
+    "spiagge libere",
+    "demanio marittimo"
+   ],
+   "kind": "tender",
+   "_post_id": 102357,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/servizio-di-vigilanza-ambientale-marina-e-sicurezza-in-mare-per-le-spiagge-libere-della-basilicata-2/",
+   "_listing_title": "“Servizio di vigilanza ambientale marina e sicurezza in mare per le spiagge libere della Basilicata.”"
+  },
+  {
+   "title": "AVVISO DI ASTA PUBBLICA PER VENDITA DI LEGNAME DA CIPPARE – PROGETTO DI FORESTAZIONE 2025 \"AREE DEMANIALI DI COMPETENZA REGIONALE\"",
+   "summary": "Asta pubblica per la vendita di legname da cippare proveniente dal progetto di forestazione in aree demaniali regionali nei comuni di Policoro, Pisticci e Nova Siri (Matera)",
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-25",
+   "keywords": [
+    "forestazione",
+    "legname",
+    "asta pubblica",
+    "aree demaniali",
+    "progetto ambientale"
+   ],
+   "kind": "tender",
+   "_post_id": 102348,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-di-asta-pubblica-per-vendita-di-legname-da-cippare-progetto-di-forestazione-2025-aree-demaniali-di-competenza-regionale-2/",
+   "_listing_title": "AVVISO DI ASTA PUBBLICA PER VENDITA DI LEGNAME DA CIPPARE – PROGETTO DI FORESTAZIONE 2025 “AREE DEMANIALI DI COMPETENZA REGIONALE”"
+  },
+  {
+   "title": "Avviso Pubblico Riapertura sportello per la presentazione delle istanze a valere sull'Avviso Pubblico Contributi a fondo perduto per l'installazione di impianti da fonti rinnovabili a servizio delle unita' abitative ricadenti nel territorio lucano approvato con D.G.R. n. 238/2024 – Modifiche e integrazioni – Finestra annualita' 2027",
+   "summary": "Contributi a fondo perduto per l'installazione di impianti da fonti rinnovabili a servizio di unità abitative in Basilicata",
+   "eligibility_text": "IMPRESA",
+   "value_amount": 7107000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "fonti rinnovabili",
+    "impianti energetici",
+    "unità abitative",
+    "energia sostenibile"
+   ],
+   "kind": "incentive",
+   "_post_id": 102319,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-riapertura-sportello-per-la-presentazione-delle-istanze-a-valere-sullavviso-pubblico-contributi-a-fondo-finestra-annualita-2027/",
+   "_listing_title": "Avviso Pubblico Riapertura sportello per la presentazione delle istanze a valere sull’Avviso Pubblico Contributi a fondo perduto per l’installazione di impianti da fonti rinnovabili a servizio delle unita’ abitative ricadenti nel territorio lucano approvato con D.G.R. n. 238/2024 – Modifiche e integrazioni – Finestra annualita’ 2027"
+  },
+  {
+   "title": "Concessioni demaniali marittime sul Lungomare del Comune di Nova Siri",
+   "summary": "Avviso per concessioni demaniali marittime sul Lungomare del Comune di Nova Siri da destinare a chioschi per attività economico-commerciali",
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-25",
+   "keywords": [
+    "concessioni demaniali",
+    "marittime",
+    "chioschi",
+    "attività economico-commerciali",
+    "Lungomare",
+    "Nova Siri"
+   ],
+   "kind": "tender",
+   "_post_id": 102305,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-di-pubblicazione-concessioni-demaniali-marittime-sul-lungomare-del-comune-di-nova-siri/",
+   "_listing_title": "AVVISO DI PUBBLICAZIONE Concessioni demaniali marittime sul Lungomare del Comune di Nova Siri"
+  },
+  {
+   "title": "Avviso Pubblico per il rinnovo dell'Assemblea del Forum Regionale dei Giovani",
+   "summary": "Avviso pubblico per il rinnovo dell'Assemblea del Forum Regionale dei Giovani della Regione Basilicata",
+   "eligibility_text": "Destinatari: Cittadini",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-07-15",
+   "keywords": [
+    "giovani",
+    "politiche giovanili",
+    "forum regionale"
+   ],
+   "kind": "tender",
+   "_post_id": 102292,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-per-il-rinnovo-dellassemblea-del-forum-regionale-dei-giovani/",
+   "_listing_title": "Avviso Pubblico per il rinnovo dell’Assemblea del Forum Regionale dei Giovani"
+  },
+  {
+   "title": "Avviso Pubblico Sostegno alle attivita' imprenditoriali di interesse socio-assistenziale",
+   "summary": "Sostegno alle attività imprenditoriali di interesse socio-assistenziale",
+   "eligibility_text": "IMPRESA",
+   "value_amount": 8000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-09-30",
+   "keywords": [
+    "attività imprenditoriali",
+    "socio-assistenziale",
+    "sviluppo economico"
+   ],
+   "kind": "incentive",
+   "_post_id": 102273,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-sostegno-alle-attivita-imprenditoriali-di-interesse-socio-assistenziale/",
+   "_listing_title": "Avviso Pubblico Sostegno alle attivita’ imprenditoriali di interesse socio-assistenziale"
+  },
+  {
+   "title": "Avviso Pubblico Servizi all'infanzia in Gestione Privata",
+   "summary": "Contributo per garantire e migliorare l'offerta dei servizi educativi per la prima infanzia (0-36 mesi) gestiti da soggetti privati autorizzati non convenzionati",
+   "eligibility_text": "Imprese private autorizzate non convenzionate che gestiscono servizi educativi per la prima infanzia (0-36 mesi). Requisiti: possesso dell'autorizzazione al funzionamento della competente amministrazione comunale. I soggetti non convenzionati possono candidarsi esclusivamente per il numero di posti che non siano convenzionati con i Comuni.",
+   "value_amount": 3600000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-17",
+   "keywords": [
+    "servizi all'infanzia",
+    "educazione prima infanzia",
+    "nidi privati",
+    "gestione privata",
+    "contributi educativi"
+   ],
+   "kind": "incentive",
+   "_post_id": 102251,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-servizi-allinfanzia-in-gestione-privata/",
+   "_listing_title": "Avviso Pubblico Servizi all’infanzia in Gestione Privata"
+  },
+  {
+   "title": "Avviso Pubblico FC – Voucher Professionisti",
+   "summary": "Voucher per professionisti per percorsi formativi con priorità STEP e Decarbonizzazione",
+   "eligibility_text": "Cittadini liberi professionisti in possesso di Partita IVA attiva intestata esclusivamente al richiedente, iscritti agli albi di ordini o collegi professionali. Sono esclusi gli studi associati con una Partita IVA univoca.",
+   "value_amount": 1600000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "formazione professionale",
+    "voucher",
+    "STEP",
+    "decarbonizzazione",
+    "tecnologie digitali",
+    "tecnologie pulite",
+    "biotecnologie",
+    "qualificazione"
+   ],
+   "kind": "incentive",
+   "_post_id": 102230,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-fc-voucher-professionisti/",
+   "_listing_title": "Avviso Pubblico FC – Voucher Professionisti"
+  },
+  {
+   "title": "Avviso pubblico #Basilavoro 2.0 – Incentivi alle imprese per l'assunzione stabile di lavoratori disoccupati e provenienti da crisi industriali",
+   "summary": "Incentivi alle imprese per l'assunzione stabile di lavoratori disoccupati e provenienti da crisi industriali",
+   "eligibility_text": "Destinatari: IMPRESA",
+   "value_amount": 3000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2027-06-30",
+   "keywords": [
+    "incentivi",
+    "occupazione",
+    "assunzioni",
+    "lavoratori disoccupati",
+    "crisi industriali",
+    "politiche del lavoro"
+   ],
+   "kind": "incentive",
+   "_post_id": 102218,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-basilavoro-2-0-incentivi-alle-imprese-per-lassunzione-stabile-di-lavoratori-disoccupati-e-provenienti-da-crisi-industriali/",
+   "_listing_title": "Avviso pubblico #Basilavoro 2.0 – Incentivi alle imprese per l’assunzione stabile di lavoratori disoccupati e provenienti da crisi industriali"
+  },
+  {
+   "title": "Avviso pubblico #Basilaureati – Bonus alle imprese per l'assunzione di laureati disoccupati – seconda finestra",
+   "summary": "Incentivo per le imprese che assumono laureati disoccupati, con finanziamento di percorsi formativi tramite voucher e indennità di frequenza",
+   "eligibility_text": "Imprese. Destinatari: laureati disoccupati. Sono escluse le aziende che nei sei mesi precedenti hanno attivato rapporti di lavoro con il soggetto interessato (tirocinio extracurriculare non costituisce rapporto di lavoro e non rientra nei casi di esclusione).",
+   "value_amount": 2250000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-08-04",
+   "keywords": [
+    "lavoro",
+    "assunzione",
+    "laureati",
+    "disoccupati",
+    "voucher formativo",
+    "incentivi",
+    "politiche giovanili",
+    "sviluppo economico"
+   ],
+   "kind": "incentive",
+   "_post_id": 102206,
+   "_url": "https://portalebandi.regione.basilicata.it/avvisi-e-bandi/avviso-pubblico-basilaureati-bonus-alle-imprese-per-lassunzione-di-laureati-disoccupati-seconda-finestra/",
+   "_listing_title": "Avviso pubblico #Basilaureati – Bonus alle imprese per l’assunzione di laureati disoccupati – seconda finestra"
+  }
+ ]
+}

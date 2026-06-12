@@ -4,6 +4,40 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.11.0] — 2026-06-12 — Regional coverage wave 4 (final sweep)
+
+### Added
+- **`calabria`** — Calabria Europa (PR 2021-2027) bandi, as an LLM scraper. The
+  institutional WP REST is permission-locked, but the PR portal's `bando` custom
+  post type is OPEN over WP-REST (records carry only id/link/title) → the JSON
+  listing seeds the crawl, the LLM extracts the rich detail pages.
+- **`basilicata`** — the region's dedicated portalebandi, as an LLM scraper. The
+  `avvisi-e-bandi` CPT is open over WP-REST; detail pages are structured
+  (Destinatari, Importo, giorni alla scadenza). The portal publishes ALL avvisi
+  (aste/concessioni too) — the LLM classification keeps tenders vs incentives
+  honest.
+- **`liguria`** — the portal's Joomla `publiccompetition` search, as an LLM
+  scraper. Two server-side filters do the heavy lifting (tipologia "contributi" +
+  stato "Attivi"); the crawl handles the session cookie + per-session CSRF token
+  (two requests on one client). Detail pages are labelled (Data chiusura,
+  Beneficiari, dotazione).
+- **Documented skips, with every surface tried recorded in the coverage map:**
+  - *Marche* — Radware bot-protection CAPTCHA across the whole domain family for
+    datacenter callers (a JS challenge the relay cannot pass); open data holds
+    only 2019/2020 gare archives; Svim unreachable.
+  - *Umbria* — six surfaces, none viable: JS-only listings, empty Liferay shells,
+    unreachable subdomains, dati.umbria.it does not resolve.
+  - *Molise* — moliseineuropa lists stale 2014-2020-cycle avvisi; minimal volume.
+  - *Valle d'Aosta* — the bandi section 403s datacenter callers; minimal volume.
+  - *Bolzano* — service directories only, no bandi listing.
+- Real recorded fixtures (live LLM extraction: 10 × 3) + 23 offline tests;
+  cassettes for the JSON listings, the Liguria filtered-results page AND its
+  quicksearch form (CSRF-token extraction).
+
+Source adapters: 16 → **19** (9 key-less + 10 LLM scrapers); regional coverage
+12 → **15 of 21 territories — every territory now has a verdict** (15 covered +
+6 documented skips).
+
 ## [0.10.0] — 2026-06-12 — Regional coverage wave 3
 
 ### Added

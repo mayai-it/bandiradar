@@ -1,0 +1,416 @@
+<!-- trimmed quicksearch form of https://www.regione.liguria.it/bandi-e-avvisi.html (recorded 2026-06-12) -->
+<form action="https://www.regione.liguria.it/homepage-bandi-e-avvisi.html" method="post" name="pcCompetitionFormPagination" id="pcCompetitionFormPagination" onsubmit="javascript:return checkQuickSearch('La data di partenza non può essere superiore a quella di fine','I seguenti campi non sono corretti');">  
+            <div id="blockQuickSearchBox" class="blockQuickSearch container">             <div class="row fldTitolo input-group fieldBlock visiblevisible">
+                <div class="col">       
+                    <input aria-label="Titolo" placeholder="Testo libero" type="text" id="quicksearch" name="quicksearch" class="form-control txtQuickSearch" onkeypress="javascript:handle(event);" value=""/>       
+                </div>    
+             </div>             
+             
+             
+             <div class="row fldTipologie input-group fieldBlock visible">        
+                <div class="col-12">                          <div role="group" class="quickContainerBox" aria-label="Tipologie">                               <div class="form-check form-check-inline">                               
+                                 <input type="checkbox"  id="quickTipologia_4" name="quickTipologia[]" value="4" />
+                                 <label class="form-check-label" for="quickTipologia_4">Avvisi</label>
+                               </div>
+                                                              <div class="form-check form-check-inline">                               
+                                 <input type="checkbox"  id="quickTipologia_3" name="quickTipologia[]" value="3" />
+                                 <label class="form-check-label" for="quickTipologia_3">Concorsi</label>
+                               </div>
+                                                              <div class="form-check form-check-inline">                               
+                                 <input type="checkbox"  id="quickTipologia_6" name="quickTipologia[]" value="6" />
+                                 <label class="form-check-label" for="quickTipologia_6">contributi</label>
+                               </div>
+                                                              <div class="form-check form-check-inline">                               
+                                 <input type="checkbox"  id="quickTipologia_7" name="quickTipologia[]" value="7" />
+                                 <label class="form-check-label" for="quickTipologia_7">esiti</label>
+                               </div>
+                                                              <div class="form-check form-check-inline">                               
+                                 <input type="checkbox"  id="quickTipologia_2" name="quickTipologia[]" value="2" />
+                                 <label class="form-check-label" for="quickTipologia_2">Gare</label>
+                               </div>
+                                                                                   <div class="form-check form-check-inline">                               
+                                 <input type="checkbox" id="quickTipologia_suar" name="quickTipologia[]" value="suar"  onclick="window.location.href = '/homepage-suar/suar.html';"/>
+                                 <label class="form-check-label" for="quickTipologia_suar"  onclick="window.location.href = '/homepage-suar/suar.html';">Suar</label>
+                               </div>
+                       </div>           
+                </div> 
+             </div>  
+             
+             <div class="row">             
+                <div class="col-xl-6 col-md-6 col-sm-12">    
+                   <div class="fldBeneficiari input-group fieldBlock visible">                         <select aria-label="Beneficiari" id="quicksearch_beneficiari_list" name="quicksearch_beneficiari_list" class="form-control form-select txtQuickSearch" onkeypress="javascript:handle(event);"><option value='0'  >Scegli un beneficiario</option><option value='1'  >enti</option><option value='2'  >imprese</option><option value='3'  >privati</option>                         </select>                   </div>
+
+                   <div class="fldStato input-group fieldBlock visible">       
+                    <select aria-label="Stato" id="quicksearch_stato" name="quicksearch_stato" class="form-control form-select txtQuickSearch" onkeypress="javascript:handle(event);">
+                      <option value="">Tutti i bandi/gare</option><option value='0'  >Chiusi</option><option value='1'  selected>Attivi</option>                    </select> 
+                   </div>                       
+                   
+                </div>                  
+                <div class="col-xl-6 col-md-6 col-sm-12">    
+                   <div class="fldDataRange input-group fieldBlock visible">                        <div role="group" class="quickContainerBox" aria-label="Arco temporale">                               <div class="form-check">     
+                                  <input class="form-check-input" type="radio"  id="quicksearch_data_range_1" name="quicksearch_data_range" value="1" />
+                                  <label class="form-check-label" for="quicksearch_data_range_1">Oggi</label>
+                               </div> 
+                                                              <div class="form-check">     
+                                  <input class="form-check-input" type="radio"  id="quicksearch_data_range_2" name="quicksearch_data_range" value="2" />
+                                  <label class="form-check-label" for="quicksearch_data_range_2">Ultima settimana</label>
+                               </div> 
+                                                              <div class="form-check">     
+                                  <input class="form-check-input" type="radio"  id="quicksearch_data_range_3" name="quicksearch_data_range" value="3" />
+                                  <label class="form-check-label" for="quicksearch_data_range_3">Ultimo mese</label>
+                               </div> 
+                                      
+                        </div>                    
+                   </div>   
+                       
+
+                   <div class="input-group">     
+                       <div class="fldDataInizio fieldBlock pr-3 visible"><div class="field-calendar">
+        <div class="input-group">
+            <input
+            type="text"
+            id="quicksearch_datainizio"
+            name="quicksearch_datainizio"
+            value=""
+                        class="form-control"                        placeholder="Data inizio"            data-alt-value="" autocomplete="off">
+        <button type="button" class="btn btn-primary"
+            id="quicksearch_datainizio_btn"
+            title="Apri il calendario"
+            data-inputfield="quicksearch_datainizio" data-button="quicksearch_datainizio_btn" data-date-format="%d-%m-%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0" data-min-year="" data-max-year="" data-date-type="gregorian"        ><span class="icon-calendar" aria-hidden="true"></span>
+        <span class="visually-hidden">Apri il calendario</span>
+        </button>
+            </div>
+        </div>
+       
+                       </div>        
+                       <div class="fldDataApertura fieldBlock hide"><div class="field-calendar">
+        <div class="input-group">
+            <input
+            type="text"
+            id="quicksearch_dataapertura"
+            name="quicksearch_dataapertura"
+            value=""
+                        class="form-control"                        placeholder="Data apertura"            data-alt-value="" autocomplete="off">
+        <button type="button" class="btn btn-primary"
+            id="quicksearch_dataapertura_btn"
+            title="Apri il calendario"
+            data-inputfield="quicksearch_dataapertura" data-button="quicksearch_dataapertura_btn" data-date-format="%d-%m-%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0" data-min-year="" data-max-year="" data-date-type="gregorian"        ><span class="icon-calendar" aria-hidden="true"></span>
+        <span class="visually-hidden">Apri il calendario</span>
+        </button>
+            </div>
+        </div>
+       
+                       </div>                  
+                       <div class="fldDataFine fieldBlock visible"><div class="field-calendar">
+        <div class="input-group">
+            <input
+            type="text"
+            id="quicksearch_datafine"
+            name="quicksearch_datafine"
+            value=""
+                        class="form-control"                        placeholder="Data fine"            data-alt-value="" autocomplete="off">
+        <button type="button" class="btn btn-primary"
+            id="quicksearch_datafine_btn"
+            title="Apri il calendario"
+            data-inputfield="quicksearch_datafine" data-button="quicksearch_datafine_btn" data-date-format="%d-%m-%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0" data-min-year="" data-max-year="" data-date-type="gregorian"        ><span class="icon-calendar" aria-hidden="true"></span>
+        <span class="visually-hidden">Apri il calendario</span>
+        </button>
+            </div>
+        </div>
+       
+                       </div>           
+                       <div class="fldDataAggiudicazione fieldBlock hide"><div class="field-calendar">
+        <div class="input-group">
+            <input
+            type="text"
+            id="quicksearch_dataaggiudicazione"
+            name="quicksearch_dataaggiudicazione"
+            value=""
+                        class="form-control"                        placeholder="Data aggiudicazione"            data-alt-value="" autocomplete="off">
+        <button type="button" class="btn btn-primary"
+            id="quicksearch_dataaggiudicazione_btn"
+            title="Apri il calendario"
+            data-inputfield="quicksearch_dataaggiudicazione" data-button="quicksearch_dataaggiudicazione_btn" data-date-format="%d-%m-%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0" data-min-year="" data-max-year="" data-date-type="gregorian"        ><span class="icon-calendar" aria-hidden="true"></span>
+        <span class="visually-hidden">Apri il calendario</span>
+        </button>
+            </div>
+        </div>
+       
+                       </div>    
+                   </div>    
+                </div>                          
+             </div>  
+                           
+
+                           
+                        
+                        
+                        
+                        
+                        
+               <div class="hide col-12 col-sm-12 col-md-12 col-lg-12" style="order:10">
+                 <div class="input-group"><select autocomplete='off' data-placeholder="Seleziona Campo ordinamento" aria-label="Campo ordinamento" id="quicksearch_OrderField" name="quicksearch_OrderField[]" class="form-control form-select  txtQuickSearch " onchange="javascript:handle(event);">  <option value="">Campo ordinamento</option>   <option value='1'  >Titolo</option>   <option value='2'  selected>Data inizio</option>   <option value='3'  >Data fine</option>   <option value='4'  >Tipologia</option>   <option value='5'  >Hits</option>   <option value='6'  >Data apertura</option>   <option value='7'  >Data aggiudicazione</option></select>                 </div>       
+               </div>     
+               
+               <div class="hide  col-12 col-sm-12 col-md-12 col-lg-12" style="order:10">
+                 <div class="input-group"><select autocomplete='off' data-placeholder="Seleziona Verso ordinamento" aria-label="Verso ordinamento" id="quicksearch_OrderDir" name="quicksearch_OrderDir[]" class="form-control form-select  txtQuickSearch " onchange="javascript:handle(event);">  <option value="">Verso ordinamento</option>   <option value='0'  >Ordine ascendente</option>   <option value='1'  selected>Ordine discendente</option></select>   
+                 </div>       
+               </div>                   
+                        
+         
+             
+             <div class="input-group fieldBlock buttons"> 
+              <input type="submit" class="btn btn-primary"   id="quicksearch_submit" name="quicksearch_submit" value="Filtra"/>
+              <input type="button" class="btn btn-secondary" id="quicksearch_reset"  name="quicksearch_reset"  value="Ripulisci" onclick="javascript:resetFieldsQuickSearch();"/>
+              <input  type="hidden"                          id="quicksearch_action" name="quicksearch_action" value="0" />
+
+              
+             </div>
+            </div>  <div id="items-container" class="container mt-4"></div>
+  <script>
+    var show_search_dynamic               = "0";  
+    var show_search_action                = "0";  
+    var show_search_async                 = "0";  
+    var show_morecontents_label           = "Carica altri contenuti";  
+    var show_morecontents_results         = "0";  
+    var show_selected_filters_remove      = "0";  
+  </script>        <div class='pc_itemlist docsBandi'>
+         <div class='sfondo_elenco_item_tag'>                  <div class='pc_item_section' data-id="180623921">
+                    <i id='sectionBandi_ico180623921'class="fa pcarrow block"></i>&nbsp;Archivio avvisi, contributi - contenuti chiusi                  </div>
+          <div class="sectionBandi" id='sectionBandi180623921' style='display:block;'>
+            <div class="container">
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>CONTRIBUTI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4645:contributo-cure-odontoiatriche-2026.html">
+                        concessione contributi a enti e associazioni per azioni di prevenzione e cura odontoiatrica in favore di minorenni in stato di disagio socioeconomico e/o in affidamento familiare o struttura residenziale - anno 2026                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 12 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;12 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 12 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;12 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 01 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;01 Luglio 2026</div>       
+                           <div class='pc_latest_item_beneficiari minisize'><i class='fa fa-people-arrows'></i>&nbsp;enti e associazioni</div>          
+                       <div class='pc_latest_item_note minisize'><i class='fa fa-sticky-note'></i>&nbsp;<strong>Note:</strong> 
+                          <div class='pc_note'>presentazione delle istanze via Sportello online entro l'1 luglio 2026</div>
+                       </div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4644:concessione-idrica-spd1638.html">
+                        Domanda di concessione idrica - Comune di Varese Ligure (Sp) - pratica SPD1638                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 11 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;11 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 11 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;11 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 11 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;11 Luglio 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4638:avviso-concessione-idrica-albenga-svd2600001.html">
+                        domanda di concessione di derivazione idrica ad uso igienico - località Bastia comune di Albenga - pratica SVD2600001                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 11 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;11 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 11 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;11 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 11 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;11 Luglio 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>CONTRIBUTI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4641:contributi-unioni-comuni-2026.html">
+                        Bando per contributi a Unioni di Comuni finalizzati al sostegno della gestione associata di funzioni comunali fondamentali - risorse anno 2026                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 03 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;03 Luglio 2026</div>       
+                           <div class='pc_latest_item_beneficiari minisize'><i class='fa fa-people-arrows'></i>&nbsp;Unioni di Comuni</div>          
+                       <div class='pc_latest_item_note minisize'><i class='fa fa-sticky-note'></i>&nbsp;<strong>Note:</strong> 
+                          <div class='pc_note'>termine di scadenza per la presentazione delle istanze 3 luglio 2026  </div>
+                       </div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4640:avviso-concessione-idrica-imperia-imd005061.html">
+                        domanda di concessione di derivazione idrica ad uso campi da calcio e strutture connesse - comune di Imperia - pratica IMD005061                        </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 28 Giugno 2026'><i class='fa icon-calendar-check'></i>&nbsp;28 Giugno 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4639:avviso-concessione-idrica-chiusavecchia-imd3852-impe322.html">
+                        domanda di concessione di derivazione idrica ad uso industriale - comune di Chiusavecchia - pratica IMD3852 (IMPE322)                        </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 09 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;09 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 28 Giugno 2026'><i class='fa icon-calendar-check'></i>&nbsp;28 Giugno 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4637:concorso-erp-sestri-levante-2026.html">
+                        bando di concorso per l'assegnazione degli alloggi di edilizia residenziale pubblica siti nel comune di Sestri Levante                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 08 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;08 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 08 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;08 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 06 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;06 Luglio 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4636:concessione-idrica-imd003854-impe325.html">
+                        Domanda concessione di derivazione idrica a uso industriale - Comune di Pontedassio (Sp) - pratica IMD003854 (IMPE325)                       </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 04 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;04 Luglio 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4634:derivazione-idrica-spd1637.html">
+                        Domanda concessione di derivazione idrica - Comune di Varese Ligure (Sp) - pratica SPD1637                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'></div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 05 Luglio 2026'><i class='fa icon-calendar-check'></i>&nbsp;05 Luglio 2026</div>                                  
+             </div>  
+           
+         </div>
+          
+              <div class='row pc_latest_item border rounded-3 hoverbg p-0 mt-3 mb-3'>       
+
+             <div class='pc_latest_item_bando d-flex flex-column col-12 col-sm-12 col-md-12 col-lg-8 ps-3'>                      <div class='pc_latest_item_fondo'><div class='pc_latest_item_fondo_link'>AVVISI</div></div>                          
+                  <div class='pc_latest_item_bando_titolo mt-2'>
+                    <h3>
+                      <a class='bando_link' href="/homepage-bandi-e-avvisi/publiccompetition/4633:concessione-idrica-mangina-albenga-svd2600008.html">
+                        domanda di concessione di derivazione idrica ad uso irriguo - località Mangina comune di Albenga - pratica SVD2600008                      </a>
+                    </h3>
+                  </div>
+                  <div class='pc_latest_item_bando_titolo mt-2'>pubblicazione istanza e relativo progetto e visita dei luoghi</div>     
+                    
+              <br/>             
+             </div>   
+             
+             <div class='pc_latest_item_subbox p-3 col-12 col-sm-12 col-md-12 col-lg-4'>     
+                       <div class='pc_latest_item_apertura minisize' title='Data pubblicazione: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_apertura_bando minisize' title='Data apertura: 05 Giugno 2026'><i class='fa icon-calendar-alt'></i>&nbsp;05 Giugno 2026</div>                       <div class='pc_latest_item_chiusura minisize' title='Data chiusura: 25 Giugno 2026'><i class='fa icon-calendar-check'></i>&nbsp;25 Giugno 2026</div>                                  
+             </div>  
+           
+         </div>
+                    
+        </div>
+      </div>   
+     </div>                
+     
+            
+           
+    </div>    
+    
+        <nav aria-label="Navigazione paginazione" class="elencoNumeroPagine mw-100">        
+          <p class='text-center paginationHeader'><span class='strTrovati'>Trovati </span><span class='spanTotResults fw-bold'>505</span><span class='strElementi'> risultati</span><span class='strElementiIn'> in </span><span class='spanTotPages fw-bold'>51</span> <span class='strPagine'>pagine</span></p><ul class='pagination'><li class='arrowSearch page-item disabled' data-page='1'><a class='page-link' href='#' aria-label='Inizio'><span aria-hidden='true'><i class='fa fa-angle-double-left'></i></span><span class='sr-only'>Previous</span></a></li><li class='arrowSearch page-item disabled' data-page='1'><a class='page-link' href='#'><span><i class='fa fa-angle-left'></i></span><span class='sr-only'>Pagina precedente</span></a></li><li class='arrowSearch page-item active' data-page='1'><a class='page-link' href='#'>1</a></li><li class='arrowSearch' onclick='gotoPage(2)' data-page='2'><a class='page-link' href='#'>2</a></li><li class='arrowSearch' onclick='gotoPage(3)' data-page='3'><a class='page-link' href='#'>3</a></li><li class='arrowSearch' onclick='gotoPage(4)' data-page='4'><a class='page-link' href='#'>4</a></li><li class='arrowSearch' onclick='gotoPage(5)' data-page='5'><a class='page-link' href='#'>5</a></li><li class='arrowSearch' onclick='gotoPage(6)' data-page='6'><a class='page-link' href='#'>6</a></li><li class='arrowSearch' onclick='gotoPage(7)' data-page='7'><a class='page-link' href='#'>7</a></li><li class='arrowSearch' onclick='gotoPage(8)' data-page='8'><a class='page-link' href='#'>8</a></li><li class='arrowSearch' onclick='gotoPage(9)' data-page='9'><a class='page-link' href='#'>9</a></li><li class='arrowSearch' onclick='gotoPage(10)' data-page='10'><a class='page-link' href='#'>10</a></li><li class='arrowSearch' onclick='gotoPage(2)' data-page='2'><a class='page-link' href='#'><span><i class='fa fa-angle-right'></i></span><span class='sr-only'>Pagina successiva</span></a></li><li class='arrowSearch' onclick='gotoPage(51)' data-page='51'><a class='page-link' href='#' aria-label='Next'><span aria-hidden='true'><i class='fa fa-angle-double-right'></i></span><span class='sr-only'>Fine</span></a></li></ul>        </nav>
+	<div>
+		<input type="hidden" name="boxchecked"                                                          value="0" />
+		<input type="hidden" name="filter_order"                                                        value="a.ordering" />
+		<input type="hidden" name="filter_order_Dir"                                                    value="ASC" />
+		<input type="hidden" name="task"                                                                value="" />
+		<input type="hidden" name="tag"                                                                 value="" />
+		<input type="hidden" name="sourcesite"                                                          value="" />
+		<input type="hidden" name="startPage"                       id="startPage"                      value="0" />
+		<input type="hidden" name="page"                            id="page"                           value="1" />
+		<input type="hidden" name="show_pc_list_quicksearch_async"  id="show_pc_list_quicksearch_async" value="0" />
+		<input type="hidden" name="show_pc_list_image_reference"    id="show_pc_list_image_reference"   value="0" />
+		<input type="hidden" name="limitstart"                                                          value="0" />
+    <input type="hidden" name="id"                              id="id"                             value="0" />		
+    <input type="hidden" name="pcOrderField"                    id="pcOrderField"                   value="2" />		
+    <input type="hidden" name="pcOrderDir"                      id="pcOrderDir"                     value="1" />		
+		<input type="hidden" name="003a503e0fa4cbfb31ef5ecdbae5abb8" value="1">	</div>
+</form>

@@ -52,15 +52,15 @@ The map that matters: not "what exists" but "what is openly reachable, and how f
 | **ANAC OCDS open data** — dati.anticorruzione.it | Awarded/retrospective contracts > €40k (OCDS) | **Open**, CC‑BY 4.0 | monthly | ✅ `anac` (intelligence/benchmarks) |
 | **TED** — Tenders Electronic Daily | EU above‑threshold open tenders | **Open** anonymous API | daily | ✅ `ted` |
 | **incentivi.gov.it + RNA** | National catalogue of business incentives | **Open** IODL open‑data export | periodic | ✅ `incentivi` — covered in the live monitor too, via the optional **EU‑pinned HTTP relay** (the endpoint geo‑blocks datacenter/extra‑EU IPs at connect; relay source in `infra/vercel-relay/`, env `BANDIRADAR_RELAY_*` — see README). Keyless runs without the relay see the documented gap in STATUS.md. |
-| **Regional portals** (12 regions: Lombardia, Lazio, Toscana, Veneto, Piemonte, Puglia, Sardegna, Sicilia, Emilia‑Romagna, Trentino, FVG, Campania, …) | Regional tenders & incentives | **Mixed** — Socrata / WP‑REST / Plone‑REST / CKAN / LLM‑scraper | varies | ⚠️ partial (12 regions covered; recon of the rest below) |
+| **Regional portals** (15 of 21 territories covered) | Regional tenders & incentives | **Mixed** — Socrata / WP‑REST / Plone‑REST / CKAN / LLM‑scraper | varies | ⚠️ 15 covered + 6 documented skips — every territory has a verdict below |
 | **PNCP real‑time full API** | All tenders, live, sub‑threshold included | **Gated** — PDND accreditation + certified‑platform registry | real‑time | ❌ Pro / partnership lever |
 | **Tender documents** (capitolati/allegati) | Full tender specs & eligibility | **Gated** — 449+ heterogeneous SA portals, mostly login/JS | n/a | ❌ measured low‑ROI (see §4) |
 
 ---
 
-## 3. What BandiRadar covers today (v0.10.0)
+## 3. What BandiRadar covers today (v0.11.0)
 
-Sixteen source adapters, each with an honest scope. Tenders **and** grants normalize
+Nineteen source adapters, each with an honest scope. Tenders **and** grants normalize
 into one canonical `Opportunity` model — something neither national hub does (PNCP and
 incentivi.gov.it are separate silos).
 
@@ -79,6 +79,9 @@ incentivi.gov.it are separate silos).
 | `sardegna` | incentive | ✅ | Regional agevolazioni | LLM‑assisted scraper; server‑rendered Views listing (Sardegna Impresa). |
 | `fvg` | incentive | ✅ | Regional contributi (in corso) | LLM‑assisted scraper; the portal's own "misure contributive" filter. CI via EU relay. |
 | `campania` | incentive | ✅ | Curated open business bandi | LLM‑assisted scraper; Sviluppo Campania /bandi‑aperti/ widgets (~6, honest scope). |
+| `calabria` | mixed | ✅ | Regional PR 2021‑2027 bandi | LLM‑assisted scraper; OPEN WP‑REST `bando` type seeds the crawl. |
+| `basilicata` | mixed | ✅ | All regional avvisi | LLM‑assisted scraper; open WP‑REST CPT on the dedicated portalebandi. |
+| `liguria` | incentive | ✅ | Active contributi | LLM‑assisted scraper; Joomla search filtered server‑side (contributi+Attivi). |
 | `sicilia` | incentive | ✅ | Regional FESR/FSC incentives | EuroInfoSicilia, standard WP posts (category filter) over the WP base. |
 | `emilia_romagna` | incentive | ✅ | Regional incentives | Plone `Bando` content type (plone.restapi); structured `scadenza_bando`. |
 | `trentino` | incentive | ✅ | Provincial FEASR incentives | dati.trentino.it CKAN open‑data CSV; carries currently‑open bandi. |
@@ -103,15 +106,15 @@ not (yet) aggregated on incentivi.gov.it. Outcomes:
 | **Campania** | sviluppocampania.it | fesr.regione.campania.it blocks even the EU relay (500); the main portal has no bandi listing; Sviluppo Campania's /bandi‑aperti/ is server‑rendered (curated widgets) | ✅ **covered in v0.10.0** (`campania`, LLM scraper) |
 | **Friuli‑VG** | regione.fvg.it (bandi module) | Socrata = retrospective only, but the bandi module's "misure contributive" search filter is server‑rendered; host drops runner IPs → routed via the EU relay | ✅ **covered in v0.10.0** (`fvg`, LLM scraper) |
 | **Sardegna** | sardegnaimpresa.eu (Drupal 10) | No jsonapi, but the /it/agevolazioni Views listing is server‑rendered with a structured per‑item scadenza | ✅ **covered in v0.9.0** (`sardegna`, LLM scraper) |
-| Marche | regione.marche.it/…/Bandi | Custom ASP; regional CKAN = historical gare archives only | 🔭 LLM‑scraper candidate |
-| Liguria | filse.it | Joomla; no API | 🔭 LLM‑scraper candidate |
-| Umbria | sviluppumbria.it | Custom; no WP‑REST | 🔭 LLM‑scraper candidate |
-| Calabria | regione.calabria.it (WP) | WordPress but REST **permission‑blocked**; calabriaeuropa non‑JSON | 🔭 LLM‑scraper candidate |
-| Basilicata | regione.basilicata.it (WP) | WP‑REST alive but no bandi type/category (bandi live on a separate custom portal) | 🔭 LLM‑scraper candidate |
+| Marche | regione.marche.it (all subdomains) | **Radware bot‑protection CAPTCHA** on the whole domain family for datacenter callers (a JS challenge — the relay cannot pass it); open data = 2019/2020 gare archives only; Svim unreachable | ⏭️ skip (bot‑walled; 4 surfaces tried) |
+| **Liguria** | regione.liguria.it (publiccompetition) | filse.it has no API, but the portal's Joomla search filters server‑side (tipologia contributi + stato Attivi; cookie+CSRF handled) | ✅ **covered in v0.11.0** (`liguria`, LLM scraper) |
+| Umbria | sviluppumbria.it, regione.umbria.it, dati.umbria.it | sviluppumbria = Liferay with JS‑only listing of the agency's own notices; the regional bandi/avvisi channels are empty Liferay shells; fesr/bandi subdomains and dati.umbria.it unreachable | ⏭️ skip (no server‑rendered listing; 6 surfaces tried) |
+| **Calabria** | calabriaeuropa.regione.calabria.it | The institutional WP REST is locked, but the PR 21‑27 portal's `bando` CPT is OPEN over WP‑REST | ✅ **covered in v0.11.0** (`calabria`, LLM scraper) |
+| **Basilicata** | portalebandi.regione.basilicata.it | The dedicated portal's `avvisi-e-bandi` CPT is OPEN over WP‑REST; structured detail pages | ✅ **covered in v0.11.0** (`basilicata`, LLM scraper) |
 | Abruzzo | regione.abruzzo.it, abruzzosviluppo.it, fesr/fse/abruzzoeuropa subdomains | **Every surface blocks datacenter IPs — including the EU‑pinned relay (500)**; zero bandi datasets on dati.gov.it | ⏭️ skip (CI‑blocked at every layer) |
-| Molise | sviluppoitaliamolise.com (WP) | WP‑REST OK but only a `project` type; minimal volume | ⏭️ skip (national hub suffices) |
-| Bolzano (PAB) | provincia.bz.it; CKAN daten.buergernetz.bz.it | Custom; CKAN not pertinent to bandi | ⏭️ skip for now |
-| Valle d'Aosta | regione.vda.it, finaosta.com | Custom / WP without bandi; minimal volume | ⏭️ skip (national hub suffices) |
+| Molise | sviluppoitaliamolise.com, moliseineuropa | sviluppoitaliamolise has only a `project` type; moliseineuropa (Drupal 7) lists 2014‑2020‑cycle avvisi (stale) | ⏭️ skip (stale/minimal; hub suffices) |
+| Bolzano (PAB) | provincia.bz.it, civis.bz.it | Service directories, no bandi listing; CKAN not pertinent | ⏭️ skip (no listing; volume minimal) |
+| Valle d'Aosta | regione.vda.it, finaosta.com | The regional bandi section 403s datacenter callers; finaosta has no bandi listing; minimal volume | ⏭️ skip (national hub suffices) |
 
 **Datacenter‑IP blocks, stated plainly:** four probed endpoints are unreachable from
 datacenter/CI IPs while working from residential ones — `incentivi.gov.it` (the
@@ -173,4 +176,4 @@ moat is the kept dataset and the accredited pipe — not the engine, which is op
 - Developers Italia — *Piattaforma dei Contratti Pubblici* (PNCP API via PDND; accredited access).
 - TED — *Tenders Electronic Daily* (EU above‑threshold, anonymous API).
 
-*Last updated: v0.10.0 · figures reflect the latest published ANAC/MIMIT data as of mid‑2026.*
+*Last updated: v0.11.0 · figures reflect the latest published ANAC/MIMIT data as of mid‑2026.*

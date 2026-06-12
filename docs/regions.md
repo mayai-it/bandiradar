@@ -27,23 +27,23 @@ than faked.
 | **Lazio** | lazioinnova.it | WP-REST `bandi` (content-rich, parseable scadenza) | ✅ **Built** (`lazio`) |
 | **Toscana** | sviluppo.toscana.it | WP-REST `bando` (links only) + HTML detail pages | ✅ **Built** (`toscana`) — REST `content` is empty + no deadline, so this is the first **LLM-assisted scraper**: fields are LLM-extracted from each bando's HTML page (live fetch needs an LLM key; `--sample` replays a recorded extraction) |
 | **Sicilia** | euroinfosicilia.it (FESR) | WP-REST: standard posts under a "Bandi e Avvisi" category | ✅ **Built** (`sicilia`, v0.6.0) — config over the WP base + a `categories` filter. (irfis.it, probed earlier, has no bandi post type.) |
-| Marche | regione.marche.it | reachable, not WP-REST | ⏭️ Skip — bespoke CMS, no clean bandi API |
+| Marche | regione.marche.it (whole family) | Radware bot-protection CAPTCHA for datacenter callers (JS challenge — relay can't pass); open data = historical gare only | ⏭️ Skip (bot-walled; 4 surfaces tried) |
 | **Piemonte** | bandi.regione.piemonte.it (Drupal 10) | Server-rendered Views listing + stato 'Aperto' filter; detail pages labelled | ✅ **Built** (`piemonte`, v0.8.0) — LLM scraper. (finpiemonte.it, probed earlier, has no API.) |
 | **Veneto** | bandi.regione.veneto.it (SIU) | JSON layer stonewalls bots; landing + Dettaglio pages server-rendered | ✅ **Built** (`veneto`, v0.8.0) — LLM scraper, landing-seeded crawl. (venetosviluppo.it, probed earlier, has no API.) |
-| Liguria | filse.it | not WordPress | ⏭️ Skip |
+| **Liguria** | regione.liguria.it (publiccompetition) | Joomla search with server-side filters: tipologia 'contributi' + stato 'Attivi' (cookie+CSRF handled by the crawl) | ✅ **Built** (`liguria`, v0.11.0) — LLM scraper. (filse.it, probed earlier, has no API.) |
 | **Friuli-VG** | regione.fvg.it (bandi module) | Server-rendered ricerca with the portal's 'misure contributive' filter | ✅ **Built** (`fvg`, v0.10.0) — LLM scraper; CI via EU relay (host drops runner IPs). |
 | **Emilia-Romagna** | politicheterritoriali.regione.emilia-romagna.it | Plone 6 REST: structured AGID `Bando` content type | ✅ **Built** (`emilia_romagna`, v0.6.0) — `PloneBandoSource`; structured `scadenza_bando`. (art-er.it and the retrospective regional CKAN, probed earlier, were not viable.) |
-| Umbria | sviluppumbria.it | not WordPress | ⏭️ Skip |
+| Umbria | sviluppumbria.it + regione.umbria.it + dati.umbria.it | JS-only listings / empty Liferay shells / unreachable subdomains | ⏭️ Skip (6 surfaces tried, none server-rendered) |
 | Abruzzo | regione.abruzzo.it + abruzzosviluppo.it + fesr/fse subdomains | ALL block datacenter IPs, incl. the EU relay (500); no open-data fallback | ⏭️ Skip (documented, every layer tried) |
 | **Campania** | sviluppocampania.it | WP-REST auth-locked + /feed 500, BUT /bandi-aperti/ is server-rendered (curated open-bandi widgets) | ✅ **Built** (`campania`, v0.10.0) — LLM scraper; honest scope ~6 curated open bandi. |
 | **Puglia** | pr2127.regione.puglia.it (Liferay) | News-list fragment with 'Bando aperto' badges; detail pages rich | ✅ **Built** (`puglia`, v0.9.0) — LLM scraper. (sistema.puglia.it is a frameset service registry, not viable.) |
-| Basilicata | sviluppobasilicata.it | not WordPress | ⏭️ Skip |
-| Calabria | fincalabra.it | not WordPress | ⏭️ Skip |
+| **Basilicata** | portalebandi.regione.basilicata.it | OPEN WP-REST `avvisi-e-bandi` CPT; structured detail pages (Destinatari, Importo, giorni alla scadenza) | ✅ **Built** (`basilicata`, v0.11.0) — LLM scraper. |
+| **Calabria** | calabriaeuropa.regione.calabria.it | The PR 21-27 portal's `bando` CPT is OPEN over WP-REST (institutional WP REST stays locked) | ✅ **Built** (`calabria`, v0.11.0) — LLM scraper. |
 | **Sardegna** | sardegnaimpresa.eu (Drupal 10) | Server-rendered /it/agevolazioni Views listing, structured per-item scadenza | ✅ **Built** (`sardegna`, v0.9.0) — LLM scraper. |
-| Molise | regione.molise.it | not WordPress | ⏭️ Skip |
+| Molise | moliseineuropa + sviluppoitaliamolise | moliseineuropa (Drupal 7) lists stale 2014-2020 avvisi; sviluppoitaliamolise volume minimal | ⏭️ Skip (stale/minimal; hub suffices) |
 | **Trento** | dati.trentino.it | CKAN open-data CSV (FEASR bandi calendar, currently-open calls) | ✅ **Built** (`trentino`, v0.6.0). (provincia.tn.it itself, probed earlier, exposes no API.) |
-| Bolzano | provincia.bz.it | not WordPress | ⏭️ Skip |
-| Valle d'Aosta | regione.vda.it | not WordPress | ⏭️ Skip |
+| Bolzano | provincia.bz.it + civis.bz.it | Service directories, no bandi listing | ⏭️ Skip (no listing; volume minimal) |
+| Valle d'Aosta | regione.vda.it + finaosta.com | Regional bandi section 403s datacenter callers; finaosta has no listing | ⏭️ Skip (volume minimal; hub suffices) |
 
 **Reality check:** the clean WP-REST-with-content pattern that makes LazioInnova
 easy is the exception, not the norm — most regional agency portals are bespoke

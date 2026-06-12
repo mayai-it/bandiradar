@@ -39,6 +39,9 @@ src/bandiradar/
     sardegna.py    # Sardegna Impresa — LlmScraperSource (Views listing)
     fvg.py         # FVG bandi module — LlmScraperSource (contributi filter; relay in CI)
     campania.py    # Sviluppo Campania — LlmScraperSource (open-bandi widgets)
+    calabria.py    # Calabria Europa — LlmScraperSource (open WP-REST bando CPT)
+    basilicata.py  # Portalebandi — LlmScraperSource (open WP-REST CPT)
+    liguria.py     # Liguria publiccompetition — LlmScraperSource (POST+CSRF, filtri)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
@@ -72,11 +75,13 @@ bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
-## Sources (16)
+## Sources (19)
 `anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio`, `sicilia`,
 `emilia_romagna`, `trentino` are **key-less** (no credentials, public APIs/feeds);
-`toscana`, `veneto`, `piemonte`, `puglia`, `sardegna`, `fvg`, `campania` are
-**LLM scrapers** (HTML portals, no clean data API). `fvg` is the first source
+`toscana`, `veneto`, `piemonte`, `puglia`, `sardegna`, `fvg`, `campania`,
+`calabria`, `basilicata`, `liguria` are **LLM scrapers** (HTML portals, no clean
+data API). Regional coverage: 15 of 21 territories; the other 6 are DOCUMENTED
+skips (coverage-map has a verdict per territory). `fvg` is the first source
 ROUTED via the EU relay in CI (host drops runner IPs but answers fra1);
 `campania` lives on sviluppocampania.it (the FESR portal blocks even the relay)
 with an honest ~6-item curated-open scope. Abruzzo is a documented SKIP: every
