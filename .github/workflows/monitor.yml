@@ -146,6 +146,17 @@ jobs:
           probe sicilia        "https://www.euroinfosicilia.it/wp-json/wp/v2/posts?categories=321&per_page=1"
           probe emilia_romagna "https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?portal_type=Bando&b_size=1"
           probe trentino       "https://dati.trentino.it/api/3/action/package_show?id=calendario-degli-avvisi-e-degli-inviti-a-partecipare-bandi-feasr"
+          # Wave-2 regional candidates — reachability from GitHub runners BEFORE
+          # building any adapter (lesson incentivi: build-then-discover-the-block
+          # is waste). Campania + Abruzzo are expected blocked direct.
+          echo "Wave-2 candidate portals (recon only, no adapter yet):"
+          probe veneto         "https://bandi.regione.veneto.it/Public/Index"
+          probe piemonte       "https://www.regione.piemonte.it/web/temi/fondi-progetti-europei"
+          probe puglia         "https://www.sistema.puglia.it"
+          probe campania       "https://fesr.regione.campania.it"
+          probe fvg            "https://www.regione.fvg.it"
+          probe sardegna       "https://www.sardegnaimpresa.eu"
+          probe abruzzo        "https://www.regione.abruzzo.it"
           # When the optional relay is configured, ALSO probe incentivi through it
           # (curl -G --data-urlencode builds the ?u=<urlencoded> exactly like the
           # engine does) so BOTH outcomes — direct and relayed — are in the log.
