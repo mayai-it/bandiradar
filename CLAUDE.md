@@ -154,6 +154,18 @@ The run fails (exit≠0) ONLY if EVERY source failed; partial failures are warni
   wall-clock per request (`DEFAULT_MAX_ELAPSED`) so a timing-out host can't burn
   minutes. A workflow step curls TED + incentivi before the watches to surface a
   runner-side 403/timeout immediately.
+- **Optional HTTP relay for CI-blocked hosts (`BANDIRADAR_RELAY_*`).** Some open
+  endpoints drop datacenter IPs at connect (incentivi.gov.it; not fixable in client
+  code). When `BANDIRADAR_RELAY_URL` + `BANDIRADAR_RELAY_TOKEN` + a host allowlist
+  `BANDIRADAR_RELAY_HOSTS` (comma-separated) are ALL set, requests to those hosts are
+  rewritten to `<relay>?u=<urlencoded-final-URL>` + an `X-Relay-Token` header. It is
+  GENERIC, implemented at the TRANSPORT layer in `http.py` (`RelayTransport`, wired by
+  `http.client()`; `stream_with_retry` rewrites up front) so the FINAL URL — params
+  merged/encoded by httpx — is captured and NO adapter is touched. Env unset ⇒ zero
+  behaviour change (the repo stays keyless; the worker is the OPERATOR'S infra, the
+  token lives only in env/secrets — guardrail 3). The workflow passes the secrets +
+  `BANDIRADAR_RELAY_HOSTS=www.incentivi.gov.it`; the pre-flight probes incentivi
+  direct AND via relay, logging both. Config read: `config.relay()`.
 - **Real LLM, or fail loudly — never a fake "LLM ON".** A key set ≠ LLM usable: the
   `anthropic` SDK is an optional extra, so `uv sync` alone would silently fall back to
   the heuristic under `--mode balanced` (an invalid operating point for the heuristic).

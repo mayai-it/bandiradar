@@ -21,6 +21,11 @@ def _force_offline(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("BANDIRADAR_LLM_MODEL", raising=False)
+    # Relay OFF for the whole suite (a dev .env must not reroute test requests);
+    # the relay tests set these explicitly via monkeypatch.
+    monkeypatch.delenv("BANDIRADAR_RELAY_URL", raising=False)
+    monkeypatch.delenv("BANDIRADAR_RELAY_TOKEN", raising=False)
+    monkeypatch.delenv("BANDIRADAR_RELAY_HOSTS", raising=False)
     # Embeddings OFF for the whole suite -> get_embedder() is None, so no model is
     # ever loaded/downloaded even if the `embeddings` extra is installed locally.
     # Tests that exercise the semantic path inject a deterministic fake embedder.

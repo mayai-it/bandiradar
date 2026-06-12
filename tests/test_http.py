@@ -197,3 +197,159 @@ def test_default_timeout_has_short_connect_bound():
     t = http.default_timeout()
     assert t.connect == http.DEFAULT_CONNECT_TIMEOUT
     assert t.read == http.DEFAULT_TIMEOUT
+
+
+# --------------------------------------------------------------------------- #
+# Optional HTTP relay for CI-blocked hosts (BANDIRADAR_RELAY_*)
+# Real httpx over a MockTransport: the rewrite happens at the transport layer
+# (final URL, params already merged), so encoding semantics are exercised.
+# --------------------------------------------------------------------------- #
+
+RELAY = "https://relay.example.workers.dev/"
+SOLR = "https://www.incentivi.gov.it/solr/coredrupal/select"
+SOLR_PARAMS = {"q": "*:*", "fq": "index_id:incentivi", "rows": 50, "wt": "json"}
+
+
+def _recording_transport(seen: list[httpx.Request]) -> httpx.MockTransport:
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        return httpx.Response(200, json={"ok": True})
+
+    return httpx.MockTransport(handler)
+
+
+def _set_relay_env(monkeypatch, hosts: str = "www.incentivi.gov.it") -> None:
+    monkeypatch.setenv("BANDIRADAR_RELAY_URL", RELAY)
+    monkeypatch.setenv("BANDIRADAR_RELAY_TOKEN", "test-relay-token")
+    monkeypatch.setenv("BANDIRADAR_RELAY_HOSTS", hosts)
+
+
+def test_relay_rewrites_allowlisted_host_with_encoded_query(monkeypatch):
+    _set_relay_env(monkeypatch)
+    seen: list[httpx.Request] = []
+    with http.client(transport=_recording_transport(seen)) as c:
+        c.get(SOLR, params=SOLR_PARAMS)
+
+    assert len(seen) == 1
+    sent = seen[0]
+    # The wire request targets the relay, not incentivi.
+    assert sent.url.host == "relay.example.workers.dev"
+    assert sent.headers["X-Relay-Token"] == "test-relay-token"
+    assert sent.headers["Host"] == "relay.example.workers.dev"
+    # `u` round-trips to the EXACT original URL — Solr query included.
+    original = httpx.URL(sent.url.params["u"])
+    assert original.host == "www.incentivi.gov.it"
+    assert dict(original.params) == {k: str(v) for k, v in SOLR_PARAMS.items()}
+    # And on the wire the original URL is percent-encoded inside the query: its
+    # own `?`/`&`/`=` must NOT leak into the relay query — `u` stays the ONLY
+    # param, with no literal separators from the Solr query surviving unencoded.
+    raw_query = sent.url.query.decode()
+    assert raw_query.startswith("u=https%3A%2F%2Fwww.incentivi.gov.it")
+    assert list(sent.url.params.keys()) == ["u"]
+    assert "&fq=" not in raw_query and "?q=" not in raw_query
+    assert "%26fq%3D" in raw_query  # the Solr '&fq=' separator, safely encoded
+
+
+def test_relay_leaves_other_hosts_direct(monkeypatch):
+    _set_relay_env(monkeypatch)
+    seen: list[httpx.Request] = []
+    with http.client(transport=_recording_transport(seen)) as c:
+        c.get("https://api.ted.europa.eu/v3/notices/search", params={"page": 1})
+
+    sent = seen[0]
+    assert sent.url.host == "api.ted.europa.eu"  # untouched
+    assert "x-relay-token" not in sent.headers
+    assert dict(sent.url.params) == {"page": "1"}
+
+
+def test_no_relay_env_means_zero_rewrites(monkeypatch):
+    # conftest already clears the env; be explicit that even the listed host
+    # goes direct when the relay is not configured.
+    monkeypatch.delenv("BANDIRADAR_RELAY_URL", raising=False)
+    seen: list[httpx.Request] = []
+    with http.client(transport=_recording_transport(seen)) as c:
+        c.get(SOLR, params=SOLR_PARAMS)
+
+    sent = seen[0]
+    assert sent.url.host == "www.incentivi.gov.it"
+    assert "x-relay-token" not in sent.headers
+
+
+def test_relay_requires_all_three_vars(monkeypatch):
+    # URL + hosts but NO token -> not configured -> direct.
+    monkeypatch.setenv("BANDIRADAR_RELAY_URL", RELAY)
+    monkeypatch.setenv("BANDIRADAR_RELAY_HOSTS", "www.incentivi.gov.it")
+    monkeypatch.delenv("BANDIRADAR_RELAY_TOKEN", raising=False)
+    seen: list[httpx.Request] = []
+    with http.client(transport=_recording_transport(seen)) as c:
+        c.get(SOLR)
+    assert seen[0].url.host == "www.incentivi.gov.it"
+
+
+def test_relay_transport_wraps_caller_transport_and_close_propagates(monkeypatch):
+    _set_relay_env(monkeypatch)
+    closed: list[bool] = []
+
+    class _Inner(httpx.MockTransport):
+        def close(self) -> None:
+            closed.append(True)
+
+    inner = _Inner(lambda r: httpx.Response(200, json={}))
+    c = http.client(transport=inner)
+    c.get(SOLR)
+    c.close()
+    assert closed == [True]
+
+
+def test_stream_with_retry_relays_allowlisted_host(monkeypatch):
+    _set_relay_env(monkeypatch)
+    calls: list[tuple[str, dict]] = []
+
+    class _CM:
+        def __enter__(self):
+            return httpx.Response(200, request=httpx.Request("GET", RELAY))
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake_stream(method, url, **kwargs):
+        calls.append((url, kwargs))
+        return _CM()
+
+    monkeypatch.setattr(http.httpx, "stream", fake_stream)
+    with http.stream_with_retry(
+        "GET", SOLR, what="x", params={"fq": "index_id:incentivi"}
+    ) as resp:
+        assert resp.status_code == 200
+
+    url, kwargs = calls[0]
+    parsed = httpx.URL(url)
+    assert parsed.host == "relay.example.workers.dev"
+    # params were folded into the original URL BEFORE rewriting (no params kwarg
+    # left to re-merge onto the relay URL), and the token header is present.
+    assert "params" not in kwargs
+    inner = httpx.URL(parsed.params["u"])
+    assert inner.host == "www.incentivi.gov.it"
+    assert inner.params["fq"] == "index_id:incentivi"
+    assert kwargs["headers"]["X-Relay-Token"] == "test-relay-token"
+
+
+def test_stream_with_retry_unconfigured_keeps_params_kwarg(monkeypatch):
+    calls: list[tuple[str, dict]] = []
+
+    class _CM:
+        def __enter__(self):
+            return httpx.Response(200, request=httpx.Request("GET", SOLR))
+
+        def __exit__(self, *exc):
+            return False
+
+    monkeypatch.setattr(
+        http.httpx, "stream", lambda m, u, **kw: calls.append((u, kw)) or _CM()
+    )
+    with http.stream_with_retry("GET", SOLR, what="x", params={"a": "b"}) as resp:
+        assert resp.status_code == 200
+    url, kwargs = calls[0]
+    assert url == SOLR  # untouched
+    assert kwargs["params"] == {"a": "b"}  # passthrough as before
+    assert "X-Relay-Token" not in kwargs["headers"]

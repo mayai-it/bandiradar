@@ -36,6 +36,13 @@ jobs:
       # run; the rest defer to later runs (the score cache amortizes them). Keyless
       # runs ignore it. Unset => unlimited.
       BANDIRADAR_LLM_BUDGET: "1500"
+      # Optional HTTP relay for CI-blocked hosts (incentivi.gov.it drops datacenter
+      # IPs at connect). The relay (a Cloudflare Worker with its own host allowlist)
+      # is the operator's infrastructure; secrets absent => no rerouting, the gap
+      # stays documented and everything else runs as today.
+      BANDIRADAR_RELAY_URL: ${{ secrets.BANDIRADAR_RELAY_URL }}
+      BANDIRADAR_RELAY_TOKEN: ${{ secrets.BANDIRADAR_RELAY_TOKEN }}
+      BANDIRADAR_RELAY_HOSTS: www.incentivi.gov.it
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -137,6 +144,18 @@ jobs:
           probe sicilia        "https://www.euroinfosicilia.it/wp-json/wp/v2/posts?categories=321&per_page=1"
           probe emilia_romagna "https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?portal_type=Bando&b_size=1"
           probe trentino       "https://dati.trentino.it/api/3/action/package_show?id=calendario-degli-avvisi-e-degli-inviti-a-partecipare-bandi-feasr"
+          # When the optional relay is configured, ALSO probe incentivi through it
+          # (curl -G --data-urlencode builds the ?u=<urlencoded> exactly like the
+          # engine does) so BOTH outcomes — direct and relayed — are in the log.
+          if [ -n "${BANDIRADAR_RELAY_URL:-}" ] && [ -n "${BANDIRADAR_RELAY_TOKEN:-}" ]; then
+            code=$(curl -G -sS -o /dev/null -m 20 -A "$ua" \
+              -H "X-Relay-Token: ${BANDIRADAR_RELAY_TOKEN}" \
+              --data-urlencode "u=https://www.incentivi.gov.it/solr/coredrupal/select?q=*:*&rows=1&wt=json" \
+              -w "%{http_code}" "$BANDIRADAR_RELAY_URL" 2>/dev/null || echo "000(curl-error)")
+            echo "  probe incentivi (via relay): HTTP $code"
+          else
+            echo "  probe incentivi (via relay): relay not configured — skipped"
+          fi
 
       - name: Watch every bundled profile (single fetch, rest reuse the DB)
         # Budget the long part HERE, not on the job: if scoring backlogs, this step

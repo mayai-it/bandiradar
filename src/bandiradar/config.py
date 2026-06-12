@@ -73,6 +73,29 @@ def api_key(provider: str) -> str | None:
     return key or None
 
 
+def relay() -> tuple[str, str, frozenset[str]] | None:
+    """Optional HTTP relay for CI-blocked hosts: ``(url, token, hosts)`` or None.
+
+    Some open endpoints (e.g. incentivi.gov.it) drop datacenter-IP connections, so
+    the CI monitor can't reach them directly. When ALL THREE env vars are set —
+    ``BANDIRADAR_RELAY_URL`` (the operator's relay/worker endpoint),
+    ``BANDIRADAR_RELAY_TOKEN`` (sent as ``X-Relay-Token``; comes from env/secrets,
+    NEVER the repo), and ``BANDIRADAR_RELAY_HOSTS`` (comma-separated allowlist of
+    hosts to reroute, e.g. ``www.incentivi.gov.it``) — requests to those hosts are
+    rewritten to ``<url>?u=<original-url>``. Any var missing/blank => ``None`` and
+    behaviour is unchanged (the repo stays keyless and fully functional without)."""
+    url = os.environ.get("BANDIRADAR_RELAY_URL", "").strip()
+    token = os.environ.get("BANDIRADAR_RELAY_TOKEN", "").strip()
+    hosts = frozenset(
+        h.strip().lower()
+        for h in os.environ.get("BANDIRADAR_RELAY_HOSTS", "").split(",")
+        if h.strip()
+    )
+    if url and token and hosts:
+        return url, token, hosts
+    return None
+
+
 def llm_budget() -> int | None:
     """Max NEW LLM scorings (cache misses) per run, from ``BANDIRADAR_LLM_BUDGET``.
 

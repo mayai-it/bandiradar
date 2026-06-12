@@ -4,6 +4,24 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.7.0] — 2026-06-12 — Optional HTTP relay for CI-blocked sources
+
+### Added
+- **Optional HTTP relay** (`BANDIRADAR_RELAY_URL` / `BANDIRADAR_RELAY_TOKEN` /
+  `BANDIRADAR_RELAY_HOSTS`) for sources whose endpoints drop datacenter IPs at the
+  connection level (incentivi.gov.it from GitHub runners — the documented monitor
+  gap). When all three env vars are set, requests to allowlisted hosts are
+  transparently rewritten to `<relay>?u=<urlencoded-final-URL>` with an
+  `X-Relay-Token` header. Generic and adapter-transparent: implemented at the
+  TRANSPORT layer in `http.py` (`RelayTransport`, wired by `http.client()`;
+  `stream_with_retry` rewrites up front), so the final URL — query already merged
+  and encoded by httpx — is what gets relayed; no adapter was touched. With the env
+  unset, behaviour is byte-for-byte unchanged (the repo stays keyless and fully
+  functional; the relay worker is the operator's infrastructure; the token lives
+  only in env/secrets, never the repo). The monitor workflow passes the secrets +
+  `BANDIRADAR_RELAY_HOSTS=www.incentivi.gov.it`, and the pre-flight step probes
+  incentivi both direct and via relay, logging both outcomes.
+
 ## [0.6.0] — 2026-06-12 — Regional coverage wave 1
 
 ### Added

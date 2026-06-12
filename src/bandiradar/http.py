@@ -25,7 +25,7 @@ from contextlib import contextmanager
 
 import httpx
 
-from bandiradar import __version__
+from bandiradar import __version__, config
 from bandiradar.models import FetchErrorKind
 
 DEFAULT_TIMEOUT = 60.0
@@ -62,6 +62,58 @@ def default_timeout() -> httpx.Timeout:
     return httpx.Timeout(DEFAULT_TIMEOUT, connect=DEFAULT_CONNECT_TIMEOUT)
 
 
+# Header carrying the relay auth token (value from env/secrets, never the repo).
+RELAY_TOKEN_HEADER = "X-Relay-Token"
+
+
+class RelayTransport(httpx.BaseTransport):
+    """Transport wrapper that reroutes allowlisted hosts through an HTTP relay.
+
+    Generic, not per-source: working at the TRANSPORT layer means the FINAL request
+    URL (with httpx's ``params`` already merged and encoded) is captured, so the
+    rewrite is fully transparent to adapters. A request whose host is in the
+    allowlist becomes ``GET <relay>?u=<urlencoded original URL>`` with the
+    ``X-Relay-Token`` header; every other request passes through untouched.
+    The relay itself (e.g. a Cloudflare Worker with its own host allowlist) is the
+    OPERATOR'S infrastructure — this repo only knows how to address one.
+    """
+
+    def __init__(
+        self,
+        relay_url: str,
+        token: str,
+        hosts: frozenset[str],
+        inner: httpx.BaseTransport | None = None,
+    ) -> None:
+        self._relay = httpx.URL(relay_url)
+        self._token = token
+        self._hosts = hosts
+        self._inner = inner if inner is not None else httpx.HTTPTransport()
+
+    def handle_request(self, request: httpx.Request) -> httpx.Response:
+        if (request.url.host or "").lower() in self._hosts:
+            # copy_set_param percent-encodes the full original URL (query included).
+            rerouted = self._relay.copy_set_param("u", str(request.url))
+            request.url = rerouted
+            request.headers["Host"] = rerouted.netloc.decode("ascii")
+            request.headers[RELAY_TOKEN_HEADER] = self._token
+        return self._inner.handle_request(request)
+
+    def close(self) -> None:
+        self._inner.close()
+
+
+def _relay_transport(
+    inner: httpx.BaseTransport | None = None,
+) -> httpx.BaseTransport | None:
+    """A RelayTransport when the relay env is fully configured, else None."""
+    cfg = config.relay()
+    if cfg is None:
+        return None
+    relay_url, token, hosts = cfg
+    return RelayTransport(relay_url, token, hosts, inner=inner)
+
+
 def client(
     *,
     timeout: float | httpx.Timeout | None = None,
@@ -70,8 +122,18 @@ def client(
 ) -> httpx.Client:
     """Build an ``httpx.Client`` that ALWAYS sends the identifying User-Agent and a
     fail-fast connect timeout. Use this instead of ``httpx.Client(...)`` directly so
-    every source behaves the same. Caller headers override the defaults."""
+    every source behaves the same. Caller headers override the defaults.
+
+    When the optional relay is configured (see :func:`config.relay`), the client's
+    transport reroutes allowlisted hosts through it — wrapping any caller-supplied
+    ``transport`` as the inner one. With no relay env set, behaviour is unchanged."""
     merged = {**DEFAULT_HEADERS, **(headers or {})}
+    inner = kwargs.pop("transport", None)
+    relayed = _relay_transport(inner=inner)  # type: ignore[arg-type]
+    if relayed is not None:
+        kwargs["transport"] = relayed
+    elif inner is not None:
+        kwargs["transport"] = inner  # no relay: caller's transport passes through
     return httpx.Client(
         timeout=timeout if timeout is not None else default_timeout(),
         headers=merged,
@@ -203,10 +265,24 @@ def stream_with_retry(
     Yields an open ``httpx.Response`` for byte streaming. Only the connection +
     initial status are retried (a failure mid-stream cannot be resumed); that
     partial case is handled at the run level by progressive save. Sends the shared
-    identifying User-Agent (caller ``headers`` override). Raises :class:`FetchError`
-    when retries OR the cumulative ``max_elapsed`` budget are exhausted.
+    identifying User-Agent (caller ``headers`` override). Honours the optional
+    relay for allowlisted hosts (the top-level ``httpx.stream`` takes no transport,
+    so here the URL/headers are rewritten up front — any ``params`` kwarg is folded
+    into the URL first so the relayed ``u`` carries the full final query). Raises
+    :class:`FetchError` when retries OR the cumulative ``max_elapsed`` budget are
+    exhausted.
     """
-    kwargs["headers"] = {**DEFAULT_HEADERS, **(kwargs.get("headers") or {})}  # type: ignore[dict-item]
+    headers = {**DEFAULT_HEADERS, **(kwargs.pop("headers", None) or {})}  # type: ignore[arg-type]
+    cfg = config.relay()
+    if cfg is not None:
+        relay_url, token, hosts = cfg
+        full = httpx.URL(url, params=kwargs.pop("params", None))  # type: ignore[arg-type]
+        if (full.host or "").lower() in hosts:
+            url = str(httpx.URL(relay_url).copy_set_param("u", str(full)))
+            headers[RELAY_TOKEN_HEADER] = token
+        else:
+            url = str(full)
+    kwargs["headers"] = headers
     effective_timeout = timeout if timeout is not None else default_timeout()
     last_error = "unknown error"
     last_kind: FetchErrorKind = "unknown"
