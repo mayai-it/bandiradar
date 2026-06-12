@@ -10,7 +10,9 @@ name: monitor
 
 on:
   schedule:
-    - cron: "0 6 * * *" # 06:00 UTC daily
+    # 05:23 UTC daily — off-peak minute on purpose: GitHub often skips schedules
+    # that fire on the hour (minute 0) under load congestion.
+    - cron: "23 5 * * *"
   workflow_dispatch: {} # manual trigger
 
 # Needed to force-push the generated state to the monitor-data branch.

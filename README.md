@@ -499,7 +499,8 @@ hosting live in `bandiradar-pro`.
 
 This repo monitors itself. A GitHub Actions workflow
 ([`.github/workflows/monitor.yml`](.github/workflows/monitor.yml)) runs **every day
-at 06:00 UTC** (and on demand): it fetches every key-less source — plus `toscana`,
+at 05:23 UTC** (an off-peak minute — GitHub often skips on-the-hour schedules; and
+on demand): it fetches every key-less source — plus `toscana`,
 so the [self-healing crawl](#self-healing-crawl) drift-check runs in production —
 watches **every bundled profile**, and publishes the results to the orphan
 [**`monitor-data`** branch](../../tree/monitor-data):

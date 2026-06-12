@@ -98,7 +98,8 @@ and the per-source override/golden config lives in `recipe_store.py` (auditable:
 (GIF in the README).
 
 ## Live monitor (GitHub Actions — self-maintaining)
-`.github/workflows/monitor.yml` runs daily (cron `0 6 * * *`) + on demand
+`.github/workflows/monitor.yml` runs daily (cron `23 5 * * *` — off-peak minute,
+GitHub often drops on-the-hour schedules) + on demand
 (`timeout-minutes: 60`). It checks out an orphan **`monitor-data`** branch into
 `./state/` (created empty if absent), points the DB at `state/bandiradar.db` (via the
 existing `BANDIRADAR_DB` env — already honoured by `storage._default_db_path`), runs
