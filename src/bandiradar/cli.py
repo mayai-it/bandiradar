@@ -582,6 +582,28 @@ def trust_list(
         typer.echo(f"    {o.source_url}")
 
 
+@trust_app.command("backfill")
+def trust_backfill(
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    json_out: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Copy cached TrustReports onto opportunities still missing a verdict.
+
+    Pre-0.12.0 rows never receive the trust fields from a normal fetch (they are
+    excluded from content_hash, so the upsert sees them as unchanged) — this
+    one-shot, idempotent backfill closes the gap without faking any *amended*.
+    """
+    store = core.Store(db)
+    try:
+        n = core.run_trust_backfill(store)
+    finally:
+        store.close()
+    if json_out:
+        typer.echo(json.dumps({"backfilled": n}))
+    else:
+        typer.echo(f"backfilled trust onto {n} opportunities")
+
+
 @app.command()
 def export(
     profile: str = typer.Option(..., "--profile", help="Path to a profile YAML"),

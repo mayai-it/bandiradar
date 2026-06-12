@@ -474,6 +474,22 @@ def run_doctor(
     return report
 
 
+def run_trust_backfill(store: Store) -> int:
+    """Backfill cached TrustReports onto LLM-source opportunities (idempotent).
+
+    Pre-0.12.0 rows never receive the trust fields from a normal fetch (they are
+    excluded from content_hash, so the upsert sees them as unchanged). Restricted
+    to the registered LLM-scraper sources: the national hubs list the SAME bandi
+    with the regional detail page as ``source_url``, and an URL-only join would
+    stamp ``provenance="llm"`` onto structured rows (seen on the prod DB with
+    incentivi ↔ calabria). Returns the number of opportunities updated.
+    """
+    llm_sources = {
+        s.id for s in list_sources() if bool(getattr(s, "requires_llm", False))
+    }
+    return store.backfill_trust(sources=llm_sources)
+
+
 def exclude_quarantined(opportunities: list[Opportunity]) -> list[Opportunity]:
     """Drop opportunities the trust spine QUARANTINED (``trust_verdict ==
     "quarantine"`` — an LLM extraction asserting something its page contradicts).

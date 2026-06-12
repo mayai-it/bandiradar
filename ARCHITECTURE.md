@@ -248,6 +248,13 @@ upstream of the Stage-1 prefilter (which stays pure and trust-agnostic);
 `include_quarantined=True` is the audit/debug override. Surfacing: per-source
 verdict counts in `doctor --json` (`trust_counts`) + the monitor's STATUS.md
 ("Extraction trust"), and `bandiradar trust list` to inspect the quarantined set.
+Because the trust fields sit outside `content_hash`, pre-existing rows are never
+rewritten by the upsert — `bandiradar trust backfill` (`core.run_trust_backfill`,
+run by the monitor before STATUS) copies each cached report onto its opportunity:
+idempotent, data-JSON-only (no version/hash/marker bump → no fake *amended*), and
+restricted to the registered LLM sources (the national hubs list the same bandi
+with the regional detail page as `source_url`; an URL-only join would mislabel
+structured rows as `llm`).
 
 **CPV label resolver.** Some sources expose the CPV as the Italian *label* rather
 than the numeric code (notably `anac_pvl`), which would blind the prefilter's

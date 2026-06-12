@@ -18,6 +18,7 @@ const ALLOWED_HOSTS = [
   "www.regione.fvg.it",       // wave-2 recon: blocked direct from runners
   "bandi.regione.veneto.it",  // veneto SIU — started blocking GitHub runners
   "portalebandi.regione.basilicata.it", // basilicata — blocks runners, EU datacenter OK
+  "pr2127.regione.puglia.it", // puglia — started blocking runners (timeout; 200 from EU)
   "www.regione.abruzzo.it",   // wave-2 recon: blocked direct from runners
 ];
 

@@ -516,6 +516,62 @@ class Store:
         ).fetchall()
         return [_load_opportunity(r["data"], moment) for r in rows]
 
+    def backfill_trust(self, sources: set[str] | None = None) -> int:
+        """Copy each cached extraction's TrustReport onto its stored opportunity.
+
+        Coverage fix: the trust fields are EXCLUDED from ``content_hash`` (on
+        purpose — re-assessing must never fake an *amended*), so the normal
+        upsert sees a pre-0.12.0 row as "unchanged" and NEVER rewrites it: the
+        trust spine would only cover future bandi. This rewrites the data JSON
+        of every opportunity still missing a ``trust_verdict`` whose extraction
+        (keyed by ``source_url``, the detail URL) has a persisted report —
+        WITHOUT touching ``version`` / ``content_hash`` / ``updated_at``, so no
+        fake *amended* ever reaches ``list_new`` / the watch delta. Idempotent
+        (a backfilled row no longer matches the NULL filter); returns the number
+        of opportunities updated.
+
+        ``sources`` restricts the backfill to those source ids — callers pass
+        the LLM-scraper set (:func:`core.run_trust_backfill`). Measured on the
+        prod DB: the national ``incentivi`` hub lists the SAME regional bandi
+        with ``source_url`` pointing at the regional page calabria extracted, so
+        an URL-only join would stamp ``provenance="llm"`` onto rows whose fields
+        actually came from the structured API. ``None`` = no restriction.
+        """
+        where = "WHERE json_extract(data, '$.trust_verdict') IS NULL"
+        params: list[str] = []
+        if sources is not None:
+            if not sources:
+                return 0
+            placeholders = ",".join("?" for _ in sources)
+            where += f" AND source IN ({placeholders})"
+            params = sorted(sources)
+        rows = self.conn.execute(
+            f"SELECT id, data FROM opportunities {where}", params
+        ).fetchall()
+        updated = 0
+        for r in rows:
+            payload = json.loads(r["data"])
+            url = payload.get("source_url")
+            if not url:
+                continue
+            trust_row = self.conn.execute(
+                "SELECT trust FROM extractions WHERE url_hash=?",
+                (hashlib.sha256(url.encode("utf-8")).hexdigest(),),
+            ).fetchone()
+            if trust_row is None or not trust_row["trust"]:
+                continue  # structured source, or extraction not assessed yet
+            report = json.loads(trust_row["trust"])
+            payload["provenance"] = "llm"
+            payload["confidence"] = report.get("confidence")
+            payload["trust_verdict"] = report.get("verdict")
+            self.conn.execute(
+                "UPDATE opportunities SET data=? WHERE id=?",
+                (json.dumps(payload, ensure_ascii=False), r["id"]),
+            )
+            updated += 1
+        self.conn.commit()
+        return updated
+
     # ------------------------------------------------------------- retention
     def prune(
         self,

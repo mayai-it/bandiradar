@@ -140,6 +140,12 @@ LLM is never re-paid) and rides into the `Opportunity` as `provenance="llm"` +
 UPSTREAM of the Stage-1 prefilter (which stays pure — guardrail 4);
 `include_quarantined=True` is the audit override. Surfacing: `doctor --json`
 (`trust_counts`), STATUS.md "Extraction trust", `bandiradar trust list`.
+Pre-existing rows need `bandiradar trust backfill` (`core.run_trust_backfill`,
+an `if: always()` monitor step): trust fields being outside `content_hash`, the
+upsert never rewrites old rows. Idempotent, JSON-only rewrite (no
+version/hash/marker → no fake *amended*), RESTRICTED to LLM sources via the
+registry — the national hubs list the same bandi with the regional detail page
+as `source_url`, an URL-only join would mislabel structured rows as `llm`.
 
 ## Live monitor (GitHub Actions — self-maintaining)
 `.github/workflows/monitor.yml` runs daily (cron `23 5 * * *` — off-peak minute,

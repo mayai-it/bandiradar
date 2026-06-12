@@ -582,3 +582,129 @@ def test_list_by_trust_verdict(store):
     got = store.list_by_trust_verdict("quarantine", now=NOW)
     assert [o.id for o in got] == ["toscana:q1"]
     assert store.list_by_trust_verdict("quarantine", source="veneto", now=NOW) == []
+
+
+def test_backfill_trust_copies_report_without_faking_amended(store):
+    from datetime import timedelta
+
+    from bandiradar.storage import SqliteExtractionCache
+
+    url = "https://x/bando/legacy"
+    opp = Opportunity(
+        id="toscana:legacy",
+        source="toscana",
+        source_url=url,
+        kind="incentive",
+        title="Bando legacy pre-trust",
+        geo_scope="regional",
+        status="open",
+        raw_ref="toscana:legacy",
+    )
+    store.upsert_opportunity(opp, now=NOW)
+    # Simulate a TRUE pre-0.12.0 row: the data JSON has no trust keys at all.
+    row = store.conn.execute(
+        "SELECT data FROM opportunities WHERE id='toscana:legacy'"
+    ).fetchone()
+    payload = json.loads(row["data"])
+    for key in ("provenance", "confidence", "trust_verdict"):
+        payload.pop(key, None)
+    store.conn.execute(
+        "UPDATE opportunities SET data=? WHERE id='toscana:legacy'",
+        (json.dumps(payload, ensure_ascii=False),),
+    )
+    store.conn.commit()
+
+    cache = SqliteExtractionCache(store)
+    cache.set(url, {"title": "Bando legacy pre-trust"})
+    cache.set_trust(url, _REPORT)
+
+    before = store.conn.execute(
+        "SELECT content_hash, version, updated_at FROM opportunities "
+        "WHERE id='toscana:legacy'"
+    ).fetchone()
+
+    assert store.backfill_trust() == 1
+
+    [got] = store.list_opportunities(source="toscana", now=NOW)
+    assert got.provenance == "llm"
+    assert got.confidence == _REPORT["confidence"]
+    assert got.trust_verdict == _REPORT["verdict"]
+    assert store.trust_counts() == {"toscana": {"quarantine": 1}}
+
+    after = store.conn.execute(
+        "SELECT content_hash, version, updated_at FROM opportunities "
+        "WHERE id='toscana:legacy'"
+    ).fetchone()
+    assert dict(after) == dict(before)  # no fake amended: hash/version untouched
+    assert got.content_hash == json.loads(row["data"])["content_hash"]
+    assert got.version == 1
+    # The watch delta does not re-surface a backfilled row.
+    assert store.list_new(NOW + timedelta(seconds=1), now=NOW) == []
+    # A re-upsert of the same content still reads "unchanged".
+    assert store.upsert_opportunity(opp, now=NOW) == "unchanged"
+
+
+def test_backfill_trust_is_idempotent_and_skips_unassessed(store):
+    from bandiradar.storage import SqliteExtractionCache
+
+    def _opp(i, url):
+        return Opportunity(
+            id=f"toscana:{i}",
+            source="toscana",
+            source_url=url,
+            kind="incentive",
+            title=f"Bando {i}",
+            geo_scope="regional",
+            status="open",
+            raw_ref=f"toscana:{i}",
+        )
+
+    cache = SqliteExtractionCache(store)
+    # 1: extraction WITH report -> backfilled
+    store.upsert_opportunity(_opp(1, "https://x/a"), now=NOW)
+    cache.set("https://x/a", {"title": "Bando 1"})
+    cache.set_trust("https://x/a", _REPORT)
+    # 2: extraction WITHOUT report -> skipped (assessed on a later fetch)
+    store.upsert_opportunity(_opp(2, "https://x/b"), now=NOW)
+    cache.set("https://x/b", {"title": "Bando 2"})
+    # 3: structured row, no extraction at all -> skipped
+    store.upsert_opportunity(_opp(3, "https://x/c"), now=NOW)
+
+    assert store.backfill_trust() == 1
+    assert store.backfill_trust() == 0  # idempotent: nothing left to do
+    counts = store.trust_counts()
+    assert counts == {"toscana": {"quarantine": 1}}
+
+
+def test_backfill_trust_respects_source_restriction(store):
+    from bandiradar.storage import SqliteExtractionCache
+
+    # The SAME detail URL backs a regional LLM row AND a national structured row
+    # (incentivi lists regional bandi with the regional page as source_url —
+    # seen on the prod DB): only the LLM source may receive the report.
+    url = "https://x/bando/shared"
+    for source, i in (("calabria", "c1"), ("incentivi", "i1")):
+        store.upsert_opportunity(
+            Opportunity(
+                id=f"{source}:{i}",
+                source=source,
+                source_url=url,
+                kind="incentive",
+                title="Bando condiviso",
+                geo_scope="regional",
+                status="open",
+                raw_ref=f"{source}:{i}",
+            ),
+            now=NOW,
+        )
+    cache = SqliteExtractionCache(store)
+    cache.set(url, {"title": "Bando condiviso"})
+    cache.set_trust(url, _REPORT)
+
+    assert store.backfill_trust(sources={"calabria"}) == 1
+    counts = store.trust_counts()
+    assert counts == {"calabria": {"quarantine": 1}}  # incentivi untouched
+    [incentivi] = store.list_opportunities(source="incentivi", now=NOW)
+    assert incentivi.provenance == "structured"
+    assert incentivi.trust_verdict is None
+    assert store.backfill_trust(sources=set()) == 0  # empty set = no-op

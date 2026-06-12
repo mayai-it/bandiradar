@@ -320,3 +320,50 @@ def test_trust_list_empty_db(tmp_path):
     res = runner.invoke(app, ["trust", "list", "--db", db])
     assert res.exit_code == 0
     assert "No opportunities" in res.stdout
+
+
+def test_trust_backfill_copies_cached_reports(tmp_path):
+    from datetime import UTC, datetime
+
+    from bandiradar import core
+    from bandiradar.models import Opportunity
+    from bandiradar.storage import SqliteExtractionCache
+
+    db = str(tmp_path / "backfill.db")
+    url = "https://x/bando/legacy"
+    store = core.Store(db)
+    try:
+        store.upsert_opportunity(
+            Opportunity(
+                id="toscana:legacy",
+                source="toscana",
+                source_url=url,
+                kind="incentive",
+                title="Bando legacy",
+                geo_scope="regional",
+                status="open",
+                raw_ref="toscana:legacy",
+            ),
+            now=datetime(2026, 6, 1, tzinfo=UTC),
+        )
+        cache = SqliteExtractionCache(store)
+        cache.set(url, {"title": "Bando legacy"})
+        cache.set_trust(
+            url,
+            {"checks": {}, "confidence": 0.2, "verdict": "quarantine"},
+        )
+    finally:
+        store.close()
+
+    res = runner.invoke(app, ["trust", "backfill", "--db", db])
+    assert res.exit_code == 0
+    assert "backfilled trust onto 1" in res.stdout
+
+    # Idempotent + JSON shape.
+    res = runner.invoke(app, ["trust", "backfill", "--json", "--db", db])
+    assert res.exit_code == 0
+    assert json.loads(res.stdout) == {"backfilled": 0}
+
+    # The backfilled row now surfaces in the quarantined list.
+    res = runner.invoke(app, ["trust", "list", "--db", db])
+    assert "toscana:legacy" in res.stdout

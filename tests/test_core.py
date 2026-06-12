@@ -242,3 +242,35 @@ def test_exclude_quarantined_keeps_suspect_and_unassessed():
     opps = [_opp(1, "ok"), _opp(2, "suspect"), _opp(3, "quarantine"), _opp(4, None)]
     kept = core.exclude_quarantined(opps)
     assert [o.id for o in kept] == ["x:1", "x:2", "x:4"]
+
+
+def test_run_trust_backfill_targets_llm_sources_only(store):
+    # core derives the allowed set from the registry (requires_llm): toscana is
+    # an LLM scraper, incentivi is structured — even when both rows share the
+    # same detail URL (the national hub lists regional bandi), only the LLM
+    # row receives the cached report.
+    from bandiradar.models import Opportunity
+    from bandiradar.storage import SqliteExtractionCache
+
+    url = "https://x/bando/shared"
+    for source in ("toscana", "incentivi"):
+        store.upsert_opportunity(
+            Opportunity(
+                id=f"{source}:s1",
+                source=source,
+                source_url=url,
+                kind="incentive",
+                title="Bando condiviso",
+                geo_scope="regional",
+                status="open",
+                raw_ref=f"{source}:s1",
+            ),
+            now=NOW,
+        )
+    cache = SqliteExtractionCache(store)
+    cache.set(url, {"title": "Bando condiviso"})
+    cache.set_trust(url, {"checks": {}, "confidence": 0.2, "verdict": "quarantine"})
+
+    assert core.run_trust_backfill(store) == 1
+    assert store.trust_counts() == {"toscana": {"quarantine": 1}}
+    assert core.run_trust_backfill(store) == 0  # idempotent

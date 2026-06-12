@@ -33,6 +33,23 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 - **Surfacing**: STATUS.md "Extraction trust" per-source table,
   `doctor --json` `trust_counts`, and a thin `bandiradar trust list` CLI
   (default: the quarantined set).
+- **Backfill onto pre-existing rows** (`storage.backfill_trust` +
+  `core.run_trust_backfill` + `bandiradar trust backfill` + an `if: always()`
+  monitor step before STATUS): the trust fields are excluded from
+  `content_hash`, so the normal upsert never rewrites pre-0.12.0 rows — without
+  this the spine would only cover future bandi. Idempotent; rewrites the data
+  JSON only (never `version`/`content_hash`/`updated_at`, so no fake *amended*
+  reaches the watch delta); restricted to LLM-scraper sources via the registry
+  (the national `incentivi` hub lists the SAME regional bandi with the regional
+  detail page as `source_url` — an URL-only join would stamp `provenance="llm"`
+  onto structured rows; caught on the prod DB). Measured on the prod copy:
+  139/139 backfilled, second run 0.
+
+### Fixed
+- **`puglia` routed through the EU relay**: pr2127.regione.puglia.it started
+  dropping GitHub runners (ConnectTimeout; 200 from EU datacenter) — host added
+  to the worker allowlist, `BANDIRADAR_RELAY_HOSTS`, and the pre-flight relay
+  probe. Same systemic answer as incentivi/sicilia/fvg/veneto/basilicata.
 
 ### Calibration (measured on the prod monitor DB, 139 cached extractions, 10 sources)
 - First pass quarantined 13/139 (9.4%) — inspection showed ~all were CHECK
