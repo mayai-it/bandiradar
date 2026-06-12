@@ -96,9 +96,11 @@ def _source_summary(results: list[SourceResult]) -> str:
 profile_app = typer.Typer(help="Inspect and validate company profiles.")
 sources_app = typer.Typer(help="Inspect available sources.")
 benchmarks_app = typer.Typer(help="ANAC historical benchmarks (intelligence track).")
+trust_app = typer.Typer(help="Trust spine: deterministic verdicts on LLM extractions.")
 app.add_typer(profile_app, name="profile")
 app.add_typer(sources_app, name="sources")
 app.add_typer(benchmarks_app, name="benchmarks")
+app.add_typer(trust_app, name="trust")
 
 _DEADLINE_FMT = "%Y-%m-%d"
 
@@ -527,6 +529,59 @@ def prune(
         )
 
 
+# --------------------------------------------------------------------------- #
+# trust (trust spine over LLM extractions)
+# --------------------------------------------------------------------------- #
+
+_TRUST_VERDICTS = ("ok", "suspect", "quarantine")
+
+
+@trust_app.command("list")
+def trust_list(
+    verdict: str = typer.Option(
+        "quarantine", "--verdict", help="ok|suspect|quarantine (default: quarantine)"
+    ),
+    source: str | None = typer.Option(None, "--source", help="Limit to a source id"),
+    db: str | None = typer.Option(None, "--db", help="SQLite path (default: env/home)"),
+    json_out: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """List stored LLM extractions by trust verdict (default: the quarantined set).
+
+    Quarantined items stay in the DB for audit but are EXCLUDED from matching.
+    """
+    if verdict not in _TRUST_VERDICTS:
+        raise typer.BadParameter(
+            f"--verdict must be one of {', '.join(_TRUST_VERDICTS)}"
+        )
+    store = core.Store(db)
+    try:
+        opps = store.list_by_trust_verdict(verdict, source=source)
+    finally:
+        store.close()
+
+    if json_out:
+        typer.echo(
+            json.dumps(
+                [o.model_dump(mode="json") for o in opps],
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
+
+    if not opps:
+        typer.echo(f"No opportunities with trust verdict '{verdict}'.")
+        return
+    noun = "opportunity" if len(opps) == 1 else "opportunities"
+    typer.echo(f"{len(opps)} {noun} with trust verdict '{verdict}':\n")
+    for o in opps:
+        conf = f"{o.confidence:.2f}" if o.confidence is not None else "—"
+        typer.echo(
+            f"{o.id}  conf={conf}  deadline={_fmt_deadline(o)}  {_trunc(o.title, 60)}"
+        )
+        typer.echo(f"    {o.source_url}")
+
+
 @app.command()
 def export(
     profile: str = typer.Option(..., "--profile", help="Path to a profile YAML"),
@@ -755,6 +810,19 @@ def _render_doctor(report) -> str:
         f"ready={'yes' if e.llm_ready else 'no'}",
         f"  extras: {extras}",
         f"  db: {'ok' if e.db_ok else f'ERROR: {e.db_error}'}",
+    ]
+    if report.trust_counts:
+        parts = []
+        for src in sorted(report.trust_counts):
+            counts = report.trust_counts[src]
+            tally = " ".join(
+                f"{v}={counts[v]}"
+                for v in ("ok", "suspect", "quarantine")
+                if v in counts
+            )
+            parts.append(f"{src}: {tally}")
+        lines.append(f"  trust (LLM extractions): {' | '.join(parts)}")
+    lines += [
         "",
         f"verdict: {'healthy' if report.healthy else 'problems detected'}",
     ]

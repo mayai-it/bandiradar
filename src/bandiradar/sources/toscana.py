@@ -17,7 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from bandiradar import http, resources
+from bandiradar import http, resources, trust
 from bandiradar.matching.llm import LLMClient, client_status, get_client
 from bandiradar.models import (
     Kind,
@@ -95,6 +95,9 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     # dirty extraction can't fail validation.
     value_min, value_max = sanitize_value_bounds(p.get("value_min"), p.get("value_max"))
 
+    # Trust-spine provenance (see llm_scraper.LlmScraperSource.to_opportunities).
+    report = p.get("_trust") if isinstance(p.get("_trust"), dict) else None
+
     return [
         Opportunity(
             id=f"{SOURCE_ID}:{p['_post_id']}",
@@ -116,6 +119,9 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
             status=default_status(deadline, now),
             eligibility_text=eligibility or None,
             raw_ref=raw.id,
+            provenance="llm",
+            confidence=report.get("confidence") if report else None,
+            trust_verdict=report.get("verdict") if report else None,
         )
     ]
 
@@ -283,14 +289,23 @@ class ToscanaSource:
             count = 0
             for post_id, url, listing_title in list_details()[:max_items]:
                 record = cache.get(url)
+                report = cache.get_trust(url)
                 if record is None:
-                    record = extract_bando_fields(fetch_text(url), REGION, client)
+                    page_text = fetch_text(url)
+                    record = extract_bando_fields(page_text, REGION, client)
                     cache.set(url, record)
+                    report = trust.assess(record, page_text).model_dump()
+                    cache.set_trust(url, report)
+                elif report is None:
+                    # Legacy cache row (pre-trust): backfill with one page fetch.
+                    report = trust.assess(record, fetch_text(url)).model_dump()
+                    cache.set_trust(url, report)
                 payload = {
                     **record,
                     "_post_id": post_id,
                     "_url": url,
                     "_listing_title": listing_title,
+                    "_trust": report,
                 }
                 yield RawDoc(
                     id=f"{SOURCE_ID}:{post_id}",

@@ -165,3 +165,80 @@ def test_run_fetch_quarantines_invalid_records(store, monkeypatch):
     assert result.new == 1
     assert result.skipped_invalid == 1  # the dirty one quarantined, not fatal
     assert len(store.list_opportunities()) == 1
+
+
+def test_run_match_excludes_quarantined_upstream_of_prefilter(store):
+    # Two identical incentives, one quarantined by the trust spine: it stays in
+    # the DB (audit) but never reaches the matcher; the dedicated flag re-adds it.
+    from bandiradar.models import Opportunity
+
+    mayai = core.load_profile("mayai")
+    common = dict(
+        source="x",
+        kind="incentive",
+        title="Piattaforma software per la PA",
+        summary="software e dati",
+        cpv=["72000000"],
+        geo_scope="national",
+        region=None,
+        status="open",
+    )
+    store.upsert_opportunity(
+        Opportunity(
+            id="x:clean",
+            source_url="https://example.invalid/clean",
+            raw_ref="x:c",
+            provenance="llm",
+            confidence=1.0,
+            trust_verdict="ok",
+            **common,
+        ),
+        now=NOW,
+    )
+    store.upsert_opportunity(
+        Opportunity(
+            id="x:quarantined",
+            source_url="https://example.invalid/quarantined",
+            raw_ref="x:q",
+            provenance="llm",
+            confidence=0.1,
+            trust_verdict="quarantine",
+            **common,
+        ),
+        now=NOW,
+    )
+
+    ranked = core.run_match(mayai, store, source_id="x", now=NOW)
+    assert {opp.id for opp, _ in ranked} == {"x:clean"}
+    # Still in the DB — excluded from matching, not deleted.
+    assert {o.id for o in store.list_opportunities(source="x")} == {
+        "x:clean",
+        "x:quarantined",
+    }
+    # The dedicated audit/debug flag re-includes it.
+    included = core.run_match(
+        mayai, store, source_id="x", now=NOW, include_quarantined=True
+    )
+    assert {opp.id for opp, _ in included} == {"x:clean", "x:quarantined"}
+
+
+def test_exclude_quarantined_keeps_suspect_and_unassessed():
+    from bandiradar.models import Opportunity
+
+    def _opp(i, verdict):
+        return Opportunity(
+            id=f"x:{i}",
+            source="x",
+            source_url=f"https://example.invalid/{i}",
+            kind="incentive",
+            title=f"Bando {i}",
+            geo_scope="national",
+            status="open",
+            raw_ref=f"x:{i}",
+            provenance="llm" if verdict else "structured",
+            trust_verdict=verdict,
+        )
+
+    opps = [_opp(1, "ok"), _opp(2, "suspect"), _opp(3, "quarantine"), _opp(4, None)]
+    kept = core.exclude_quarantined(opps)
+    assert [o.id for o in kept] == ["x:1", "x:2", "x:4"]

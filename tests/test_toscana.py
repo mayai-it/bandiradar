@@ -174,3 +174,65 @@ def test_toscana_registered():
     source = get("toscana")
     assert source.id == "toscana"
     assert "toscana" in {s.id for s in list_sources()}
+
+
+# --------------------------------------------------------------------------- #
+# Trust spine — toscana assesses each extraction like the LlmScraperSource base
+# --------------------------------------------------------------------------- #
+
+
+def test_fetch_assesses_trust_and_maps_provenance():
+    from datetime import timedelta
+
+    deadline = (datetime.now(UTC) + timedelta(days=30)).date()
+    page = (
+        "Bando innovazione digitale PMI toscane. Dotazione € 1.000.000. "
+        f"Scadenza {deadline.day:02d}/{deadline.month:02d}/{deadline.year}."
+    )
+    client = _FakeClient(
+        {
+            "title": "Bando innovazione digitale PMI toscane",
+            "value_amount": 1_000_000.0,
+            "deadline": deadline.isoformat(),
+            "kind": "incentive",
+            "keywords": [],
+        }
+    )
+    cache = InMemoryExtractionCache()
+    raws = list(
+        toscana.ToscanaSource().fetch(
+            client=client,
+            cache=cache,
+            list_details=lambda: [(1, "https://x/bando/a", "A")],
+            fetch_text=lambda u: page,
+        )
+    )
+    [raw] = raws
+    assert raw.payload["_trust"]["verdict"] == "ok"
+    assert cache.get_trust("https://x/bando/a") == raw.payload["_trust"]
+
+    [opp] = toscana.to_opportunities(raw)
+    assert opp.provenance == "llm"
+    assert opp.trust_verdict == "ok"
+    assert opp.confidence == raw.payload["_trust"]["confidence"]
+
+
+def test_fetch_quarantines_unreconcilable_deadline():
+    client = _FakeClient(
+        {
+            "title": "Bando innovazione",
+            "deadline": "2026-06-30",
+            "kind": "incentive",
+            "keywords": [],
+        }
+    )
+    raws = list(
+        toscana.ToscanaSource().fetch(
+            client=client,
+            cache=InMemoryExtractionCache(),
+            list_details=lambda: [(1, "https://x/bando/a", "A")],
+            fetch_text=lambda u: "Bando innovazione, nessuna data in pagina.",
+        )
+    )
+    [opp] = toscana.to_opportunities(raws[0])
+    assert opp.trust_verdict == "quarantine"

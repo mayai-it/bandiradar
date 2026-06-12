@@ -466,3 +466,119 @@ def test_prune_drops_closed_raw_docs_and_old_runs_preserves_value(store):
 def test_prune_is_safe_on_empty_db(store):
     stats = store.prune(now=NOW)
     assert stats == {"raw_docs": 0, "runs": 0}
+
+
+# --------------------------------------------------------------------------- #
+# Trust spine: extraction-cache trust reports + per-source verdict counts
+# --------------------------------------------------------------------------- #
+
+_REPORT = {
+    "checks": {"deadline_in_text": False, "amount_in_text": None},
+    "confidence": 0.2,
+    "verdict": "quarantine",
+}
+
+
+def test_extraction_cache_trust_roundtrip(store):
+    from bandiradar.storage import SqliteExtractionCache
+
+    cache = SqliteExtractionCache(store)
+    cache.set("https://x/bando/a", {"title": "T"})
+    assert cache.get_trust("https://x/bando/a") is None  # not assessed yet
+    cache.set_trust("https://x/bando/a", _REPORT)
+    assert cache.get_trust("https://x/bando/a") == _REPORT
+    assert cache.get_trust("https://x/bando/other") is None
+
+
+def test_extraction_cache_set_resets_stale_trust(store):
+    from bandiradar.storage import SqliteExtractionCache
+
+    cache = SqliteExtractionCache(store)
+    cache.set("https://x/bando/a", {"title": "T"})
+    cache.set_trust("https://x/bando/a", _REPORT)
+    # A RE-extraction replaces the data: the old report no longer describes it.
+    cache.set("https://x/bando/a", {"title": "T2"})
+    assert cache.get("https://x/bando/a") == {"title": "T2"}
+    assert cache.get_trust("https://x/bando/a") is None
+
+
+def test_extractions_trust_column_migrates(tmp_path):
+    # A pre-0.12.0 DB whose extractions table has NO trust column upgrades
+    # cleanly (same additive path as the crawl tables).
+    db = str(tmp_path / "old-extr.db")
+    conn = sqlite3.connect(db)
+    conn.executescript(
+        "CREATE TABLE extractions (url_hash TEXT PRIMARY KEY, url TEXT NOT NULL, "
+        "data TEXT NOT NULL);"
+    )
+    import hashlib
+
+    url_hash = hashlib.sha256(b"https://x/a").hexdigest()
+    conn.execute(
+        "INSERT INTO extractions (url_hash, url, data) VALUES (?, ?, ?)",
+        (url_hash, "https://x/a", json.dumps({"title": "T"})),
+    )
+    conn.commit()
+    conn.close()
+
+    from bandiradar.storage import SqliteExtractionCache
+
+    s = Store(db)
+    try:
+        cols = {r["name"] for r in s.conn.execute("PRAGMA table_info(extractions)")}
+        assert "trust" in cols
+        cache = SqliteExtractionCache(s)
+        assert cache.get("https://x/a") == {"title": "T"}  # old row survives
+        assert cache.get_trust("https://x/a") is None  # backfilled later
+    finally:
+        s.close()
+
+
+def test_trust_counts_groups_by_source_and_verdict(store):
+    def _opp(i, source, verdict):
+        return Opportunity(
+            id=f"{source}:{i}",
+            source=source,
+            source_url=f"https://x/{source}/{i}",
+            kind="incentive",
+            title=f"Bando {i}",
+            geo_scope="regional",
+            status="open",
+            raw_ref=f"{source}:{i}",
+            provenance="llm" if verdict else "structured",
+            trust_verdict=verdict,
+        )
+
+    store.upsert_opportunity(_opp(1, "toscana", "ok"), now=NOW)
+    store.upsert_opportunity(_opp(2, "toscana", "quarantine"), now=NOW)
+    store.upsert_opportunity(_opp(3, "toscana", "suspect"), now=NOW)
+    store.upsert_opportunity(_opp(4, "veneto", "quarantine"), now=NOW)
+    store.upsert_opportunity(_opp(5, "anac", None), now=NOW)  # structured: no row
+
+    counts = store.trust_counts()
+    assert counts["toscana"] == {"ok": 1, "suspect": 1, "quarantine": 1}
+    assert counts["veneto"] == {"quarantine": 1}
+    assert "anac" not in counts
+
+
+def test_list_by_trust_verdict(store):
+    quarantined = Opportunity(
+        id="toscana:q1",
+        source="toscana",
+        source_url="https://x/q1",
+        kind="incentive",
+        title="Bando quarantinato",
+        geo_scope="regional",
+        status="open",
+        raw_ref="toscana:q1",
+        provenance="llm",
+        confidence=0.1,
+        trust_verdict="quarantine",
+    )
+    clean = quarantined.model_copy(update={"id": "toscana:ok1", "trust_verdict": "ok"})
+    store.upsert_opportunity(quarantined, now=NOW)
+    store.upsert_opportunity(clean, now=NOW)
+
+    got = store.list_by_trust_verdict("quarantine", now=NOW)
+    assert [o.id for o in got] == ["toscana:q1"]
+    assert store.list_by_trust_verdict("quarantine", source="veneto", now=NOW) == []

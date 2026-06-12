@@ -341,14 +341,21 @@ def _llm_status() -> tuple[str, bool, bool]:
     return provider, key_present, (key_present and sdk_present)
 
 
-def _check_db(db: str | None) -> tuple[bool, str | None]:
-    """Open the DB (which runs migrations) and report whether it's clean."""
+def _check_db(db: str | None) -> tuple[bool, str | None, dict[str, dict[str, int]]]:
+    """Open the DB (which runs migrations) and report whether it's clean.
+
+    While it's open, also read the trust spine's per-source verdict counts —
+    quarantined/suspect LLM extractions are an operational health signal.
+    """
     try:
         store = Store(db)
-        store.close()
-        return True, None
+        try:
+            trust_counts = store.trust_counts()
+        finally:
+            store.close()
+        return True, None, trust_counts
     except Exception as exc:  # noqa: BLE001 — report, never crash the doctor
-        return False, _clean_error(exc)
+        return False, _clean_error(exc), {}
 
 
 def run_doctor(
@@ -431,7 +438,7 @@ def run_doctor(
             )
         )
 
-    db_ok, db_error = _check_db(db)
+    db_ok, db_error, trust_counts = _check_db(db)
     env = DoctorEnv(
         python_version=".".join(str(p) for p in sys.version_info[:3]),
         llm_provider=provider,
@@ -449,7 +456,11 @@ def run_doctor(
     if not db_ok and code == _EXIT_OK:
         code = _EXIT_FAILED
     report = DoctorReport(
-        sources=source_results, env=env, healthy=(code == _EXIT_OK), exit_code=code
+        sources=source_results,
+        env=env,
+        healthy=(code == _EXIT_OK),
+        exit_code=code,
+        trust_counts=trust_counts,
     )
     logger.info(
         "doctor: healthy=%s exit=%d sources=%d (probed=%d) db_ok=%s llm_ready=%s",
@@ -461,6 +472,17 @@ def run_doctor(
         llm_ready,
     )
     return report
+
+
+def exclude_quarantined(opportunities: list[Opportunity]) -> list[Opportunity]:
+    """Drop opportunities the trust spine QUARANTINED (``trust_verdict ==
+    "quarantine"`` — an LLM extraction asserting something its page contradicts).
+
+    They stay in the DB for audit (``bandiradar trust list``) but are never fed
+    to the matcher. Applied here, UPSTREAM of the Stage-1 prefilter, so the
+    prefilter itself stays pure and trust-agnostic (guardrail 4).
+    """
+    return [o for o in opportunities if o.trust_verdict != "quarantine"]
 
 
 # Operating points — a min_score cutoff per mode. The precision points are
@@ -501,6 +523,7 @@ def run_match(
     embedder: Embedder | None = None,
     sim_threshold: float = EMBEDDING_SIM_THRESHOLD,
     llm_budget: LLMBudget | None = None,
+    include_quarantined: bool = False,
 ) -> list[tuple[Opportunity, Match]]:
     """Prefilter + score stored opportunities, ranked by score descending.
 
@@ -513,7 +536,9 @@ def run_match(
     turns on the hybrid Stage-1 semantic relevance signal, vectors cached on the
     same DB; ``None`` keeps the deterministic CPV/keyword prefilter. ``mode`` (an
     operating point in :data:`MATCH_MODES`) sets the score cutoff and takes
-    precedence over ``min_score`` when given.
+    precedence over ``min_score`` when given. QUARANTINED extractions (trust
+    spine) are excluded before the prefilter; ``include_quarantined=True`` keeps
+    them (audit/debug only — never the monitor/CLI default).
     """
     if mode is not None:
         min_score = min_score_for_mode(mode)
@@ -529,6 +554,9 @@ def run_match(
         for sid in sources_to_fetch:
             run_fetch(sid, store, sample=True, now=now)
         opportunities = _stored()
+
+    if not include_quarantined:
+        opportunities = exclude_quarantined(opportunities)
 
     kept = prefilter(
         opportunities,
@@ -591,7 +619,9 @@ def run_rerank(
     recall — matches pointwise), but Stage 2 ranks comparatively instead of scoring
     each opportunity in isolation. Used by ``eval --rerank`` to measure precision@k.
     """
-    opportunities = store.list_opportunities(source=source_id, now=now)
+    opportunities = exclude_quarantined(
+        store.list_opportunities(source=source_id, now=now)
+    )
     kept = prefilter(opportunities, profile, now=now)
     matches = rerank(profile, kept, client, now=now, top_n=top_n)
     by_id = {opp.id: opp for opp in kept}

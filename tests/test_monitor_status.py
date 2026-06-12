@@ -322,3 +322,72 @@ def test_render_is_pure(db):
     )
     assert ms.render_status(**kw) == ms.render_status(**kw)
     assert "LLM scoring + healer ON" in ms.render_status(**kw)
+
+
+# --------------------------------------------------------------------------- #
+# Trust spine: per-source verdict counts + the STATUS section
+# --------------------------------------------------------------------------- #
+
+
+def _trust_opp(i: str, source: str, verdict: str):
+    from bandiradar.models import Opportunity
+
+    return Opportunity(
+        id=f"{source}:{i}",
+        source=source,
+        source_url=f"https://x/{source}/{i}",
+        kind="incentive",
+        title=f"Bando {i}",
+        geo_scope="regional",
+        status="open",
+        raw_ref=f"{source}:{i}",
+        provenance="llm",
+        trust_verdict=verdict,
+    )
+
+
+def test_trust_counts_reader_groups_by_source_and_verdict(db):
+    db.upsert_opportunity(_trust_opp("1", "toscana", "ok"))
+    db.upsert_opportunity(_trust_opp("2", "toscana", "quarantine"))
+    db.upsert_opportunity(_trust_opp("3", "veneto", "suspect"))
+    counts = ms.trust_counts(db.conn)
+    assert counts == {
+        "toscana": {"ok": 1, "quarantine": 1},
+        "veneto": {"suspect": 1},
+    }
+
+
+def test_status_renders_extraction_trust_section(db, tmp_path):
+    _finished_run(db, "toscana", fetched=2, new=2, status="ok")
+    db.upsert_opportunity(_trust_opp("1", "toscana", "ok"))
+    db.upsert_opportunity(_trust_opp("2", "toscana", "quarantine"))
+    feeds = tmp_path / "feeds"
+    feeds.mkdir()
+    md, _ = ms.build_status(
+        db_path=db.db_path,
+        feeds_dir=feeds,
+        profiles=[],
+        doctor_json=None,
+        run_date="2026-06-12 06:00 UTC",
+        run_started=datetime.now(UTC),
+        llm_active=True,
+    )
+    assert "## Extraction trust (LLM sources)" in md
+    assert "| `toscana` | 1 | 0 | 🚧 1 |" in md
+    assert "bandiradar trust list" in md
+
+
+def test_status_omits_trust_section_without_assessed_extractions(db, tmp_path):
+    _finished_run(db, "ted", fetched=5, new=5, status="ok")
+    feeds = tmp_path / "feeds"
+    feeds.mkdir()
+    md, _ = ms.build_status(
+        db_path=db.db_path,
+        feeds_dir=feeds,
+        profiles=[],
+        doctor_json=None,
+        run_date="2026-06-12 06:00 UTC",
+        run_started=datetime.now(UTC),
+        llm_active=False,
+    )
+    assert "Extraction trust" not in md

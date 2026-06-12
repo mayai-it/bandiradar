@@ -252,3 +252,71 @@ def test_export_json(tmp_path):
     data = json.loads(res.stdout)
     assert isinstance(data, list)
     assert all(set(d.keys()) == JSON_KEYS for d in data)
+
+
+# --------------------------------------------------------------------------- #
+# trust (trust spine over LLM extractions)
+# --------------------------------------------------------------------------- #
+
+
+def _seed_trust_db(db: str) -> None:
+    from datetime import UTC, datetime
+
+    from bandiradar import core
+    from bandiradar.models import Opportunity
+
+    now = datetime(2026, 6, 1, tzinfo=UTC)
+    store = core.Store(db)
+    try:
+        for i, verdict in (("q1", "quarantine"), ("ok1", "ok")):
+            store.upsert_opportunity(
+                Opportunity(
+                    id=f"toscana:{i}",
+                    source="toscana",
+                    source_url=f"https://x/{i}",
+                    kind="incentive",
+                    title=f"Bando {i}",
+                    geo_scope="regional",
+                    status="open",
+                    raw_ref=f"toscana:{i}",
+                    provenance="llm",
+                    confidence=0.1 if verdict == "quarantine" else 1.0,
+                    trust_verdict=verdict,
+                ),
+                now=now,
+            )
+    finally:
+        store.close()
+
+
+def test_trust_list_defaults_to_quarantine(tmp_path):
+    db = str(tmp_path / "trust.db")
+    _seed_trust_db(db)
+    res = runner.invoke(app, ["trust", "list", "--db", db])
+    assert res.exit_code == 0
+    assert "toscana:q1" in res.stdout
+    assert "toscana:ok1" not in res.stdout
+
+
+def test_trust_list_json_and_verdict_filter(tmp_path):
+    db = str(tmp_path / "trust.db")
+    _seed_trust_db(db)
+    res = runner.invoke(app, ["trust", "list", "--verdict", "ok", "--json", "--db", db])
+    assert res.exit_code == 0
+    data = json.loads(res.stdout)
+    assert [d["id"] for d in data] == ["toscana:ok1"]
+    assert data[0]["provenance"] == "llm"
+    assert data[0]["trust_verdict"] == "ok"
+
+
+def test_trust_list_rejects_unknown_verdict(tmp_path):
+    db = str(tmp_path / "trust.db")
+    res = runner.invoke(app, ["trust", "list", "--verdict", "banned", "--db", db])
+    assert res.exit_code != 0
+
+
+def test_trust_list_empty_db(tmp_path):
+    db = str(tmp_path / "empty.db")
+    res = runner.invoke(app, ["trust", "list", "--db", db])
+    assert res.exit_code == 0
+    assert "No opportunities" in res.stdout

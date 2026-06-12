@@ -4,6 +4,46 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.12.0] — 2026-06-13 — Trust spine: deterministic extraction validation
+
+### Added
+- **`trust.py`** — the deterministic gate over every LLM extraction, same
+  propose/dispose philosophy as the self-healing crawl: PURE
+  `assess(extraction, page_text) -> TrustReport {checks, confidence, verdict}`,
+  no I/O/LLM so the model it judges cannot game it. Checks: deadline-in-text
+  (Italian date formats + the English Java/CMS-template form + a year-less
+  full-month form), amount-in-text (normalized separators/€/verbal multipliers),
+  sane-dates (plausibility window for UNGROUNDED dates only;
+  `published > deadline` always fails), title-grounding (token overlap).
+  Verdict `quarantine` ONLY on hard failures (extracted deadline not in the
+  text, insane dates); `suspect` = soft failures (amounts/title), still matched.
+- **`Opportunity.provenance/confidence/trust_verdict`** (contract,
+  ARCHITECTURE.md §4): `provenance: "structured"|"llm"` declares how the fields
+  were produced; LLM rows carry the report's confidence + verdict. All three are
+  bookkeeping — EXCLUDED from `content_hash` (re-assessing never fakes an
+  *amended*).
+- **Quarantine exclusion upstream of Stage 1** (`core.exclude_quarantined`):
+  quarantined rows stay in the DB (audit) but never reach the matcher; the
+  prefilter itself stays pure and trust-agnostic (guardrail 4).
+  `run_match(include_quarantined=True)` is the audit override.
+- **Persistence**: the TrustReport lives BESIDE its cached extraction
+  (`extractions.trust`, additive migration); a re-extraction resets it, legacy
+  cache rows are backfilled with ONE page fetch (the LLM is never re-paid).
+  `Store.trust_counts()` + `Store.list_by_trust_verdict()`.
+- **Surfacing**: STATUS.md "Extraction trust" per-source table,
+  `doctor --json` `trust_counts`, and a thin `bandiradar trust list` CLI
+  (default: the quarantined set).
+
+### Calibration (measured on the prod monitor DB, 139 cached extractions, 10 sources)
+- First pass quarantined 13/139 (9.4%) — inspection showed ~all were CHECK
+  false-positives, fixed by three retunes: FVG renders Scadenza in the English
+  Java locale ("Thu Dec 31 23:59:00 CET 2026" — 11 items); recurring year-less
+  deadlines ("entro il 31 gennaio di ciascun anno"); campania's curated set
+  honestly lists 2023 bandi (old-but-grounded dates are archived data, not
+  hallucinations — the sane-dates window now applies only to ungrounded dates).
+- After retuning: **0% quarantine, 4.3% suspect (6/139, all amount-in-text —
+  derived or attachment-only amounts, correctly soft), 95.7% ok, 0 unfetchable.**
+
 ## [0.11.0] — 2026-06-12 — Regional coverage wave 4 (final sweep)
 
 ### Added

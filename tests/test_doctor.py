@@ -213,3 +213,43 @@ def test_cli_doctor_json_and_exit_code(monkeypatch, tmp_path):
     by = {s["source"]: s for s in report["sources"]}
     assert by["ted"]["error_kind"] == "rate_limited"
     assert by["lazio"]["reachable"] is True
+
+
+def test_doctor_reports_trust_counts_from_the_real_db(monkeypatch, tmp_path):
+    _wire(monkeypatch, {"ted": _OkSource("ted")})
+    db = str(tmp_path / "d.db")
+    store = core.Store(db)
+    try:
+        store.upsert_opportunity(
+            Opportunity(
+                id="toscana:q1",
+                source="toscana",
+                source_url="https://x/q1",
+                kind="incentive",
+                title="Bando quarantinato",
+                geo_scope="regional",
+                status="open",
+                raw_ref="toscana:q1",
+                provenance="llm",
+                confidence=0.1,
+                trust_verdict="quarantine",
+            ),
+            now=NOW,
+        )
+    finally:
+        store.close()
+
+    report = core.run_doctor(db=db)
+    assert report.trust_counts == {"toscana": {"quarantine": 1}}
+
+    # The human render surfaces it too.
+    res = runner.invoke(app, ["doctor", "--db", db])
+    assert "trust (LLM extractions): toscana: quarantine=1" in res.stdout
+
+
+def test_doctor_trust_counts_empty_without_llm_extractions(monkeypatch, tmp_path):
+    _wire(monkeypatch, {"ted": _OkSource("ted")})
+    report = core.run_doctor(db=str(tmp_path / "d.db"))
+    assert report.trust_counts == {}
+    res = runner.invoke(app, ["doctor", "--db", str(tmp_path / "d.db")])
+    assert "trust (LLM extractions)" not in res.stdout

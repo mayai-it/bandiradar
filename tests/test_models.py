@@ -281,3 +281,39 @@ def test_profile_version_is_stable_and_content_sensitive():
 def test_profile_value_range_order_is_validated():
     with pytest.raises(ValidationError):
         make_profile(value_range=ValueRange(min=100, max=10))
+
+
+# --------------------------------------------------------------------------- #
+# Provenance + extraction trust (the trust spine, ARCHITECTURE.md §4)
+# --------------------------------------------------------------------------- #
+
+
+def test_provenance_defaults_to_structured():
+    opp = make_opportunity()
+    assert opp.provenance == "structured"
+    assert opp.confidence is None
+    assert opp.trust_verdict is None
+
+
+def test_llm_provenance_carries_confidence_and_verdict():
+    opp = make_opportunity(provenance="llm", confidence=0.75, trust_verdict="suspect")
+    assert opp.provenance == "llm"
+    assert opp.confidence == 0.75
+    assert opp.trust_verdict == "suspect"
+
+
+def test_invalid_provenance_and_verdict_are_rejected():
+    with pytest.raises(ValidationError):
+        make_opportunity(provenance="scraped")
+    with pytest.raises(ValidationError):
+        make_opportunity(trust_verdict="banned")
+
+
+def test_content_hash_ignores_provenance_and_trust():
+    # Trust metadata is bookkeeping, not notice substance: re-assessing an
+    # extraction must never fake an *amended* (same rule as version/updated_at).
+    base = make_opportunity()
+    trusted = make_opportunity(
+        provenance="llm", confidence=0.5, trust_verdict="quarantine"
+    )
+    assert base.content_hash == trusted.content_hash

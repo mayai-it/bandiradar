@@ -112,6 +112,11 @@ class Opportunity(BaseModel):
     raw_ref: str                 # pointer to stored RawDoc
     content_hash: str            # for change detection
     version: int = 1
+
+    # trust spine (bookkeeping — excluded from content_hash, like version):
+    provenance: Literal["structured", "llm"] = "structured"
+    confidence: float | None     # trust-spine confidence over an LLM extraction
+    trust_verdict: Literal["ok", "suspect", "quarantine"] | None
 ```
 
 `RawDoc` = the untouched payload from a source (for audit + re-mapping).
@@ -123,8 +128,10 @@ class Opportunity(BaseModel):
   `value_*` (amount/currency/min/max), `deadline`, `eligibility_text`, `kind`,
   `cpv`, `region`, `geo_scope`. It deliberately **excludes** `version`,
   `updated_at`, `keywords`, and `ateco_hints` (bookkeeping / derived hints), and
-  also `document_urls` / `document_text` (optional downstream enrichment — see §6),
-  so change detection (§8) fires on substance, not on re-fetch noise or enrichment.
+  also `document_urls` / `document_text` (optional downstream enrichment — see §6)
+  and the trust-spine fields `provenance` / `confidence` / `trust_verdict`
+  (re-assessing an extraction must never fake an *amended*), so change detection
+  (§8) fires on substance, not on re-fetch noise or enrichment.
 - **Datetimes are tz-aware UTC.** All datetime fields (`Opportunity.published_at`
   / `deadline` / `updated_at`, `RawDoc.fetched_at`) coerce naive inputs to UTC,
   so downstream comparisons (e.g. the prefilter) never hit naive-vs-aware errors.
@@ -137,6 +144,12 @@ class Opportunity(BaseModel):
   a content_hash change) and is surfaced by `list_new(since)` / the watch delta.
   (Pre-0.2.0 overloaded `status` with a sticky `"amended"`; that's removed — reads
   tolerate the old value and recompute it.)
+- **`provenance` declares how the fields were produced** — `"structured"`
+  (deterministic adapters over APIs/feeds/CSV; the default) vs `"llm"` (extracted
+  from HTML by an LLM scraper). LLM provenance carries the trust spine's
+  `confidence` + `trust_verdict` (see §5); structured rows keep both `None`.
+  A `"quarantine"` verdict keeps the row in the DB (audit) but excludes it from
+  matching upstream of the Stage-1 prefilter (`core.exclude_quarantined`).
 
 ---
 
@@ -211,6 +224,30 @@ auto-applied. This keeps a self-modifying system honest — the LLM proposes, bu
 deterministic, un-bypassable socket decides. Recipes + golden persist in SQLite
 (`crawl_recipes`, `crawl_golden`); per-source overrides + golden config (auditable
 `{recipe, adopted_at, reason, validated_by}`) live in `recipe_store.py`.
+
+**Trust spine (deterministic validation of LLM extractions).** The same
+propose/dispose philosophy applied to the *extraction* itself: with ten LLM
+scrapers feeding the corpus, every extracted record passes through
+`trust.assess(extraction, page_text)` — a PURE module (`trust.py`: no I/O, no
+LLM, so the model it judges can never game it). Four deterministic checks, each
+`True`/`False`/`None` (not applicable): **deadline-in-text** (the extracted
+deadline reconcilable with the page across Italian date formats),
+**amount-in-text** (every extracted amount found, normalizing separators / € /
+verbal multipliers like "1,5 milioni"), **sane-dates** (deadline within a
+plausibility window, `published_at` not after it), **title-grounding** (the
+title's tokens overlap the page). The weighted pass-rate over the *applicable*
+checks is the `confidence`; the `verdict` is `quarantine` ONLY on hard failures
+(a deadline extracted but NOT in the text, or insane dates — the strongest
+hallucination signals), `suspect` below the confidence bar, else `ok`. The
+`TrustReport` is persisted BESIDE its cached extraction (the `extractions.trust`
+column) so a cached extraction keeps its verdict across runs (legacy rows are
+backfilled with one page fetch — the LLM is never re-paid), and rides into the
+`Opportunity` as `provenance="llm"` + `confidence` + `trust_verdict` (§4).
+**Quarantined rows are saved but never matched**: `core.run_match` drops them
+upstream of the Stage-1 prefilter (which stays pure and trust-agnostic);
+`include_quarantined=True` is the audit/debug override. Surfacing: per-source
+verdict counts in `doctor --json` (`trust_counts`) + the monitor's STATUS.md
+("Extraction trust"), and `bandiradar trust list` to inspect the quarantined set.
 
 **CPV label resolver.** Some sources expose the CPV as the Italian *label* rather
 than the numeric code (notably `anac_pvl`), which would blind the prefilter's
@@ -314,7 +351,8 @@ Self-referential demo + free marketing.
 
 SQLite (stdlib, zero-config, agent-friendly). Tables: `opportunities`,
 `raw_docs`, `matches`, `runs` (plus `crawl_recipes` + `crawl_golden` for the
-self-healing crawl, see §5). Dedupe + **change detection** via `content_hash`:
+self-healing crawl, and `extractions` — the LLM-extraction cache, each row
+carrying its trust report in the `trust` column; see §5). Dedupe + **change detection** via `content_hash`:
 a changed hash bumps `version` and stamps `updated_at`, making the row eligible to
 be re-surfaced (a tender *rettifica* should re-notify) via `list_new(since)` and
 the watch delta. The change signal is kept **out** of `status`, which is recomputed

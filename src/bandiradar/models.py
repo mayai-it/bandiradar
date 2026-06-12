@@ -37,6 +37,8 @@ __all__ = [
     "Kind",
     "GeoScope",
     "Status",
+    "Provenance",
+    "TrustVerdict",
     "FetchStatus",
     "FetchErrorKind",
     "Opportunity",
@@ -69,6 +71,15 @@ GeoScope = Literal["national", "regional", "eu", "local"]
 # ``version`` + ``updated_at`` (storage change-detection), surfaced by the watch
 # delta / ``list_new``. (Pre-0.2.0 used a sticky ``"amended"`` status; removed.)
 Status = Literal["open", "closing_soon", "closed"]
+# How the record's fields were produced: "structured" = mapped from a structured
+# source (API/feed/CSV — deterministic adapters); "llm" = extracted from HTML by
+# an LLM scraper. LLM provenance carries a ``confidence`` + ``trust_verdict``
+# from the deterministic trust spine (see ``bandiradar.trust``).
+Provenance = Literal["structured", "llm"]
+# The trust-spine verdict over an LLM extraction (None = not assessed, i.e. a
+# structured source). "quarantine" rows are persisted but EXCLUDED from matching
+# upstream of the Stage-1 prefilter (core), never silently fed to the matcher.
+TrustVerdict = Literal["ok", "suspect", "quarantine"]
 # Outcome of fetching ONE source in a run (observability — see SourceResult):
 #   ok       -> records fetched, fetch completed cleanly
 #   partial  -> fetch raised mid-stream, but records already saved are kept
@@ -206,6 +217,14 @@ class Opportunity(BaseModel):
     raw_ref: str  # pointer to stored RawDoc
     content_hash: str = ""  # for change detection; auto-filled if left empty
     version: int = 1
+
+    # Trust spine (bookkeeping — EXCLUDED from content_hash, like version):
+    # provenance of the fields + the deterministic trust verdict over an LLM
+    # extraction. Structured adapters keep the defaults; the LLM-scraper base
+    # sets provenance="llm" + the TrustReport's confidence/verdict.
+    provenance: Provenance = "structured"
+    confidence: float | None = None
+    trust_verdict: TrustVerdict | None = None
 
     @field_validator("published_at", "deadline", "updated_at")
     @classmethod
@@ -391,3 +410,7 @@ class DoctorReport(BaseModel):
     env: DoctorEnv
     healthy: bool
     exit_code: int
+    # Trust spine: per-source counts of trust verdicts over the LLM extractions
+    # stored in the configured DB ({source: {verdict: n}}). Empty when none have
+    # been assessed — structured sources never appear here.
+    trust_counts: dict[str, dict[str, int]] = {}

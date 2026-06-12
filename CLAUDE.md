@@ -43,6 +43,7 @@ src/bandiradar/
     basilicata.py  # Portalebandi — LlmScraperSource (open WP-REST CPT)
     liguria.py     # Liguria publiccompetition — LlmScraperSource (POST+CSRF, filtri)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
+  trust.py         # trust spine: deterministic validation of LLM extractions (pure)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
   matching/
@@ -121,6 +122,24 @@ auto-adopted. Recipes + golden persist in SQLite (`crawl_recipes`, `crawl_golden
 and the per-source override/golden config lives in `recipe_store.py` (auditable:
 `{recipe, adopted_at, reason, validated_by}`). Demo: `scripts/demo_self_heal.py`
 (GIF in the README).
+
+## Trust spine (deterministic gate over LLM extractions)
+Same propose/dispose philosophy as the self-healing crawl, applied to the
+extraction: the LLM proposes a record, `trust.assess(extraction, page_text)` — a
+PURE module, no I/O/LLM — disposes. Checks: deadline-in-text (Italian date
+formats), amount-in-text (normalized separators/€/verbal multipliers),
+sane-dates, title-grounding; each True/False/None (not applicable). Weighted
+pass-rate over applicable checks = `confidence`; verdict `quarantine` ONLY on
+hard failures (extracted deadline NOT in the text, or insane dates), `suspect`
+below the confidence bar, else `ok`. The report persists beside its cached
+extraction (`extractions.trust`, legacy rows backfilled with one page fetch — the
+LLM is never re-paid) and rides into the `Opportunity` as `provenance="llm"` +
+`confidence` + `trust_verdict` (structured adapters keep the defaults:
+`"structured"`/None/None; all three are EXCLUDED from `content_hash`).
+**Quarantined rows are saved but never matched**: `core.run_match` drops them
+UPSTREAM of the Stage-1 prefilter (which stays pure — guardrail 4);
+`include_quarantined=True` is the audit override. Surfacing: `doctor --json`
+(`trust_counts`), STATUS.md "Extraction trust", `bandiradar trust list`.
 
 ## Live monitor (GitHub Actions — self-maintaining)
 `.github/workflows/monitor.yml` runs daily (cron `23 5 * * *` — off-peak minute,

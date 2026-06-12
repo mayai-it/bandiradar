@@ -20,7 +20,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
-from bandiradar import http, resources
+from bandiradar import http, resources, trust
 from bandiradar.crawl import (  # the self-healing spine lives top-level; re-export here
     CrawlRecipe,
     DetailRef,
@@ -81,11 +81,15 @@ EXTRACTION_SYSTEM = (
 
 @runtime_checkable
 class ExtractionCache(Protocol):
-    """Cache of extracted bando fields, keyed by detail URL."""
+    """Cache of extracted bando fields (+ their trust report), keyed by detail URL."""
 
     def get(self, url: str) -> dict | None: ...
 
     def set(self, url: str, data: dict) -> None: ...
+
+    def get_trust(self, url: str) -> dict | None: ...
+
+    def set_trust(self, url: str, report: dict) -> None: ...
 
 
 class InMemoryExtractionCache:
@@ -93,12 +97,20 @@ class InMemoryExtractionCache:
 
     def __init__(self) -> None:
         self._store: dict[str, dict] = {}
+        self._trust: dict[str, dict] = {}
 
     def get(self, url: str) -> dict | None:
         return self._store.get(url)
 
     def set(self, url: str, data: dict) -> None:
         self._store[url] = data
+        self._trust.pop(url, None)  # a re-extraction invalidates the old report
+
+    def get_trust(self, url: str) -> dict | None:
+        return self._trust.get(url)
+
+    def set_trust(self, url: str, report: dict) -> None:
+        self._trust[url] = report
 
 
 def html_to_text(page_html: str) -> str:
@@ -275,16 +287,24 @@ class LlmScraperSource:
                 :max_items
             ]:
                 record = cache.get(url)
+                report = cache.get_trust(url)
                 if record is None:
-                    record = extract_bando_fields(
-                        self._fetch_text(url), self.region, client
-                    )
+                    page_text = self._fetch_text(url)
+                    record = extract_bando_fields(page_text, self.region, client)
                     cache.set(url, record)
+                    report = trust.assess(record, page_text).model_dump()
+                    cache.set_trust(url, report)
+                elif report is None:
+                    # Legacy cache row (pre-trust): backfill the report ONCE —
+                    # one page fetch, the LLM extraction is never re-paid.
+                    report = trust.assess(record, self._fetch_text(url)).model_dump()
+                    cache.set_trust(url, report)
                 payload = {
                     **record,
                     "_post_id": post_id,
                     "_url": url,
                     "_listing_title": listing_title,
+                    "_trust": report,
                 }
                 yield RawDoc(
                     id=f"{self.id}:{post_id}",
@@ -319,6 +339,9 @@ class LlmScraperSource:
         value_min, value_max = sanitize_value_bounds(
             p.get("value_min"), p.get("value_max")
         )
+        # Trust-spine provenance: these fields came from an LLM extraction; the
+        # deterministic report (when recorded) rides along as confidence/verdict.
+        report = p.get("_trust") if isinstance(p.get("_trust"), dict) else None
         return [
             Opportunity(
                 id=f"{self.id}:{p['_post_id']}",
@@ -340,6 +363,9 @@ class LlmScraperSource:
                 status=default_status(deadline, now),
                 eligibility_text=eligibility or None,
                 raw_ref=raw.id,
+                provenance="llm",
+                confidence=report.get("confidence") if report else None,
+                trust_verdict=report.get("verdict") if report else None,
             )
         ]
 

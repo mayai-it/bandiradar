@@ -103,7 +103,8 @@ CREATE TABLE IF NOT EXISTS documents (
 CREATE TABLE IF NOT EXISTS extractions (
     url_hash TEXT PRIMARY KEY,   -- sha256(detail url)
     url      TEXT NOT NULL,
-    data     TEXT NOT NULL       -- JSON of the LLM-extracted bando fields
+    data     TEXT NOT NULL,      -- JSON of the LLM-extracted bando fields
+    trust    TEXT                -- JSON TrustReport over that extraction (nullable)
 );
 
 CREATE TABLE IF NOT EXISTS embeddings (
@@ -142,6 +143,9 @@ _EXPECTED_COLUMNS: dict[str, dict[str, str]] = {
         "skipped_invalid": "INTEGER",
         "duration_s": "REAL",
     },
+    # 0.12.0 trust spine: the TrustReport persisted beside its extraction. Old
+    # rows get NULL -> the scraper backfills the report on its next cache hit.
+    "extractions": {"trust": "TEXT"},
 }
 
 # Indexes that reference possibly-migrated columns. Created ONLY AFTER the columns
@@ -475,6 +479,43 @@ class Store:
         )
         self.conn.commit()
 
+    # ------------------------------------------------------------- trust spine
+    def trust_counts(self) -> dict[str, dict[str, int]]:
+        """Per-source counts of trust verdicts (LLM extractions only).
+
+        Sources whose rows carry no ``trust_verdict`` (structured adapters) are
+        absent. Read straight off the stored JSON, so it reflects exactly what
+        the scrapers persisted.
+        """
+        rows = self.conn.execute(
+            "SELECT source, json_extract(data, '$.trust_verdict') AS verdict, "
+            "COUNT(*) AS n FROM opportunities "
+            "WHERE json_extract(data, '$.trust_verdict') IS NOT NULL "
+            "GROUP BY source, verdict"
+        ).fetchall()
+        out: dict[str, dict[str, int]] = {}
+        for r in rows:
+            out.setdefault(r["source"], {})[r["verdict"]] = r["n"]
+        return out
+
+    def list_by_trust_verdict(
+        self,
+        verdict: str,
+        source: str | None = None,
+        now: datetime | None = None,
+    ) -> list[Opportunity]:
+        """Opportunities whose trust verdict matches (e.g. the quarantined set)."""
+        moment = _now(now)
+        where = "WHERE json_extract(data, '$.trust_verdict') = ?"
+        params: list[str] = [verdict]
+        if source is not None:
+            where += " AND source = ?"
+            params.append(source)
+        rows = self.conn.execute(
+            f"SELECT data FROM opportunities {where} ORDER BY id", params
+        ).fetchall()
+        return [_load_opportunity(r["data"], moment) for r in rows]
+
     # ------------------------------------------------------------- retention
     def prune(
         self,
@@ -581,6 +622,9 @@ class SqliteExtractionCache:
     """SQLite-backed cache of LLM-extracted bando fields, keyed by sha256(url).
 
     Lets the LLM-assisted scraper avoid re-paying for extraction across runs.
+    The trust spine's :class:`~bandiradar.trust.TrustReport` is persisted BESIDE
+    its extraction (the ``trust`` column), so a cached extraction keeps its
+    deterministic verdict across runs too.
     """
 
     def __init__(self, store: Store) -> None:
@@ -597,10 +641,27 @@ class SqliteExtractionCache:
         return json.loads(row["data"]) if row else None
 
     def set(self, url: str, data: dict) -> None:
+        # A re-extraction REPLACES the record, so any stored trust report no
+        # longer describes it: reset it (the scraper re-assesses right after).
         self.store.conn.execute(
-            "INSERT INTO extractions (url_hash, url, data) VALUES (?, ?, ?) "
-            "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, data=excluded.data",
+            "INSERT INTO extractions (url_hash, url, data, trust) "
+            "VALUES (?, ?, ?, NULL) "
+            "ON CONFLICT(url_hash) DO UPDATE SET url=excluded.url, "
+            "data=excluded.data, trust=NULL",
             (self._key(url), url, json.dumps(data, ensure_ascii=False)),
+        )
+        self.store.conn.commit()
+
+    def get_trust(self, url: str) -> dict | None:
+        row = self.store.conn.execute(
+            "SELECT trust FROM extractions WHERE url_hash=?", (self._key(url),)
+        ).fetchone()
+        return json.loads(row["trust"]) if row and row["trust"] else None
+
+    def set_trust(self, url: str, report: dict) -> None:
+        self.store.conn.execute(
+            "UPDATE extractions SET trust=? WHERE url_hash=?",
+            (json.dumps(report, ensure_ascii=False), self._key(url)),
         )
         self.store.conn.commit()
 

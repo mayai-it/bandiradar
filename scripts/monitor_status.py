@@ -109,6 +109,24 @@ def golden_sources(conn: sqlite3.Connection) -> set[str]:
     return {r["source_id"] for r in rows}
 
 
+def trust_counts(conn: sqlite3.Connection) -> dict[str, dict[str, int]]:
+    """Per-source trust-verdict counts over stored LLM extractions (trust spine).
+
+    Mirrors ``storage.Store.trust_counts`` (read straight off the stored JSON);
+    sources without assessed extractions (structured adapters) are absent.
+    """
+    rows = conn.execute(
+        "SELECT source, json_extract(data, '$.trust_verdict') AS verdict, "
+        "COUNT(*) AS n FROM opportunities "
+        "WHERE json_extract(data, '$.trust_verdict') IS NOT NULL "
+        "GROUP BY source, verdict"
+    ).fetchall()
+    out: dict[str, dict[str, int]] = {}
+    for r in rows:
+        out.setdefault(r["source"], {})[r["verdict"]] = r["n"]
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Pure derivations
 # --------------------------------------------------------------------------- #
@@ -280,6 +298,7 @@ def render_status(
     match_counts: dict[str, int | None],
     stats: dict[str, dict | None],
     llm_active: bool,
+    trust: dict[str, dict[str, int]] | None = None,
 ) -> str:
     """Compose the Markdown page. Pure: same inputs -> same bytes."""
     expected = sorted(stats)
@@ -337,6 +356,28 @@ def render_status(
     if not runs:
         lines.append("| _no source runs recorded_ | | | | | |")
     lines.append("")
+
+    if trust:
+        lines.append("## Extraction trust (LLM sources)")
+        lines.append("")
+        lines.append("| Source | OK | Suspect | Quarantined |")
+        lines.append("|---|---:|---:|---:|")
+        for src in sorted(trust):
+            c = trust[src]
+            quarantined = c.get("quarantine", 0)
+            q_cell = f"🚧 {quarantined}" if quarantined else "0"
+            lines.append(
+                f"| `{src}` | {c.get('ok', 0)} | {c.get('suspect', 0)} | {q_cell} |"
+            )
+        lines.append("")
+        lines.append(
+            "> Deterministic verdicts over each LLM extraction (`bandiradar.trust`): "
+            "`quarantine` = a hard check failed (e.g. extracted deadline not in the "
+            "page) — kept in the DB for audit but EXCLUDED from matching; "
+            "`suspect` = low confidence, still matched. "
+            "Inspect: `bandiradar trust list`."
+        )
+        lines.append("")
 
     lines.append("## New matches per profile")
     lines.append("")
@@ -400,6 +441,7 @@ def build_status(
         runs = latest_runs(conn)
         audits = recipe_audits(conn)
         goldens = golden_sources(conn)
+        trust = trust_counts(conn)
     finally:
         conn.close()
     health = crawl_health_from_doctor(doctor_json)
@@ -421,6 +463,7 @@ def build_status(
         match_counts=match_counts,
         stats=stats,
         llm_active=llm_active,
+        trust=trust,
     )
     return md, all_failed(runs)
 
