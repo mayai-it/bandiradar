@@ -12,6 +12,10 @@
 
 const ALLOWED_HOSTS = [
   "www.incentivi.gov.it",
+  "www.euroinfosicilia.it",   // sicilia — started blocking GitHub runners
+  "fesr.regione.campania.it", // wave-2 recon: blocked direct from runners
+  "www.regione.fvg.it",       // wave-2 recon: blocked direct from runners
+  "www.regione.abruzzo.it",   // wave-2 recon: blocked direct from runners
 ];
 
 export default async function handler(req, res) {

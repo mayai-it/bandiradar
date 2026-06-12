@@ -44,7 +44,10 @@ jobs:
       # stays documented and everything else runs as today.
       BANDIRADAR_RELAY_URL: ${{ secrets.BANDIRADAR_RELAY_URL }}
       BANDIRADAR_RELAY_TOKEN: ${{ secrets.BANDIRADAR_RELAY_TOKEN }}
-      BANDIRADAR_RELAY_HOSTS: www.incentivi.gov.it
+      # Only EXISTING sources whose endpoints block the runners go here (sicilia
+      # joined incentivi when euroinfosicilia started dropping runner IPs); the
+      # wave-2 candidates are probed via relay below but not routed yet.
+      BANDIRADAR_RELAY_HOSTS: www.incentivi.gov.it,www.euroinfosicilia.it
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -157,17 +160,26 @@ jobs:
           probe fvg            "https://www.regione.fvg.it"
           probe sardegna       "https://www.sardegnaimpresa.eu"
           probe abruzzo        "https://www.regione.abruzzo.it"
-          # When the optional relay is configured, ALSO probe incentivi through it
-          # (curl -G --data-urlencode builds the ?u=<urlencoded> exactly like the
-          # engine does) so BOTH outcomes — direct and relayed — are in the log.
+          # When the optional relay is configured, ALSO probe the blocked hosts
+          # through it (curl -G --data-urlencode builds the ?u=<urlencoded> exactly
+          # like the engine does) so BOTH outcomes — direct and relayed — are in
+          # the log. For the wave-2 candidates this tells us who is reachable from
+          # fra1 BEFORE any adapter is built.
           if [ -n "${BANDIRADAR_RELAY_URL:-}" ] && [ -n "${BANDIRADAR_RELAY_TOKEN:-}" ]; then
-            code=$(curl -G -sS -o /dev/null -m 20 -A "$ua" \
-              -H "X-Relay-Token: ${BANDIRADAR_RELAY_TOKEN}" \
-              --data-urlencode "u=https://www.incentivi.gov.it/solr/coredrupal/select?q=*:*&rows=1&wt=json" \
-              -w "%{http_code}" "$BANDIRADAR_RELAY_URL" 2>/dev/null || echo "000(curl-error)")
-            echo "  probe incentivi (via relay): HTTP $code"
+            probe_relay() {
+              code=$(curl -G -sS -o /dev/null -m 20 -A "$ua" \
+                -H "X-Relay-Token: ${BANDIRADAR_RELAY_TOKEN}" \
+                --data-urlencode "u=$2" \
+                -w "%{http_code}" "$BANDIRADAR_RELAY_URL" 2>/dev/null || echo "000(curl-error)")
+              echo "  probe $1 (via relay): HTTP $code"
+            }
+            probe_relay incentivi "https://www.incentivi.gov.it/solr/coredrupal/select?q=*:*&rows=1&wt=json"
+            probe_relay sicilia   "https://www.euroinfosicilia.it/wp-json/wp/v2/posts?categories=321&per_page=1"
+            probe_relay campania  "https://fesr.regione.campania.it"
+            probe_relay fvg       "https://www.regione.fvg.it"
+            probe_relay abruzzo   "https://www.regione.abruzzo.it"
           else
-            echo "  probe incentivi (via relay): relay not configured — skipped"
+            echo "  probes via relay: relay not configured — skipped"
           fi
 
       - name: Watch every bundled profile (single fetch, rest reuse the DB)
