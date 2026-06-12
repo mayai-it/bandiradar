@@ -353,3 +353,82 @@ def test_stream_with_retry_unconfigured_keeps_params_kwarg(monkeypatch):
     assert url == SOLR  # untouched
     assert kwargs["params"] == {"a": "b"}  # passthrough as before
     assert "X-Relay-Token" not in kwargs["headers"]
+
+
+# --------------------------------------------------------------------------- #
+# Regression — the httpx params trap, stream variant (anac 400 in prod).
+# httpx.URL(url, params=None) WIPES a query already embedded in the URL; with the
+# relay configured, anac's "?name=<year>.jsonl.gz" template (no params kwarg) went
+# out queryless -> 400. Fold only when params is populated.
+# --------------------------------------------------------------------------- #
+
+OCP_URL = "https://data.open-contracting.example/download?name=2026.jsonl.gz"
+
+
+class _StreamCM:
+    def __init__(self, url: str):
+        self._url = url
+
+    def __enter__(self):
+        return httpx.Response(200, request=httpx.Request("GET", self._url))
+
+    def __exit__(self, *exc):
+        return False
+
+
+def test_stream_relay_configured_preserves_embedded_query_for_direct_host(
+    monkeypatch,
+):
+    # Relay ON, but the host is NOT allowlisted (the anac case): the embedded
+    # query must survive untouched.
+    _set_relay_env(monkeypatch)  # allowlist = www.incentivi.gov.it only
+    calls: list[str] = []
+    monkeypatch.setattr(
+        http.httpx, "stream", lambda m, u, **kw: calls.append(u) or _StreamCM(u)
+    )
+    with http.stream_with_retry("GET", OCP_URL, what="anac") as resp:
+        assert resp.status_code == 200
+    assert calls[0] == OCP_URL  # "?name=2026.jsonl.gz" NOT wiped
+
+
+def test_stream_relay_allowlisted_host_carries_embedded_query_in_u(monkeypatch):
+    # Same variant but the host IS allowlisted: the relay `u` must carry the
+    # FULL original URL, embedded query included.
+    blocked = "https://www.incentivi.gov.it/download?name=2026.jsonl.gz"
+    _set_relay_env(monkeypatch)
+    calls: list[str] = []
+    monkeypatch.setattr(
+        http.httpx, "stream", lambda m, u, **kw: calls.append(u) or _StreamCM(u)
+    )
+    with http.stream_with_retry("GET", blocked, what="x") as resp:
+        assert resp.status_code == 200
+    relayed = httpx.URL(calls[0])
+    assert relayed.host == "relay.example.workers.dev"
+    inner = httpx.URL(relayed.params["u"])
+    assert inner.params["name"] == "2026.jsonl.gz"  # query travelled inside u
+
+
+# --------------------------------------------------------------------------- #
+# Relay URL normalization (config) — default scheme, fail fast on garbage.
+# --------------------------------------------------------------------------- #
+
+
+def test_relay_url_without_scheme_gets_https(monkeypatch):
+    from bandiradar import config
+
+    monkeypatch.setenv("BANDIRADAR_RELAY_URL", "relay.example.workers.dev/fwd")
+    monkeypatch.setenv("BANDIRADAR_RELAY_TOKEN", "t")
+    monkeypatch.setenv("BANDIRADAR_RELAY_HOSTS", "www.incentivi.gov.it")
+    url, _token, _hosts = config.relay()
+    assert url == "https://relay.example.workers.dev/fwd"
+
+
+def test_relay_url_malformed_fails_fast_with_clear_message(monkeypatch):
+    from bandiradar import config
+
+    monkeypatch.setenv("BANDIRADAR_RELAY_TOKEN", "t")
+    monkeypatch.setenv("BANDIRADAR_RELAY_HOSTS", "www.incentivi.gov.it")
+    for bad in ("https://", "ftp://relay.example", "https://bad host/x"):
+        monkeypatch.setenv("BANDIRADAR_RELAY_URL", bad)
+        with pytest.raises(ValueError, match="BANDIRADAR_RELAY_URL is malformed"):
+            config.relay()

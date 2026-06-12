@@ -92,8 +92,32 @@ def relay() -> tuple[str, str, frozenset[str]] | None:
         if h.strip()
     )
     if url and token and hosts:
-        return url, token, hosts
+        return _normalize_relay_url(url), token, hosts
     return None
+
+
+def _normalize_relay_url(url: str) -> str:
+    """Normalize ``BANDIRADAR_RELAY_URL``: default the scheme, fail fast if broken.
+
+    A missing scheme gets ``https://`` prepended (workers are https). An URL that is
+    plainly malformed (no host, whitespace, non-http scheme) raises a clear
+    ``ValueError`` IMMEDIATELY — a config typo must surface as one obvious error,
+    not as 5 connect retries against garbage."""
+    from urllib.parse import urlsplit
+
+    candidate = url if "://" in url else f"https://{url}"
+    parts = urlsplit(candidate)
+    host = (parts.netloc or "").strip()
+    if (
+        parts.scheme not in ("http", "https")
+        or not host
+        or any(c.isspace() for c in host)
+    ):
+        raise ValueError(
+            f"BANDIRADAR_RELAY_URL is malformed: {url!r} — expected "
+            "http(s)://host[/path] (scheme optional, https assumed)"
+        )
+    return candidate
 
 
 def llm_budget() -> int | None:

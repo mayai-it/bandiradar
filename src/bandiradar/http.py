@@ -276,7 +276,12 @@ def stream_with_retry(
     cfg = config.relay()
     if cfg is not None:
         relay_url, token, hosts = cfg
-        full = httpx.URL(url, params=kwargs.pop("params", None))  # type: ignore[arg-type]
+        # httpx TRAP (bit us twice): ``httpx.URL(url, params=None)`` — like an
+        # explicit ``params={}`` on a client call — REPLACES/wipes a query string
+        # already embedded in the URL (e.g. anac's ``?name=<year>.jsonl.gz``).
+        # Fold ONLY when params is actually populated.
+        params = kwargs.pop("params", None)
+        full = httpx.URL(url, params=params) if params else httpx.URL(url)  # type: ignore[arg-type]
         if (full.host or "").lower() in hosts:
             url = str(httpx.URL(relay_url).copy_set_param("u", str(full)))
             headers[RELAY_TOKEN_HEADER] = token

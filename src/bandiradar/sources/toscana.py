@@ -158,8 +158,11 @@ class ToscanaSource:
     def _listing_json(self, recipe: CrawlRecipe) -> Any:
         """Fetch the raw WP-REST listing JSON for a recipe (the key-less crawl)."""
         with http.client(follow_redirects=True) as client:
+            # `or None`: an explicit empty params mapping would WIPE a query string
+            # embedded in listing_url (the httpx params trap) — e.g. on a healed
+            # recipe whose endpoint carries its filter in the URL itself.
             resp = http.with_retry(
-                lambda: client.get(recipe.listing_url, params=recipe.params),
+                lambda: client.get(recipe.listing_url, params=recipe.params or None),
                 what="Toscana listing",
             )
             http.raise_for_status(resp, what="Toscana listing")
