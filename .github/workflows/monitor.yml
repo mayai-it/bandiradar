@@ -154,7 +154,7 @@ jobs:
           # is waste). Campania + Abruzzo are expected blocked direct.
           echo "Wave-2 candidate portals (recon only, no adapter yet):"
           probe veneto         "https://bandi.regione.veneto.it/Public/Index"
-          probe piemonte       "https://www.regione.piemonte.it/web/temi/fondi-progetti-europei"
+          probe piemonte       "https://bandi.regione.piemonte.it/contributi-finanziamenti?field_stato_target_id=19"
           probe puglia         "https://www.sistema.puglia.it"
           probe campania       "https://fesr.regione.campania.it"
           probe fvg            "https://www.regione.fvg.it"

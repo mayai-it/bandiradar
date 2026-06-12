@@ -28,8 +28,8 @@ than faked.
 | **Toscana** | sviluppo.toscana.it | WP-REST `bando` (links only) + HTML detail pages | ✅ **Built** (`toscana`) — REST `content` is empty + no deadline, so this is the first **LLM-assisted scraper**: fields are LLM-extracted from each bando's HTML page (live fetch needs an LLM key; `--sample` replays a recorded extraction) |
 | **Sicilia** | euroinfosicilia.it (FESR) | WP-REST: standard posts under a "Bandi e Avvisi" category | ✅ **Built** (`sicilia`, v0.6.0) — config over the WP base + a `categories` filter. (irfis.it, probed earlier, has no bandi post type.) |
 | Marche | regione.marche.it | reachable, not WP-REST | ⏭️ Skip — bespoke CMS, no clean bandi API |
-| Piemonte | finpiemonte.it | not WordPress (404 `/wp-json`) | ⏭️ Skip — no clean API found |
-| Veneto | venetosviluppo.it | not WordPress | ⏭️ Skip |
+| **Piemonte** | bandi.regione.piemonte.it (Drupal 10) | Server-rendered Views listing + stato 'Aperto' filter; detail pages labelled | ✅ **Built** (`piemonte`, v0.8.0) — LLM scraper. (finpiemonte.it, probed earlier, has no API.) |
+| **Veneto** | bandi.regione.veneto.it (SIU) | JSON layer stonewalls bots; landing + Dettaglio pages server-rendered | ✅ **Built** (`veneto`, v0.8.0) — LLM scraper, landing-seeded crawl. (venetosviluppo.it, probed earlier, has no API.) |
 | Liguria | filse.it | not WordPress | ⏭️ Skip |
 | Friuli-VG | regione.fvg.it | not WordPress | ⏭️ Skip |
 | **Emilia-Romagna** | politicheterritoriali.regione.emilia-romagna.it | Plone 6 REST: structured AGID `Bando` content type | ✅ **Built** (`emilia_romagna`, v0.6.0) — `PloneBandoSource`; structured `scadenza_bando`. (art-er.it and the retrospective regional CKAN, probed earlier, were not viable.) |

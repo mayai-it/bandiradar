@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+<html lang="it-IT">
+<head><script defer type="text/javascript">!function(){try{const c="oa-cuuid",d="oplon-analytics-api",l=/(<([^>]+)>)/gi;function n(){const n=document.body,e=document.documentElement;return{windowHeight:window.innerWidth,windowWidth:window.innerHeight,documentHeight:Math.max(n.scrollHeight,n.offsetHeight,e.clientHeight,e.scrollHeight,e.offsetHeight),documentWidth:Math.max(n.scrollWidth,n.offsetWidth,e.clientWidth,e.scrollWidth,e.offsetWidth)}}function e(n){let e=null;const t=window.localStorage.getItem(n),o=function(){var n=document.cookie,e=c+"=",t=n.indexOf("; "+e);if(-1===t){if(0!==(t=n.indexOf(e)))return null}else{t+=2;var o=document.cookie.indexOf(";",t);-1===o&&(o=n.length)}return decodeURI(n.substring(t+e.length,o))}();return o?(e=o,window.localStorage.setItem(n,o)):(t?e=t:(e=([1e7]+1e3+8e3).replace(/[018]/g,(n=>(n^crypto.getRandomValues(new Uint8Array(1))[0]&15>>n/4).toString(16))),window.localStorage.setItem(n,e)),document.cookie=c+"="+e+"; Domain="+window.location.hostname),e}function t(n){const t=new URL(window.location.href);if(!t.pathname.endsWith(d)){const i=e(c),r=o(t.origin+t.pathname)+"/"+d,a=JSON.stringify({lang:navigator.language||navigator.userLanguage,documentTitle:document.title,luuid:i,lblfuid:"553c786c-0345-7072-7a4d-fc4cf745c17f",lbltags:"",referrer:document.referrer,currentMillisClient:(new Date).getTime(),...n});navigator.sendBeacon(r+"?x-oanalytics="+btoa(encodeURIComponent(a)))}}function o(n){return"/"===n.substr(-1)?n.substr(0,n.length-1):n}if("undefined"!=typeof window){let s=0;window.addEventListener("load",(async function e(){const i=window.performance||window.webkitPerformance||window.msPerformance||window.mozPerformance;if(i){const r=i.getEntriesByType("paint"),a=i.getEntriesByType("navigation"),c=s>4;if(r&&0!==r.length&&a&&0!==a.length&&0!==a[0].loadEventEnd||c){const e=window.location.href,i=r.find((n=>"first-contentful-paint"===n.name)),c=r.find((n=>"first-paint"===n.name)),d=a.find((n=>n.name===e||o(n.name)===o(e)));t({eventLocation:e,kind:"performance",navigation:d,firstContentfulPaint:i,firstPaint:c,...n()})}else c||(s++,setTimeout((()=>e()),0))}}));let w=!1,f=0;const u=n=>{f=setTimeout((()=>{w||g(n,"click"),w=!1}),200)},h=n=>{clearTimeout(f),w=!0,g(n,"dblclick")},g=(e,o)=>{const i=function(n){const e=n.closest("a");return e||n}(e.target);t({eventLocation:window.location.href,kind:o,x:e.x,y:e.y,target:(n=>{let e;if(null!==n.text&&void 0!==n.text)e=n.text;else{if(!n.innerText)return"";if(0===n.innerText.length)return"";e=n.innerText.length<=200?n.innerText:n.innerText.substring(0,200)+"[...]"}return e.replace(l,"")})(i),targetLocation:i.href,nodeName:i.nodeName,...n()})};window.addEventListener("click",u),window.addEventListener("dblclick",h);const m=window.fetch;var i,r;window.fetch=function(){return t({eventLocation:window.location.href,kind:"fetch",targetFetchUrl:arguments[0]}),m.apply(window,arguments)},window.addEventListener("scroll",(function(e){clearTimeout(i),i=setTimeout((()=>{t({eventLocation:window.location.href,kind:"scroll",scrollY:window.innerHeight+window.scrollY,scrollX:window.innerWidth+window.scrollX,...n()})}),1e3)})),window.addEventListener("resize",(function(e){clearTimeout(r),r=setTimeout((()=>{t({eventLocation:window.location.href,kind:"resize",...n()})}),1e3)}));let p=window.location.href;window.addEventListener("popstate",(function(n){const e=window.location.href;t({eventLocation:p,kind:"popstate",newUrl:e,oldUrl:p}),p=e}));const L=window.history.pushState;var a;window.history.pushState=function(){const n=window.location.href,e=new URL(n);let o=arguments[2];try{p=new URL(o)}catch(n){p=e.origin+o,o.startsWith("/")||(p=e.origin+e.pathname.slice(0,e.pathname.lastIndexOf("/"))+"/"+o),p=new URL(p).href}return t({eventLocation:window.location.href,kind:"pushstate",oldUrl:n,newUrl:p}),L.apply(this,arguments)},window.addEventListener("hashchange",(function(n){t({eventLocation:window.location.href,kind:"hashchange",oldUrl:n.oldURL,newUrl:n.newURL})})),window.addEventListener("error",(function(n){clearTimeout(a),a=setTimeout((()=>{t({eventLocation:window.location.href,kind:"error",error:n.message})}),1e3)}))}}catch(v){console.error("[oa-error] "+v)}}();</script>
+    <meta name="viewport" content="width=device-width">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Homepage - Bandi, Avvisi e Concorsi</title>
+    <link rel="Shortcut Icon" href="/Img/regioneveneto.ico">
+    <meta name="description" content="Portale Bandi Avvisi Concorsi della Regione del Veneto." />
+    <meta name="keywords" content="bandi, avvisi, concorsi, regione, veneto, portale, scadenzario, scadenze" />
+    
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Bandi-Avvisi-Concorsi Regione del Veneto" />
+    <meta property="og:description" content="Portale Bandi Avvisi Concorsi - Regione del Veneto" />
+    <meta property="og:url" content="http://bandi.regione.veneto.it/Public/Index" />
+    <meta property="og:image" content="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/banner-BAC_facebook_linkedin.png" />
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:site_name" content="Bandi-Avvisi-Concorsi Regione del Veneto" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="http://bandi.regione.veneto.it/Public/Index" />
+    <meta name="twitter:title" content="Bandi-Avvisi-Concorsi Regione del Veneto" />
+    <meta name="twitter:description" content="Portale Bandi Avvisi Concorsi - Regione del Veneto" />
+    <meta name="twitter:creator" content="RegioneVeneto" />
+    <meta name="twitter:image:src" content="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/banner-BAC_twitter.png">
+    
+    <meta property="og:name" content="Bandi-Avvisi-Concorsi Regione del Veneto" />
+    <meta property="og:description" content="Portale Bandi Avvisi Concorsi - Regione del Veneto" />
+    <meta property="og:image" content="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/banner-BAC_facebook_linkedin.png" />
+
+    <meta itemprop="name" content="Bandi-Avvisi-Concorsi Regione del Veneto">
+    <meta itemprop="description" content="Portale Bandi Avvisi Concorsi - Regione del Veneto">
+    <meta itemprop="image" content="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/banner-BAC_twitter.png">
+
+    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    
+    <script src="/Scripts/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/Scripts/select2.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/Scripts/dataTables.searchHighlight.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.highlight.js" type="text/javascript"></script>
+
+    
+    
+
+    
+    <script type="text/javascript" src="/Scripts/public_utility.min.js"></script>
+
+    
+    
+    
+
+    
+    <link type="text/css" href="/Content/main.min.css" rel="stylesheet" />
+    <link type="text/css" href="/Content/public.min.css" rel="stylesheet" />
+    <link type="text/css" media="print" href="/Content/print.min.css" rel="stylesheet" />
+
+    <style type="text/css">
+
+        .container-buttons-appio {
+            text-align: center;
+            justify-content: space-around;
+            display: flex;
+        }
+
+        .button-appio {
+            width: 15rem;
+            color: white;
+            border-radius: 10px;
+        }
+
+            .button-appio.first-color {
+                background-color: #096EFE;
+                border-color: #096EFE;
+            }
+
+            .button-appio.second-color {
+                background-color: #5B78B1;
+                border-color: #5B78B1;
+            }
+
+        input[type=text],
+        input[type=file],
+        input[type=number],
+        input[type=datetime] {
+            padding-top: 0.5em !important;
+            padding-bottom: 1em !important;
+        }
+
+        .row-container {
+            line-height: normal;
+        }
+
+        #buttonLike {
+            margin-left: 9.5em;
+        }
+
+        #form_valuation {
+            top: 16% !important;
+            height: 13em;
+        }
+
+            #form_valuation > div > span {
+                margin-right: 1em;
+            }
+    </style>
+</head>
+<body>
+    
+    <!--[if lte IE 8 ]>
+            <div class="alert alert-warning" style="text-align: center; font-size: small;">
+          <strong>Stai usando una versione non aggiornata di Internet Explorer!</strong> <br>
+           Questo sito utilizza HTML5 e altri strumenti di ultima generazione. Per avere una migliore esperienza di navigazione utilizzare un browser più recente.<br>
+           Clicca <a href="http://windows.microsoft.com/it-it/internet-explorer/download-ie">qui</a> per aggiornare. Se decidi di continuare alcune funzionalità potrebbero non essere eseguite correttamente.
+        </div>
+    <![endif]-->
+    <h1 style="display: none;">Portale Bandi Avvisi Concorsi - Regione del Veneto</h1>
+
+<div id="modalLogin" class="modal fade login-form" tabindex="-1" role="dialog" aria-labelledby="modalLogin" aria-hidden="true">
+    <div class="modal-dialog modal-sm" id="login-form">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32313B;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Chiudi la finestra di login">×</button>
+                <h2 class="modal-title" style="color: #fff;">Area Privata</h2>
+            </div>
+            <div class="modal-body">
+                <form id="login-form-group-box" action="https://web1.regione.veneto.it/cas/login?service=https://bandi.regione.veneto.it/Private/Index&amp;loginKo=https://bandi.regione.veneto.it/Public/LoginFail?errore=true" style="padding: 20px;" method="post" >
+                    <div class="form-group">
+                        <label for="username" class="filter-label">Nome utente</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Nome utente" data-toggle="tooltip" data-placement="left" title="Inserisci il nome utente" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="filter-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" data-toggle="tooltip" data-placement="left" title="Inserisci la password" />
+                    </div>
+                    <div class="form-group">
+                        <button name="accedi" id="accediPrivata" type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Accedi all'area privata">Accedi</button>
+                    </div>
+                </form>
+                <fieldset>
+                    <legend>Hai dimenticato la password?</legend>
+                    <div style="background-color: #eee; padding: 1.5em; border-radius: 5px;">
+                        <p>Il Call Center regionale &egrave; contattabile per qualsiasi problematica applicativa, incluso il ripristino della password in caso di dimenticanza, in uno dei seguenti modi:</p>
+                        <ul>
+                            <li>telefonando al numero verde 800.914.708 (esterni) oppure al numero 919.000 (interni)</li>
+                            <li>inviando un fax al numero verde 800.916.074 (esterni) oppure al numero fax 918.000 (interni).</li>
+                            <li>inviando un'e-mail all'indirizzo: call.center@regione.veneto.it</li>
+                        </ul>
+                        <p>Il meccanismo di ripristino della password si basa sull'invio di una e-mail all'indirizzo di posta che l'utente ha comunicato all'atto della registrazione.</p>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<meta name="google-signin-client_id" content="601830429763-816r52k0uojctb0gsl44perkafhhds63.apps.googleusercontent.com">
+
+
+<div id="modalLoginCittadino" class="modal fade login-form-cittadino" tabindex="-1" role="dialog" aria-labelledby="modalLoginCittadino" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="login-form-cittadino">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #32313B;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Chiudi la finestra di login">×</button>
+                <h2 class="modal-title" style="color: #fff;">LE MIE PREFERENZE</h2>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 0.5em;">
+                    <span style="font-size:1.5em;text-align:center;">Vuoi salvare le tue ricerche per recuperarle velocemente?</span>
+                    
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 0.5em; padding-top: 2em;">
+                    <span style="font-size:1.1em;font-style:italic;">Accedi tramite social</span>
+                </div>
+                <div id="fb-root"></div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border:1px solid #bbb; border-radius:5px;padding-bottom: 1em;">
+                    <form action="https://bandi.regione.veneto.it/User/ValidateGoogleToken" method="post" id="formAuthentication" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 padding-xs-none" style="margin-top:1em;">
+                        <input type="hidden" name="idtoken" id="idtoken" value="" />
+                        <div class="g-signin2 col-xs-6 col-xs-offset-0 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-push-2" data-onsuccess="onSignIn"></div>
+                    </form>
+                    <form class="col-xs-6 col-xs-offset-0 col-sm-2 col-sm-offset-2 col-md-2 col-md-offset-2 col-lg-6 col-lg-offset-0 form-facebook" style="margin-top:1em;" action="https://bandi.regione.veneto.it/User/ValidateFacebook" method="post" id="formAuthenticationFacebook">
+                        <input type="hidden" name="idUserFacebook" id="idUserFacebook" value="" />
+                        <input type="hidden" name="tokenUserFacebook" id="tokenUserFacebook" value="" />
+                        
+                        
+                        <div class="fb-login-button col-xs-6 col-xs-offset-0 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-pull-2" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" onlogin="loginFacebook();"></div>
+                    </form>
+                </div>
+                <br />  <br /><br />
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 0.5em; padding-top: 2em;">
+                    <span style="font-size:1.1em;font-style:italic;">
+                        Oppure accedi con l'account dedicato
+                    </span>
+                </div>
+                <br /> <br />
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none" style="border:1px solid #bbb; border-radius:5px;padding-bottom: 1em;">
+                    <div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" style="padding-top: 2em;">
+
+<form action="/Public/LoginExternalUser" enctype="multipart/form-data" method="post">                            <div class="form-group">
+                                
+                                <label for="mailUser" class="filter-label">Email</label>
+                                <input class="form-control text-box single-line" id="DsAcccount" name="DsAcccount" type="text" value="" />
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="filter-label">Password</label>
+
+                                <input class="form-control text-box single-line" id="Password" name="Password" type="password" value="" />
+                                
+                            </div>
+                            <div class="form-group">
+                                <button id="accediUser" type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Accedi all'area preferenze">Accedi</button>
+                            </div>
+</form>                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 2em;">
+                        <span style="font-style:italic;">Non sei ancora registrato?</span>
+                        <a href="https://bandi.regione.veneto.it/Public/Registrazione" id="registrazioneMenu" title="Registrati" style="text-decoration: underline;">
+                            REGISTRATI ORA
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    
+    function onSignIn(googleUser) {
+        try {
+            gapi.load('auth2', function () {
+                gapi.auth2.init();
+            });
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+        catch(err) {
+            console.log(err.message);
+        }
+        var profile = googleUser.getBasicProfile();
+        var id_token = googleUser.getAuthResponse().id_token;
+        $('#idtoken').val(id_token);
+        document.getElementById("formAuthentication").submit();
+    }
+
+    
+    function loginFacebook() {
+        FB.login(function (response) {
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                testAPI(response.authResponse['accessToken'], response.authResponse['userID']);
+            }
+            // Handle the response object, like in statusChangeCallback() in our demo
+            // code.
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: 180930822319969,
+            xfbml: true,  
+            version: 'v2.7' 
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v2.7&appId="+180930822319969;
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    
+    function testAPI(token, id_utente) {
+        var idTmp = id_utente;
+        var tokenTmp = token;
+        $('#idUserFacebook').val(idTmp);
+        $('#tokenUserFacebook').val(tokenTmp);
+        document.getElementById("formAuthenticationFacebook").submit();
+    }
+</script>
+    <header>
+
+
+<img src="/Img/ico-logoRegioneVeneto.png" alt="Logo Regione del Veneto" class="visible-print" />
+
+<div id="top-header-box">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="social-list-box">
+        <ul class="hidden-xs visible-sm visible-md visible-lg">
+            <li>
+                <a href="https://www.facebook.com/RegionedelVeneto/">
+                    <img src="/Img/ico-facebook.png" alt="icona social facebook" class="ico-social-desktop" />
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/regioneveneto">
+                    <img src="/Img/ico-tweeter.png" alt="icona social tweeter" class="ico-social-desktop" />
+                </a>
+            </li>
+            <li>
+                <a href="https://plus.google.com/u/0/100806802156044717920">
+                    <img src="/Img/ico-google.png" alt="icona social google plus" class="ico-social-desktop" />
+                </a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/channel/UCkZgHeZp11h21quvZMF9B4A">
+                    <img src="/Img/ico-youtube.png" alt="icona social youtube" class="ico-social-desktop" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" id="login-box">
+        <a href="#" id="loginmenu" data-toggle="modal" data-target=".login-form" title="bottone form credenziali area privata">
+            <img src="/Img/ico-user.png" id="login-img" alt="icona login area privata" />
+            AMMINISTRAZIONE
+        </a>
+    </div>
+    
+</div>
+
+<div>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                <a class="navbar-brand" href="http://www.regione.veneto.it">
+                    <img src="/Img/ico-logoRegioneVeneto.png" alt="Logo Regione del Veneto" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse" style="box-shadow: none;">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://www.regione.veneto.it/web/guest/la-regione" id="first-menu-entry" data-toggle="tooltip" data-placement="top" title="Gli organi di governo e l'organizzazione amministrativa della Regione del Veneto">
+                                LA REGIONE
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://www.regione.veneto.it/web/guest/percorsi" data-toggle="tooltip" data-placement="top" title="Le materie di competenza della Regione">
+                                PERCORSI
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://www.regione.veneto.it/web/guest/servizi" data-toggle="tooltip" data-placement="top" title="I servizi in rete della Regione">
+                                SERVIZI
+                            </a>
+                        </span>
+                    </li>
+                    <li id="list-bandiAvvisiConcorsi">
+                        <a id="bandiAvvisiConcorsi" href="http://bandi.regione.veneto.it" data-toggle="tooltip" data-placement="top" title="Pubblicazione di tutti i bandi, avvisi e concorsi della Regione">
+                            BANDI - AVVISI - CONCORSI
+                        </a>
+                        <div id="tab-bandiAvvisiConcorsi"></div>
+                    </li>
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://bur.regione.veneto.it/BurvServices/pubblica/HomeConsultazione.aspx" data-toggle="tooltip" data-placement="top" title="Link esterno del bollettino ufficiale telematico della Regione">
+                                BOLLETTINO UFFICIALE
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://www.regione.veneto.it/web/guest/normativa" data-toggle="tooltip" data-placement="top" title="La normativa e gli atti regionali">
+                                NORMATIVA
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="bordo-evidenza">
+                            <a href="http://www.regione.veneto.it/web/guest/urp" data-toggle="tooltip" data-placement="top" title="Gli uffici per le relazioni con il pubblico della Regione">
+                                URP
+                            </a>
+                        </span>
+                    </li>
+
+                    <li style="margin-bottom: 0.5em;"><div class="separator visible-xs" style="border: 1px solid #ccc;"></div></li>
+                    <li class="visible-xs hidden-sm hidden-md hidden-lg">
+                        <ul style="list-style: none;">
+                            <li>
+                                <a href="https://www.facebook.com/RegionedelVeneto/">
+                                    <img src="/Img/ico-facebook.png" alt="icona social facebook" class="ico-social-mobile" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/regioneveneto">
+                                    <img src="/Img/ico-tweeter.png" alt="icona social tweeter" class="ico-social-mobile" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://plus.google.com/u/0/100806802156044717920">
+                                    <img src="/Img/ico-google.png" alt="icona social google plus" class="ico-social-mobile" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/channel/UCkZgHeZp11h21quvZMF9B4A">
+                                    <img src="/Img/ico-youtube.png" alt="icona social youtube" class="ico-social-mobile" />
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="show-mobile">
+                        <a id="privata" class="show-mobile" href="#" data-toggle="modal" data-target=".login-form-cittadino" title="Accesso all'area privata">
+                            SERVIZI CITTADINO
+                        </a>
+                    </li>
+                    <li class="show-mobile">
+                        <a id="privata" class="show-mobile" href="#" data-toggle="modal" data-target=".login-form" title="Accesso all'area privata">
+                            AMMINISTRAZIONE
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
+<div id="menu-box" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div id="navigation-box" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <a href="/" title="homepage portale Bandi Avvisi Concorsi">
+            <div id="box1" class="col-xs-3 col-sm-2 col-md-2 col-lg-2 box linkBox">
+                <div id="box1-inside" class="box-inside">
+                    <img src="/Img/ico-home.png" alt="icona homepage portale" />
+                    <span class="link">HOME</span>
+                </div>
+                <span class="col-xs-1 mobile-letter">H</span>
+            </div>
+        </a>
+        <div id="triangle1" class="triangle"></div>
+        <a href="https://bandi.regione.veneto.it/Public/Elenco?Tipo=1" title="sezione bandi del portale">
+            <div id="box2" class="col-xs-3 col-sm-2 col-md-2 col-lg-2 box linkBox">
+                <div id="box2-inside" class="box-inside">
+                    <img src="/Img/ico-bandi.png" alt="icona sezione bandi" />
+                    <span class="link">BANDI</span>
+                </div>
+                <span class="col-xs-1 mobile-letter">B</span>
+            </div>
+        </a>
+        <div id="triangle2" class="triangle"></div>
+        <a href="https://bandi.regione.veneto.it/Public/Elenco?Tipo=2" title="seziona avvisi del portale">
+            <div id="box3" class="col-xs-3 col-sm-2 col-md-2 col-lg-2 box ">
+                <div id="box3-inside" class="box-inside linkBox">
+                    <img src="/Img/ico-avvisi.png" alt="icona sezione avvisi" />
+                    <span class="link">AVVISI</span>
+                </div>
+                <span class="col-xs-1 mobile-letter">A</span>
+            </div>
+        </a>
+        <div id="triangle3" class="triangle"></div>
+        <a href="https://bandi.regione.veneto.it/Public/Elenco?Tipo=3" title="sezione concorsi del portale">
+            <div id="box4" class="col-xs-3 col-sm-2 col-md-2 col-lg-2 box linkBox">
+                <div id="box4-inside" class="box-inside" style="margin-left:0;">
+                    <img src="/Img/ico-concorsi.png" alt="icona sezione concorsi" />
+                    <span class="link">CONCORSI</span>
+                </div>
+                <span class="col-xs-1 mobile-letter">C</span>
+            </div>
+        </a>
+        <div id="triangle4" class="triangle"></div>
+        <a href="https://bandi.regione.veneto.it/Public/Scadenzario" title="sezione scadenzario del portale">
+            <div id="box5" class="col-xs-3 col-sm-2 col-md-2 col-lg-2 box linkBox">
+                <div id="box5-inside" class="box-inside">
+                    <img src="/Img/ico-scadenzario.png" alt="icona sezione scadenzario" />
+                    <span class="link">SCADENZARIO</span>
+                </div>
+                <span class="col-xs-1 mobile-letter">S</span>
+            </div>
+        </a>
+        <div id="triangle5" class="triangle"></div>
+    </div>
+</div>
+
+        </div>
+        
+
+
+
+<div id="page-container" class="bande-laterali col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5">
+        <div id="btn-ricerca-avanzata" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #000; height: 2em; color: #fff; margin-bottom: 1em;">
+            <a style="color: #fff;" href="/Public/Ricerca" title="sezione ricerca avanzata">
+                <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-top: 0.5em;">RICERCA AVANZATA</span>
+
+                <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-top: 0.5em;">
+                    <img src="/Img/ico-ricercaAvanzata.png" alt="icona link ricerca avanzata" style="float: right; width: 0.8em;" />
+                </span>
+            </a>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #32313B; height: 3em; font-size: 1.5em; color: #fff; padding-top: 1em;">
+            IN SCADENZA ...
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none" style="border: 2px solid #32313B; height: 100%;">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #003366; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">A</span>
+                        </div>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">15/06/2026 10:00</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13019">
+                            Affidamento per la realizzazione e la fornitura di shopper in cotone &quot;tote bag&quot;, su proposta ...
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #003366; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">A</span>
+                        </div>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">15/06/2026 23:59</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13062">
+                            Autorizzazione al subappalto
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #003366; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">A</span>
+                        </div>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">18/06/2026 23:59</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13061">
+                            Interventi a favore degli operatori dello spettacolo viaggiante. Domanda di iscrizione ...
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #003366; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">A</span>
+                        </div>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">18/06/2026 23:59</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13064">
+                            Valorizzazione dei colli veneti - anno 2026
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #003366; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">A</span>
+                        </div>
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">19/06/2026 12:00</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13066">
+                            DDR N. 13177 del 30.04.2026 - Affidamento diretto alla ditta Francotyp-Postalia Italia S.r.l. ...
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #0069FF; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">B</span>
+                        </div>
+
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">29/06/2026 23:59</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13093">
+                            Contributo per imprese armatrici di barche equipaggiate con draga idraulica
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #0069FF; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">B</span>
+                        </div>
+
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">30/06/2026 14:00</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13079">
+                            Bando 2026 per la concessione di contributi finalizzati al potenziamento delle dotazioni del ...
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #0069FF; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">B</span>
+                        </div>
+
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">30/06/2026 14:00</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13077">
+                            Contributo regionale Buono Scuola anno scolastico-formativo 2025-2026
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #0069FF; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">B</span>
+                        </div>
+
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">30/06/2026 17:00</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=13057">
+                            PR Veneto FESR 2021-2027 Azione 1.3.11 Sub C - &quot;Interventi a favore della produzione ...
+                        </a>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-none row-inScadenza">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 padding-none" style="background-color: #0069FF; width: 1.8em; height: 4.4em;margin-left: 0.5em;margin-top: 0.3em;">
+                            <span style="color: #fff; font-size: 1.7em; padding-left: 0.2em; padding-right: 0.2em; padding-top: 0.6em; display: block;">B</span>
+                        </div>
+
+
+
+                    <div class="col-xs-10 col-sm-10 col-md-11 col-lg-11 padding-none" style="padding-top: 0.3em;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 DtScadenza padding-none" style="font-weight: bold;">30/06/2026 23:59</span>
+                        </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></span>
+                    </div>
+                    <span class="col-xs-10 col-sm-10 col-md-11 col-lg-11" style="padding-right: 0;">
+                        <a href="Dettaglio?idAtto=12617">
+                            Approvazione e apertura dei termini del bando per l&#39;accesso ai contributi in conto interessi ...
+                        </a>
+                    </span>
+                </div>
+        </div>
+
+        
+    </div>
+    <div id="welcomeMessageBox" class="col-xs-12 col-sm-6 col-md-6 col-lg-7">
+        
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: justify;">
+<div class="col-xs-12" style="border-radius: 5px; border: 1px solid #ccc; box-shadow: #ddd 3px 3px 5px 3px; padding-top:2em; margin-bottom: 1em;">
+                    <div class="col-xs-12">
+                        <span class="col-xs-12 text-center" style="font-size: 1.4em;margin-bottom:0.5em;">
+                            E' possibile consultare tutti i bandi, avvisi e concorsi della Regione del Veneto sull'app <strong>viviVeneto</strong>
+                        </span>
+                    </div>
+                    <div class="col-xs-12" style="margin-top: 2em; margin-bottom: 2em;">
+                        <span class="col-xs-12 text-center" style="font-size: 1em;margin-bottom:0.5em;">
+                            Scaricala subito per restare sempre aggiornato e per usufruire di tanti altri servizi
+                        </span>
+                        <span class="col-xs-12">
+                            <a href="https://play.google.com/store/apps/details?id=it.veneto.regione.casadelcittadino" title="Link applicazione Google Play Store" class="col-xs-8 col-xs-offset-2 col-sm-8 col-lg-offset-2 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
+                                <img src="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/google-play-badge.png" alt="Google Play Badge" class="col-xs-12 col-xs-offset-0 col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2" style="margin-bottom: 1.5em">
+                            </a>
+
+                            <a href="https://apps.apple.com/it/app/viviveneto-casa-del-cittadino/id1613177015" title="Link applicazione Apple App Store" class="col-xs-8 col-xs-offset-2 col-sm-8 col-lg-offset-2 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
+                                <img src="http://static.regione.veneto.it/static/www/bandi-avvisi-concorsi/banner/app-store-badge.png" alt="App Store Badge" class="col-xs-12 col-xs-offset-0 col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2" style="margin-bottom: 1.5em">
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                    <div class="col-xs-12" style="border-radius: 5px; border: 1px solid #ccc; box-shadow: #ddd 3px 3px 5px 3px; padding-top:2em; margin-bottom: 3em;">
+                    <div class="col-xs-12">
+                        <span class="col-xs-12 text-center" style="font-size: 1.4em;margin-bottom:0.5em;">
+                            Con AppIO puoi ricevere un avviso ogni volta che viene pubblicato un nuovo bando o concorso sul portale della Regione del Veneto. Iscriviti ora al servizio notifiche.
+                        </span>
+                    </div>
+                    <div class="col-xs-12" style="margin-top: 2em; margin-bottom: 2em;">
+                        <span class="col-xs-12 text-center" style="font-size: 1em;margin-bottom:0.5em;">
+                            Il servizio è gratuito e puoi disattivarlo in qualsiasi momento.
+                        </span>
+                        <div class="col-xs-12 container-buttons-appio">
+                            <button class="button-appio first-color" title="Link di sottoscrizione alle notifiche relative ai nuovi bandi" onclick="subscribeOnNotif('GoupIdBandi');">NOTIFICA NUOVO BANDO</button>
+                            <button class="button-appio second-color" title="Link di sottoscrizione alle notifiche relative ai nuovi concorsi" onclick="subscribeOnNotif('GoupIdConcorsi');">NOTIFICA NUOVO CONCORSO</button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <br />
+
+
+                <p>Benvenuti nella sezione dedicata alla pubblicazione di tutti i <strong><strong>bandi, avvisi e concorsi</strong></strong> della Regione del Veneto. Per ogni tipo di informazione <strong><strong>contattare</strong></strong>:</p><ul><li><strong><a href="http://www.regione.veneto.it/web/guest/urp">Ufficio Relazioni con il Pubblico</a></strong></li></ul><p>Per la pubblicazione/consultazione di bandi-avvisi <strong>di altri enti</strong> consultare il servizio contratti pubblici del <strong><a href="https://www.serviziocontrattipubblici.it/PubbAvvisiBandiEsiti/InitTrovaBandi.do">Ministero delle Infrastrutture e dei Trasporti</a></strong></p><p></p>
+
+            
+
+            
+            
+
+        </div>
+
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    var urlSubscribeOnNotif = '/Public/SubscribeOnNotif';
+    // subcription_type == 1 => BANDO
+    // subcription_type == 2 => CONCORSO
+    function subscribeOnNotif(subcription_type) {
+        // Disable buttons to prevent multiple clicks
+        //$('button').prop('disabled', true);
+
+        $.ajax({
+            url: urlSubscribeOnNotif,
+            type: 'POST',
+            data: {
+                subcription_type
+            },
+            success: function (response) {
+                if (response.subscriptionUrl) {
+                    window.open(response.subscriptionUrl);
+                }
+                console.log(response);
+            },
+            error: function () {
+                alert('Errore nella richiesta al server.');
+            },
+            complete: function () {
+                // Enable buttons after request is complete
+                $('button').prop('disabled', false);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        
+        $("#box1").css("background-color", "#ccc");
+        $("#triangle1").css("border-color", "#ccc transparent transparent transparent");
+
+        
+        $(".DtScadenza").text(function () {
+            return $(this).text().replace(" 00:00:00", "");
+        });
+        $(".DtScadenza").text(function () {
+            return $(this).text().replace(" 00.00.00", "");
+        });
+    });
+</script>
+    </div>
+
+    <footer class="col-xs-12 col-ms-12 col-md-12 col-lg-12">
+
+<div id="footer-content">
+    <p>
+        <span><a href="http://www.regione.veneto.it" data-toggle="tooltip" data-placement="top" title="Link Regione Veneto">©Regione del Veneto</a> </span>
+        - Centralino: 041 2792111 -
+        <a href="http://www.regione.veneto.it/sendurp/" data-toggle="tooltip" data-placement="top" title="Link alla pagina di informazioni">INFORMAZIONI</a> -
+        <a href="https://bandi.regione.veneto.it/Public/Page?idPage=3" data-toggle="tooltip" data-placement="top" title="Link alla pagina di accessibilità">ACCESSIBILITA'</a> -
+        <a href="https://form.agid.gov.it/view/53b67d80-63e3-11f0-990f-c3610a9f9316" data-toggle="tooltip" data-placement="top" title="Link alla pagina di accessibilità">DICHIARAZIONE DI ACCESSIBILITA'</a> -
+        <a href="https://bandi.regione.veneto.it/Public/Page?idPage=1" data-toggle="tooltip" data-placement="top" title="Link alla pagina di privacy">PRIVACY</a> -
+        <a href="https://bandi.regione.veneto.it/Public/Page?idPage=2" data-toggle="tooltip" data-placement="top" title="Link alla pagina di informativa cookies">INFORMATIVA COOKIE</a>
+        
+    </p>
+</div>
+    </footer>
+
+    <script type="text/javascript">
+    
+        $(document).scroll(function (e) {
+            var scrollTop = $(document).scrollTop();
+            if (scrollTop > 0) {
+                $('.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            } else {
+                $('.navbar').removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            }
+        });
+
+        
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip({ delay: { show: 600, hide: 100 } });
+        });
+
+        
+        $('input').on('focus', function () {
+            $('head meta[name=viewport]').attr('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0');
+        })
+
+        $('input').on('blur', function () {
+            $('head meta[name=viewport]').attr('content', 'width=device-width, initial-scale=1');
+        })
+
+        
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+        if (isAndroid) {
+            console.log('android');
+            $('.col-xs-12.col-sm-12.col-md-12.col-lg-12.padding-none.row-inScadenza').css('height', '8em');
+        }
+    </script>
+
+    <script>
+    
+        var gaCode = '';
+        var gaDesc = '';
+
+        if (window.location.href.indexOf("collaudo.regione.veneto.it") > -1) {
+            gaCode = 'UA-73318232-1'; 
+            gaDesc = 'BandiAvvisiConcorsi collaudo - public';
+        } else if (window.location.href.indexOf("regione.veneto.it") > -1 && window.location.href.indexOf("collaudo.") == -1) {
+            gaCode = 'UA-73318232-2'; 
+            gaDesc = 'BandiAvvisiConcorsi produzione - public';
+        }
+
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', gaCode, 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+    </script>
+</body>
+
+</html>

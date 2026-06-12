@@ -1,0 +1,200 @@
+{
+ "_note": "Recorded LLM extraction over live veneto detail pages (real capture).",
+ "_source": "https://bandi.regione.veneto.it/Public/Index",
+ "_captured": "2026-06-12",
+ "records": [
+  {
+   "title": "Affidamento per la realizzazione e la fornitura di shopper in cotone \"tote bag\"",
+   "summary": "Acquisizione e assunzione dell'impegno di spesa per la realizzazione e fornitura di shopper in cotone tote bag su proposta del Comitato Unico di Garanzia della Regione del Veneto",
+   "eligibility_text": null,
+   "value_amount": 1998.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-15",
+   "keywords": [
+    "pari opportunità",
+    "acquisti verdi",
+    "affidamento diretto"
+   ],
+   "kind": "tender",
+   "_post_id": "13019",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13019",
+   "_listing_title": "Affidamento per la realizzazione e la fornitura di shopper in cotone \"tote bag\", su proposta ..."
+  },
+  {
+   "title": "Autorizzazione al subappalto",
+   "summary": "Autorizzazione all'Impresa Vendrame Pasqualino & C. Srl ad affidare in subappalto parte dei lavori all'impresa Albertini Giovanni Srl per l'importo complessivo di € 19.900,00 nell'ambito dell'Accordo quadro per i lavori di sistemazione idraulica dei corsi d'acqua Tasso, Valpantena, Quinzano, Avesa, Valdonega e loro affluenti",
+   "eligibility_text": null,
+   "value_amount": 39934.75,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-15",
+   "keywords": [
+    "Lavori pubblici",
+    "Subappalto",
+    "Sistemazione idraulica",
+    "Corsi d'acqua",
+    "Verona",
+    "Territorio"
+   ],
+   "kind": "tender",
+   "_post_id": "13062",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13062",
+   "_listing_title": "Autorizzazione al subappalto"
+  },
+  {
+   "title": "Interventi a favore degli operatori dello spettacolo viaggiante. Domanda di iscrizione all'Elenco regionale degli operatori dello spettacolo viaggiante.",
+   "summary": "Presentazione domande di iscrizione all'Elenco regionale degli operatori dello spettacolo viaggiante di cui all'art. 3 della L.R. 12 agosto 2025, n. 17.",
+   "eligibility_text": "Operatori dello spettacolo viaggiante",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-18",
+   "keywords": [
+    "spettacolo viaggiante",
+    "cultura",
+    "operatori dello spettacolo",
+    "elenco regionale"
+   ],
+   "kind": "tender",
+   "_post_id": "13061",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13061",
+   "_listing_title": "Interventi a favore degli operatori dello spettacolo viaggiante. Domanda di iscrizione ..."
+  },
+  {
+   "title": "Valorizzazione dei colli veneti - anno 2026",
+   "summary": "Avviso pubblico per programmi e iniziative di valorizzazione dei colli veneti, ai sensi della L.R. n. 25/2021 - anno 2026",
+   "eligibility_text": null,
+   "value_amount": 200000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-18",
+   "keywords": [
+    "cultura",
+    "valorizzazione",
+    "colli veneti"
+   ],
+   "kind": "incentive",
+   "_post_id": "13064",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13064",
+   "_listing_title": "Valorizzazione dei colli veneti - anno 2026"
+  },
+  {
+   "title": "DDR N. 13177 del 30.04.2026 - Affidamento diretto fornitura pacchetto dati aggiornamento sistema affrancatura Pitney Bowes Connect +2000",
+   "summary": "Affidamento diretto della fornitura del pacchetto dati per l'aggiornamento del sistema di affrancatura Pitney Bowes Connect +2000 presso l'ufficio Protocollo Generale della Corrispondenza in Partenza della Giunta Regionale del Veneto",
+   "eligibility_text": "Affidamento diretto ai sensi dell'art. 50, comma 1, lett. b) del D. Lgs. n. 36/2023 e s.m.i. Destinatario: Francotyp-Postalia Italia S.r.l. con sede legale in via Manzoni, 42 - 20121 Milano",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-19",
+   "keywords": [
+    "acquisti",
+    "affari generali",
+    "forniture",
+    "servizi"
+   ],
+   "kind": "tender",
+   "_post_id": "13066",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13066",
+   "_listing_title": "DDR N. 13177 del 30.04.2026 - Affidamento diretto alla ditta Francotyp-Postalia Italia S.r.l. ..."
+  },
+  {
+   "title": "Contributo per imprese armatrici di barche equipaggiate con draga idraulica",
+   "summary": "Approvazione di un bando per il sostegno alle imprese della pesca del Veneto, armatrici di barche equipaggiate con draga idraulica, aderenti ad uno dei due Consorzi di Gestione Vongole del Veneto che non hanno esercitato la pesca nell'anno 2025.",
+   "eligibility_text": "Imprese armatrici di barche equipaggiate con draga idraulica aderenti ad uno dei due Consorzi di Gestione Vongole del Veneto che non hanno esercitato la pesca nell'anno 2025.",
+   "value_amount": 400000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-29",
+   "keywords": [
+    "pesca",
+    "agricoltura",
+    "contributi"
+   ],
+   "kind": "incentive",
+   "_post_id": "13093",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13093",
+   "_listing_title": "Contributo per imprese armatrici di barche equipaggiate con draga idraulica"
+  },
+  {
+   "title": "Bando 2026 per la concessione di contributi finalizzati al potenziamento delle dotazioni del volontariato organizzato di protezione civile ai sensi degli artt. 26 e 27 della L.R. n. 13/2022",
+   "summary": "Bando per la concessione di contributi al volontariato organizzato di protezione civile per il potenziamento delle dotazioni di mezzi e attrezzature di soccorso",
+   "eligibility_text": "Enti di volontariato organizzato di protezione civile",
+   "value_amount": 800000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "protezione civile",
+    "volontariato",
+    "dotazioni",
+    "mezzi e attrezzature di soccorso"
+   ],
+   "kind": "incentive",
+   "_post_id": "13079",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13079",
+   "_listing_title": "Bando 2026 per la concessione di contributi finalizzati al potenziamento delle dotazioni del ..."
+  },
+  {
+   "title": "Contributo regionale Buono Scuola anno scolastico-formativo 2025-2026",
+   "summary": "Approvazione del bando per la concessione del contributo regionale Buono Scuola per l'Anno scolastico-formativo 2025-2026",
+   "eligibility_text": null,
+   "value_amount": 8000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "istruzione",
+    "scuola",
+    "buono scuola",
+    "contributo regionale"
+   ],
+   "kind": "incentive",
+   "_post_id": "13077",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13077",
+   "_listing_title": "Contributo regionale Buono Scuola anno scolastico-formativo 2025-2026"
+  },
+  {
+   "title": "PR Veneto FESR 2021-2027 Azione 1.3.11 Sub C - Interventi a favore della produzione cinematografica e audiovisiva",
+   "summary": "Erogazione di contributi a favore della produzione cinematografica e audiovisiva. Due sportelli: primo dal 12 maggio al 30 giugno 2026 (€ 1.840.000,00), secondo dal 1 dicembre 2026 al 2 febbraio 2027 (€ 1.840.000,00)",
+   "eligibility_text": "Imprese culturali, creative e dell'audiovisivo",
+   "value_amount": 3680000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "produzione cinematografica",
+    "audiovisivo",
+    "imprese culturali",
+    "imprese creative",
+    "FESR",
+    "cultura"
+   ],
+   "kind": "incentive",
+   "_post_id": "13057",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=13057",
+   "_listing_title": "PR Veneto FESR 2021-2027 Azione 1.3.11 Sub C - \"Interventi a favore della produzione ..."
+  },
+  {
+   "title": "Approvazione e apertura dei termini del bando per l'accesso ai contributi in conto interessi sui mutui accesi per l'acquisto di terreni agricoli da parte di giovani agricoltori per l'avviamento dell'impresa",
+   "summary": "Contributo pubblico in conto interessi sui mutui accesi per l'acquisto di terreni agricoli da parte di giovani agricoltori per l'avviamento dell'impresa, finanziato dalla Legge 15 marzo 2024 n. 36, art. 3",
+   "eligibility_text": "Giovani agricoltori",
+   "value_amount": 1102113.48,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "agricoltura",
+    "giovani agricoltori",
+    "primo insediamento",
+    "mutui",
+    "terreni agricoli",
+    "contributi in conto interessi"
+   ],
+   "kind": "incentive",
+   "_post_id": "12617",
+   "_url": "https://bandi.regione.veneto.it/Public/Dettaglio?idAtto=12617",
+   "_listing_title": "Approvazione e apertura dei termini del bando per l'accesso ai contributi in conto interessi ..."
+  }
+ ]
+}

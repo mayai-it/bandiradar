@@ -12,9 +12,15 @@ and the cache protocol.
 from __future__ import annotations
 
 import html
+import json
+import logging
 import re
+from collections.abc import Iterable, Iterator
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
+from bandiradar import http, resources
 from bandiradar.crawl import (  # the self-healing spine lives top-level; re-export here
     CrawlRecipe,
     DetailRef,
@@ -24,6 +30,15 @@ from bandiradar.crawl import (  # the self-healing spine lives top-level; re-exp
     validate_refs,
 )
 from bandiradar.matching.llm import LLMClient
+from bandiradar.models import (
+    Opportunity,
+    RawDoc,
+    default_status,
+    sanitize_value_bounds,
+)
+from bandiradar.sources.base import ProgressFn
+
+logger = logging.getLogger(__name__)
 
 __all__ = [
     "CrawlRecipe",
@@ -37,6 +52,7 @@ __all__ = [
     "ExtractionCache",
     "InMemoryExtractionCache",
     "EXTRACTION_SYSTEM",
+    "LlmScraperSource",
 ]
 
 _TAG_RE = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.S | re.I)
@@ -143,3 +159,213 @@ def extract_bando_fields(page_text: str, region: str, client: LLMClient) -> dict
         "keywords": keywords,
         "kind": kind,
     }
+
+
+# --------------------------------------------------------------------------- #
+# Reusable LLM-scraper SOURCE base (HTML listing + LLM detail extraction)
+# --------------------------------------------------------------------------- #
+
+
+class LlmScraperSource:
+    """Base for a regional LLM-scraper source over an HTML portal.
+
+    A subclass provides only the LISTING — :meth:`_listing_refs` fetches the
+    portal's listing page(s) and PURELY parses them into ``DetailRef``s — plus its
+    identity config (``id``/``region``/``issuer_name``/listing URL). Everything
+    else is shared: per-URL extraction cache, LLM field extraction
+    (:func:`extract_bando_fields`), the generic record→Opportunity mapper, the
+    fixture loader, and crawl-drift DETECTION (``validate_refs`` + a last-good
+    golden snapshot).
+
+    Unlike ``toscana`` (whose listing is WP-REST JSON, healable via a
+    ``CrawlRecipe``), an HTML listing is parsed by OUR pure code, so on drift the
+    LLM recipe-healer has nothing to re-derive — drift is DETECTED and flagged for
+    a human (``last_crawl_health`` / ``crawl_health()`` surface it in doctor and
+    the monitor), never silently ignored.
+    """
+
+    # Subclass identity (set as class attrs in the concrete source).
+    id: str = ""
+    region: str = ""
+    issuer_name: str = ""
+    listing_url: str = ""  # informational + the doctor probe target
+
+    kind = "incentive"  # registry hint; per-record kind comes from the extraction
+    requires_llm = True  # live fetch extracts fields with an LLM
+    last_crawl_health: Health | None = None
+    _MAX_ITEMS = 20
+
+    # ---- subclass hook ----------------------------------------------------- #
+
+    def _listing_refs(self) -> list[DetailRef]:
+        """Fetch the listing page(s) and parse them into DetailRefs (I/O + pure
+        parse). Subclasses implement this; the parse itself must be a pure,
+        offline-testable function over the HTML."""
+        raise NotImplementedError
+
+    # ---- shared plumbing ---------------------------------------------------- #
+
+    def _fixture_path(self) -> Path:
+        return resources.fixture(f"{self.id}.json")
+
+    def _fetch_text(self, url: str) -> str:
+        with http.client(follow_redirects=True) as client:
+            resp = http.with_retry(lambda: client.get(url), what=f"{self.id} {url}")
+            http.raise_for_status(resp, what=f"{self.id} {url}")
+            return html_to_text(resp.text)
+
+    def _list_details(self, recipe_store) -> list[DetailRef]:
+        """Crawl the listing; snapshot the golden on health, flag on drift."""
+        refs = self._listing_refs()
+        self.last_crawl_health = validate_refs(refs)
+        if self.last_crawl_health == "ok":
+            if recipe_store is not None:
+                recipe_store.set_golden(self.id, refs)
+            return refs
+        logger.warning(
+            "%s crawl health=%s (%d refs) — the HTML listing may have drifted; "
+            "no auto-heal for an HTML parse, human review needed",
+            self.id,
+            self.last_crawl_health,
+            len(refs),
+        )
+        # Keep whatever is usable; the drift stays visible via crawl health.
+        return [r for r in refs if r[1].strip() and r[2].strip()]
+
+    def crawl_health(self) -> Health:
+        """Key-less crawl probe for ``doctor`` (listing reachable + parseable)."""
+        return validate_refs(self._listing_refs())
+
+    def fetch(
+        self,
+        since: datetime | None = None,
+        *,
+        limit: int | None = None,
+        max_pages: int | None = None,
+        progress: ProgressFn | None = None,
+        client: LLMClient | None = None,
+        cache: ExtractionCache | None = None,
+    ) -> Iterable[RawDoc]:
+        """LIVE: list detail URLs, fetch each page, LLM-extract (cached per URL)."""
+        from bandiradar.matching.llm import client_status, get_client
+
+        client = client if client is not None else get_client()
+        if client is None:
+            raise RuntimeError(
+                f"LLM scraper has no usable LLM client: {client_status()}. "
+                "Configure BANDIRADAR_LLM_PROVIDER + the API key (see .env.example), "
+                "or use --sample to run offline against the recorded fixture."
+            )
+        from bandiradar.recipe_store import RecipeStore
+        from bandiradar.storage import SqliteExtractionCache, Store
+
+        cap = limit if limit is not None else self._MAX_ITEMS
+        own_store = Store(None) if cache is None else None
+        if cache is None:
+            cache = SqliteExtractionCache(own_store)
+        recipe_store = RecipeStore(own_store) if own_store is not None else None
+        return self._scrape(client, cache, recipe_store, cap, progress, own_store)
+
+    def _scrape(
+        self, client, cache, recipe_store, max_items, progress, own_store=None
+    ) -> Iterator[RawDoc]:
+        try:
+            count = 0
+            for post_id, url, listing_title in self._list_details(recipe_store)[
+                :max_items
+            ]:
+                record = cache.get(url)
+                if record is None:
+                    record = extract_bando_fields(
+                        self._fetch_text(url), self.region, client
+                    )
+                    cache.set(url, record)
+                payload = {
+                    **record,
+                    "_post_id": post_id,
+                    "_url": url,
+                    "_listing_title": listing_title,
+                }
+                yield RawDoc(
+                    id=f"{self.id}:{post_id}",
+                    source=self.id,
+                    fetched_at=datetime.now(tz=UTC),
+                    payload=payload,
+                    url=url,
+                )
+                count += 1
+                if progress is not None:
+                    progress(f"{self.id}: {count} fetched")
+        finally:
+            if own_store is not None:
+                own_store.close()
+
+    # ---- pure mapping + fixture --------------------------------------------- #
+
+    def to_opportunities(
+        self, raw: RawDoc, now: datetime | None = None
+    ) -> list[Opportunity]:
+        """PURE map of one EXTRACTED bando record (``raw.payload``)."""
+        p: dict[str, Any] = raw.payload
+        deadline = _parse_iso_date(p.get("deadline"))
+        kind = (
+            p.get("kind") if p.get("kind") in ("incentive", "tender") else ("incentive")
+        )
+        keywords = p.get("keywords")
+        keywords = [str(k) for k in keywords] if isinstance(keywords, list) else []
+        eligibility = " ".join(
+            part for part in (p.get("eligibility_text"), " ".join(keywords)) if part
+        ).strip()
+        value_min, value_max = sanitize_value_bounds(
+            p.get("value_min"), p.get("value_max")
+        )
+        return [
+            Opportunity(
+                id=f"{self.id}:{p['_post_id']}",
+                source=self.id,
+                source_url=p.get("_url") or "",
+                kind=kind,
+                title=p.get("title") or p.get("_listing_title") or str(p["_post_id"]),
+                summary=p.get("summary"),
+                issuer_name=self.issuer_name,
+                issuer_region=self.region,
+                cpv=[],
+                keywords=keywords,
+                value_amount=p.get("value_amount"),
+                value_min=value_min,
+                value_max=value_max,
+                geo_scope="regional",
+                region=self.region,
+                deadline=deadline,
+                status=default_status(deadline, now),
+                eligibility_text=eligibility or None,
+                raw_ref=raw.id,
+            )
+        ]
+
+    def load_fixture(self, path: Path | None = None) -> list[RawDoc]:
+        """Read RECORDED extracted records into RawDocs (offline, no LLM)."""
+        package = json.loads((path or self._fixture_path()).read_text(encoding="utf-8"))
+        fetched_at = _parse_iso_date(package.get("_captured")) or datetime(
+            1970, 1, 1, tzinfo=UTC
+        )
+        return [
+            RawDoc(
+                id=f"{self.id}:{rec['_post_id']}",
+                source=self.id,
+                fetched_at=fetched_at,
+                payload=rec,
+                url=rec.get("_url"),
+            )
+            for rec in package.get("records", [])
+        ]
+
+
+def _parse_iso_date(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=UTC)

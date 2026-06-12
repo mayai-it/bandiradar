@@ -33,6 +33,8 @@ src/bandiradar/
     sicilia.py     # EuroInfoSicilia FESR/FSC (WP base + categories filter)
     emilia_romagna.py # ER Politiche territoriali (Plone Bando)
     trentino.py    # Prov. Trento FEASR — CKAN open-data CSV adapter
+    veneto.py      # Veneto SIU — LlmScraperSource (landing-seeded crawl)
+    piemonte.py    # Piemonte Drupal — LlmScraperSource (Views, stato=Aperto)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
@@ -66,16 +68,23 @@ bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
-## Sources (10)
+## Sources (12)
 `anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio`, `sicilia`,
 `emilia_romagna`, `trentino` are **key-less** (no credentials, public APIs/feeds);
-`toscana` is an **LLM scraper** (HTML portal, no clean data API — uses
-`sources/llm_scraper.py` + the self-healing crawl spine). Two **reusable bases** keep
-many regions config-only: `sources/wordpress.py` (`WordPressBandiSource`) for WP-REST
-portals — `lazio`, and `sicilia` (standard `posts` + a `categories=<id>` filter via
-`extra_params`) — and `sources/plone.py` (`PloneBandoSource`) for Plone PAs running
-the AGID `Bando` content type (`emilia_romagna`; structured `scadenza_bando`, no
-text-parsing). `trentino` is a dedicated CKAN-CSV adapter (FEASR calendar).
+`toscana`, `veneto`, `piemonte` are **LLM scrapers** (HTML portals, no clean data
+API). Three **reusable bases** keep regions cheap to add: `sources/wordpress.py`
+(`WordPressBandiSource`) for WP-REST portals — `lazio`, and `sicilia` (standard
+`posts` + a `categories=<id>` filter via `extra_params`); `sources/plone.py`
+(`PloneBandoSource`) for Plone PAs running the AGID `Bando` content type
+(`emilia_romagna`; structured `scadenza_bando`, no text-parsing); and
+`sources/llm_scraper.py`'s **`LlmScraperSource`** for API-less HTML portals — a
+subclass provides only the listing parse (pure, cassette-tested), the base shares
+extraction/cache/mapper/fixture + crawl-drift DETECTION (golden + `validate_refs`;
+an HTML parse has no recipe to auto-heal → drift is human-flagged). `veneto` (SIU
+landing-seeded — the portal's JSON layer stonewalls bots) and `piemonte` (Drupal
+Views listing, server-side stato="Aperto" filter) are its first subclasses;
+`toscana` (WP-REST JSON listing) still wires the full CrawlRecipe healer.
+`trentino` is a dedicated CKAN-CSV adapter (FEASR calendar).
 Note the two ANAC adapters are complementary, not duplicates:
 - **`anac_pvl`** = ANAC *Pubblicità a Valore Legale* — the **live feed of OPEN
   tenders** (`dataScadenza` in the future), no creds. This is the source of

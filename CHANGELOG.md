@@ -4,6 +4,35 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.8.0] — 2026-06-12 — Regional coverage wave 2
+
+### Added
+- **`veneto`** — Regione del Veneto bandi from the SIU portal
+  (`bandi.regione.veneto.it`), as an LLM scraper. Recon-first: the portal's
+  listing is JS-driven and its internal JSON endpoint answers 200/empty to
+  non-browser callers (cookies/headers replicated — bots are stonewalled), so the
+  SERVER-RENDERED landing ("in scadenza" + latest atti) seeds the crawl and the
+  LLM extracts each `Dettaglio` page. Honest scope: one visit surfaces the
+  landing's ~10 atti; the daily monitor accumulates them over time.
+- **`piemonte`** — Regione Piemonte bandi from the dedicated Drupal 10 portal
+  (`bandi.regione.piemonte.it`), as an LLM scraper. Recon-first: no jsonapi, RSS
+  only ~10 pre-informazione items, but the Views listing is server-rendered with
+  an exposed stato filter — the crawl asks the server for **stato "Aperto"** only
+  (`?field_stato_target_id=19`) and the LLM extracts each detail page.
+- **`LlmScraperSource`** — reusable LLM-scraper base in `sources/llm_scraper.py`
+  (per the module's charter): a subclass provides only its listing parse (a pure,
+  cassette-tested function) + identity config; extraction, per-URL cache, the
+  record→Opportunity mapper, fixture loading, and crawl-drift DETECTION
+  (golden snapshot + `validate_refs`) are shared. An HTML listing parse is code,
+  not a recipe, so drift is flagged for a human rather than LLM-healed (unlike
+  `toscana`'s JSON-listing CrawlRecipe, which keeps the full healer).
+- Real recorded fixtures (live LLM extraction) + offline tests for both sources;
+  listing-HTML cassettes test the pure parsers and the drift path.
+
+Source adapters: 10 → **12** (9 key-less + 3 LLM scrapers); regional coverage
+6 → **8** (the two largest uncovered economies). Pre-flight probe for the
+Piemonte bandi portal added; docs/coverage map/SVG updated.
+
 ## [0.7.0] — 2026-06-12 — Optional HTTP relay for CI-blocked sources
 
 ### Added

@@ -1,0 +1,228 @@
+{
+ "_note": "Recorded LLM extraction over live piemonte detail pages (real capture).",
+ "_source": "https://bandi.regione.piemonte.it/contributi-finanziamenti?field_stato_target_id=19",
+ "_captured": "2026-06-12",
+ "records": [
+  {
+   "title": "Programmazione offerta formativa ITS Academy 2026-2029",
+   "summary": "Avviso per la programmazione dell'offerta formativa di ITS Academy nel periodo 2026-2029, finanziato da PR FSE+ 2021/2027",
+   "eligibility_text": "Fondazioni di partecipazione ITS Academy costituite, in attuazione del DPCM 25 gennaio 2008 e s.m.i., sul territorio piemontese ai sensi della D.G.R. n. 40-522 del 4 agosto 2010 e delle Determinazioni dirigenziali richiamate",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-07-10",
+   "keywords": [
+    "Formazione professionale",
+    "Formazione Tecnologica Superiore",
+    "ITS Academy",
+    "FSE Plus"
+   ],
+   "kind": "tender",
+   "_post_id": "programmazione-offerta-formativa-its-academy-2026-2029",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/programmazione-offerta-formativa-its-academy-2026-2029",
+   "_listing_title": "Programmazione offerta formativa ITS Academy 2026-2029"
+  },
+  {
+   "title": "Apprendistato per il diploma di istruzione secondaria superiore e di specializzazione di enotecnico e per il Certificato di specializzazione IFTS (2026-2028)",
+   "summary": "Avviso pubblico per l'individuazione e la gestione dell'offerta formativa pubblica per l'apprendistato duale di I livello per il Diploma Scolastico, di Enotecnico e del Certificato di specializzazione IFTS",
+   "eligibility_text": "Istituzioni scolastiche statali e paritarie riconosciute della Legge 62/2000 di istruzione secondaria di secondo grado operanti in Piemonte; Istituti tecnici abilitati al rilascio del titolo di specializzazione di Enotecnico operanti in Piemonte; ATS costituite ai sensi dell'art. 69 della Legge 144/99 i cui percorsi siano approvati nell'ambito del Bando attuativo dei Percorsi IFTS",
+   "value_amount": 2640440.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-07-17",
+   "keywords": [
+    "Formazione professionale",
+    "Apprendistato",
+    "Istruzione secondaria superiore",
+    "Enotecnico",
+    "IFTS",
+    "FSE Plus"
+   ],
+   "kind": "tender",
+   "_post_id": "apprendistato-diploma-istruzione-secondaria-superiore-specializzazione-enotecnico-certificato",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/apprendistato-diploma-istruzione-secondaria-superiore-specializzazione-enotecnico-certificato",
+   "_listing_title": "Apprendistato per il diploma di istruzione secondaria superiore e di specializzazione di enotecnico e per il Certificato di specializzazione IFTS (2026-2028)"
+  },
+  {
+   "title": "Piani integrati di welfare per la vita e il lavoro",
+   "summary": "Concessione di contributi per il finanziamento di progetti volti a promuovere il benessere organizzativo e l'attuazione di interventi di welfare aziendale e territoriale nel tessuto imprenditoriale piemontese, cofinanziato dall'Unione europea.",
+   "eligibility_text": "Micro, piccole o medie imprese (PMI) con sede in Piemonte, che devono partecipare in forma associata costituendosi in Associazioni Temporanee di Imprese o di Scopo (ATI/ATS). Possono partecipare anche grandi imprese se il progetto è condiviso con le PMI partner e dimostra radicamento territoriale, e associazioni di rappresentanza datoriale, sindacale, di categoria, enti bilaterali e società di mutuo soccorso per facilitare la rete di welfare territoriale.",
+   "value_amount": 8000000.0,
+   "value_min": 80000.0,
+   "value_max": 250000.0,
+   "deadline": "2026-06-19",
+   "keywords": [
+    "welfare aziendale",
+    "welfare territoriale",
+    "benessere organizzativo",
+    "conciliazione vita-lavoro",
+    "PMI",
+    "flessibilità oraria",
+    "servizi di cura",
+    "mobilità sostenibile"
+   ],
+   "kind": "incentive",
+   "_post_id": "piani-integrati-welfare-vita-lavoro",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/piani-integrati-welfare-vita-lavoro",
+   "_listing_title": "Piani integrati di welfare per la vita e il lavoro"
+  },
+  {
+   "title": "Progetto BANDIERA \"PIEMONTE HYDROGEN VALLEY\"",
+   "summary": "Misura finalizzata alla realizzazione di progetti bandiera per la produzione di idrogeno destinato alla sostituzione dei combustibili fossili, con componenti di impianti di produzione, formazione e uso dell'idrogeno in settori di particolare valenza territoriale.",
+   "eligibility_text": "Imprese di tutte le dimensioni, in forma singola o associata; le imprese potranno anche partecipare in eventuale associazione con Organismi di ricerca e Pubbliche Amministrazioni. Sono ammissibili i progetti bandiera che prevedono congiuntamente: a) uno o più impianti di produzione di idrogeno e relativi sistemi ausiliari; b) un piano di formazione e/o informazione per la promozione del progetto; c) un progetto connesso all'uso dell'idrogeno in settori di particolare valenza territoriale.",
+   "value_amount": 10000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "idrogeno",
+    "energia sostenibile",
+    "riduzione emissioni CO2",
+    "combustibili fossili",
+    "produzione energetica",
+    "sviluppo energetico sostenibile"
+   ],
+   "kind": "incentive",
+   "_post_id": "progetto-bandiera-piemonte-hydrogen-valley",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/progetto-bandiera-piemonte-hydrogen-valley",
+   "_listing_title": "Progetto BANDIERA “PIEMONTE HYDROGEN VALLEY”"
+  },
+  {
+   "title": "Finanziamenti per i Centri per Uomini autori o potenziali autori di violenza di genere",
+   "summary": "Avviso per l'accesso ai finanziamenti per i Centri per Uomini autori di violenza di genere, finalizzato a sostenere le attività di ascolto, accoglienza, assistenza psicologica e interventi personalizzati su tutto il territorio regionale piemontese.",
+   "eligibility_text": "Enti locali/enti pubblici, enti del Servizio sanitario, Organizzazioni di volontariato, Associazioni di promozione sociale, Cooperative sociali e altre Organizzazioni iscritte al RUNTS alla data del 9.7.2026. Tutti i soggetti devono essere titolari di Centri per uomini autori di violenza iscritti al registro regionale di cui all'art. 21 della LR n.10/2024 e alla D.G.R. 4-425 del 28.11.2024 o che abbiano presentato istanza di iscrizione al registro regionale entro il 30.6.2026.",
+   "value_amount": 518563.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-07-09",
+   "keywords": [
+    "violenza di genere",
+    "centri per uomini",
+    "diritti",
+    "politiche sociali",
+    "terzo settore",
+    "assistenza psicologica"
+   ],
+   "kind": "incentive",
+   "_post_id": "finanziamenti-centri-uomini-autori-potenziali-autori-violenza-genere",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/finanziamenti-centri-uomini-autori-potenziali-autori-violenza-genere",
+   "_listing_title": "Finanziamenti per i Centri per Uomini autori o potenziali autori di violenza di genere"
+  },
+  {
+   "title": "CSR 2023-2027 - Bando per il sostegno e pagamento all'intervento SRA27 \"Pagamento per impegni silvo-ambientali\". Campagna 2026 (nuove adesioni)",
+   "summary": "Pagamento annuale ad ettaro per compensare i titolari della gestione di superfici forestali dei costi aggiuntivi e del mancato guadagno derivanti dall'assunzione volontaria di impegni silvo-climatico-ambientali",
+   "eligibility_text": "Proprietari, possessori pubblici o privati e loro associazioni, nonché altri soggetti ed enti di diritto pubblico o privato titolari della gestione di superfici forestali. Non possono partecipare: Regione Piemonte, lo Stato e i soggetti da questi controllati, salvo gli Enti di gestione delle Aree protette e dei siti della rete Natura 2000. Superficie minima 10 ettari e massima 100 ettari. Ogni richiedente può presentare una sola domanda come capofila. Periodo di impegno 5 anni.",
+   "value_amount": 350000.0,
+   "value_min": null,
+   "value_max": 400.0,
+   "deadline": "2026-06-30",
+   "keywords": [
+    "gestione forestale",
+    "impegni silvo-ambientali",
+    "conservazione natura",
+    "pagamenti agroambientali",
+    "ambiente e territorio",
+    "sviluppo rurale",
+    "PAC",
+    "forestazione"
+   ],
+   "kind": "incentive",
+   "_post_id": "csr-2023-2027-bando-il-sostegno-e-pagamento-allintervento-sra27-pagamento",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/csr-2023-2027-bando-il-sostegno-e-pagamento-allintervento-sra27-pagamento",
+   "_listing_title": "CSR 2023-2027 -Bando per il sostegno e pagamento all’intervento SRA27 “Pagamento per impegni silvo-ambientali”. Campagna 2026 (nuove adesioni)"
+  },
+  {
+   "title": "Fondo rotativo Foncooper",
+   "summary": "Bando per la concessione di finanziamenti a tasso agevolato alle società cooperative per l'ammodernamento dei mezzi di produzione, ristrutturazione degli impianti e miglioramento delle performance climatico-ambientali.",
+   "eligibility_text": "Società cooperative regolarmente costituite, escluse quelle di abitazione, rientranti nei limiti dimensionali previsti per le PMI, operanti nei settori: produzione agricola primaria, trasformazione e commercializzazione di prodotti agricoli. Le imprese non devono essere 'in difficoltà' e devono rispettare i requisiti di mutualità previsti dal Codice Civile.",
+   "value_amount": 4261419.61,
+   "value_min": null,
+   "value_max": 2000000.0,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "cooperative",
+    "finanziamenti agevolati",
+    "produzione agricola",
+    "trasformazione agricola",
+    "commercializzazione agricola",
+    "PMI",
+    "ammodernamento",
+    "sostenibilità",
+    "efficienza energetica"
+   ],
+   "kind": "incentive",
+   "_post_id": "fondo-rotativo-foncooper",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/fondo-rotativo-foncooper",
+   "_listing_title": "Fondo rotativo Foncooper"
+  },
+  {
+   "title": "Progetti e iniziative dedicati alle persone con disturbi del neuro-sviluppo e dello spettro autistico",
+   "summary": "Avviso pubblico per la promozione del benessere e della qualità della vita delle persone con disturbo dello spettro autistico, favorendo l'inclusione sociale e l'autonomia attraverso progetti del terzo settore",
+   "eligibility_text": "Enti del Terzo Settore (ETS) singoli o in partenariato, iscritti al Registro Unico del Terzo Settore (RUNTS), il cui statuto evinca chiaramente attività rivolte alle persone con disturbi del neuro-sviluppo e dello spettro autistico. Obbligatoria la collaborazione con gli Ambiti Territoriali Sociali. È richiesto cofinanziamento di almeno il 10%.",
+   "value_amount": 2167229.0,
+   "value_min": null,
+   "value_max": 100000.0,
+   "deadline": "2026-07-10",
+   "keywords": [
+    "disturbi del neuro-sviluppo",
+    "spettro autistico",
+    "politiche sociali",
+    "inclusione sociale",
+    "autonomia",
+    "terzo settore",
+    "qualità della vita",
+    "socializzazione",
+    "coabitazione",
+    "vita indipendente",
+    "supporto caregiver",
+    "assistenza sociosanitaria"
+   ],
+   "kind": "incentive",
+   "_post_id": "progetti-e-iniziative-dedicati-alle-persone-con-disturbi-del-neuro",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/progetti-e-iniziative-dedicati-alle-persone-con-disturbi-del-neuro",
+   "_listing_title": "Progetti e iniziative dedicati alle persone con disturbi del neuro-sviluppo e dello spettro autistico"
+  },
+  {
+   "title": "Realizzazione di case rifugio",
+   "summary": "Finanziamento per l'acquisto e la realizzazione di case rifugio per donne vittime di violenza e loro figli/e, potenziamento dei posti esistenti e interventi di accessibilità per persone con disabilità",
+   "eligibility_text": "Possono partecipare: a) associazioni e organizzazioni operanti nel settore del sostegno alle donne vittime di violenza, iscritte al RUNTS, con esperienze specifiche e metodologia di accoglienza basata sulla relazione tra donne; b) enti locali in forma singola o associata; c) soggetti di cui alle lettere a) e b) in forma consorziata o in convenzione. Per l'acquisto di immobili, i soggetti devono possedere i requisiti previsti dall'Intesa n. 146 del 14.9.2022. Per incremento posti e accessibilità, solo i titolari delle case rifugio iscritti all'albo regionale.",
+   "value_amount": 1469807.0,
+   "value_min": null,
+   "value_max": 200000.0,
+   "deadline": "2026-07-30",
+   "keywords": [
+    "case rifugio",
+    "violenza contro le donne",
+    "donne vittime di violenza",
+    "accessibilità",
+    "disabilità",
+    "politiche sociali",
+    "diritti",
+    "edilizia sociale"
+   ],
+   "kind": "incentive",
+   "_post_id": "realizzazione-di-case-rifugio",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/realizzazione-di-case-rifugio",
+   "_listing_title": "Realizzazione di case rifugio"
+  },
+  {
+   "title": "Censimento regionale strade storiche di montagna di interesse turistico",
+   "summary": "Apertura permanente sportello per la registrazione delle candidature per il Censimento regionale delle strade storiche di montagna ai sensi dell'art. 3 del Regolamento regionale n.6/R del 30 settembre 2022",
+   "eligibility_text": "Enti pubblici proprietari dell'infrastruttura, soggetti coinvolti nella gestione, valorizzazione e promozione turistica della stessa, riuniti in forma associativa o sulla base di specifici accordi amministrativi o di programma. Registrazione delle strade storiche di montagna di interesse turistico con funzione storica comprovata in base al possesso di almeno una delle seguenti caratteristiche: a) strutture, manufatti ed opere accessorie situate lungo strada o raggiungibili attraverso la stessa capaci di testimoniare la storicità dell'infrastruttura; b) studi scientifici, documentazione fotografica, pittorica o testuale, rappresentazione in mappe o in altri supporti cartografici reperibili presso archivi storici; c) valenza turistica della strada e dei territori interessati.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-04-02",
+   "keywords": [
+    "turismo",
+    "strade storiche",
+    "montagna",
+    "valorizzazione"
+   ],
+   "kind": "incentive",
+   "_post_id": "censimento-regionale-strade-storiche-di-montagna-di-interesse-turistico",
+   "_url": "https://bandi.regione.piemonte.it/contributi-finanziamenti/censimento-regionale-strade-storiche-di-montagna-di-interesse-turistico",
+   "_listing_title": "Censimento regionale strade storiche di montagna di interesse turistico"
+  }
+ ]
+}
