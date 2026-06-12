@@ -562,6 +562,10 @@ doctor + STATUS + publish always run: if the run is **truncated**, `STATUS.md` s
 > via relay and logs both outcomes.
 > *(TED's earlier 403 from CI was a different issue — a default-User-Agent block —
 > and is **fixed**: with our identifying User-Agent, TED fetches from the runners.)*
+> A few hosts block even the relay: `pr2127.regione.puglia.it` drops big-cloud IPs
+> (Azure runners AND Vercel/AWS fra1, while other EU datacenters get 200) — the
+> `puglia` adapter works locally and its data is in the corpus, but the CI monitor
+> can't refresh it (same class as Abruzzo; classified in `STATUS.md`).
 
 ## AI agents (MCP)
 

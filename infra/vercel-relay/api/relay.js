@@ -43,13 +43,25 @@ export default async function handler(req, res) {
     return res.status(403).send("host not allowed");
   }
 
-  const response = await fetch(target, {
-    headers: {
-      "User-Agent": "bandiradar-relay (+https://github.com/mayai-it/bandiradar)",
-      "Accept": "application/json, text/csv, */*",
-    },
-    signal: AbortSignal.timeout(30_000),
-  });
+  // Un upstream che rifiuta/scade NON è un errore del relay: senza try/catch
+  // Vercel risponderebbe 500 FUNCTION_INVOCATION_FAILED e STATUS non potrebbe
+  // distinguere "l'upstream blocca anche il relay" (es. puglia droppa i big
+  // cloud, fra1 incluso) da "il relay è rotto". 502 + messaggio esplicito.
+  let response;
+  try {
+    response = await fetch(target, {
+      headers: {
+        "User-Agent": "bandiradar-relay (+https://github.com/mayai-it/bandiradar)",
+        "Accept": "application/json, text/csv, */*",
+      },
+      signal: AbortSignal.timeout(30_000),
+    });
+  } catch (err) {
+    const detail = err?.cause?.message ?? err?.message ?? String(err);
+    return res
+      .status(502)
+      .send(`relay: upstream connect failed (${detail})`);
+  }
 
   const body = Buffer.from(await response.arrayBuffer());
   res.setHeader(

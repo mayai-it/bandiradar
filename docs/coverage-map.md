@@ -75,7 +75,7 @@ incentivi.gov.it are separate silos).
 | `toscana` | incentive | ✅ | Regional incentives | LLM‑assisted scraper (no clean API). |
 | `veneto` | mixed | ✅ | Regional bandi (SIU) | LLM‑assisted scraper; landing‑seeded crawl (JSON layer stonewalls bots). |
 | `piemonte` | mixed | ✅ | Regional bandi | LLM‑assisted scraper; Views listing filtered server‑side to stato "Aperto". |
-| `puglia` | mixed | ✅ | Regional PR 2021‑2027 avvisi | LLM‑assisted scraper; Liferay news‑list fragment, "Bando aperto" badge filter. |
+| `puglia` | mixed | ✅ | Regional PR 2021‑2027 avvisi | LLM‑assisted scraper; Liferay news‑list fragment, "Bando aperto" badge filter. **CI monitor blocked** (host drops big‑cloud IPs, relay included — adapter works locally, data in the corpus). |
 | `sardegna` | incentive | ✅ | Regional agevolazioni | LLM‑assisted scraper; server‑rendered Views listing (Sardegna Impresa). |
 | `fvg` | incentive | ✅ | Regional contributi (in corso) | LLM‑assisted scraper; the portal's own "misure contributive" filter. CI via EU relay. |
 | `campania` | incentive | ✅ | Curated open business bandi | LLM‑assisted scraper; Sviluppo Campania /bandi‑aperti/ widgets (~6, honest scope). |
@@ -102,7 +102,7 @@ not (yet) aggregated on incentivi.gov.it. Outcomes:
 | **Trentino (PAT)** | dati.trentino.it | CKAN OK — fresh FEASR bandi‑calendar CSV with currently‑open calls | ✅ **covered in v0.6.0** (`trentino`) |
 | **Veneto** | bandi.regione.veneto.it (SIU) | JS listing; JSON layer answers empty to bots; landing + detail pages ARE server‑rendered | ✅ **covered in v0.8.0** (`veneto`, LLM scraper) |
 | **Piemonte** | bandi.regione.piemonte.it (Drupal 10) | No jsonapi; RSS shallow; server‑rendered Views listing with a stato filter | ✅ **covered in v0.8.0** (`piemonte`, LLM scraper) |
-| **Puglia** | pr2127.regione.puglia.it (Liferay) | sistema.puglia.it = frameset service registry, no scadenze; the PR 2021‑2027 portal serves a clean news‑list fragment with "Bando aperto" badges | ✅ **covered in v0.9.0** (`puglia`, LLM scraper) |
+| **Puglia** | pr2127.regione.puglia.it (Liferay) | sistema.puglia.it = frameset service registry, no scadenze; the PR 2021‑2027 portal serves a clean news‑list fragment with "Bando aperto" badges. **2026‑06: the host started dropping big‑cloud IPs** — GitHub runners (Azure) AND the EU‑pinned relay (Vercel fra1 / AWS) time out, while other EU datacenters get 200 | ✅ **covered in v0.9.0** (`puglia`, LLM scraper) — **CI monitor blocked despite the relay** (same class as Abruzzo); the adapter works from local/non‑big‑cloud IPs and its data is already in the corpus |
 | **Campania** | sviluppocampania.it | fesr.regione.campania.it blocks even the EU relay (500); the main portal has no bandi listing; Sviluppo Campania's /bandi‑aperti/ is server‑rendered (curated widgets) | ✅ **covered in v0.10.0** (`campania`, LLM scraper) |
 | **Friuli‑VG** | regione.fvg.it (bandi module) | Socrata = retrospective only, but the bandi module's "misure contributive" search filter is server‑rendered; host drops runner IPs → routed via the EU relay | ✅ **covered in v0.10.0** (`fvg`, LLM scraper) |
 | **Sardegna** | sardegnaimpresa.eu (Drupal 10) | No jsonapi, but the /it/agevolazioni Views listing is server‑rendered with a structured per‑item scadenza | ✅ **covered in v0.9.0** (`sardegna`, LLM scraper) |
@@ -116,10 +116,13 @@ not (yet) aggregated on incentivi.gov.it. Outcomes:
 | Bolzano (PAB) | provincia.bz.it, civis.bz.it | Service directories, no bandi listing; CKAN not pertinent | ⏭️ skip (no listing; volume minimal) |
 | Valle d'Aosta | regione.vda.it, finaosta.com | The regional bandi section 403s datacenter callers; finaosta has no bandi listing; minimal volume | ⏭️ skip (national hub suffices) |
 
-**Datacenter‑IP blocks, stated plainly:** four probed endpoints are unreachable from
+**Datacenter‑IP blocks, stated plainly:** five probed endpoints are unreachable from
 datacenter/CI IPs while working from residential ones — `incentivi.gov.it` (the
 national hub, already documented in the README), `regione.abruzzo.it`,
-`abruzzosviluppo.it`, and `fesr.regione.campania.it`. For an open project whose
+`abruzzosviluppo.it`, `fesr.regione.campania.it`, and (since 2026‑06)
+`pr2127.regione.puglia.it`, which goes further and also drops the EU‑pinned relay
+(it blocks the big clouds — Azure runners AND Vercel/AWS fra1 — while answering
+200 to other EU datacenters). For an open project whose
 monitor runs on CI, that is a real coverage constraint, not a code bug — so those
 are skips (or build‑gates, for Campania), not silent failures.
 
