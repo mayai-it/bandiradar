@@ -1,0 +1,143 @@
+{
+ "_note": "Recorded LLM extraction over live campania detail pages (real capture).",
+ "_source": "https://www.sviluppocampania.it/bandi-aperti/",
+ "_captured": "2026-06-12",
+ "records": [
+  {
+   "title": "FRC – FONDO REGIONALE PER LA CRESCITA a sostegno di investimenti per Pmi e professionisti",
+   "summary": "Finanziamento a sostegno di investimenti in macchinari, impianti, beni intangibili e ristrutturazione aziendale per piccole, micro-imprese e liberi professionisti in Campania. Stanziamento di 93 milioni e 460 mila euro di fondi Fesr Campania 2021-2027.",
+   "eligibility_text": "Imprese e microimprese iscritte nel Registro della Camera di Commercio da almeno 12 mesi alla data di pubblicazione dell'Avviso; Liberi professionisti titolari di partita Iva da almeno 12 mesi, iscritti a Ordini o Collegi professionali e alle rispettive Casse di previdenza. Requisiti: non trovarsi in stato di liquidazione giudiziale o concordato preventivo, non avere iscrizioni nel Registro Protesti, essere in regola con le norme in materia previdenziale, assistenziale ed assicurative. Progetti di investimento realizzati sul territorio della Regione Campania.",
+   "value_amount": 93460000.0,
+   "value_min": 30000.0,
+   "value_max": 150000.0,
+   "deadline": "2024-10-18",
+   "keywords": [
+    "PMI",
+    "microimprese",
+    "liberi professionisti",
+    "investimenti",
+    "macchinari",
+    "impianti",
+    "innovazione",
+    "tecnologie emergenti",
+    "ristrutturazione aziendale",
+    "competitività"
+   ],
+   "kind": "incentive",
+   "_post_id": "frc-fondo-regionale-per-la-crescita-a-sostegno-di-investimenti-per-pmi-e-professionisti",
+   "_url": "https://www.sviluppocampania.it/2025/07/25/frc-fondo-regionale-per-la-crescita-a-sostegno-di-investimenti-per-pmi-e-professionisti",
+   "_listing_title": "frc fondo regionale per la crescita a sostegno di investimenti per pmi e professionisti"
+  },
+  {
+   "title": "AUTOIMPRENDITORIALITÀ FSE+ – PR 2021/2027 FSE + Priorità: Occupazione Obiettivo Specifico: ESO 4.1 – Azione: 1.a.1 – DGR.88/2024 Misura di Sostegno al lavoro autonomo",
+   "summary": "Misura di sostegno al lavoro autonomo destinata ai residenti della Campania (disoccupati, giovani, donne e occupati a rischio di perdita di occupazione) per la progettazione e realizzazione di attività imprenditoriali individuali o societarie, mediante contributo finanziario e servizi reali",
+   "eligibility_text": "Residenti nel territorio della regione Campania – disoccupati, giovani e donne e occupati a rischio di perdita di occupazione. Alla data di presentazione della domanda: persone prive di supporto al reddito, oppure titolari di un rapporto di lavoro compatibile con lo stato di disoccupazione ai sensi della Circolare ANPAL 1/2019, e non titolari di Partita IVA",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": 25000.0,
+   "deadline": null,
+   "keywords": [
+    "lavoro autonomo",
+    "autoimprenditorialità",
+    "occupazione",
+    "disoccupati",
+    "giovani",
+    "donne",
+    "FSE+",
+    "imprenditorialità"
+   ],
+   "kind": "incentive",
+   "_post_id": "sostegno-al-lavoro-autonomo",
+   "_url": "https://www.sviluppocampania.it/2026/04/14/sostegno-al-lavoro-autonomo",
+   "_listing_title": "sostegno al lavoro autonomo"
+  },
+  {
+   "title": "Fondo Rotativo PMI",
+   "summary": "Strumento finanziario realizzato con fondi comunitari (FESR) che consente alle PMI campane di accedere al mercato del credito a condizioni favorevoli attraverso l'erogazione di un finanziamento agevolato concesso da Sviluppo Campania in connessione a un finanziamento a tasso di mercato erogato da una banca.",
+   "eligibility_text": "PMI campane interessate a rafforzare la capacità competitiva, a sostenere la diffusione dell'innovazione attraverso programmi di investimento produttivi strategici ed innovativi e/o di accompagnamento dei processi di riorganizzazione e ristrutturazione aziendale.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2025-08-08",
+   "keywords": [
+    "PMI",
+    "finanziamento agevolato",
+    "investimento produttivo",
+    "innovazione",
+    "ristrutturazione aziendale",
+    "FESR",
+    "competitività"
+   ],
+   "kind": "incentive",
+   "_post_id": "fondo-rotativo-pmi-invito-alle-banche",
+   "_url": "https://www.sviluppocampania.it/2024/09/23/fondo-rotativo-pmi-invito-alle-banche",
+   "_listing_title": "fondo rotativo pmi invito alle banche"
+  },
+  {
+   "title": "Avviso pubblico per la concessione di contributi a fondo perduto a sostegno dell'attività economica delle MPMI localizzate nell'ambito dei Distretti del Commercio",
+   "summary": "Contributo una tantum a fondo perduto per MPMI che svolgono attività di commercio al dettaglio localizzate nei Distretti del Commercio riconosciuti, nella misura della variazione in diminuzione dei ricavi dell'annualità 2020 rispetto al 2019",
+   "eligibility_text": "MPMI che svolgono attività di commercio al dettaglio localizzate nell'ambito dei Distretti del Commercio di cui alla DGR N. 387/2021 formalmente riconosciuti e iscritti nei rispettivi elenchi alla data di pubblicazione dell'Avviso. Gli aiuti sono concessi in regime de minimis secondo il Regolamento (UE) n. 1407/2013. Ciascuna impresa ha diritto ad un solo contributo.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2024-01-24",
+   "keywords": [
+    "commercio al dettaglio",
+    "distretti del commercio",
+    "MPMI",
+    "contributi a fondo perduto",
+    "regime de minimis",
+    "attività economica"
+   ],
+   "kind": "incentive",
+   "_post_id": "distretti-del-commercio",
+   "_url": "https://www.sviluppocampania.it/2023/11/30/distretti-del-commercio",
+   "_listing_title": "distretti del commercio"
+  },
+  {
+   "title": "Fondo BASKET EQUE",
+   "summary": "Fondo di investimento chiuso dedicato a operazioni di equity e quasi-equity in PMI con programmi di sviluppo nella regione Campania, con garanzia di portafoglio fornita da Sviluppo Campania",
+   "eligibility_text": "PMI che: hanno almeno una sede operativa nella Regione Campania o si impegnano a costituirla al momento dell'esecuzione dell'Operazione di Investimento; hanno nell'ultimo bilancio di esercizio approvato ricavi pari ad almeno Euro 10 milioni e non superiori a Euro 50 milioni; hanno un rapporto PFN/EBITDA < 4,5x; hanno chiuso con utile netto uno degli ultimi 2 bilanci di esercizio approvati",
+   "value_amount": 15000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2024-01-10",
+   "keywords": [
+    "equity",
+    "quasi-equity",
+    "PMI",
+    "investimento",
+    "Campania",
+    "finanziamento",
+    "sviluppo imprenditoriale"
+   ],
+   "kind": "incentive",
+   "_post_id": "fondo-basket-eque",
+   "_url": "https://www.sviluppocampania.it/2023/11/29/fondo-basket-eque",
+   "_listing_title": "fondo basket eque"
+  },
+  {
+   "title": "Garanzia Campania Bond",
+   "summary": "Strumento finanziario della Regione Campania che favorisce l'accesso al mercato dei capitali per PMI attraverso emissione di Minibond assistiti da garanzia pubblica",
+   "eligibility_text": "Piccole e Medie Imprese (PMI) del territorio campano",
+   "value_amount": 200000000.0,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "PMI",
+    "finanziamento",
+    "minibond",
+    "garanzia pubblica",
+    "sviluppo imprenditoriale",
+    "capitale circolante",
+    "innovazione",
+    "digitalizzazione"
+   ],
+   "kind": "incentive",
+   "_post_id": "garanzia-campania-bond-2",
+   "_url": "https://www.sviluppocampania.it/2022/05/26/garanzia-campania-bond-2",
+   "_listing_title": "garanzia campania bond 2"
+  }
+ ]
+}

@@ -1,0 +1,251 @@
+{
+ "_note": "Recorded LLM extraction over live fvg detail pages (real capture).",
+ "_source": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/ricerca.jsp?txtChiave=&onlyTagServizio=1&startsearch=vai",
+ "_captured": "2026-06-12",
+ "records": [
+  {
+   "title": "Avviso esistenza di nuove misure regionali a sostegno della maternità",
+   "summary": "La Regione Friuli Venezia Giulia ha avviato due nuovi interventi rivolti alle neo mamme residenti sul territorio regionale: Sostegno alla maternità e Sostegno per l'autonomia abitativa delle giovani madri.",
+   "eligibility_text": "Neo mamme residenti sul territorio regionale della Friuli Venezia Giulia",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": null,
+   "keywords": [
+    "maternità",
+    "sostegno alle famiglie",
+    "autonomia abitativa",
+    "giovani madri"
+   ],
+   "kind": "incentive",
+   "_post_id": "8993",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8993.html",
+   "_listing_title": "Avviso esistenza di nuove misure regionali a sostegno della maternità"
+  },
+  {
+   "title": "Bando per contributi a favore di micro e piccole imprese e liberi professionisti per l'introduzione nei processi aziendali di tecnologie basate sull'intelligenza artificiale",
+   "summary": "Contributi a fondo perduto per micro e piccole imprese e liberi professionisti con sede nel territorio regionale per l'introduzione di tecnologie basate sull'intelligenza artificiale nei processi aziendali",
+   "eligibility_text": "Micro e piccole imprese e liberi professionisti con sede legale o operativa nel territorio regionale del Friuli-Venezia Giulia",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-07-31",
+   "keywords": [
+    "intelligenza artificiale",
+    "micro e piccole imprese",
+    "liberi professionisti",
+    "tecnologie",
+    "processi aziendali",
+    "contributi a fondo perduto"
+   ],
+   "kind": "incentive",
+   "_post_id": "8992",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8992.html",
+   "_listing_title": "Bando per contributi a favore di micro e piccole imprese e liberi professionisti per l’introduzione nei processi aziendali di tecnologie basate sull’intelligenza artificiale"
+  },
+  {
+   "title": "Avviso della possibilità di contributi per i titoli di viaggio del Trasporto Pubblico Locale",
+   "summary": "Contributi per l'acquisto di titoli di viaggio agevolati per i servizi di Trasporto Pubblico Locale a prezzo ridotto (1,5% del corrispondente abbonamento ordinario)",
+   "eligibility_text": "Verificare di rientrare fra le categorie aventi diritto secondo l'articolo 34 della Legge Regionale 23/2007",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "trasporto pubblico locale",
+    "mobilità",
+    "titoli di viaggio",
+    "agevolazioni"
+   ],
+   "kind": "incentive",
+   "_post_id": "8753",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8753.html",
+   "_listing_title": "Avviso della possibilità di contributi per i titoli di viaggio del Trasporto Pubblico Locale"
+  },
+  {
+   "title": "Agevolazione regionale per abbonamenti al Trasporto Pubblico Locale per gli over 65 residenti",
+   "summary": "Agevolazione sperimentale per residenti in Friuli Venezia Giulia di età non inferiore a 65 anni per l'acquisto di abbonamenti annuali e semestrali per servizi di TPL automobilistico e ferroviario al 50% del costo intero",
+   "eligibility_text": "Residenti in Friuli Venezia Giulia di età non inferiore a 65 anni. Abbonamenti per servizi di TPL automobilistico e ferroviario su tratte interne al territorio regionale.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "trasporto pubblico locale",
+    "mobilità",
+    "agevolazioni anziani",
+    "abbonamenti"
+   ],
+   "kind": "incentive",
+   "_post_id": "8754",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8754.html",
+   "_listing_title": "Agevolazione regionale per abbonamenti al Trasporto Pubblico Locale per gli over 65 residenti"
+  },
+  {
+   "title": "Avviso agevolazioni per l'abbonamento scolastico residenti nella Regione Autonoma Friuli Venezia Giulia",
+   "summary": "Agevolazione del 50% sul costo dell'abbonamento scolastico per studenti residenti in Friuli Venezia Giulia per l'anno scolastico 2025-2026",
+   "eligibility_text": "Studenti residenti in Friuli Venezia Giulia, fino al giorno prima del compimento del ventisettesimo anno di età. La possibilità di acquisto è correlata a percorsi inerenti al tragitto casa-scuola.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "trasporto pubblico",
+    "mobilità",
+    "abbonamento scolastico",
+    "agevolazioni",
+    "studenti"
+   ],
+   "kind": "incentive",
+   "_post_id": "8755",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8755.html",
+   "_listing_title": "Avviso agevolazioni per l'abbonamento scolastico residenti nella Regione Autonoma Friuli Venezia Giulia"
+  },
+  {
+   "title": "Avviso contributi a interventi per lo sviluppo del trasporto combinato delle merci",
+   "summary": "La Regione Autonoma Friuli Venezia Giulia promuove interventi nel settore del trasporto delle merci per realizzare e ammodernare infrastrutture e servizi, aumentare produttività ed efficienza, sviluppare trasporto combinato, ridurre inquinamento ambientale e incrementare sicurezza della circolazione",
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "trasporto combinato",
+    "trasporto merci",
+    "infrastrutture",
+    "logistica",
+    "mobilità",
+    "sostenibilità ambientale"
+   ],
+   "kind": "incentive",
+   "_post_id": "8756",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8756.html",
+   "_listing_title": "Avviso contributi a interventi per lo sviluppo del trasporto combinato delle merci"
+  },
+  {
+   "title": "Avviso contributi per interventi per lo sviluppo del trasporto intermodale delle merci",
+   "summary": "Contributi per l'istituzione, l'avvio e la realizzazione di servizi di trasporto marittimo e ferroviario delle merci con origine o destinazione nei nodi logistici interni, portuali e di confine",
+   "eligibility_text": "Secondo la Legge regionale 24 maggio 2004 n. 15, l'Amministrazione regionale concede contributi per interventi di trasporto intermodale delle merci con origine o destinazione nei nodi logistici interni, portuali e di confine siti nel territorio della Regione",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "trasporto intermodale",
+    "merci",
+    "trasporto marittimo",
+    "trasporto ferroviario",
+    "logistica",
+    "infrastrutture"
+   ],
+   "kind": "incentive",
+   "_post_id": "8757",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8757.html",
+   "_listing_title": "Avviso contributi per interventi per lo sviluppo del trasporto intermodale delle merci"
+  },
+  {
+   "title": "Avviso aiuti sul costo dei premi assicurativi a copertura delle perdite dovute a rischi agricoli e rischi di insolvenza",
+   "summary": "L'Amministrazione regionale concede aiuti per la riduzione del costo dei premi assicurativi a copertura delle perdite dovute a rischi agricoli e rischi di insolvenza",
+   "eligibility_text": null,
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "premi assicurativi",
+    "rischi agricoli",
+    "rischi di insolvenza",
+    "agricoltura"
+   ],
+   "kind": "incentive",
+   "_post_id": "8760",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8760.html",
+   "_listing_title": "Avviso aiuti sul costo dei premi assicurativi a copertura delle perdite dovute a rischi agricoli e rischi di insolvenza"
+  },
+  {
+   "title": "Avviso di contributi per proprietari di boschi (pubblici e privati), imprese boschive",
+   "summary": "Contributi per interventi sulla viabilità forestale, macchine e attrezzature forestali, innovazione della filiera foresta-legno-energia e altre spese per gestione dei boschi o recupero aree montane abbandonate",
+   "eligibility_text": "Proprietari di boschi pubblici e privati, imprese boschive",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "forestale",
+    "viabilità forestale",
+    "macchine forestali",
+    "attrezzature forestali",
+    "filiera foresta-legno-energia",
+    "gestione boschi",
+    "aree montane",
+    "boschi"
+   ],
+   "kind": "incentive",
+   "_post_id": "8761",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8761.html",
+   "_listing_title": "Avviso di contributi per proprietari di boschi (pubblici e privati), imprese boschive"
+  },
+  {
+   "title": "Avviso di contributi ai proprietari e conduttori di campeggi in area montana",
+   "summary": "Contributi per l'acquisto di arredi e attrezzature, lavori, realizzazione di parcheggi e attività di promozione turistica per campeggi in area montana",
+   "eligibility_text": "Proprietari e conduttori di campeggi in area montana",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-12-31",
+   "keywords": [
+    "campeggi",
+    "area montana",
+    "turismo",
+    "contributi",
+    "arredi e attrezzature",
+    "parcheggi",
+    "promozione turistica"
+   ],
+   "kind": "incentive",
+   "_post_id": "8762",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8762.html",
+   "_listing_title": "Avviso di contributi ai proprietari e conduttori di campeggi in area montana"
+  },
+  {
+   "title": "Avviso contributi per parchi comunali e intercomunali",
+   "summary": "Contributi per le spese di gestione dei parchi comunali e intercomunali secondo i criteri disciplinati dal regolamento regionale approvato con D.P.Reg. 114 del 19 settembre 2022",
+   "eligibility_text": "Comuni e Enti intercomunali gestori di parchi comunali e intercomunali",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-01-31",
+   "keywords": [
+    "parchi comunali",
+    "parchi intercomunali",
+    "gestione parchi",
+    "biodiversità"
+   ],
+   "kind": "incentive",
+   "_post_id": "8763",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8763.html",
+   "_listing_title": "Avviso contributi per parchi comunali e intercomunali"
+  },
+  {
+   "title": "Avviso per la concessione di contributi per la conservazione e valorizzazione di bressane e roccoli",
+   "summary": "La Regione concede contributi per la conservazione e valorizzazione di bressane e roccoli",
+   "eligibility_text": "I criteri, le modalità ed i termini per la presentazione delle domande di contributo sono descritti nel regolamento attuativo (Decreto n. 023/Pres. del 7 febbraio 2018 e smi.). La domanda deve essere presentata al servizio regionale competente dal 1° gennaio al 31 maggio di ogni anno.",
+   "value_amount": null,
+   "value_min": null,
+   "value_max": null,
+   "deadline": "2026-05-31",
+   "keywords": [
+    "conservazione",
+    "valorizzazione",
+    "bressane",
+    "roccoli",
+    "caccia",
+    "risorse ittiche"
+   ],
+   "kind": "incentive",
+   "_post_id": "8764",
+   "_url": "https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8764.html",
+   "_listing_title": "Avviso per la concessione di contributi per la conservazione e valorizzazione di bressane e roccoli"
+  }
+ ]
+}

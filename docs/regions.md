@@ -31,11 +31,11 @@ than faked.
 | **Piemonte** | bandi.regione.piemonte.it (Drupal 10) | Server-rendered Views listing + stato 'Aperto' filter; detail pages labelled | ✅ **Built** (`piemonte`, v0.8.0) — LLM scraper. (finpiemonte.it, probed earlier, has no API.) |
 | **Veneto** | bandi.regione.veneto.it (SIU) | JSON layer stonewalls bots; landing + Dettaglio pages server-rendered | ✅ **Built** (`veneto`, v0.8.0) — LLM scraper, landing-seeded crawl. (venetosviluppo.it, probed earlier, has no API.) |
 | Liguria | filse.it | not WordPress | ⏭️ Skip |
-| Friuli-VG | regione.fvg.it | not WordPress | ⏭️ Skip |
+| **Friuli-VG** | regione.fvg.it (bandi module) | Server-rendered ricerca with the portal's 'misure contributive' filter | ✅ **Built** (`fvg`, v0.10.0) — LLM scraper; CI via EU relay (host drops runner IPs). |
 | **Emilia-Romagna** | politicheterritoriali.regione.emilia-romagna.it | Plone 6 REST: structured AGID `Bando` content type | ✅ **Built** (`emilia_romagna`, v0.6.0) — `PloneBandoSource`; structured `scadenza_bando`. (art-er.it and the retrospective regional CKAN, probed earlier, were not viable.) |
 | Umbria | sviluppumbria.it | not WordPress | ⏭️ Skip |
-| Abruzzo | regione.abruzzo.it | unreachable | ⏭️ Skip |
-| Campania | sviluppocampania.it | 401 on `/wp-json` | ⏭️ Skip — not open/clean |
+| Abruzzo | regione.abruzzo.it + abruzzosviluppo.it + fesr/fse subdomains | ALL block datacenter IPs, incl. the EU relay (500); no open-data fallback | ⏭️ Skip (documented, every layer tried) |
+| **Campania** | sviluppocampania.it | WP-REST auth-locked + /feed 500, BUT /bandi-aperti/ is server-rendered (curated open-bandi widgets) | ✅ **Built** (`campania`, v0.10.0) — LLM scraper; honest scope ~6 curated open bandi. |
 | **Puglia** | pr2127.regione.puglia.it (Liferay) | News-list fragment with 'Bando aperto' badges; detail pages rich | ✅ **Built** (`puglia`, v0.9.0) — LLM scraper. (sistema.puglia.it is a frameset service registry, not viable.) |
 | Basilicata | sviluppobasilicata.it | not WordPress | ⏭️ Skip |
 | Calabria | fincalabra.it | not WordPress | ⏭️ Skip |

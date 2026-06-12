@@ -13,7 +13,8 @@
 const ALLOWED_HOSTS = [
   "www.incentivi.gov.it",
   "www.euroinfosicilia.it",   // sicilia — started blocking GitHub runners
-  "fesr.regione.campania.it", // wave-2 recon: blocked direct from runners
+  "fesr.regione.campania.it", // blocks even the relay (500) — kept for evidence probes
+  "www.sviluppocampania.it",  // campania source — probe-first, route if runners are blocked
   "www.regione.fvg.it",       // wave-2 recon: blocked direct from runners
   "www.regione.abruzzo.it",   // wave-2 recon: blocked direct from runners
 ];

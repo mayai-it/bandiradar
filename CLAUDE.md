@@ -37,6 +37,8 @@ src/bandiradar/
     piemonte.py    # Piemonte Drupal — LlmScraperSource (Views, stato=Aperto)
     puglia.py      # Puglia PR 21-27 — LlmScraperSource (Liferay fragment, badge)
     sardegna.py    # Sardegna Impresa — LlmScraperSource (Views listing)
+    fvg.py         # FVG bandi module — LlmScraperSource (contributi filter; relay in CI)
+    campania.py    # Sviluppo Campania — LlmScraperSource (open-bandi widgets)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
   recipe_store.py  # per-source CrawlRecipe overrides + golden (CONFIG, not code)
@@ -70,11 +72,15 @@ bundled example profiles work from a pip-installed wheel, not only a checkout.
 Interfaces (`cli.py`, `mcp_server.py`) are THIN — no business logic. All logic
 lives in `core.py`, `sources/`, `matching/`, `storage.py`.
 
-## Sources (14)
+## Sources (16)
 `anac_pvl`, `ted`, `incentivi`, `anac`, `lombardia`, `lazio`, `sicilia`,
 `emilia_romagna`, `trentino` are **key-less** (no credentials, public APIs/feeds);
-`toscana`, `veneto`, `piemonte`, `puglia`, `sardegna` are **LLM scrapers** (HTML
-portals, no clean data API). Three **reusable bases** keep regions cheap to add: `sources/wordpress.py`
+`toscana`, `veneto`, `piemonte`, `puglia`, `sardegna`, `fvg`, `campania` are
+**LLM scrapers** (HTML portals, no clean data API). `fvg` is the first source
+ROUTED via the EU relay in CI (host drops runner IPs but answers fra1);
+`campania` lives on sviluppocampania.it (the FESR portal blocks even the relay)
+with an honest ~6-item curated-open scope. Abruzzo is a documented SKIP: every
+surface (incl. the relay) is blocked. Three **reusable bases** keep regions cheap to add: `sources/wordpress.py`
 (`WordPressBandiSource`) for WP-REST portals — `lazio`, and `sicilia` (standard
 `posts` + a `categories=<id>` filter via `extra_params`); `sources/plone.py`
 (`PloneBandoSource`) for Plone PAs running the AGID `Bando` content type

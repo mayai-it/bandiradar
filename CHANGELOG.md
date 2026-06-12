@@ -4,6 +4,38 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.10.0] — 2026-06-12 — Regional coverage wave 3
+
+### Added
+- **`fvg`** — Regione FVG contributi-bearing bandi *in corso*, as an LLM scraper.
+  The regional Socrata is retrospective-only, but the `regione.fvg.it` bandi
+  module's search accepts the portal's own **"Bandi contenenti misure
+  contributive"** filter (`onlyTagServizio=1`) as a GET, returning only the slice
+  that matters (the unfiltered module mixes water-concession notices). CI note:
+  the host drops GitHub-runner IPs but answers the EU-pinned relay (verified) —
+  **first source ROUTED via the relay** (`BANDIRADAR_RELAY_HOSTS`); local fetches
+  go direct, the per-host transport routing makes this transparent to the adapter.
+- **`campania`** — Regione Campania curated open business bandi, as an LLM
+  scraper. `fesr.regione.campania.it` blocks even the relay (500) and the main
+  portal has no bandi listing; the viable surface is **Sviluppo Campania**
+  (WP-REST auth-locked, `/feed` broken, but `/bandi-aperti/` is server-rendered).
+  The crawl hooks the page's curated **media-image widget boxes** (~6 open
+  business bandi: FRC II, Fondo Rotativo PMI, Garanzia Campania Bond, …) —
+  deliberately skipping the closed-bandi nav submenu and the agency's own
+  selection-notice archive. Honest scope documented. Pre-flight probes (direct +
+  via relay) added BEFORE any routing decision; host added to the relay worker
+  allowlist so routing is a one-line change if runners turn out blocked.
+- **Abruzzo: documented SKIP.** Every surface — `regione.abruzzo.it`,
+  `abruzzosviluppo.it`, the fesr/fse/abruzzoeuropa subdomains — blocks datacenter
+  IPs INCLUDING the EU-pinned relay (500), and dati.gov.it carries zero Abruzzo
+  bandi datasets. Recorded in the coverage map with the surfaces tried.
+- Real recorded fixtures (live LLM extraction: 12 + 6 records) + offline tests;
+  listing cassettes test the pure parsers (incl. the Campania widget hook
+  against a cassette that CONTAINS both noise classes) and drift-to-broken.
+
+Source adapters: 14 → **16** (9 key-less + 7 LLM scrapers); regional coverage
+10 → **12**.
+
 ## [0.9.0] — 2026-06-12 — Regional coverage wave 2b
 
 ### Added
