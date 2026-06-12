@@ -531,25 +531,25 @@ without touching the score cache or crawl recipes. And the long step is time-box
 doctor + STATUS + publish always run: if the run is **truncated**, `STATUS.md` says so
 (`⚠️ Run truncated: X/N profiles completed`) instead of republishing stale numbers.
 
-> **Known limit — incentivi.gov.it from CI, and the optional relay that closes it.**
-> `incentivi.gov.it` is open and documented, but its export endpoint is
-> **unreachable from GitHub-hosted runners**: the connection times out
-> (`ConnectTimeout`) because the site's firewall drops Azure datacenter IP ranges at
-> the connection level. Not fixable in client code (the endpoint works fine from
-> residential IPs / local runs, verified) — so by default the source is classified
-> **`unavailable`** in `STATUS.md` and every other source still runs.
->
-> The monitor can **close this gap via an optional HTTP relay**: if the operator
-> deploys a tiny forwarder (e.g. a Cloudflare Worker with its own host allowlist;
-> the worker is the operator's infrastructure, not part of this repo) and sets three
-> env vars / repo secrets — `BANDIRADAR_RELAY_URL` (the relay endpoint),
+> **Known limit — PA hosts that geo-block datacenter IPs (and the optional relay).**
+> Some open endpoints drop datacenter / extra-EU IPs at the connection level —
+> `incentivi.gov.it` does, so GitHub-hosted runners couldn't reach it (verified:
+> works from residential / EU IPs). Not fixable in client code. The engine supports
+> an **optional HTTP relay** for exactly this: requests to allowlisted hosts are
+> transparently rewritten to `<relay>?u=<original-url>` at the HTTP layer (no
+> adapter changes), driven by three env vars / repo secrets — `BANDIRADAR_RELAY_URL`,
 > `BANDIRADAR_RELAY_TOKEN` (sent as `X-Relay-Token`; from secrets, never the repo),
-> `BANDIRADAR_RELAY_HOSTS` (comma-separated allowlist, e.g. `www.incentivi.gov.it`)
-> — requests to those hosts are transparently rewritten to
-> `<relay>?u=<original-url>` at the HTTP layer (no adapter changes). **With the env
-> unset, nothing changes**: the repo stays keyless and fully functional, and the
-> gap stays documented. The pre-flight step probes incentivi both direct and via
-> the relay (when configured) and logs both outcomes.
+> `BANDIRADAR_RELAY_HOSTS` (comma-separated allowlist).
+>
+> **In this repo's live monitor the incentivi gap is solved**: the relay runs as a
+> Vercel function pinned to an EU region (`fra1` → EU egress; reference source in
+> [`infra/vercel-relay/`](infra/vercel-relay/) — the deployment and its token are
+> the operator's infrastructure). An earlier Cloudflare-Worker attempt did NOT work:
+> Workers execute on the edge nearest the CALLER, so a US runner got US egress and
+> the geo-block stayed (HTTP 522). **With the env unset, nothing changes**: the repo
+> stays keyless and fully functional, and the gap returns — visibly classified in
+> `STATUS.md`, never silently. The pre-flight step probes incentivi both direct and
+> via relay and logs both outcomes.
 > *(TED's earlier 403 from CI was a different issue — a default-User-Agent block —
 > and is **fixed**: with our identifying User-Agent, TED fetches from the runners.)*
 

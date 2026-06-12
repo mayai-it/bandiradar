@@ -163,10 +163,15 @@ The run fails (exit≠0) ONLY if EVERY source failed; partial failures are warni
   GENERIC, implemented at the TRANSPORT layer in `http.py` (`RelayTransport`, wired by
   `http.client()`; `stream_with_retry` rewrites up front) so the FINAL URL — params
   merged/encoded by httpx — is captured and NO adapter is touched. Env unset ⇒ zero
-  behaviour change (the repo stays keyless; the worker is the OPERATOR'S infra, the
-  token lives only in env/secrets — guardrail 3). The workflow passes the secrets +
-  `BANDIRADAR_RELAY_HOSTS=www.incentivi.gov.it`; the pre-flight probes incentivi
-  direct AND via relay, logging both. Config read: `config.relay()`.
+  behaviour change (the repo stays keyless; the relay deployment is the OPERATOR'S
+  infra, the token lives only in env/secrets — guardrail 3). The workflow passes the
+  secrets + `BANDIRADAR_RELAY_HOSTS=www.incentivi.gov.it`; the pre-flight probes
+  incentivi direct AND via relay, logging both. Config read: `config.relay()`.
+  **In prod the relay is a Vercel function pinned to `fra1`** (reference source:
+  `infra/vercel-relay/` — no secrets inside; EU egress is the point). A Cloudflare
+  Worker did NOT work: Workers run on the edge nearest the CALLER, so a US runner
+  got US egress and incentivi's geo-block stayed (522). Incentivi is ✅ in the live
+  monitor via this relay; without the env the gap returns, classified in STATUS.
 - **Real LLM, or fail loudly — never a fake "LLM ON".** A key set ≠ LLM usable: the
   `anthropic` SDK is an optional extra, so `uv sync` alone would silently fall back to
   the heuristic under `--mode balanced` (an invalid operating point for the heuristic).
