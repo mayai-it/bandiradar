@@ -16,6 +16,7 @@ const ALLOWED_HOSTS = [
   "fesr.regione.campania.it", // blocks even the relay (500) — kept for evidence probes
   "www.sviluppocampania.it",  // campania source — probe-first, route if runners are blocked
   "www.regione.fvg.it",       // wave-2 recon: blocked direct from runners
+  "bandi.regione.veneto.it",  // veneto SIU — started blocking GitHub runners
   "www.regione.abruzzo.it",   // wave-2 recon: blocked direct from runners
 ];
 
