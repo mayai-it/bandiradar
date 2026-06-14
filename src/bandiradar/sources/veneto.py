@@ -23,11 +23,27 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+)
 
 SOURCE_ID = "veneto"
 VENETO_BASE_URL = "https://bandi.regione.veneto.it"
 VENETO_LISTING_URL = f"{VENETO_BASE_URL}/Public/Index"
+
+# The listing PARSE as DATA (a regex-template), so a drifted markup is auto-healable
+# (the LLM re-derives item_regex, golden-gated). Reproduces the hand parser exactly.
+VENETO_RECIPE = HtmlCrawlRecipe(
+    listing_url=VENETO_LISTING_URL,
+    base_url=VENETO_BASE_URL,
+    item_regex=(
+        r'<a[^>]+href="(?:/Public/)?Dettaglio\?idAtto=(?P<post_id>\d+)"'
+        r"[^>]*>(?P<title>.*?)</a>"
+    ),
+    url_template="{base}/Public/Dettaglio?idAtto={post_id}",
+)
 
 # Server-rendered detail anchors on the landing: href="Dettaglio?idAtto=13062".
 _DETAIL_RE = re.compile(
@@ -64,14 +80,15 @@ class VenetoSource(LlmScraperSource):
     region = "Veneto"
     issuer_name = "Regione del Veneto"
     listing_url = VENETO_LISTING_URL
+    html_recipe = VENETO_RECIPE  # JSON-less HTML listing -> regex-recipe auto-heal
 
-    def _listing_refs(self) -> list[DetailRef]:
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
         with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
-                lambda: client.get(VENETO_LISTING_URL), what="Veneto landing"
+                lambda: client.get(recipe.listing_url), what="Veneto landing"
             )
             http.raise_for_status(resp, what="Veneto landing")
-            return parse_listing(resp.text)
+            return resp.text
 
 
 SOURCE = VenetoSource()

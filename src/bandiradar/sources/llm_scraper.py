@@ -25,7 +25,11 @@ from bandiradar.crawl import (  # the self-healing spine lives top-level; re-exp
     CrawlRecipe,
     DetailRef,
     Health,
+    HtmlCrawlRecipe,
+    apply_html_recipe,
     apply_recipe,
+    html_recipe_reproduces_golden,
+    is_safe_regex,
     recipe_reproduces_golden,
     validate_refs,
 )
@@ -44,7 +48,11 @@ __all__ = [
     "CrawlRecipe",
     "DetailRef",
     "Health",
+    "HtmlCrawlRecipe",
+    "apply_html_recipe",
     "apply_recipe",
+    "html_recipe_reproduces_golden",
+    "is_safe_regex",
     "recipe_reproduces_golden",
     "validate_refs",
     "extract_bando_fields",
@@ -212,10 +220,15 @@ class LlmScraperSource:
     # A JSON-listing subclass (e.g. a WP-REST portal) sets this to a CrawlRecipe to
     # opt INTO the self-healing crawl: the listing is DATA-parsed via ``apply_recipe``
     # (dotted paths), so on drift the LLM recipe-healer can re-derive the paths and a
-    # candidate is adopted ONLY if it reproduces the golden exactly. Left ``None`` for
-    # an HTML-listing subclass (the parse is bespoke code) — drift is DETECTED and
-    # flagged for a human, never auto-healed (the parse is not re-derivable DATA).
+    # candidate is adopted ONLY if it reproduces the golden exactly.
     default_recipe: CrawlRecipe | None = None
+    # An HTML-listing subclass whose parse reduces to a single regex sets this to an
+    # HtmlCrawlRecipe instead (+ implements :meth:`_listing_html`): the listing is
+    # DATA-parsed via ``apply_html_recipe`` (a regex-template), healed the SAME gated
+    # way (the LLM re-derives ``item_regex``, ReDoS-guarded, golden-exact to adopt).
+    # A subclass that sets NEITHER recipe keeps the bespoke-code parse
+    # (:meth:`_listing_refs`) — drift is DETECTED and human-flagged, never auto-healed.
+    html_recipe: HtmlCrawlRecipe | None = None
 
     # ---- subclass hooks ---------------------------------------------------- #
 
@@ -230,10 +243,21 @@ class LlmScraperSource:
         JSON-listing subclasses (those that set ``default_recipe``) implement this."""
         raise NotImplementedError
 
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
+        """HTML-recipe path: fetch the listing HTML for ``recipe`` (one page, or
+        several concatenated). HTML-recipe subclasses (those that set ``html_recipe``)
+        implement this; the PARSE then lives in the recipe, not here."""
+        raise NotImplementedError
+
     def _active_recipe(self, recipe_store) -> CrawlRecipe | None:
-        """The adopted override if present, else the baked ``default_recipe``."""
+        """The adopted JSON override if present, else the baked ``default_recipe``."""
         override = recipe_store.get_recipe(self.id) if recipe_store else None
         return override or self.default_recipe
+
+    def _active_html_recipe(self, recipe_store) -> HtmlCrawlRecipe | None:
+        """The adopted HTML override if present, else the baked ``html_recipe``."""
+        override = recipe_store.get_recipe(self.id) if recipe_store else None
+        return override or self.html_recipe
 
     # ---- shared plumbing ---------------------------------------------------- #
 
@@ -256,6 +280,8 @@ class LlmScraperSource:
         flagged for a human, never auto-healed."""
         if self.default_recipe is not None:
             return self._list_details_recipe(recipe_store, client)
+        if self.html_recipe is not None:
+            return self._list_details_html_recipe(recipe_store, client)
         refs = self._listing_refs()
         self.last_crawl_health = validate_refs(refs)
         if self.last_crawl_health == "ok":
@@ -307,17 +333,61 @@ class LlmScraperSource:
                 self.last_crawl_health = validate_refs(refs)
         return refs
 
+    def _list_details_html_recipe(self, recipe_store, client) -> list[DetailRef]:
+        """HTML-listing crawl via the active HtmlCrawlRecipe + gated self-heal."""
+        from bandiradar.sources.heal import heal_html_crawl
+
+        recipe = self._active_html_recipe(recipe_store)
+        page_html = self._listing_html(recipe)
+        refs = apply_html_recipe(recipe, page_html)
+        self.last_crawl_health = validate_refs(refs)
+        if self.last_crawl_health == "ok":
+            if recipe_store is not None:
+                recipe_store.set_golden(self.id, refs)  # the next heal's golden
+            return refs
+        logger.warning(
+            "%s crawl health=%s (%d refs) — HTML listing may have drifted",
+            self.id,
+            self.last_crawl_health,
+            len(refs),
+        )
+        expected = recipe_store.get_golden(self.id) if recipe_store else None
+        if recipe_store is not None and client is not None and expected:
+            result = heal_html_crawl(
+                self.id, page_html, expected, recipe, client, recipe_store
+            )
+            logger.warning(
+                "%s self-heal(html): status=%s adopted=%s — %s",
+                self.id,
+                result.status,
+                result.adopted,
+                result.reason,
+            )
+            if result.adopted:
+                refs = apply_html_recipe(
+                    self._active_html_recipe(recipe_store), page_html
+                )
+                self.last_crawl_health = validate_refs(refs)
+        return refs
+
     def crawl_health(self) -> Health:
-        """Key-less crawl probe for ``doctor`` (listing reachable + parseable).
-        Uses the active recipe for a JSON listing, else the HTML parse — no heal."""
-        if self.default_recipe is not None:
+        """Key-less crawl probe for ``doctor`` (listing reachable + parseable). Uses
+        the active recipe for a JSON/HTML listing, else the HTML parse — no heal."""
+        if self.default_recipe is not None or self.html_recipe is not None:
             from bandiradar.recipe_store import RecipeStore
             from bandiradar.storage import Store
 
             store = Store(None)
             try:
-                recipe = self._active_recipe(RecipeStore(store))
-                return validate_refs(apply_recipe(recipe, self._listing_json(recipe)))
+                rs = RecipeStore(store)
+                if self.default_recipe is not None:
+                    recipe = self._active_recipe(rs)
+                    listing = self._listing_json(recipe)
+                    return validate_refs(apply_recipe(recipe, listing))
+                hrecipe = self._active_html_recipe(rs)
+                return validate_refs(
+                    apply_html_recipe(hrecipe, self._listing_html(hrecipe))
+                )
             finally:
                 store.close()
         return validate_refs(self._listing_refs())

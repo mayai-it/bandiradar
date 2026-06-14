@@ -4,6 +4,34 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.15.0] — 2026-06-14 — Self-healing for HTML-listing scrapers (regex-recipe)
+
+### Added
+- **HTML-listing auto-heal** (Phase 2a). The fragile listing PARSE of an HTML
+  scraper is now modellable as DATA — an `HtmlCrawlRecipe` whose `item_regex` (named
+  groups `post_id`/`title`) + `url_template` reproduce the refs — so on drift the LLM
+  re-derives the `item_regex` and a candidate is adopted ONLY if it reproduces the
+  golden exactly, the SAME gated propose/dispose as the JSON recipe. `veneto`,
+  `sardegna` and `piemonte` migrated → **auto-heal now covers 6 of 10 LLM scrapers**.
+- **`crawl.py`**: `HtmlCrawlRecipe`, pure `apply_html_recipe` (regex + title cleanup +
+  dedup, reproduces each hand parser exactly), `html_recipe_reproduces_golden`, and
+  `is_safe_regex` — a **ReDoS guard** for LLM-proposed patterns (length cap +
+  nested-quantifier refusal + compile check; the golden gate remains the correctness
+  socket, so a refused/wrong regex is simply never adopted).
+- **`heal.py`**: `propose_html_recipe` + `heal_html_crawl` (HTML twin of `heal_crawl`,
+  guards the candidate regex). **`recipe_store`** now persists either recipe kind
+  (a `_kind` tag; legacy rows load as JSON — backward-compatible).
+- **`LlmScraperSource`** gained a third listing flavour: `html_recipe` + `_listing_html`
+  (regex-recipe auto-heal) alongside the JSON recipe and the bespoke-code detect-only
+  path. The listing FETCH (multi-page, params, POST/auth) stays in the source; only
+  the PARSE is the healable DATA.
+
+### Notes
+- `campania` (title synthesized from the slug, not in the markup) and the bespoke
+  `fvg`/`puglia`/`liguria` (filter / badge / POST+CSRF) stay **detect-only** — their
+  parse doesn't reduce to one regex. Phase 2b ("assisted-heal": LLM proposes, golden
+  pre-validates, human one-click) is the planned path (`docs/self-heal-html-design.md`).
+
 ## [0.14.0] — 2026-06-14 — Self-healing generalized to JSON-listing scrapers
 
 ### Added

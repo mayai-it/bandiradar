@@ -17,11 +17,28 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+)
 
 SOURCE_ID = "sardegna"
 SARDEGNA_BASE_URL = "https://www.sardegnaimpresa.eu"
 SARDEGNA_LISTING_URL = f"{SARDEGNA_BASE_URL}/it/agevolazioni"
+
+# The listing PARSE as DATA (a regex-template) — auto-healable, golden-gated.
+# ``post_id`` is the slug (path tail); the absolute URL is built from the captured
+# ``path``. Reproduces the hand parser's refs exactly.
+SARDEGNA_RECIPE = HtmlCrawlRecipe(
+    listing_url=SARDEGNA_LISTING_URL,
+    base_url=SARDEGNA_BASE_URL,
+    item_regex=(
+        r'<a href="(?P<path>/it/agevolazioni/(?P<post_id>[^"#?/]+))"'
+        r"[^>]*>(?P<title>.*?)</a>"
+    ),
+    url_template="{base}{path}",
+)
 
 # One listing anchor per agevolazione: <a href="/it/agevolazioni/<slug>"><span>title…
 _DETAIL_RE = re.compile(r'<a href="(/it/agevolazioni/[^"#?]+)"[^>]*>(.*?)</a>', re.S)
@@ -59,14 +76,15 @@ class SardegnaSource(LlmScraperSource):
     region = "Sardegna"
     issuer_name = "Regione Autonoma della Sardegna — Sardegna Impresa"
     listing_url = SARDEGNA_LISTING_URL
+    html_recipe = SARDEGNA_RECIPE  # HTML listing -> regex-recipe auto-heal
 
-    def _listing_refs(self) -> list[DetailRef]:
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
         with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
-                lambda: client.get(SARDEGNA_LISTING_URL), what="Sardegna listing"
+                lambda: client.get(recipe.listing_url), what="Sardegna listing"
             )
             http.raise_for_status(resp, what="Sardegna listing")
-            return parse_listing(resp.text)
+            return resp.text
 
 
 SOURCE = SardegnaSource()

@@ -14,6 +14,8 @@ A future agent can re-derive a broken recipe; it must produce one that passes
 
 from __future__ import annotations
 
+import html as _html
+import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
@@ -98,3 +100,93 @@ def recipe_reproduces_golden(
     the known-good refs from a recorded golden listing. The gate an agent-derived
     recipe must pass before it can replace the current one."""
     return apply_recipe(recipe, golden_listing) == [tuple(r) for r in expected_refs]
+
+
+# --------------------------------------------------------------------------- #
+# HTML-listing recipe (Phase 2): the parse as a DATA regex-template, not code.
+# Same propose/dispose as the JSON recipe — the LLM re-derives ``item_regex`` and a
+# candidate is adopted ONLY if it reproduces the golden exactly. The regex is read
+# by the fixed, audited ``re`` engine (no code execution); the one extra risk is
+# ReDoS during evaluation, bounded by :func:`is_safe_regex`.
+# --------------------------------------------------------------------------- #
+
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+MAX_ITEM_REGEX_LEN = 2000  # bound an LLM-proposed pattern (ReDoS guard)
+
+
+def _clean_title(raw: str) -> str:
+    """Strip tags, unescape entities, collapse whitespace — the title cleanup every
+    HTML listing parser applied, now shared so a recipe reproduces the same refs."""
+    return _html.unescape(re.sub(r"\s+", " ", _HTML_TAG_RE.sub(" ", raw or ""))).strip()
+
+
+@dataclass(frozen=True)
+class HtmlCrawlRecipe:
+    """How to parse an HTML listing — DATA (a regex-template), so it is validatable
+    and re-derivable by the healer without touching adapter code.
+
+    ``item_regex`` is a regex with NAMED groups: ``post_id`` and ``title`` are read
+    directly (title is tag-stripped); the detail URL is built from
+    ``url_template`` (``{base}`` + any captured group, e.g. ``{post_id}`` or a
+    captured ``{path}``). The listing FETCH (which page(s), params, POST/auth) stays
+    in the source's code — only the PARSE is data."""
+
+    listing_url: str
+    base_url: str = ""
+    item_regex: str = ""
+    url_template: str = "{base}{url}"
+    params: dict[str, Any] = field(default_factory=dict)
+
+
+def is_safe_regex(pattern: str) -> bool:
+    """Heuristic ReDoS guard for an LLM-proposed ``item_regex``. The golden gate is
+    the real correctness check; this only refuses patterns that are over-long, fail to
+    compile, or carry a nested quantifier (``(…+)+`` etc.) prone to catastrophic
+    backtracking. Conservative: a refused candidate just isn't auto-adopted."""
+    if not pattern or len(pattern) > MAX_ITEM_REGEX_LEN:
+        return False
+    # Nested quantifier on a group: (…+)+ / (…*)* / (…+)* / (…*)+ — the classic ReDoS.
+    if re.search(r"\([^)]*[+*][^)]*\)\s*[*+]", pattern):
+        return False
+    try:
+        re.compile(pattern)
+    except re.error:
+        return False
+    return True
+
+
+def apply_html_recipe(recipe: HtmlCrawlRecipe, page_html: str) -> list[DetailRef]:
+    """PURE: HTML listing -> DetailRefs per the recipe (regex + url-template).
+
+    Deduplicates by ``post_id`` (first occurrence wins; a later match may fill an
+    empty title). Tolerant: a non-compiling regex or a bad template yields no/empty
+    refs so drift surfaces via :func:`validate_refs` rather than a crash."""
+    if not recipe.item_regex or not is_safe_regex(recipe.item_regex):
+        return []
+    rx = re.compile(recipe.item_regex, re.S | re.I)
+    title_by_id: dict[str, str] = {}
+    order: list[tuple[str, str]] = []  # (post_id, url) first-seen
+    for m in rx.finditer(page_html or ""):
+        groups = {k: (v or "") for k, v in m.groupdict().items()}
+        post_id = groups.get("post_id", "")
+        title = _clean_title(groups.get("title", ""))
+        try:
+            url = recipe.url_template.format(base=recipe.base_url, **groups)
+        except (KeyError, IndexError):
+            url = ""
+        if post_id not in title_by_id:
+            title_by_id[post_id] = title
+            order.append((post_id, url))
+        elif title and not title_by_id[post_id]:
+            title_by_id[post_id] = title
+    return [(pid, url, title_by_id[pid]) for pid, url in order]
+
+
+def html_recipe_reproduces_golden(
+    recipe: HtmlCrawlRecipe,
+    golden_html: str,
+    expected_refs: list[DetailRef],
+) -> bool:
+    """PURE golden validator for an HTML recipe (the HTML twin of
+    :func:`recipe_reproduces_golden`)."""
+    return apply_html_recipe(recipe, golden_html) == [tuple(r) for r in expected_refs]

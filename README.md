@@ -35,10 +35,12 @@
 - **Live OPEN Italian tenders** (`anac_pvl`) — the national *Pubblicità a Valore
   Legale* feed of open, biddable gare, **incl. sub-threshold** ones TED never lists,
   **no credentials** — the biddable feed the other sources lack.
-- **Self-healing crawl** — when a JSON-listing scraper drifts, an LLM **re-derives the
-  crawl recipe** (data, not code); it's adopted **only if it exactly reproduces the
-  last-good results**, otherwise human-flagged — never silently. Live on `toscana`,
-  `calabria` and `basilicata` (WP-REST listings).
+- **Self-healing crawl** — when a scraper's listing drifts, an LLM **re-derives the
+  crawl recipe** (data, not code: dotted JSON paths or an HTML `item_regex`); it's
+  adopted **only if it exactly reproduces the last-good results**, otherwise
+  human-flagged — never silently. Live on **6 of 10** LLM scrapers: `toscana`,
+  `calabria`, `basilicata` (WP-REST JSON) + `veneto`, `sardegna`, `piemonte` (HTML
+  regex-recipe).
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the

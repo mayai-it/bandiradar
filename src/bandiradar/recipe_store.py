@@ -13,16 +13,25 @@ import dataclasses
 import json
 from datetime import UTC, datetime
 
-from bandiradar.crawl import CrawlRecipe, DetailRef
+from bandiradar.crawl import CrawlRecipe, DetailRef, HtmlCrawlRecipe
 from bandiradar.storage import Store
 
+# A recipe override may be either a JSON-listing recipe or an HTML-listing one; the
+# serialized blob carries a ``_kind`` tag so the right dataclass is rebuilt. Legacy
+# rows (no tag) deserialize as the JSON ``CrawlRecipe`` — backward-compatible.
+AnyRecipe = CrawlRecipe | HtmlCrawlRecipe
 
-def recipe_to_json(recipe: CrawlRecipe) -> str:
-    return json.dumps(dataclasses.asdict(recipe), ensure_ascii=False)
+
+def recipe_to_json(recipe: AnyRecipe) -> str:
+    payload = dataclasses.asdict(recipe)
+    payload["_kind"] = "html" if isinstance(recipe, HtmlCrawlRecipe) else "json"
+    return json.dumps(payload, ensure_ascii=False)
 
 
-def recipe_from_json(blob: str) -> CrawlRecipe:
-    return CrawlRecipe(**json.loads(blob))
+def recipe_from_json(blob: str) -> AnyRecipe:
+    data = json.loads(blob)
+    kind = data.pop("_kind", "json")
+    return HtmlCrawlRecipe(**data) if kind == "html" else CrawlRecipe(**data)
 
 
 class RecipeStore:
@@ -33,7 +42,7 @@ class RecipeStore:
 
     # -- recipe override ---------------------------------------------------- #
 
-    def get_recipe(self, source_id: str) -> CrawlRecipe | None:
+    def get_recipe(self, source_id: str) -> AnyRecipe | None:
         row = self.store.conn.execute(
             "SELECT recipe FROM crawl_recipes WHERE source_id=?", (source_id,)
         ).fetchone()
@@ -42,7 +51,7 @@ class RecipeStore:
     def adopt(
         self,
         source_id: str,
-        recipe: CrawlRecipe,
+        recipe: AnyRecipe,
         *,
         reason: str,
         validated_by: str,

@@ -19,7 +19,12 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+    apply_html_recipe,
+)
 
 SOURCE_ID = "piemonte"
 PIEMONTE_BASE_URL = "https://bandi.regione.piemonte.it"
@@ -28,6 +33,19 @@ PIEMONTE_LISTING_URL = f"{PIEMONTE_BASE_URL}/contributi-finanziamenti"
 PIEMONTE_STATO_APERTO = "19"
 # Open bandi span a couple of Views pages at most; 3 pages × ~9 items covers them.
 _LISTING_PAGES = 3
+
+# The listing PARSE as DATA (a regex-template) — auto-healable, golden-gated.
+# ``post_id`` is the node slug (the ``about`` path tail); the URL is built from the
+# captured ``path``. Reproduces the hand parser's refs exactly (per page).
+PIEMONTE_RECIPE = HtmlCrawlRecipe(
+    listing_url=PIEMONTE_LISTING_URL,
+    base_url=PIEMONTE_BASE_URL,
+    item_regex=(
+        r'<article\s+about="(?P<path>/contributi-finanziamenti/'
+        r'(?:[^"]*/)?(?P<post_id>[^"/]+))".*?<h2>(?P<title>.*?)</h2>'
+    ),
+    url_template="{base}{path}",
+)
 
 # One Views row: <article about="/contributi-finanziamenti/<slug>" ...> ... with the
 # display title inside <h2>. The `about` attribute is Drupal's stable node URI.
@@ -66,9 +84,13 @@ class PiemonteSource(LlmScraperSource):
     listing_url = (
         f"{PIEMONTE_LISTING_URL}?field_stato_target_id={PIEMONTE_STATO_APERTO}"
     )
+    html_recipe = PIEMONTE_RECIPE  # HTML listing -> regex-recipe auto-heal
 
-    def _listing_refs(self) -> list[DetailRef]:
-        refs: list[DetailRef] = []
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
+        """Fetch the open-bandi Views pages and CONCATENATE their HTML; the recipe
+        parses + dedups the combined markup. Stops at the first page with no items
+        (past the last page of open bandi)."""
+        parts: list[str] = []
         with http.client(follow_redirects=True) as client:
             for page in range(_LISTING_PAGES):
                 resp = http.with_retry(
@@ -82,18 +104,10 @@ class PiemonteSource(LlmScraperSource):
                     what="Piemonte listing",
                 )
                 http.raise_for_status(resp, what="Piemonte listing")
-                page_refs = parse_listing(resp.text)
-                if not page_refs:
+                if not apply_html_recipe(recipe, resp.text):
                     break  # past the last page of open bandi
-                refs.extend(page_refs)
-        # Dedup across pages (defensive; Views can repeat rows on boundary shifts).
-        seen: set = set()
-        unique = []
-        for r in refs:
-            if r[0] not in seen:
-                seen.add(r[0])
-                unique.append(r)
-        return unique
+                parts.append(resp.text)
+        return "\n".join(parts)
 
 
 SOURCE = PiemonteSource()

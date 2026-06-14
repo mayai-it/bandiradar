@@ -1,9 +1,12 @@
 # Self-healing for HTML-listing scrapers — design (Phase 2)
 
-> Status: **design, not built.** Phase 1 (v0.14.0) generalized the gated self-heal
-> from `toscana` to the other JSON-listing scrapers (`calabria`, `basilicata`).
-> This document proposes how — and whether — to extend it to the 7 HTML-listing
-> scrapers, for a decision before any code is written.
+> Status: **Phase 2a SHIPPED (v0.15.0).** Phase 1 (v0.14.0) generalized the gated
+> self-heal from `toscana` to the JSON-listing scrapers (`calabria`, `basilicata`).
+> Phase 2a built the **regex-template HTML recipe** (Approach A below, stdlib `re`,
+> ReDoS-guarded) and migrated the 3 clean single-regex HTML scrapers — `veneto`,
+> `sardegna`, `piemonte` — to true golden-gated auto-heal (**auto-heal now 6 of 10
+> scrapers**). Still open (this document): `campania` (synthesized title, needs a
+> `title_template`) and the bespoke `fvg`/`puglia`/`liguria` (Phase 2b assisted-heal).
 
 ## 1. The problem
 

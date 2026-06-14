@@ -33,15 +33,15 @@ src/bandiradar/
     sicilia.py     # EuroInfoSicilia FESR/FSC (WP base + categories filter)
     emilia_romagna.py # ER Politiche territoriali (Plone Bando)
     trentino.py    # Prov. Trento FEASR — CKAN open-data CSV adapter
-    veneto.py      # Veneto SIU — LlmScraperSource (landing-seeded crawl)
-    piemonte.py    # Piemonte Drupal — LlmScraperSource (Views, stato=Aperto)
-    puglia.py      # Puglia PR 21-27 — LlmScraperSource (Liferay fragment, badge)
-    sardegna.py    # Sardegna Impresa — LlmScraperSource (Views listing)
+    veneto.py      # Veneto SIU — LlmScraperSource (landing, HTML regex-recipe heal)
+    piemonte.py    # Piemonte Drupal — LlmScraperSource (Views, HTML regex-recipe heal)
+    puglia.py      # Puglia PR 21-27 — LlmScraperSource (Liferay fragment, badge; detect-only)
+    sardegna.py    # Sardegna Impresa — LlmScraperSource (Views, HTML regex-recipe heal)
     fvg.py         # FVG bandi module — LlmScraperSource (contributi filter; relay in CI)
-    campania.py    # Sviluppo Campania — LlmScraperSource (open-bandi widgets)
-    calabria.py    # Calabria Europa — LlmScraperSource (open WP-REST bando CPT)
-    basilicata.py  # Portalebandi — LlmScraperSource (open WP-REST CPT)
-    liguria.py     # Liguria publiccompetition — LlmScraperSource (POST+CSRF, filtri)
+    campania.py    # Sviluppo Campania — LlmScraperSource (open-bandi widgets; detect-only)
+    calabria.py    # Calabria Europa — LlmScraperSource (WP-REST CPT, JSON recipe heal)
+    basilicata.py  # Portalebandi — LlmScraperSource (WP-REST CPT, JSON recipe heal)
+    liguria.py     # Liguria publiccompetition — LlmScraperSource (POST+CSRF; detect-only)
   cpv.py           # CPV Italian-label → 8-digit code resolver (pure, offline)
   trust.py         # trust spine: deterministic validation of LLM extractions (pure)
   crawl.py         # self-healing crawl spine (stdlib: recipes + drift + golden)
@@ -92,20 +92,27 @@ surface (incl. the relay) is blocked. Three **reusable bases** keep regions chea
 (`PloneBandoSource`) for Plone PAs running the AGID `Bando` content type
 (`emilia_romagna`; structured `scadenza_bando`, no text-parsing); and
 `sources/llm_scraper.py`'s **`LlmScraperSource`** for API-less portals — a subclass
-provides only the listing, in one of TWO flavours, the base shares
-extraction/cache/mapper/fixture + crawl health. **JSON listing** (set
-`default_recipe` + `_listing_json`): DATA-parsed via `apply_recipe`, so on drift the
-LLM recipe-healer re-derives the dotted paths and a candidate is auto-adopted ONLY if
-it reproduces the golden exactly — the SAME gated self-heal as `toscana`
-(`calabria` + `basilicata`, WP-REST CPTs, opted in v0.14.0 → **3 sources auto-heal**).
-**HTML listing** (`_listing_refs`, no recipe): bespoke pure-code parse, not
-re-derivable DATA, so on drift the crawl is DETECTED as broken and human-flagged,
-never auto-healed. `veneto` (SIU landing-seeded — the portal's JSON layer stonewalls
-bots) and `piemonte` (Drupal Views listing, server-side stato="Aperto" filter) are
-HTML subclasses; `toscana` (WP-REST JSON listing) wires the full CrawlRecipe healer;
-`puglia` (PR-2021-2027 Liferay news-list fragment, "Bando aperto" badge filter —
-sistema.puglia.it is a frameset service registry, not viable) and `sardegna`
-(Sardegna Impresa Views listing) joined in wave 2b.
+provides only the listing, in one of THREE flavours, the base shares
+extraction/cache/mapper/fixture + crawl health + the gated self-heal. **(1) JSON
+listing** (set `default_recipe` + `_listing_json`): DATA-parsed via `apply_recipe`
+(dotted paths) — `toscana`, `calabria`, `basilicata`. **(2) HTML listing as a
+regex-recipe** (set `html_recipe` + `_listing_html`): DATA-parsed via
+`apply_html_recipe` (a regex-template with named groups `post_id`/`title` + a
+`url_template`; ReDoS-guarded by `is_safe_regex`) — `veneto`, `sardegna`, `piemonte`
+(v0.15.0). For BOTH, on drift the LLM re-derives the DATA (dotted paths / `item_regex`)
+and a candidate is auto-adopted ONLY if it reproduces the golden exactly → **6 of 10
+LLM scrapers auto-heal**. **(3) HTML detect-only** (`_listing_refs`, no recipe):
+bespoke pure-code parse (a filter, a synthesized title, or POST+CSRF — not reducible
+to one regex), so on drift the crawl is DETECTED as broken and human-flagged, never
+auto-healed — `campania` (image-widget anchors, title from slug), `fvg`, `puglia`
+(badge filter), `liguria` (POST+CSRF); Phase-2b "assisted-heal" (LLM proposes,
+golden pre-validates, human one-click) is the planned path for these
+(`docs/self-heal-html-design.md`). `toscana` (WP-REST JSON listing) was the first
+healer; `veneto` (SIU landing-seeded — the portal's JSON layer stonewalls bots),
+`piemonte` (Drupal Views listing, server-side stato="Aperto" filter) and `sardegna`
+(Sardegna Impresa Views listing) are the HTML regex-recipe healers; `puglia`
+(PR-2021-2027 Liferay news-list fragment, "Bando aperto" badge filter —
+sistema.puglia.it is a frameset service registry, not viable) stays detect-only.
 `trentino` is a dedicated CKAN-CSV adapter (FEASR calendar).
 Note the two ANAC adapters are complementary, not duplicates:
 - **`anac_pvl`** = ANAC *Pubblicità a Valore Legale* — the **live feed of OPEN
