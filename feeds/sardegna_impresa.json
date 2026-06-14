@@ -1,0 +1,276 @@
+[
+  {
+    "opportunity_id": "sardegna:smartstart-italia",
+    "score": 88,
+    "status": "open",
+    "title": "SMART&START ITALIA",
+    "deadline": null,
+    "reasons": [
+      "Perfect regional alignment: company is based in Sardegna, opportunity is managed by Regione Autonoma della Sardegna",
+      "Strong sector match: company operates in digital services (ATECO 62.01, 63.11), opportunity targets innovative high-tech startups in digital economy",
+      "Business stage alignment: company is a young innovative SME/startup, opportunity explicitly supports startups established within 60 months",
+      "Strategic fit: company's focus on digital innovation, competitiveness, and productive investments directly matches opportunity objectives",
+      "Financial scale appropriate: opportunity budget (€100M) and company's value range (€5K-€1M) are well-suited",
+      "Innovation focus: opportunity emphasizes digital economy, research, and technological advancement - core to company profile"
+    ],
+    "matched_capabilities": [
+      "Startup innovativa with digital services focus",
+      "Innovative productive investments",
+      "Digital economy entrepreneurship",
+      "Technological research and innovation projects",
+      "High-tech business operations"
+    ],
+    "source_url": "https://www.sardegnaimpresa.eu/it/agevolazioni/smartstart-italia"
+  },
+  {
+    "opportunity_id": "sardegna:call-imprese-della-regione-sardegna-partecipa-al-wmf-2026",
+    "score": 85,
+    "status": "closing_soon",
+    "title": "Call per imprese della Regione Sardegna. Partecipa al WMF 2026",
+    "deadline": "2026-06-15T00:00:00+00:00",
+    "reasons": [
+      "Perfetta corrispondenza geografica: sede legale in Sardegna richiesta e azienda con sede in Sardegna",
+      "Allineamento settoriale: ICT & Digital e Artificial Intelligence rientrano tra i settori ammissibili e corrispondono alle competenze aziendali",
+      "Match profilo aziendale: MPMI innovativa sarda nei servizi digitali corrisponde ai requisiti di qualificazione MPMI",
+      "Obiettivi strategici coerenti: internazionalizzazione, partnership industriali e accesso a investitori sono priorità per startup innovative",
+      "Servizi B2B: l'azienda opera nei servizi digitali, compatibile con requirement B2B o B2C con interesse a partnership",
+      "Gratuità: nessun costo di partecipazione riduce il rischio finanziario"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa nei servizi digitali",
+      "Settore ICT & Digital (esattamente tra i settori ammissibili)",
+      "Interesse a innovazione e digitale",
+      "Investimenti produttivi e progetti di innovazione",
+      "Potenziale interesse a internazionalizzazione e partnership"
+    ],
+    "source_url": "https://www.sardegnaimpresa.eu/it/agevolazioni/call-imprese-della-regione-sardegna-partecipa-al-wmf-2026"
+  },
+  {
+    "opportunity_id": "incentivi:138",
+    "score": 72,
+    "status": "open",
+    "title": "Credito d’imposta per investimenti in beni strumentali",
+    "deadline": null,
+    "reasons": [
+      "Azienda è una PMI innovativa sarda con focus su investimenti produttivi e digitale, perfettamente allineata con lo scopo del credito d'imposta",
+      "L'incentivo copre beni strumentali tradizionali e tecnologicamente avanzati (4.0), rilevante per una startup innovativa nei servizi digitali",
+      "Nessuna esclusione diretta: l'azienda non rientra nelle categorie escluse (liquidazione, fallimento, ecc.)",
+      "Valore dell'incentivo non specificato ma potenzialmente significativo per investimenti in range 5k-1M EUR dell'azienda",
+      "Beneficio fiscale (credito d'imposta in tre quote annuali) è vantaggioso per PMI innovativa",
+      "Modalità di utilizzo in compensazione è pratica e accessibile"
+    ],
+    "matched_capabilities": [
+      "Investimenti produttivi e innovazione tecnologica",
+      "Startup innovativa con focus digitale",
+      "Giovane PMI con ambizioni di trasformazione digitale"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/credito-dimposta-per-investimenti-in-beni-strumentali"
+  },
+  {
+    "opportunity_id": "incentivi:143",
+    "score": 72,
+    "status": "open",
+    "title": "Credito d’imposta R&S, innovazione tecnologica, design e ideazione estetica",
+    "deadline": null,
+    "reasons": [
+      "Company operates in digital services (ATECO 62.01, 63.11) which aligns with R&S and technological innovation focus",
+      "Company explicitly targets innovation and digital competitiveness, matching the incentive's core objective",
+      "Company is a young innovative SME in Sardegna, eligible as national resident enterprise",
+      "R&S tax credit covers innovation activities the company likely pursues",
+      "No apparent exclusions apply to the company profile",
+      "However, opportunity lacks specific value, deadline, and regional targeting details"
+    ],
+    "matched_capabilities": [
+      "Investimenti in innovazione tecnologica",
+      "Progetti di ricerca e sviluppo digitale",
+      "Competitività tramite innovazione 4.0",
+      "Servizi digitali innovativi"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/credito-d-imposta-r-s"
+  },
+  {
+    "opportunity_id": "incentivi:145",
+    "score": 72,
+    "status": "open",
+    "title": "Fondo per il trasferimento tecnologico",
+    "deadline": null,
+    "reasons": [
+      "Innova Sardegna è una startup innovativa/PMI innovativa che rientra nelle categorie ammissibili (PMI innovative, startup innovative)",
+      "L'opportunità supporta innovazione e investimenti produttivi, allineati con il profilo aziendale",
+      "Il range di finanziamento (100.000-15.000.000 EUR) si adatta al budget dichiarato della società",
+      "Focus su trasferimento tecnologico e valorizzazione risultati di ricerca corrisponde ai keyword aziendali",
+      "Limitazione geografica potenziale: fondo nazionale ma emesso da Ministero con focus Abruzzo, mentre l'azienda è in Sardegna"
+    ],
+    "matched_capabilities": [
+      "Startup innovativa e PMI innovativa",
+      "Investimenti in innovazione e digitale",
+      "Processi di crescita e competitività",
+      "Progetti di innovazione tecnologica"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/fondo-trasferimento-tecnologico"
+  },
+  {
+    "opportunity_id": "incentivi:148",
+    "score": 72,
+    "status": "open",
+    "title": "Fondo di Garanzia per le Piccole e Medie Imprese",
+    "deadline": "2026-12-31T00:00:00+00:00",
+    "reasons": [
+      "Company is a young innovative SME in Sardegna matching target profile for youth entrepreneurship support",
+      "Fondo di Garanzia is designed for SMEs with difficulty accessing credit, relevant for growth financing",
+      "Company's value range (5k-1M EUR) aligns with typical guarantee fund loan amounts",
+      "However, fund is managed by Piemonte ministry with no specified regional scope beyond national, and company is Sardegna-based",
+      "Fund provides guarantees only, not direct grants or contributions - misaligns with company's interest in 'investimenti produttivi' and innovation incentives"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa",
+      "Startup innovativa profile",
+      "Digital services sector (ATECO 62.01, 63.11)",
+      "Need for productive investments financing"
+    ],
+    "source_url": "https://www.mimit.gov.it/index.php/it/incentivi/fondo-di-garanzia-per-le-pmi"
+  },
+  {
+    "opportunity_id": "sardegna:oltre-nuove-imprese-tasso-zero",
+    "score": 72,
+    "status": "open",
+    "title": "ON - OLTRE NUOVE IMPRESE A TASSO ZERO",
+    "deadline": null,
+    "reasons": [
+      "Azienda sarda che corrisponde perfettamente alla portata geografica regionale dell'opportunità",
+      "Innova Sardegna è una giovane PMI innovativa nei servizi digitali, settore ammissibile",
+      "L'opportunità supporta investimenti produttivi e innovazione, aree chiave della strategia aziendale",
+      "Finanziamento a tasso zero allineato con i range di valore indicati (5k-1M EUR)",
+      "Settore 'servizi' rientra tra quelli finanziabili dell'opportunità",
+      "Incentivo dedicato a startup e nuove imprese, corrispondente al profilo della società"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa sarda",
+      "Servizi digitali (settore 62.01 - servizi informatici; 63.11 - elaborazione dati)",
+      "Progetti di innovazione",
+      "Investimenti produttivi"
+    ],
+    "source_url": "https://www.sardegnaimpresa.eu/it/agevolazioni/oltre-nuove-imprese-tasso-zero"
+  },
+  {
+    "opportunity_id": "incentivi:136",
+    "score": 62,
+    "status": "open",
+    "title": "Credito d'imposta formazione 4.0",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI innovativa sarda con focus su digitale e innovazione, allineata con obiettivi 4.0",
+      "Credito d'imposta formazione 4.0 è incentivo nazionale aperto a tutte le imprese, incluse PMI",
+      "Opportunità rivolto a digitalizzazione e competenze tecnologiche, core competency dell'azienda",
+      "Meccanismo premiale specifico per PMI rende l'incentivo particolarmente vantaggioso",
+      "Azienda rientra nella platea generale (non in liquidazione, fallimento, concordato)",
+      "Limitazione geografica della call (Abruzzo come issuer) non esclude partecipazione da altre regioni per incentivi nazionali"
+    ],
+    "matched_capabilities": [
+      "Innovazione digitale",
+      "Trasformazione tecnologica 4.0",
+      "Competitività attraverso investimenti in nuove tecnologie",
+      "PMI innovativa con focus su servizi digitali"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/credito-d-imposta-formazione"
+  },
+  {
+    "opportunity_id": "incentivi:146",
+    "score": 62,
+    "status": "open",
+    "title": "Patent box ",
+    "deadline": null,
+    "reasons": [
+      "Company operates in digital services (ATECO 62.01, 63.11) which aligns with software copyright and IP protection focus",
+      "Patent box is a fiscal incentive for R&D costs, matching company's innovation and digital investment profile",
+      "110% super deduction on R&D personnel and immaterial asset costs directly relevant to tech-based startup",
+      "National scope covers Sardegna region where company is based",
+      "However, patent box is designed for companies already holding protected IP (patents, copyrights, designs); company profile doesn't confirm existing IP portfolio"
+    ],
+    "matched_capabilities": [
+      "Investimenti in innovazione e digitale",
+      "Servizi digitali innovativi",
+      "Giovane PMI potenzialmente sviluppatrice di software e proprietà intellettuale"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/patent-box"
+  },
+  {
+    "opportunity_id": "incentivi:2195",
+    "score": 45,
+    "status": "open",
+    "title": "Incentivi alle imprese per l'assunzione di ricercatori - MUR - PNNR",
+    "deadline": "2026-12-31T00:00:00+00:00",
+    "reasons": [
+      "L'opportunità è nazionale ma focalizzata su assunzione di ricercatori con dottorato, non allineata con il core business di Innova Sardegna nei servizi digitali",
+      "Richiede partecipazione al cofinanziamento di borse di dottorato innovativo (Investimento 3.3), prerequisito non esplicitato nel profilo aziendale",
+      "Il valore dell'incentivo è limitato (max 7.500€ per dipendente) rispetto alla fascia di investimento della società (5k-1M€)",
+      "La deadline è lontana (31 dicembre 2026) ma il periodo di applicazione è già iniziato (2024-2026)"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa con focus su innovazione e digitale",
+      "Interesse per investimenti produttivi e progetti di innovazione",
+      "Potenziale capacità di assumere ricercatori in ambito digitale/tecnologico"
+    ],
+    "source_url": "https://dottorati-imprese.mur.gov.it/"
+  },
+  {
+    "opportunity_id": "sardegna:bando-pubblico-lassegnazione-di-contributi-fondo-perduto-comune-di-baradili",
+    "score": 45,
+    "status": "open",
+    "title": "Bando pubblico per l'assegnazione di contributi a fondo perduto comune di Baradili",
+    "deadline": "2026-09-30T00:00:00+00:00",
+    "reasons": [
+      "Innova Sardegna è una startup innovativa sarda che potrebbe qualificarsi come 'nuova impresa' se costituita nel 2026, ma il profilo suggerisce un'azienda già operativa",
+      "L'opportunità è specifica per il Comune di Baradili; non è chiaro se Innova Sardegna ha sede legale e operativa in quel comune",
+      "Il valore del contributo (15.000 EUR) è inferiore al range minimo di riferimento dell'azienda (5.000-1.000.000 EUR), anche se non escludente",
+      "L'ambito di innovazione e digitalizzazione è allineato con il profilo aziendale",
+      "La scadenza è lontana (settembre 2026), offrendo tempo sufficiente per la preparazione"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa nei servizi digitali",
+      "Progettualità in innovazione e digitalizzazione",
+      "Potenziale qualificazione come nuova impresa se ricostituita nel 2026",
+      "Attività di servizi digitali coerente con aree ammissibili"
+    ],
+    "source_url": "https://www.sardegnaimpresa.eu/it/agevolazioni/bando-pubblico-lassegnazione-di-contributi-fondo-perduto-comune-di-baradili"
+  },
+  {
+    "opportunity_id": "incentivi:109",
+    "score": 35,
+    "status": "open",
+    "title": "Fondo IPCEI - Importanti Progetti di Comune Interesse Europeo",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on large-scale collaborative projects requiring multi-country partnerships; company is a young single-entity SME",
+      "Requires radical innovation and strategic value chain positioning; company profile suggests incremental digital innovation focus",
+      "IPCEI is national-scope but issuer based in Abruzzo while company is in Sardegna; no regional specification in opportunity",
+      "Company value range (5k-1M EUR) may be too small for typical IPCEI project scale and requirements",
+      "Company operates in digital services (ATECO 62.01, 63.11) which could align with innovation objectives but requires systemic/market failure solutions",
+      "No deadline or value information provided; opportunity appears in early/indefinite stage"
+    ],
+    "matched_capabilities": [
+      "Giovane PMI innovativa with digital innovation focus aligns with innovation objectives",
+      "Competitività improvement goals match IPCEI's sustainability and competitiveness targets",
+      "Digital services positioning could be relevant for European value chains"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/fondo-ipcei"
+  },
+  {
+    "opportunity_id": "incentivi:2512",
+    "score": 25,
+    "status": "open",
+    "title": "Finanziamento agevolato a sostegno della presenza di imprese e filiere italiane nel continente africano - Potenziamento mercati africani",
+    "deadline": null,
+    "reasons": [
+      "L'opportunità richiede stabilità operativa o esportazione/approvvigionamento in Africa: Innova Sardegna non mostra alcun focus geografico africano nel profilo",
+      "L'azienda opera nei servizi digitali (ATECO 62.01, 63.11), mentre lo strumento è pensato per imprese con filiere produttive nel continente africano",
+      "Il valore massimo finanziabile (€2.5M per startup innovative) rientra nella range aziendale, ma la rilevanza tematica è bassa",
+      "Nessun elemento nel profilo suggerisce interesse o competenze in internazionalizzazione africana o supply chain africane"
+    ],
+    "matched_capabilities": [
+      "Startup innovativa riconosciuta (può accedere ai massimali previsti per startup innovative)",
+      "PMI sarda con potenziale accesso ai benefici del Sud Italia (fino al 20% a fondo perduto)"
+    ],
+    "source_url": "https://www.simest.it/landing-page-misura-africa/"
+  }
+]

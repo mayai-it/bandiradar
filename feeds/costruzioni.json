@@ -1,0 +1,23 @@
+[
+  {
+    "opportunity_id": "lombardia:139271",
+    "score": 78,
+    "status": "open",
+    "title": "EFFICIENTAMENTO ENERGETICO CENTRALE TERMICA PLESSO SCOLASTICO COMUNALE",
+    "deadline": null,
+    "reasons": [
+      "Opportunity is in Lombardia, matching company's regional focus",
+      "Value of €60,000.6 is within company's declared range (€20,000–€2,000,000)",
+      "CPV 45300000 (building installation work) aligns with company's CPV interest 45000000",
+      "Energy efficiency retrofit of school thermal system falls within company's ristrutturazione and manutenzione straordinaria capabilities",
+      "Public works for local entities matches company's stated experience with enti locali"
+    ],
+    "matched_capabilities": [
+      "Lavori edili e di costruzione",
+      "Manutenzione straordinaria",
+      "Ristrutturazione",
+      "Opere pubbliche per enti locali"
+    ],
+    "source_url": "https://dati.lombardia.it/resource/k6cb-4hbm.json?codice_bando=139271"
+  }
+]

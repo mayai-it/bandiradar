@@ -1,0 +1,5 @@
+[bandiradar] scoring via anthropic:claude-haiku-4-5-20251001
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+SOURCE         STATUS    NEW AMEND SKIP  ERROR
+----------------------------------------------------------------
+wrote RSS feed: state/feeds/costruzioni.xml (1 items)

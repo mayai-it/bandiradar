@@ -1,0 +1,767 @@
+[
+  {
+    "opportunity_id": "incentivi:1344",
+    "score": 72,
+    "status": "open",
+    "title": "Agevolazioni fiscali imposta regionale attività produttive - IRAP - Regione Siciliana",
+    "deadline": null,
+    "reasons": [
+      "Azienda PMI siciliana: perfettamente allineata con il target (piccole e medie imprese operanti in Sicilia)",
+      "Settore turistico-ricettivo: esplicitamente incluso nella normativa (comma 2, art. 7 LR 2/2002)",
+      "Riduzione IRAP dello 0,25%: beneficio fiscale diretto applicabile",
+      "Geolocalizzazione corretta: Agenzia delle Entrate Sicilia, regione di operazione coincide",
+      "Settori artigianato/commercio/servizi: ATECO 25.62 (fabbricazione di attrezzi manuali) e 10.71 (produzione di pane/dolcetti freschi) potenzialmente coperti",
+      "Agevolazione de minimis: normativa europea chiaramente definita (regolamenti 2023/2831 e 2019/316)"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana",
+      "Competitività e innovazione",
+      "Settore turistico-ricettivo",
+      "Artigianato/Produzione"
+    ],
+    "source_url": "http://www.gurs.regione.sicilia.it/"
+  },
+  {
+    "opportunity_id": "incentivi:136",
+    "score": 72,
+    "status": "open",
+    "title": "Credito d'imposta formazione 4.0",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI siciliana, idonea come beneficiario (meccanismo premiale specifico per PMI)",
+      "Opportunità allineata con keyword 'digitalizzazione' del profilo",
+      "Credito d'imposta per formazione 4.0 supporta competitività e innovazione tecnologica",
+      "Ambito nazionale consente partecipazione da Sicilia",
+      "Sicilia Impresa opera in ATECO compatibili con trasformazione digitale (manifatturiero, alimentare)"
+    ],
+    "matched_capabilities": [
+      "Innovazione e competitività",
+      "Digitalizzazione",
+      "Investimenti in trasformazione tecnologica"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/credito-d-imposta-formazione"
+  },
+  {
+    "opportunity_id": "incentivi:1366",
+    "score": 72,
+    "status": "open",
+    "title": "Fondo Sicilia - contributi a fondo perduto alle imprese - Regione Siciliana",
+    "deadline": "2027-12-31T00:00:00+00:00",
+    "reasons": [
+      "Allineamento geografico perfetto: opportunità regionale Sicilia per impresa siciliana",
+      "Focus su digitalizzazione corrisponde ai keywords aziendali (digitalizzazione)",
+      "Contributo a fondo perduto senza vincolo di restituzione",
+      "Testo evidenzia apertura a imprese in difficoltà temporanea di accesso al credito",
+      "Deadline ampio (2027) consente pianificazione adeguata",
+      "PMI eleggibili allineate al profilo aziendale"
+    ],
+    "matched_capabilities": [
+      "Digitalizzazione (keyword aziendale primario)",
+      "Investimenti in competitività e innovazione",
+      "Operatività in Sicilia come sede operativa"
+    ],
+    "source_url": "http://www.irfis.it/fondo-sicilia/"
+  },
+  {
+    "opportunity_id": "incentivi:138",
+    "score": 72,
+    "status": "open",
+    "title": "Credito d’imposta per investimenti in beni strumentali",
+    "deadline": null,
+    "reasons": [
+      "Azienda PMI italiana perfettamente idonea come beneficiaria (resident nel territorio dello Stato)",
+      "Investimenti in beni strumentali e digitalizzazione sono prioritari per l'azienda secondo il profilo",
+      "Credito d'imposta applicabile a efficientamento energetico e trasformazione digitale dei processi",
+      "Valore dell'incentivo compatibile con range di investimento aziendale (5k-2M EUR)",
+      "Nessuna esclusione settoriale: ATECO 25.62 e 10.71 rientrano tra beneficiari ammessi"
+    ],
+    "matched_capabilities": [
+      "Efficientamento energetico dei processi produttivi",
+      "Innovazione e competitività aziendale",
+      "Investimenti in digitalizzazione",
+      "PMI con capacità investimento strutturale"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/credito-dimposta-per-investimenti-in-beni-strumentali"
+  },
+  {
+    "opportunity_id": "incentivi:143",
+    "score": 72,
+    "status": "open",
+    "title": "Credito d’imposta R&S, innovazione tecnologica, design e ideazione estetica",
+    "deadline": null,
+    "reasons": [
+      "L'azienda opera in ATECO 25.62 e 10.71 (manifatturiera), settori eleggibili per crediti R&S",
+      "Forte allineamento con keywords aziendali: innovazione, efficientamento energetico, competitività, digitalizzazione",
+      "Incentivo focalizzato su R&S e innovazione tecnologica, core interest dell'azienda",
+      "Economia circolare rientra nei benefici e potrebbe integrarsi con efficientamento energetico",
+      "PMI siciliana può accedere (incentivo nazionale, non limitato a Abruzzo)",
+      "Credito d'imposta strumento fiscale compatibile con profilo aziendale"
+    ],
+    "matched_capabilities": [
+      "Investimenti in innovazione tecnologica",
+      "Efficientamento energetico dei processi produttivi",
+      "Competitività e digitalizzazione",
+      "Potenziale approccio economia circolare"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/credito-d-imposta-r-s"
+  },
+  {
+    "opportunity_id": "sicilia:103619",
+    "score": 72,
+    "status": "open",
+    "title": "POC 2014/2020 – Azione 1.3.1. – Avviso per la selezione di micro, piccole e medie imprese siciliane per la partecipazione all’evento fieristico ILTM Asia Pacific a Singapore",
+    "deadline": null,
+    "reasons": [
+      "Azienda siciliana PMI che corrisponde perfettamente al target (MPMI siciliane)",
+      "Opportunity allineato con keyword 'turismo' e competitività/innovazione dell'azienda",
+      "Potenziale di internazionalizzazione nel comparto turistico-ricettivo (ATECO 10.71 correlato)",
+      "Regione geografica match (Sicilia)",
+      "Valore finanziario non specificato ma potenzialmente compatibile con range aziendale"
+    ],
+    "matched_capabilities": [
+      "Expertise nel comparto turistico-ricettivo",
+      "Focus su innovazione e competitività",
+      "PMI siciliana con esperienza in investimenti"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/poc-20142020-asse-1-azione-1-3-1-avviso-la-selezione-mpmi-micro-piccole-medie-imprese-siciliane-la-partecipazione-allevento-fieristico-iltm-asia-pacific/"
+  },
+  {
+    "opportunity_id": "sicilia:103782",
+    "score": 72,
+    "status": "open",
+    "title": "POC 2014/2020 – Azione 1.3.1 – Sostegno alla competitività delle imprese siciliane – Rassegna SMAU Milano 2024 – Avviso a manifestazione di interesse, candidature entro il 7 giugno 2024",
+    "deadline": null,
+    "reasons": [
+      "Azienda siciliana PMI in linea con target geografico regionale",
+      "Focalizzazione su competitività e innovazione allineata agli obiettivi dell'Azione 1.3.1",
+      "Opportunità di networking, partnership industriali e open innovation in linea con i keyword aziendali",
+      "Evento internazionale per sviluppare relazioni commerciali e cross-fertilization",
+      "Scadenza ancora disponibile (7 giugno 2024) con processo di candidatura online semplice"
+    ],
+    "matched_capabilities": [
+      "Competitività aziendale",
+      "Innovazione nei processi produttivi",
+      "Efficientamento energetico (potenziale showcase technologico)",
+      "Interesse nel comparto turistico-ricettivo (rilevante per networking B2B)",
+      "Digitalizzazione"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/poc-20142020-azione-1-3-1-sostegno-alla-competitivita-delle-imprese-siciliane-manifestazioni-fieristiche-smau-milano-2024-avviso-manifestazione-inter/"
+  },
+  {
+    "opportunity_id": "sicilia:107006",
+    "score": 72,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Aggiornamento programmazione eventi internazionali II semestre 2024 e I bimestre 2025 – Approvazione Avviso eventi internazionali II semestre 2024",
+    "deadline": null,
+    "reasons": [
+      "Azienda siciliana PMI con focus su competitività e innovazione, perfettamente allineata con target dell'avviso",
+      "Opportunità di internazionalizzazione e accesso a mercati internazionali tramite eventi fieristici, coerente con strategia aziendale",
+      "Programma FESR 2021/2027 dedicato specificamente a MPMI siciliane per crescita competitività",
+      "Supporto per partecipazione a manifestazioni fieristiche internazionali, missioni B2B e azioni di visibilità su mercati esteri",
+      "Valore non specificato ma programma destinato a circa 400 MPMI siciliane suggerisce accesso effettivo a risorse"
+    ],
+    "matched_capabilities": [
+      "Competitività e innovazione (keywords aziendali)",
+      "PMI siciliana operante in settori manifatturieri (ATECO 25.62, 10.71)",
+      "Interesse nel comparto turistico-ricettivo, compatibile con internazionalizzazione",
+      "Investimenti e crescita dei mercati"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-azione-1-3-3-aggiornamento-programmazione-eventi-internazionali-ii-semestre-2024-bimestre-2025-approvazione-avviso-eventi-internazionali-ii-semestre/"
+  },
+  {
+    "opportunity_id": "sicilia:119219",
+    "score": 72,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Avviso selezione MPMI manifestazioni fieristiche II trimestre 2025",
+    "deadline": null,
+    "reasons": [
+      "Azienda siciliana che corrisponde al target MPMI della Regione Sicilia",
+      "Opportunità focalizzata su manifestazioni fieristiche nel turismo, settore di interesse dichiarato",
+      "Regione geografica perfettamente corrispondente (Sicilia)",
+      "Finanziamento FESR 2021/2027 per competitività e innovazione, allineato con strategie aziendali",
+      "Informazioni incomplete (valore, deadline, CPV) riducono certezza della valutazione"
+    ],
+    "matched_capabilities": [
+      "Operatività nel comparto turistico-ricettivo",
+      "Focus su competitività e innovazione",
+      "PMI siciliana con esperienza in investimenti"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-azione-1-3-3-decreto-di-approvazione-avviso-per-la-selezione-di-mpmi-micro-piccole-e-medie-imprese-siciliane-interessate-a-partecipare-alle-manifestazioni-fieristiche/"
+  },
+  {
+    "opportunity_id": "sicilia:124778",
+    "score": 72,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Promozione del turismo esperienziale e responsabile – Avviso per la selezione ed il finanziamento di progettualità a regia regionale – Proroga termini presentazione istanze",
+    "deadline": null,
+    "reasons": [
+      "Azienda opera nel comparto turistico-ricettivo, settore principale dell'avviso",
+      "Opportunity è finanziato da FESR 2021/2027, regime di aiuti strutturato",
+      "Localizzazione perfetta: azienda in Sicilia, bando regionale siciliano",
+      "Progettualità a regia regionale suggerisce supporto nella realizzazione",
+      "Turismo esperienziale e responsabile allineato con innovazione aziendale"
+    ],
+    "matched_capabilities": [
+      "Competenze nel comparto turistico-ricettivo",
+      "Propensione all'innovazione e competitività",
+      "Localizzazione in Sicilia",
+      "Investimenti in efficientamento energetico applicabili a strutture ricettive"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-avviso-per-la-selezione-ed-il-finanziamento-di-progettualita-a-regia-regionale-proroga-termini-presentazione-istanze/"
+  },
+  {
+    "opportunity_id": "sicilia:127737",
+    "score": 72,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Promozione del turismo esperienziale e responsabile – Avviso per la selezione e il finanziamento di progettualità a regia regionale – Incremento dotazione finanziaria",
+    "deadline": null,
+    "reasons": [
+      "Azienda opera in Sicilia e l'opportunità è a regia regionale siciliana",
+      "Turismo è tra i keyword aziendali e l'avviso promuove turismo esperienziale",
+      "Valore totale dell'avviso (€3M) rientra nella fascia di investimento aziendale",
+      "PMI siciliana corrisponde al profilo cercato da iniziative FESR regionali",
+      "Mancano informazioni critiche su deadline, importo per beneficiario e criteri di selezione"
+    ],
+    "matched_capabilities": [
+      "Competenze nel comparto turistico-ricettivo",
+      "Focus su innovazione e competitività",
+      "Esperienza in investimenti strutturali"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-promozione-del-turismo-esperienziale-e-responsabile-avviso-per-la-selezione-e-il-finanziamento-di-progettualita-a-regia-regionale-incremento-dotazione-finanziari/"
+  },
+  {
+    "opportunity_id": "sicilia:143791",
+    "score": 72,
+    "status": "open",
+    "title": "FSC 2021/2027 – Linea di Intervento 03.02 – Turismo e Ospitalità – Agevolazioni per le imprese del settore turistico alberghiero ed extra-alberghiero – Avviso publico – Errata corrige DDG n. 2106/2025 – Annullamento e sostituzione Griglia di ordinamento e valutazione",
+    "deadline": null,
+    "reasons": [
+      "Strong geographic match: company is in Sicilia and opportunity is regional Sicilia-focused",
+      "Sector alignment: company operates in tourism/hospitality (ATECO 10.71) which is the core focus of this tourism incentive line",
+      "Strategic fit: company's keywords include 'turismo' and 'investimenti' matching the opportunity's purpose",
+      "Value range likely compatible: company operates EUR 5k-2M range, typical for SME tourism grants",
+      "Recent update (June 2025) suggests active, current funding line"
+    ],
+    "matched_capabilities": [
+      "Tourism sector operations (ATECO 10.71)",
+      "Investment capacity in business development",
+      "Regional presence in Sicilia",
+      "Innovation and competitiveness focus"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/fsc-2021-2027-linea-di-intervento-03-02-turismo-e-ospitalita-agevolazioni-per-le-imprese-del-settore-turistico-alberghiero-ed-extra-alberghiero-errata-corrige-ddg-n-2106-del-25-06-202/"
+  },
+  {
+    "opportunity_id": "sicilia:162453",
+    "score": 72,
+    "status": "open",
+    "title": "FSC 2021/2027 – Linea di intervento 03.02 – Turismo e Ospitalità – Avviso per la concessione di agevolazioni imprese del settore turistico alberghiero ed extra-alberghiero – Proroga 28/2/2026",
+    "deadline": null,
+    "reasons": [
+      "Azienda ha interessi espliciti nel comparto turistico-ricettivo",
+      "Opportunità regionale in Sicilia, corrispondente alla sede dell'azienda",
+      "FSC 2021/2027 è un programma importante per le PMI siciliane",
+      "Linea 03.02 focalizzata su turismo e ospitalità, settore dichiarato di interesse",
+      "Deadline prossima (28/02/2026) ma ancora gestibile",
+      "Valore dell'agevolazione non specificato, potrebbe non rientrare nella fascia di interesse aziendale"
+    ],
+    "matched_capabilities": [
+      "Competenze in innovazione nel comparto turistico-ricettivo",
+      "Esperienza in efficientamento energetico (rilevante per strutture alberghiere)",
+      "PMI siciliana attiva nel settore dell'ospitalità",
+      "Focus su competitività e investimenti"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/fsc-2021-2027-avviso-agevolazioni-imprese-settore-alberghiero-ed-extra-alberghiero-proroga-28-2-2026/"
+  },
+  {
+    "opportunity_id": "sicilia:119949",
+    "score": 65,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Promozione del turismo esperienziale – Avviso per la selezione ed il finanziamento di progettualità a regia regionale – Pubblicazione Faq",
+    "deadline": null,
+    "reasons": [
+      "Turismo esperienziale è un tema di interesse dichiarato dell'azienda (competitività nel comparto turistico-ricettivo)",
+      "Finanziamento regionale siciliano, localizzazione geografica perfetta",
+      "PMI siciliana è target probabile per programmi FESR regionali",
+      "Opportunity è in fase di FAQ, documenti ufficiali non ancora disponibili",
+      "Valore e deadline non ancora definiti, difficile valutare allineamento finanziario"
+    ],
+    "matched_capabilities": [
+      "Competitività e innovazione nel turismo",
+      "Investimenti in processi innovativi",
+      "PMI siciliana con focus tourism sector"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-avviso-per-la-selezione-ed-il-finanziamento-di-progettualita-a-regia-regionale-pubblicazione-faq/"
+  },
+  {
+    "opportunity_id": "sicilia:106044",
+    "score": 62,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Sostegno alla crescita sui mercati internazionali – Approvazione Avviso per la selezione di MPMI siciliane per la partecipazione ad IMEX AMERICA e IBTM WORLD",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI siciliana e l'opportunità è rivolta esplicitamente a MPMI siciliane",
+      "L'avviso riguarda internazionalizzazione e accesso a mercati internazionali, allineato con keyword 'competitività' e 'investimenti'",
+      "Manifestazioni (IMEX AMERICA, IBTM WORLD) sono rilevanti per il comparto turistico-ricettivo in cui l'azienda opera",
+      "Finanziamento FESR 2021-2027 con azione focalizzata su crescita mercati internazionali",
+      "Regione Sicilia come ente erogatore garantisce coerenza territoriale",
+      "Tuttavia, l'azienda ha anche attività in manifattura (ATECO 25.62 - lavorazione metalli), non solo turismo"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana",
+      "Competitività e innovazione",
+      "Attività nel comparto turistico-ricettivo",
+      "Orientamento all'investimento e crescita"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-3-3-sostegno-alla-crescita-sui-mercati-internazionali-approvazione-avviso-per-la-selezione-di-mpmi-siciliane-per-la-partecipazione-ad-imex-amer/"
+  },
+  {
+    "opportunity_id": "sicilia:110157",
+    "score": 62,
+    "status": "open",
+    "title": "PR FESR 2021/2017 – Azione 1.3.3 – Decreto di approvazione Avviso per la selezione di MPMI siciliane interessate a partecipare alle manifestazioni fieristiche 1° trimestre 2025",
+    "deadline": null,
+    "reasons": [
+      "Azienda siciliana e opportunità regionale in Sicilia = match geografico perfetto",
+      "PMI/MPMI eligibility allineato con profilo aziendale",
+      "Turismo è tra i settori di interesse dell'azienda",
+      "Contributo a manifestazioni fieristiche può supportare competitività e visibilità",
+      "Valore dell'opportunità non specificato - potrebbe non allinearsi al range 5k-2M",
+      "Focus su fiere turistiche è tangenziale rispetto a efficientamento energetico e digitalizzazione"
+    ],
+    "matched_capabilities": [
+      "Interesse nel comparto turistico-ricettivo",
+      "PMI siciliana con focus su competitività e innovazione",
+      "Investimenti in innovazione e posizionamento di mercato"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212017-azione-1-3-3-decreto-di-approvazione-avviso-per-la-selezione-di-mpmi-siciliane-interessate-a-partecipare-alle-manifestazioni-fieristiche-1-trimestre-2025/"
+  },
+  {
+    "opportunity_id": "incentivi:145",
+    "score": 45,
+    "status": "open",
+    "title": "Fondo per il trasferimento tecnologico",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI ma non è qualificata come 'PMI innovativa' secondo i criteri standard - ATECO 25.62 e 10.71 sono manifatturieri generici, non specificamente innovativi",
+      "L'opportunità è nazionale ma gestita da Ministero con focus Abruzzo, mentre l'azienda opera solo in Sicilia - potenziale disallineamento regionale",
+      "Fondo richiede focus su 'ricerca e sviluppo' e 'risultati di ricerca' - l'azienda è focalizzata su efficientamento energetico e competitività, non su R&S",
+      "Range di finanziamento (100k-15M) è compatibile con la capacità dichiarata dell'azienda (5k-2M), ma il minimo è superiore al lower bound aziendale",
+      "L'azienda non risulta essere startup innovativa, spin-off universitario o parte di parco tecnologico - questi sono i target preferenziali",
+      "Interesse per 'innovazione' è presente nel profilo ma senza evidenza di attività di ricerca strutturata"
+    ],
+    "matched_capabilities": [
+      "Interesse generale per l'innovazione",
+      "Potenziale competitività attraverso efficientamento"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/fondo-trasferimento-tecnologico"
+  },
+  {
+    "opportunity_id": "sicilia:105910",
+    "score": 45,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Sostegno alla crescita sui mercati internazionali – Avviso per la selezione di MPMI siciliane per la partecipazione a manifestazioni fieristiche, 2°semestre 2024 – Decreto di approvazione",
+    "deadline": null,
+    "reasons": [
+      "Opportunity targets MPMI siciliane - company matches this profile",
+      "Regional scope in Sicilia aligns with company location",
+      "Focus on international market growth supports company's competitività/innovazione keywords",
+      "Trade fair participation is not core to company's stated capabilities (energy efficiency, manufacturing, tourism)",
+      "Company has tourism-hospitality interests but opportunity appears sector-agnostic for trade fairs"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana eligibility",
+      "Innovation and competitiveness focus",
+      "Tourism/hospitality sector interest"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-sostegno-alla-crescita-sui-mercati-internazionali-azione-1-3-3-decreto-di-approvazione-avviso-per-la-selezione-di-mpmi-siciliane-interessate-a-partecip/"
+  },
+  {
+    "opportunity_id": "sicilia:119906",
+    "score": 45,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Avviso Fiere II Trimestre 2025 – Allegato A “Scheda Tecnica” – Modifica",
+    "deadline": null,
+    "reasons": [
+      "Opportunità regionale in Sicilia, perfetto match geografico",
+      "Azione FESR focalizzata su fiere, non su efficientamento energetico o innovazione produttiva",
+      "Competenza turistica-ricettiva dell'azienda è rilevante per fiere, ma non è focus primario aziendale",
+      "Mancano informazioni critiche: deadline, budget, CPV, dettagli di eleggibilità specifici"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana (match geografico perfetto)",
+      "Competenza nel comparto turistico-ricettivo (potenzialmente rilevante per partecipazione a fiere)"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-3-3-avviso-fiere-ii-trimestre-2025-allegato-a-scheda-tecnica-modifica/"
+  },
+  {
+    "opportunity_id": "sicilia:125129",
+    "score": 45,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Promozione del turismo esperienziale e responsabile – Avviso per la selezione ed il finanziamento di progettualità a regia regionale – FAQ N.2",
+    "deadline": null,
+    "reasons": [
+      "Opportunity is regionally targeted (Sicilia) matching company location",
+      "Tourism sector aligns with company's stated interest in turismo and ricettivo",
+      "However, this appears to be a FAQ document rather than an active call for proposals",
+      "No clear deadline, budget, or detailed eligibility criteria provided",
+      "Company's core competencies (energy efficiency, manufacturing processes) not directly addressed in tourism experience focus",
+      "Regional management (regia regionale) may limit direct SME participation opportunities"
+    ],
+    "matched_capabilities": [
+      "Turismo/ricettivo sector experience",
+      "Regional presence in Sicilia",
+      "Innovation capability"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-promozione-del-turismo-esperienziale-e-responsabile-avviso-per-la-selezione-ed-il-finanziamento-di-progettualita-a-regia-regionale-faq-n-2/"
+  },
+  {
+    "opportunity_id": "incentivi:1650",
+    "score": 42,
+    "status": "open",
+    "title": "Fondo comuni marginali: annualità 2022 - comune di Santa Elisabetta",
+    "deadline": null,
+    "reasons": [
+      "Opportunity is geographically aligned (Sicilia)",
+      "Company operates in eligible sectors (commercial/artisanal activities)",
+      "However, opportunity is extremely vague with missing critical details (value, deadline)",
+      "Funding appears limited to new business activities in a specific marginalized municipality",
+      "No clear alignment with company's stated focus on energy efficiency and innovation",
+      "Risk equity/capital risk model may not suit typical SME needs"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana (regional location match)",
+      "Potential eligibility as commercial/artisanal operator",
+      "Interest in competitività and investimenti"
+    ],
+    "source_url": "https://www.comunesantaelisabetta.it/2-uncategorised/563-avviso-pubblico-per-assegnazione-fondi-marginali-anno-2022.html"
+  },
+  {
+    "opportunity_id": "incentivi:146",
+    "score": 35,
+    "status": "open",
+    "title": "Patent box ",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI ma agevolazione rivolta a Grande Impresa - mismatch dimensionale critico",
+      "Patent box richiede attività di R&S su brevetti/software/disegni - non è focus principale aziendale",
+      "Azienda focalizzata su efficientamento energetico e turismo, non su IP/brevetti",
+      "Potenziale rilevanza solo se azienda ha attività R&S sottostante in innovazione",
+      "Scope nazionale ma nessuna deadline/valore/CPV specificati - informazioni incomplete"
+    ],
+    "matched_capabilities": [
+      "Innovazione e investimenti in competitività (generico fit con tema R&S)",
+      "Digitalizzazione potrebbe teoricamente coinvolgere software protetto"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/patent-box"
+  },
+  {
+    "opportunity_id": "incentivi:205",
+    "score": 35,
+    "status": "open",
+    "title": "Legge 181/1989 - Riqualificazione dell’area di crisi industriale di Gela",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI (S.r.l.), ma l'opportunità richiede esplicitamente 'Grande Impresa' - mancanza di eligibilità fondamentale",
+      "L'azienda opera in Sicilia e l'opportunità è territorialmente rilevante (area di Gela, Sicilia)",
+      "L'efficientamento energetico e l'innovazione sono allineati con gli interessi dell'azienda",
+      "Deadline è scaduta (23 ottobre 2024) - opportunità non più attuale",
+      "I settori ATECO aziendali (25.62, 10.71) potrebbero rientrare negli investimenti produttivi richiesti"
+    ],
+    "matched_capabilities": [
+      "Investimenti in efficientamento energetico e tutela ambientale",
+      "Innovazione di processo e organizzativa",
+      "Sviluppo imprenditoriale in ambito manifatturiero"
+    ],
+    "source_url": "https://www.mimit.gov.it/it/incentivi/gela-area-di-crisi-industriale-2023"
+  },
+  {
+    "opportunity_id": "incentivi:2083",
+    "score": 35,
+    "status": "open",
+    "title": "Contributi Fondo Comuni Marginali per l'avvio di attività commerciali  artigianali e agricole nel Comune di Giuliana",
+    "deadline": "2026-12-31T00:00:00+00:00",
+    "reasons": [
+      "Azienda già costituita e operante, ma bando richiede 'nuova attività economica' - possibile solo se avvia codici ATECO nuovi",
+      "Ubicazione geografica match (Sicilia, Comune di Giuliana)",
+      "Valore finanziamento non specificato nel bando - incertezza su allineamento con range aziendale (5k-2M€)",
+      "Azienda opera in efficientamento energetico e turismo; bando generico per commercio/artigianato/agricoltura senza focus settoriale",
+      "Esclusioni aziendali (catering, servizi persona) non conflittuali con bando",
+      "Bando incentrato su costituzione nuove attività; Sicilia Impresa già strutturata"
+    ],
+    "matched_capabilities": [
+      "Localizzazione in Sicilia (match geografico)",
+      "PMI con interesse in investimenti e innovazione",
+      "Potenziale applicabilità se attiva nuovo codice ATECO in turismo ricettivo a Giuliana"
+    ],
+    "source_url": "https://www.comune.giuliana.pa.it/"
+  },
+  {
+    "opportunity_id": "incentivi:2195",
+    "score": 35,
+    "status": "open",
+    "title": "Incentivi alle imprese per l'assunzione di ricercatori - MUR - PNNR",
+    "deadline": "2026-12-31T00:00:00+00:00",
+    "reasons": [
+      "Opportunità nazionale ma focalizzata su assunzione di ricercatori e dottorati innovativi, non su efficientamento energetico o competitività operativa",
+      "Azienda siciliana può partecipare (scope nazionale), ma requisito di cofinanziamento dottorati innovativi è specifico e vincolante",
+      "Beneficio contributivo (max 7.500€ per unità) modesto rispetto alla fascia di valore dell'azienda (5k-2M€)",
+      "Requisito di assunzione ricercatori con dottorato non allineato alle capacità dichiarate (efficientamento energetico, innovazione processi)",
+      "Scadenza lunga (2026) ma finestra di validità limitata al 2024-2026"
+    ],
+    "matched_capabilities": [
+      "Innovazione (tema generale dell'opportunità)",
+      "Potenziale interesse in ricerca applicata ai processi energetici"
+    ],
+    "source_url": "https://dottorati-imprese.mur.gov.it/"
+  },
+  {
+    "opportunity_id": "sicilia:107100",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – AZIONE 1.3.3 – Selezione MPMI siciliane interessate a partecipare alle manifestazioni fieristiche MTS Venezia 2024, BITESP Venezia e ITALY AT HAND Torino – Approvazione Avviso",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on trade fair participation (tourism/hospitality sector) while company's primary ATECO codes (25.62 - manufacturing of tools; 10.71 - bakery products) suggest manufacturing orientation",
+      "Company mentions tourism interests but states exclusion of 'catering' which overlaps with hospitality sector focus",
+      "Support is for fair participation costs, not for energy efficiency or process innovation which are company's stated priorities",
+      "Company is SME in Sicily matching regional eligibility, but opportunity targets MICE/tourism/outdoor experiences rather than manufacturing competitiveness"
+    ],
+    "matched_capabilities": [
+      "SME status matching MPMI requirement",
+      "Sicilian location and regional eligibility",
+      "Stated interest in turismo/ricettivo sector"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-3-3-decreto-di-approvazione-avviso-per-la-selezione-di-mpmi-siciliane-interessate-a-partecipare-alle-manifestazioni-fieristiche-mts-venezia-2024-bitesp-venezia/"
+  },
+  {
+    "opportunity_id": "sicilia:112229",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Manifestazione fieristica FITUR Madrid 2025 – Approvazione elenco definitivo operatori ammessi e non ammessi",
+    "deadline": null,
+    "reasons": [
+      "Opportunity is a final approval list announcement for a trade fair participation, not an active call for applications",
+      "Company is in manufacturing (ATECO 25.62, 10.71) with tourism interests, but FITUR is primarily a tourism/hospitality trade fair",
+      "No clear value, deadline, or application process specified in the opportunity",
+      "The DDG appears to be administrative notification of already-decided admissions, not a new funding/grant opportunity"
+    ],
+    "matched_capabilities": [
+      "Tourism sector interest aligns with FITUR trade fair focus",
+      "Regional presence in Sicilia matches issuer region"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-1-3-3-approvazione-elenco-definitivo-degli-operatori-ammessi-e-non-ammessi-a-partecipare-alla-manifestazione-fieristica-denominata-fitur-madrid-2025/"
+  },
+  {
+    "opportunity_id": "sicilia:116499",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – ITALY FOR WEDDINGS – THE EVENT 2025 – Approvazione elenco provvisorio operatori ammessi e non ammessi",
+    "deadline": null,
+    "reasons": [
+      "Opportunità focalizzata su partecipazione a manifestazione fieristica (wedding events), non su finanziamenti diretti per investimenti aziendali",
+      "Company opera nel comparto turistico-ricettivo, settore rilevante per l'iniziativa",
+      "Mancano informazioni critiche: deadline, valore finanziario, criteri di selezione specifici",
+      "Non è chiaro se la partecipazione a fiera sia allineata con strategie di efficientamento energetico e innovazione dell'azienda",
+      "Documento sembra essere solo annuncio di approvazione lista partecipanti, non bando aperto"
+    ],
+    "matched_capabilities": [
+      "Esperienza nel comparto turistico-ricettivo",
+      "Interesse alla competitività e visibilità del business",
+      "Sede in Sicilia, regione di pertinenza"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-azione-1-3-3-italy-for-weddings-the-event-2025-approvazione-elenco-provvisorio-operatori-ammessi-e-non-ammessi/"
+  },
+  {
+    "opportunity_id": "sicilia:116587",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – Italy for Weddings – The Event 2025 – Approvazione elenco definitivo operatori ammessi e non ammessi",
+    "deadline": null,
+    "reasons": [
+      "Opportunità focalizzata su partecipazione a manifestazione fieristica, non su finanziamento/sostegno diretto",
+      "Riguarda il comparto turistico-ricettivo, allineato con gli interessi aziendali",
+      "L'elenco è già approvato (28/01/2025); sembra trattarsi di comunicazione amministrativa piuttosto che bando aperto",
+      "Manca chiarezza su benefici concreti, valore finanziario e modalità di partecipazione",
+      "Deadline non esplicita; evento già imminente (febbraio 2025)"
+    ],
+    "matched_capabilities": [
+      "Competenze nel comparto turistico-ricettivo",
+      "Interesse per innovazione e competitività nel turismo"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-azione-1-3-3-italy-for-weddings-the-event-2025-approvazione-elenco-definitivo-operatori-ammessi-e-non-ammessi/"
+  },
+  {
+    "opportunity_id": "sicilia:119218",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 21/27 – Azione 1.3.3 – Progetti coordinati – Calendario eventi internazionali 2025 e I bimestre 2026 e Avviso",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on international trade fair participation for internationalization, not directly on energy efficiency or innovation in production processes",
+      "Company's primary capabilities are in energy efficiency and competitiveness/innovation, not export promotion or trade fair participation",
+      "Tourism-hospitality angle mentioned in opportunity could align with company's secondary interest, but not primary focus",
+      "Opportunity is regional (Sicilia) and company is Sicilian, matching geographic scope",
+      "Value and budget details not specified in opportunity, making assessment incomplete"
+    ],
+    "matched_capabilities": [
+      "PMI status (micro, piccole, medie imprese eligibility)",
+      "Sicilian location matches regional scope",
+      "Competitività e innovazione keywords broadly align",
+      "Potential tourism-hospitality sector involvement"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2127-azione-1-3-3-progetti-coordinati-approvazione-calendario-eventi-internazionali-2025-i-bimestre-2026-ed-approvazione-avviso/"
+  },
+  {
+    "opportunity_id": "sicilia:143219",
+    "score": 35,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Avviso ricognitivo per la proposizione di prodotti editoriali di promozione del turismo esperienziale e responsabile",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on editorial products for tourism promotion, not on operational/production investments",
+      "Company ATECO codes (25.62 manufacturing, 10.71 beverages) don't align with editorial/publishing services",
+      "Opportunity appears to be a 'ricognitivo' (fact-finding/exploratory) notice, not a direct funding call with clear financial allocation",
+      "Missing critical details: no deadline, no budget value, no specific eligibility criteria published",
+      "Company's core competencies (energy efficiency, manufacturing innovation) are not relevant to editorial tourism products"
+    ],
+    "matched_capabilities": [
+      "Regional presence in Sicilia",
+      "Interest in tourism sector development"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-2021-2027-azione-4-6-2-avviso-ricognitivo-per-la-proposizione-di-prodotti-editoriali-di-promozione-del-turismo-esperienziale-e-responsabile/"
+  },
+  {
+    "opportunity_id": "incentivi:109",
+    "score": 28,
+    "status": "open",
+    "title": "Fondo IPCEI - Importanti Progetti di Comune Interesse Europeo",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on large-scale industrial collaboration projects requiring partnerships across at least two EU countries, which is not clearly aligned with SME's typical operational scope",
+      "Company is based in Sicily but opportunity issuer is in Abruzzo with no specific regional focus mentioned, reducing relevance",
+      "IPCEI requires radical innovation and strategic value chain positioning; company focus is on energy efficiency and competitiveness rather than breakthrough innovation",
+      "No deadline, value, or detailed CPV information provided, making assessment of fit uncertain",
+      "Company's stated capabilities in energy efficiency and tourism are not explicitly mentioned as IPCEI priority areas"
+    ],
+    "matched_capabilities": [
+      "Innovazione - company invests in innovation",
+      "Competitività - IPCEI supports competitiveness objectives"
+    ],
+    "source_url": "https://www.mise.gov.it/index.php/it/incentivi/impresa/fondo-ipcei"
+  },
+  {
+    "opportunity_id": "incentivi:1007",
+    "score": 25,
+    "status": "open",
+    "title": "Progetti di ricerca, sviluppo e innovazione per transizione ecologica e circolare - Green New Deal",
+    "deadline": null,
+    "reasons": [
+      "Azienda è PMI ma opportunità prioritaria per grandi imprese",
+      "Importo minimo richiesto (3 milioni €) supera significativamente il range aziendale (max 2 milioni €)",
+      "Green New Deal allineato con keyword 'efficientamento energetico', ma focus è su R&S industriale, non su investimenti operativi",
+      "Azienda opera in settori (25.62, 10.71) non esplicitamente menzionati negli ambiti prioritari",
+      "Turismo sostenibile è menzione, ma non core della misura"
+    ],
+    "matched_capabilities": [
+      "Efficientamento energetico e transizione ecologica",
+      "Innovazione e competitività",
+      "Interesse potenziale in turismo sostenibile"
+    ],
+    "source_url": "https://www.mimit.gov.it/it/incentivi/green-new-deal"
+  },
+  {
+    "opportunity_id": "incentivi:1426",
+    "score": 25,
+    "status": "open",
+    "title": "Promozione dell’ecoefficienza e riduzione dei consumi energetici nelle sale teatrali e nei cinema, pubblici e privati - PNRR M1C3I1.3 - Obiettivi 2 e 3",
+    "deadline": "2026-12-31T00:00:00+00:00",
+    "reasons": [
+      "Company is PMI, but opportunity targets 'Grande Impresa' explicitly",
+      "Company has energy efficiency expertise matching opportunity focus",
+      "Opportunity requires ownership/management of theaters or cinemas - company profile does not indicate this asset type",
+      "Company operates in Sicilia, opportunity issued for Abruzzo region with national scope but no regional restrictions stated",
+      "Energy efficiency and digitalization align with company keywords, but sector mismatch is critical"
+    ],
+    "matched_capabilities": [
+      "efficientamento energetico (energy efficiency expertise)",
+      "digitalizzazione (digitalization interest)",
+      "innovazione (innovation focus)",
+      "turismo sector interest (cultural venues related to tourism)"
+    ],
+    "source_url": "https://spettacolo.cultura.gov.it/wp-content/uploads/2024/02/Avviso-pubblico_Proposte-di-intervento-per-la-promozione-della-ecoefficienza-e-riduzione-dei-consumi-energetici-nelle-sale-teatrali-e-cinema.pdf"
+  },
+  {
+    "opportunity_id": "sicilia:103676",
+    "score": 25,
+    "status": "open",
+    "title": "POC 2014/2020 – Azione 1.3.1 – Sostegno alla competitività delle imprese siciliane – Manifestazioni fieristiche – Arti e Mestieri – Vento d’Italia – Avviso manifestazione interesse",
+    "deadline": null,
+    "reasons": [
+      "Opportunity focuses on Chinese market export through e-commerce and WeChat, not energy efficiency or industrial competitiveness",
+      "Company's core competencies (energy efficiency, manufacturing process innovation) are not aligned with this trade fair event",
+      "Deadline has already passed (April 21, 2024)",
+      "Event is primarily for product promotion/export, not for investments in energy efficiency or digital transformation of operations",
+      "Company's manufacturing sectors (ATECO 25.62, 10.71) may not be ideal for 'Arti e Mestieri' (crafts/artisans) positioning"
+    ],
+    "matched_capabilities": [
+      "PMI siciliana status (eligible entity type)",
+      "Interest in competitività (opportunity aims to strengthen competitiveness)",
+      "Regional location in Sicilia matches geographic scope"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/poc-20142020-azione-1-3-1-manifestazioni-fieristiche-internazionali-2024-evento-arti-e-mestieri-vento-ditalia/"
+  },
+  {
+    "opportunity_id": "sicilia:109303",
+    "score": 25,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – ITALY AT HAND 2024 – Approvazione elenco definitivo operatori ammessi e non ammessi",
+    "deadline": null,
+    "reasons": [
+      "L'opportunità riguarda una manifestazione fieristica (ITALY AT HAND 2024), non un bando di finanziamento attivo",
+      "Il documento pubblicato è un elenco definitivo di operatori ammessi/non ammessi, non una call aperta per nuove candidature",
+      "Manca informazione su deadline, budget disponibile e modalità di partecipazione",
+      "Non è chiaro se Sicilia Impresa è già nell'elenco degli ammessi o meno"
+    ],
+    "matched_capabilities": [
+      "Competenze nel turismo-ricettivo potenzialmente rilevanti per una fiera turistica",
+      "Interesse alla competitività e innovazione nel settore"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/p-r-sicilia-fesr-20212027-azione-1-3-3-italy-at-hand-2024-approvazione-elenco-definitivo-operatori-ammessi-e-non-ammessi/"
+  },
+  {
+    "opportunity_id": "sicilia:116500",
+    "score": 25,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 1.3.3 – BIT MILANO 2025 – Approvazione elenco definitivo operatori ammessi e non ammessi",
+    "deadline": null,
+    "reasons": [
+      "L'opportunità riguarda l'approvazione di un elenco di operatori ammessi a una manifestazione fieristica (BIT Milano 2025), non un bando di finanziamento attivo",
+      "Non è un'occasione di investimento o finanziamento, ma la pubblicazione di risultati di selezione già conclusi",
+      "Sebbene la manifestazione sia nel settore turistico (rilevante per l'azienda), non comporta accesso a fondi FESR",
+      "Manca completamente informazione su valore economico, deadline applicabile e modalità di partecipazione attive"
+    ],
+    "matched_capabilities": [
+      "Interesse nel comparto turistico-ricettivo (BIT è fiera di settore)",
+      "Azienda siciliana operante in regione Sicilia (fonte di finanziamento è Regione Siciliana)"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-20212027-azione-1-3-3-bit-milano-2025-approvazione-elenco-definitivo-operatori-ammessi-e-non-ammessi/"
+  },
+  {
+    "opportunity_id": "sicilia:158722",
+    "score": 25,
+    "status": "open",
+    "title": "PR FESR 2021/2027 – Azione 4.6.2 – Promozione del turismo esperienziale e responsabile – Avviso progetti a regia regionale – Graduatoria definitiva – Rettifica allegato A",
+    "deadline": null,
+    "reasons": [
+      "This is a final ranking approval notice (rettifica), not an open call for new project submissions",
+      "The deadline has passed - this documents the final winner selection, not an active opportunity",
+      "Company would need to have already submitted a project in the original call to benefit",
+      "Turismo sector matches company interests, but implementation window appears closed"
+    ],
+    "matched_capabilities": [
+      "Turismo competitività e innovazione",
+      "Sicilia regional focus"
+    ],
+    "source_url": "https://www.euroinfosicilia.it/pr-fesr-azione-4-6-2-avviso-progetti-a-regia-regionale-promozione-del-turismo-esperienziale-graduat-def-rettifica-all-a/"
+  }
+]
