@@ -85,6 +85,15 @@ def test_default_recipe_is_broken_on_drift():
     assert validate_refs(apply_recipe(TOSCANA_RECIPE, drifted())) == "broken"
 
 
+def test_validate_refs_requires_post_id():
+    # post_id builds RawDoc.id/Opportunity.id, so a None/"" one is drift, not a
+    # usable ref (would collide as "source:None") — even with url + title present.
+    assert validate_refs([(None, "https://x/1", "Title")]) == "broken"
+    assert validate_refs([("", "https://x/1", "Title")]) == "broken"
+    assert validate_refs([(7, "https://x/1", "Title")]) == "ok"  # int id is fine
+    assert validate_refs([("a", "u", "t"), (None, "u", "t")]) == "degraded"
+
+
 def test_propose_recipe_strict_parse():
     item = drifted()[0]
     rec = propose_recipe(item, TOSCANA_RECIPE, _FakeHealer(RIGHT))

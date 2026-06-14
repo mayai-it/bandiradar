@@ -17,6 +17,81 @@ def store(tmp_path):
     s.close()
 
 
+def test_raw_stream_threads_store_to_llm_sources_only():
+    """An LLM scraper gets the caller's ``store`` (so its extraction cache + recipe
+    store persist on the same DB); a keyless source does not take it."""
+
+    class _Src:
+        def __init__(self, requires_llm):
+            self.id = "x"
+            self.requires_llm = requires_llm
+            self.got: dict = {}
+
+        def fetch(self, since=None, **kw):
+            self.got = kw
+            return iter([])
+
+    sentinel = object()
+    llm = _Src(requires_llm=True)
+    list(core._raw_stream(llm, False, None, 10, None, None, sentinel))
+    assert llm.got.get("store") is sentinel
+
+    keyless = _Src(requires_llm=False)
+    list(core._raw_stream(keyless, False, None, 10, None, None, sentinel))
+    assert "store" not in keyless.got
+
+
+def test_llm_fetch_persists_extractions_and_golden_to_passed_store(monkeypatch):
+    """Regression: an LLM scraper must persist its extractions + crawl golden on the
+    STORE the caller passed (so ``--db`` controls all persistence), not a default DB."""
+    from pathlib import Path
+
+    from bandiradar.recipe_store import RecipeStore
+    from bandiradar.sources import veneto
+    from bandiradar.storage import SqliteExtractionCache
+
+    page = (Path(__file__).parent / "cassettes" / "veneto_listing.html").read_text(
+        encoding="utf-8"
+    )
+    src = veneto.VenetoSource()
+    monkeypatch.setattr(src, "_listing_html", lambda recipe: page)
+    monkeypatch.setattr(src, "_fetch_text", lambda url: "Testo del bando di prova.")
+
+    class _FakeClient:
+        def score(self, system, user):
+            return {"title": "Bando di prova", "kind": "incentive"}
+
+    store = Store(":memory:")
+    try:
+        raws = list(src.fetch(client=_FakeClient(), store=store, limit=2))
+        assert raws  # extracted at least one
+        cache = SqliteExtractionCache(store)
+        assert all(cache.get(r.url) is not None for r in raws)  # cached in THIS store
+        assert RecipeStore(store).get_golden("veneto")  # golden too
+    finally:
+        store.close()
+
+
+def test_sample_match_is_reproducible_and_pinned():
+    """`--sample` pins ``now`` to ``SAMPLE_NOW`` so the Quickstart reproduces forever
+    regardless of the calendar date. Guards the README's documented output (3 matches
+    for `mayai` at the balanced cutoff)."""
+    profile = core.load_profile("mayai")
+    s1 = Store(":memory:")
+    s2 = Store(":memory:")
+    try:
+        a = core.run_match(profile, s1, sample=True, mode="balanced")
+        b = core.run_match(profile, s2, sample=True, mode="balanced")
+    finally:
+        s1.close()
+        s2.close()
+    assert [o.id for o, _ in a] == [o.id for o, _ in b]  # deterministic
+    # The README's documented matches are present (the test suite also registers a
+    # `synthetic` source, so don't assert an exact count — assert the real ones).
+    ids = {o.id for o, _ in a}
+    assert {"incentivi:3400", "lazio:48841", "lazio:58887"} <= ids
+
+
 def test_run_fetch_sample_counts_and_dedupe(store):
     first = core.run_fetch("synthetic", store, sample=True, now=NOW)
     assert (first.source, first.status) == ("synthetic", "ok")

@@ -4,6 +4,28 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.16.1] — 2026-06-14 — Fixes from an external code review
+
+### Fixed
+- **`--db` now controls ALL persistence for LLM scrapers.** Previously a fetch
+  through `core.run_fetch(store=...)` saved the OPPORTUNITIES on the caller's DB but
+  the LLM extraction cache + the crawl recipe store on a DEFAULT/`BANDIRADAR_DB` DB
+  (the scraper opened its own `Store(None)`). `core` now threads the caller's `store`
+  into an LLM source's `fetch` (`requires_llm` sources only), binding the extraction
+  cache + recipe store to the same DB. (The production monitor was unaffected — it
+  points `BANDIRADAR_DB` at its state DB so both resolved to the same file — but the
+  `--db` flag was leaky.)
+- **`validate_refs` now requires a non-empty `post_id`.** A crawl ref with a url +
+  title but a `None`/empty `post_id` was counted as "usable", yet `post_id` builds
+  `RawDoc.id`/`Opportunity.id` downstream — so it would collide as `source:None`. Such
+  a ref is now treated as drift (the listing's id field moved), surfacing via crawl
+  health instead of producing colliding ids.
+- **Reproducible Quickstart.** `--sample` runs now pin the reference time to a fixed
+  `core.SAMPLE_NOW` (`2026-06-08`, the fixtures' capture date), so the demo output no
+  longer drifts as the calendar moves (bundled fixtures have fixed deadlines; items
+  were silently "closing" over time). The README's match output is regenerated to the
+  reproducible result and documents the pin.
+
 ## [0.16.0] — 2026-06-14 — Self-maintaining: 9 of 10 scrapers auto-heal
 
 ### Added

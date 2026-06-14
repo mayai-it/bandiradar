@@ -85,10 +85,11 @@ uv sync
 uv run bandiradar match --profile mayai --sample
 ```
 
-Real output on the bundled sample data:
+Real output on the bundled sample data (reproducible — `--sample` pins the run to a
+fixed reference date, `2026-06-08`, so the demo never drifts as the calendar moves):
 
 ```text
-4 matching opportunities for 'MayAI':
+3 matching opportunities for 'MayAI':
 
 #1  score 55  [open]  Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH
      issuer: Ministero delle Imprese e del Made in Italy (Campania)   deadline: 2026-06-30
@@ -100,12 +101,7 @@ Real output on the bundled sample data:
      why: capability overlap: cloud, conforme, dati, digitalizzazione, machine; region match: Lazio
      https://www.lazioinnova.it/bandi/voucher-digitalizzazione-pmi-2025/
 
-#3  score 44  [open]  Italia – Servizi di gestione dati – SERVIZIO DI GESTIONE … COMUNE DI ROCCA IMPERIALE (CS)
-     issuer: CENTRALE UNICA DI COMMITTENZA … CASSANO ALL'IONIO E TREBISACCE (—)   deadline: —
-     why: CPV prefix match (depth 2); capability overlap: dati; eu scope
-     https://ted.europa.eu/en/notice/-/detail/376324-2026
-
-#4  score 42  [closing_soon]  Donne e Impresa 2026
+#3  score 42  [closing_soon]  Donne e Impresa 2026
      issuer: LazioInnova (Lazio)   deadline: 2026-06-10
      why: capability overlap: data, software; region match: Lazio
      risk: deadline closing soon

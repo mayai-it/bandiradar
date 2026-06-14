@@ -70,6 +70,12 @@ def load_profile(path_or_name: str | Path) -> Profile:
 # Safety cap so a live fetch never runs unbounded when no explicit --limit is set.
 DEFAULT_FETCH_LIMIT = 2000
 
+# Fixed reference time for OFFLINE sample/demo runs, so `--sample` output is
+# reproducible regardless of the calendar date (the bundled fixtures have fixed
+# deadlines; without this, items silently "close" as real time passes and the
+# Quickstart drifts). Matches the eval corpus capture date.
+SAMPLE_NOW = datetime(2026, 6, 8, tzinfo=UTC)
+
 
 def _raw_stream(
     source: Source,
@@ -78,17 +84,25 @@ def _raw_stream(
     limit: int | None,
     max_pages: int | None,
     progress: ProgressFn | None,
+    store: Store | None = None,
 ):
     """Yield RawDocs LAZILY: the bundled fixture in sample mode, else live fetch().
 
     A generator, so ``source.fetch()`` is invoked at first iteration — letting the
     caller save progressively and catch a mid-stream failure without losing what
     already arrived.
+
+    For an LLM scraper the caller's ``store`` is threaded into ``fetch`` so its
+    extraction cache + recipe store persist on the SAME DB as the opportunities (so
+    ``--db`` controls all persistence). Keyless sources don't take ``store``.
     """
     if sample:
         yield from source.load_fixture()  # type: ignore[attr-defined]
         return
-    yield from source.fetch(since, limit=limit, max_pages=max_pages, progress=progress)
+    kwargs: dict = dict(limit=limit, max_pages=max_pages, progress=progress)
+    if store is not None and getattr(source, "requires_llm", False):
+        kwargs["store"] = store
+    yield from source.fetch(since, **kwargs)
 
 
 def _clean_error(exc: BaseException) -> str:
@@ -149,7 +163,9 @@ def run_fetch(
     try:
         source = get(source_id)
         iterator = iter(
-            _raw_stream(source, sample, since, effective_limit, max_pages, progress)
+            _raw_stream(
+                source, sample, since, effective_limit, max_pages, progress, store
+            )
         )
         while True:
             try:
@@ -558,6 +574,9 @@ def run_match(
     """
     if mode is not None:
         min_score = min_score_for_mode(mode)
+    # Pin offline demos to a fixed reference time so `--sample` is reproducible.
+    if sample and now is None:
+        now = SAMPLE_NOW
 
     def _stored() -> list[Opportunity]:
         # Pass `now` so each opportunity's lifecycle status is recomputed for the

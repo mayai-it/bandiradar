@@ -1,6 +1,6 @@
 [project]
 name = "bandiradar"
-version = "0.16.0"
+version = "0.16.1"
 description = "Monitor Italian public funding opportunities (tenders, grants, incentives) and rank them against a company profile."
 readme = "README.md"
 license = { text = "MIT" }

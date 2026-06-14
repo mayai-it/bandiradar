@@ -240,6 +240,7 @@ class ToscanaSource:
         progress: ProgressFn | None = None,
         client: LLMClient | None = None,
         cache: ExtractionCache | None = None,
+        store: Store | None = None,
         list_details=None,
         fetch_text=None,
         max_items: int = _MAX_ITEMS,
@@ -248,6 +249,8 @@ class ToscanaSource:
 
         Requires an LLM provider + key (live only). ``--sample`` uses
         ``load_fixture`` and never calls this. Yields LAZILY (one bando at a time).
+        When ``store`` is given, the extraction cache AND recipe store bind to it (so
+        ``--db`` controls all persistence); else a default Store is opened + owned.
         """
         client = client if client is not None else get_client()
         if client is None:
@@ -259,13 +262,19 @@ class ToscanaSource:
                 "or use --sample to run offline against the recorded fixture."
             )
         cap = limit if limit is not None else max_items
-        # When we open our own extraction-cache Store, we OWN it and must close it
-        # once the generator is done (avoids a leaked SQLite connection).
-        own_store = Store(None) if cache is None else None
-        if cache is None:
-            cache = SqliteExtractionCache(own_store)  # persist on the default DB
-        # Recipe overrides + drift-heal live on the same DB (only when we own it).
-        recipe_store = RecipeStore(own_store) if own_store is not None else None
+        # Bind the extraction cache + recipe store to the caller's Store when given;
+        # else open our OWN Store (and close it when the generator is done — avoids a
+        # leaked SQLite connection).
+        own_store = None
+        if store is not None:
+            cache = cache or SqliteExtractionCache(store)
+            recipe_store = RecipeStore(store)
+        elif cache is None:
+            own_store = Store(None)
+            cache = SqliteExtractionCache(own_store)
+            recipe_store = RecipeStore(own_store)
+        else:
+            recipe_store = None
         list_details = list_details or (
             lambda: self._list_details(recipe_store, client)
         )

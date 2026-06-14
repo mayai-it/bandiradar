@@ -18,7 +18,7 @@ import re
 from collections.abc import Iterable, Iterator
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 
 from bandiradar import http, resources, trust
 from bandiradar.crawl import (  # the self-healing spine lives top-level; re-export here
@@ -41,6 +41,9 @@ from bandiradar.models import (
     sanitize_value_bounds,
 )
 from bandiradar.sources.base import ProgressFn
+
+if TYPE_CHECKING:
+    from bandiradar.storage import Store
 
 logger = logging.getLogger(__name__)
 
@@ -401,8 +404,14 @@ class LlmScraperSource:
         progress: ProgressFn | None = None,
         client: LLMClient | None = None,
         cache: ExtractionCache | None = None,
+        store: Store | None = None,
     ) -> Iterable[RawDoc]:
-        """LIVE: list detail URLs, fetch each page, LLM-extract (cached per URL)."""
+        """LIVE: list detail URLs, fetch each page, LLM-extract (cached per URL).
+
+        When ``store`` is given (the caller's DB, e.g. from ``--db``), the extraction
+        cache AND the recipe store are bound to it — so it controls ALL persistence,
+        not just the opportunities. Only when no store/cache is supplied do we open
+        (and own/close) a default Store."""
         from bandiradar.matching.llm import client_status, get_client
 
         client = client if client is not None else get_client()
@@ -416,10 +425,16 @@ class LlmScraperSource:
         from bandiradar.storage import SqliteExtractionCache, Store
 
         cap = limit if limit is not None else self._MAX_ITEMS
-        own_store = Store(None) if cache is None else None
-        if cache is None:
+        own_store = None
+        if store is not None:
+            cache = cache or SqliteExtractionCache(store)
+            recipe_store = RecipeStore(store)
+        elif cache is None:
+            own_store = Store(None)
             cache = SqliteExtractionCache(own_store)
-        recipe_store = RecipeStore(own_store) if own_store is not None else None
+            recipe_store = RecipeStore(own_store)
+        else:
+            recipe_store = None  # injected cache, no store -> no heal persistence
         return self._scrape(client, cache, recipe_store, cap, progress, own_store)
 
     def _scrape(

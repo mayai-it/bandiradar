@@ -76,14 +76,24 @@ def apply_recipe(recipe: CrawlRecipe, listing_json: Any) -> list[DetailRef]:
     return refs
 
 
+def _usable_ref(post_id: Any, url: str, title: str) -> bool:
+    """A ref is usable iff it has a non-empty post_id AND url AND title. The post_id
+    builds ``RawDoc.id``/``Opportunity.id`` downstream, so a missing one (``None``/"")
+    would collide as ``source:None`` — it counts as drift, not a usable ref."""
+    return bool(
+        post_id is not None and str(post_id).strip() and url.strip() and title.strip()
+    )
+
+
 def validate_refs(refs: list[DetailRef]) -> Health:
-    """PURE drift detector. A ref is USABLE iff it has a non-empty url AND title.
+    """PURE drift detector. A ref is USABLE iff it has a non-empty post_id, url AND
+    title.
 
     broken = no refs, or none usable (the listing shape/fields drifted);
     degraded = some usable, some empty; ok = all usable."""
     if not refs:
         return "broken"
-    usable = sum(1 for (_pid, url, title) in refs if url.strip() and title.strip())
+    usable = sum(1 for (pid, url, title) in refs if _usable_ref(pid, url, title))
     if usable == 0:
         return "broken"
     if usable < len(refs):
