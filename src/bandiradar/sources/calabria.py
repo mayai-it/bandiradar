@@ -19,12 +19,27 @@ from typing import Any
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import CrawlRecipe, DetailRef, LlmScraperSource
 
 SOURCE_ID = "calabria"
 CALABRIA_BASE_URL = "https://calabriaeuropa.regione.calabria.it"
 CALABRIA_LISTING_URL = f"{CALABRIA_BASE_URL}/wp-json/wp/v2/bando"
-CALABRIA_LISTING_PARAMS = {"per_page": 20, "orderby": "date", "order": "desc"}
+
+# The crawl as DATA (validatable / re-derivable) — WP-REST item shape is
+# {id, link, title:{rendered}}, identical to toscana, so the self-healing spine
+# applies. ``_fields`` trims the live payload to just what the crawl reads.
+CALABRIA_RECIPE = CrawlRecipe(
+    listing_url=CALABRIA_LISTING_URL,
+    params={
+        "per_page": 20,
+        "orderby": "date",
+        "order": "desc",
+        "_fields": "id,link,title",
+    },
+    post_id_path="id",
+    detail_url_path="link",
+    title_path="title.rendered",
+)
 
 _TAG_RE = re.compile(r"<[^>]+>")
 
@@ -59,17 +74,17 @@ class CalabriaSource(LlmScraperSource):
     region = "Calabria"
     issuer_name = "Regione Calabria — Calabria Europa"
     listing_url = f"{CALABRIA_LISTING_URL}?per_page=20&orderby=date&order=desc"
+    # JSON listing -> opt into the self-healing crawl (recipe + golden + heal).
+    default_recipe = CALABRIA_RECIPE
 
-    def _listing_refs(self) -> list[DetailRef]:
+    def _listing_json(self, recipe: CrawlRecipe):
         with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
-                lambda: client.get(
-                    CALABRIA_LISTING_URL, params=CALABRIA_LISTING_PARAMS
-                ),
+                lambda: client.get(recipe.listing_url, params=recipe.params or None),
                 what="Calabria bando listing",
             )
             http.raise_for_status(resp, what="Calabria bando listing")
-            return parse_listing(resp.json())
+            return resp.json()
 
 
 SOURCE = CalabriaSource()

@@ -91,13 +91,18 @@ surface (incl. the relay) is blocked. Three **reusable bases** keep regions chea
 `posts` + a `categories=<id>` filter via `extra_params`); `sources/plone.py`
 (`PloneBandoSource`) for Plone PAs running the AGID `Bando` content type
 (`emilia_romagna`; structured `scadenza_bando`, no text-parsing); and
-`sources/llm_scraper.py`'s **`LlmScraperSource`** for API-less HTML portals — a
-subclass provides only the listing parse (pure, cassette-tested), the base shares
-extraction/cache/mapper/fixture + crawl-drift DETECTION (golden + `validate_refs`;
-an HTML parse has no recipe to auto-heal → drift is human-flagged). `veneto` (SIU
-landing-seeded — the portal's JSON layer stonewalls bots) and `piemonte` (Drupal
-Views listing, server-side stato="Aperto" filter) are its first subclasses;
-`toscana` (WP-REST JSON listing) still wires the full CrawlRecipe healer;
+`sources/llm_scraper.py`'s **`LlmScraperSource`** for API-less portals — a subclass
+provides only the listing, in one of TWO flavours, the base shares
+extraction/cache/mapper/fixture + crawl health. **JSON listing** (set
+`default_recipe` + `_listing_json`): DATA-parsed via `apply_recipe`, so on drift the
+LLM recipe-healer re-derives the dotted paths and a candidate is auto-adopted ONLY if
+it reproduces the golden exactly — the SAME gated self-heal as `toscana`
+(`calabria` + `basilicata`, WP-REST CPTs, opted in v0.14.0 → **3 sources auto-heal**).
+**HTML listing** (`_listing_refs`, no recipe): bespoke pure-code parse, not
+re-derivable DATA, so on drift the crawl is DETECTED as broken and human-flagged,
+never auto-healed. `veneto` (SIU landing-seeded — the portal's JSON layer stonewalls
+bots) and `piemonte` (Drupal Views listing, server-side stato="Aperto" filter) are
+HTML subclasses; `toscana` (WP-REST JSON listing) wires the full CrawlRecipe healer;
 `puglia` (PR-2021-2027 Liferay news-list fragment, "Bando aperto" badge filter —
 sistema.puglia.it is a frameset service registry, not viable) and `sardegna`
 (Sardegna Impresa Views listing) joined in wave 2b.

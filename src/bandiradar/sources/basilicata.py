@@ -20,12 +20,27 @@ from typing import Any
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import CrawlRecipe, DetailRef, LlmScraperSource
 
 SOURCE_ID = "basilicata"
 BASILICATA_BASE_URL = "https://portalebandi.regione.basilicata.it"
 BASILICATA_LISTING_URL = f"{BASILICATA_BASE_URL}/wp-json/wp/v2/avvisi-e-bandi"
-BASILICATA_LISTING_PARAMS = {"per_page": 20, "orderby": "date", "order": "desc"}
+
+# The crawl as DATA (validatable / re-derivable) — WP-REST item shape
+# {id, link, title:{rendered}}, identical to toscana, so the self-healing spine
+# applies. ``_fields`` trims the live payload to just what the crawl reads.
+BASILICATA_RECIPE = CrawlRecipe(
+    listing_url=BASILICATA_LISTING_URL,
+    params={
+        "per_page": 20,
+        "orderby": "date",
+        "order": "desc",
+        "_fields": "id,link,title",
+    },
+    post_id_path="id",
+    detail_url_path="link",
+    title_path="title.rendered",
+)
 
 _TAG_RE = re.compile(r"<[^>]+>")
 
@@ -60,17 +75,17 @@ class BasilicataSource(LlmScraperSource):
     region = "Basilicata"
     issuer_name = "Regione Basilicata"
     listing_url = f"{BASILICATA_LISTING_URL}?per_page=20&orderby=date&order=desc"
+    # JSON listing -> opt into the self-healing crawl (recipe + golden + heal).
+    default_recipe = BASILICATA_RECIPE
 
-    def _listing_refs(self) -> list[DetailRef]:
+    def _listing_json(self, recipe: CrawlRecipe):
         with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
-                lambda: client.get(
-                    BASILICATA_LISTING_URL, params=BASILICATA_LISTING_PARAMS
-                ),
+                lambda: client.get(recipe.listing_url, params=recipe.params or None),
                 what="Basilicata avvisi listing",
             )
             http.raise_for_status(resp, what="Basilicata avvisi listing")
-            return parse_listing(resp.json())
+            return resp.json()
 
 
 SOURCE = BasilicataSource()

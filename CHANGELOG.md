@@ -4,6 +4,30 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.14.0] — 2026-06-14 — Self-healing generalized to JSON-listing scrapers
+
+### Added
+- **Auto-heal for `calabria` + `basilicata`** (was Toscana-only). Both expose a
+  WP-REST JSON listing with the same item shape as Toscana, so they now declare a
+  `CrawlRecipe` (`default_recipe`) and reuse the exact same gated self-heal: on crawl
+  drift the LLM re-derives the dotted paths (DATA, not code) and a candidate is
+  adopted ONLY if it reproduces the golden exactly. **Auto-healing coverage 1 → 3
+  sources.**
+- **`LlmScraperSource` is now heal-capable** (the recipe path was lifted out of the
+  standalone `toscana` source into the shared base). A subclass picks its listing
+  flavour: set `default_recipe` + `_listing_json` for a JSON listing (auto-heal), or
+  implement `_listing_refs` for an HTML listing (bespoke code → drift DETECTED and
+  human-flagged, never auto-healed). Backward-compatible: the 7 HTML scrapers
+  (`veneto`, `piemonte`, `sardegna`, `fvg`, `campania`, `puglia`, `liguria`) are
+  unchanged — `default_recipe` defaults to `None` → the existing detect-only path.
+
+### Notes
+- The HTML scrapers stay detect-only by design (an HTML parse is code, not
+  re-derivable DATA). Generalizing auto-heal to them is the subject of a separate
+  design (`docs/self-heal-html-design.md`): a declarative HTML-selector recipe for
+  the clean single-anchor sources vs an "assisted-heal" (LLM proposes, golden
+  pre-validates, human one-click) for the bespoke ones.
+
 ## [0.13.0] — 2026-06-14 — Eval refresh: regional sources + profiles, value-gate fix
 
 ### Added
