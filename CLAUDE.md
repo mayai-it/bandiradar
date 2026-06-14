@@ -274,9 +274,10 @@ key (calibrated 0-100 scores); the offline heuristic can't threshold cleanly, so
 keyless = recall-oriented. Numbers: see README "Matching quality (measured)".
 
 ## Matching evaluation (`bandiradar eval`)
-Runs the matcher over the shipped labelled corpus (`data/eval/`, now 312
-opportunities — up from 292) for the gold profiles and prints precision@5/@10,
-recall, FPR — per profile + macro-aggregate.
+Runs the matcher over the shipped labelled corpus (`data/eval/`, now 405
+opportunities × 11 profiles — up from 312 × 8, after the regional refresh folded in
+the 12 regional sources + 3 regional profiles) for the gold profiles and prints
+precision@5/@10, recall, FPR — per profile + macro-aggregate.
 Offline by default (heuristic). If an LLM key is set it ALSO reports the LLM on the
 SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL but
 NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic
@@ -288,6 +289,14 @@ hardened by `scripts/correct_gold.py`: deterministic, auditable rule-based fixes
 tenders for a grant-only profile → not; INSTRUMENT = debt/equity/non-funding → not
 for grant-seekers). The rules are recorded in `gold.yaml`'s `_meta.corrections`; the
 script never promotes labels (that stays human). Re-run it to regenerate.
+
+The **regional slice** of the corpus is built by `scripts/build_regional_eval.py`
+(maps the 12 regional sources' committed fixtures → open-at-`EVAL_NOW`
+`Opportunity` rows; deterministic, offline, idempotent) and its gold labels +
+the 3 regional profiles (`piemonte_industria`, `sardegna_impresa`, `sicilia_pmi`)
+are LLM-proposed by `scripts/propose_regional_gold.py` (parallel, needs a key;
+existing reviewed labels untouched), then deterministically corrected by
+`correct_gold.py` — same propose/dispose provenance, recorded in `_meta.regional_note`.
 
 **Diagnostics** (`eval --diagnostics`, free — no extra scoring): *recall
 attribution* splits each missed relevant-for-recall item into Stage-1 `prefilter_drop`

@@ -252,6 +252,36 @@ def test_gate3_value_outside_range_drops():
     assert results[0][1] is False and "value" in results[0][2]
 
 
+def test_gate4_bare_amount_on_incentive_does_not_gate():
+    """A bare ``value_amount`` on a grant/incentive is the bando's total budget,
+    NOT the per-firm ask, so it must not be value-gated even if it dwarfs the
+    profile's project-size range (the regional LLM-scraper extraction case)."""
+    profile = Profile(name="p", value_range=ValueRange(min=5000, max=1_000_000))
+    # 100M fund total, no per-firm range -> kept (would be dropped before the fix).
+    opp = make_opp(kind="incentive", value_amount=100_000_000.0)
+    assert prefilter([opp], profile, now=NOW)
+    grant = make_opp(kind="grant", value_amount=100_000_000.0)
+    assert prefilter([grant], profile, now=NOW)
+
+
+def test_gate4_bare_amount_on_tender_still_gates():
+    """A tender's bare ``value_amount`` IS the contract size — comparable to the
+    profile range, so the gate still drops a mismatch."""
+    profile = Profile(name="p", value_range=ValueRange(min=10000, max=20000))
+    opp = make_opp(kind="tender", value_amount=5.0)
+    results = prefilter_explain([opp], profile, now=NOW)
+    assert results[0][1] is False and "value" in results[0][2]
+
+
+def test_gate4_incentive_with_explicit_range_still_gates():
+    """An incentive that DOES carry a per-firm range is gated normally — only the
+    bare-budget case is exempt."""
+    profile = Profile(name="p", value_range=ValueRange(min=10000, max=20000))
+    opp = make_opp(kind="incentive", value_min=1.0, value_max=5.0)
+    results = prefilter_explain([opp], profile, now=NOW)
+    assert results[0][1] is False and "value" in results[0][2]
+
+
 def test_gate5_cpv_prefix_match_keeps():
     profile = Profile(name="p", cpv_interests=["72000000"])
     opp = make_opp(cpv=["72212000"])  # "72212" starts with "72" -> match

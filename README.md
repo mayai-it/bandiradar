@@ -216,34 +216,39 @@ MedForniture medical devices        76               92   ← strong sector fit 
 ## Matching quality (measured)
 
 Most matching repos ask you to trust them. This one ships the numbers. On a
-**labelled gold set of 312 real opportunities × 8 company profiles**
-(`src/bandiradar/data/eval/`), here is the matcher quality — reproduce it any time
-with `bandiradar eval --diagnostics` (offline for the heuristic; set an LLM key for
-the LLM column):
+**labelled gold set of 405 real opportunities × 11 company profiles**
+(`src/bandiradar/data/eval/`) — spanning all 19 sources, incl. the regional ones —
+here is the matcher quality — reproduce it any time with
+`bandiradar eval --diagnostics` (offline for the heuristic; set an LLM key for the
+LLM column):
 
 ```text
 min_score sweep — precision@5 / precision@10 / recall / false-positive-rate / returned
                  P@5   P@10  recall  FPR    returned
 HEURISTIC (offline, zero-secret)
-  recall  (0)   0.34  0.20   0.87   0.29     99      ← the firehose
-  balanced(20)  0.34  0.20   0.87   0.29     99      ← scores too coarse to move
-  precision(40) 0.53  0.39   0.64   0.24     82
-  (60)          0.25  0.25   0.03   0.00      2      ← collapses; no usable cut
+  recall  (0)   0.36  0.30   0.93   0.49    150      ← the firehose
+  balanced(20)  0.36  0.30   0.93   0.49    150      ← scores too coarse to move
+  precision(40) 0.44  0.39   0.70   0.45    121
+  (60)          0.30  0.30   0.07   0.08     11      ← collapses; no usable cut
 LLM pointwise (anthropic Haiku)
-  recall  (0)   0.37  0.24   0.87   0.29     99      ← the firehose
-  balanced(20)  0.46  0.37   0.78   0.11     51
-  precision(40) 0.73  0.68   0.45   0.03     26      ← the operating point
-  (60)          0.81  0.80   0.41   0.02     20
+  recall  (0)   0.51  0.34   0.93   0.49    150      ← the firehose
+  balanced(20)  0.52  0.40   0.88   0.14     88
+  precision(40) 0.70  0.66   0.57   0.02     51      ← the operating point
+  (60)          0.86  0.84   0.48   0.01     41
 ```
 
 **Read it:** with an LLM, raising the cutoff cleanly trades recall for precision —
-at `precision` (min_score ≥ 40) **P@5 0.73 / P@10 0.68 / FPR 0.03**, roughly double
-the precision of the unfiltered firehose (**P@5 0.37 / FPR 0.29**) while still
-holding ~half the recall. The **offline heuristic** is a genuine zero-secret
-fallback (P@5 0.34) but its scores are too coarse to threshold — it has no usable
-precision cut (it collapses to 2 items at 60). So **the LLM is the matcher to ship**,
-and precision modes are meaningful **only with a key**; keyless runs are
-recall-oriented whatever the mode.
+at `precision` (min_score ≥ 40) **P@5 0.70 / P@10 0.66 / FPR 0.02**, well above the
+unfiltered firehose (**P@5 0.51 / FPR 0.49**) while still holding ~half the recall.
+The **offline heuristic** is a genuine zero-secret fallback (P@5 0.36) but its scores
+are too coarse to threshold — it has no usable precision cut (it collapses to 11
+items at 60). So **the LLM is the matcher to ship**, and precision modes are
+meaningful **only with a key**; keyless runs are recall-oriented whatever the mode.
+
+The **3 regional example profiles** (Piemonte / Sardegna / Sicilia), added with the
+regional sources, measure *better* than the aggregate at the operating point —
+**P@5 0.80 / P@10 0.76 / FPR 0.00** at min_score ≥ 40 — evidence the matcher
+generalizes to the regional grant portals, not just the national hubs.
 
 ### Operating-point modes
 
@@ -251,9 +256,9 @@ recall-oriented whatever the mode.
 
 | mode | cutoff | with an LLM key | use it for |
 |------|--------|-----------------|------------|
-| `precision` | `min_score ≥ 40` | P@5 0.73, P@10 0.68, FPR 0.03 | a tight shortlist |
-| `balanced` *(default)* | `min_score ≥ 20` | P@5 0.46, recall 0.78 | day-to-day |
-| `recall` | everything prefiltered | recall 0.87 | the monitor's safety net |
+| `precision` | `min_score ≥ 40` | P@5 0.70, P@10 0.66, FPR 0.02 | a tight shortlist |
+| `balanced` *(default)* | `min_score ≥ 20` | P@5 0.52, recall 0.88 | day-to-day |
+| `recall` | everything prefiltered | recall 0.93 | the monitor's safety net |
 
 `--min-score N` still works for power users (it overrides `--mode`).
 

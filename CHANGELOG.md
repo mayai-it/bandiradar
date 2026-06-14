@@ -4,6 +4,44 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.13.0] — 2026-06-14 — Eval refresh: regional sources + profiles, value-gate fix
+
+### Added
+- **Regional eval-corpus refresh.** The labelled eval corpus pre-dated the regional
+  coverage waves (it spanned only 7 sources). `scripts/build_regional_eval.py`
+  (regenerable, deterministic, offline) folds the **12 regional adapters** into the
+  corpus by mapping their committed fixtures through the current adapters at
+  `EVAL_NOW`, keeping only items OPEN then — corpus **312 → 405** opportunities across
+  **all 19 sources**.
+- **3 regional example profiles** — `piemonte_industria`, `sardegna_impresa`,
+  `sicilia_pmi` — so the regional sources have in-region demand and their grants get
+  real `relevant`/`borderline` labels (gold profiles **8 → 11**).
+- **`scripts/propose_regional_gold.py`** — LLM-proposes gold labels for the new
+  profiles + any new regional item that survives an existing profile's prefilter
+  (parallel; existing reviewed labels untouched), then `correct_gold.py` applies the
+  deterministic GEO/SEEKS/INSTRUMENT corrections. Same propose/dispose provenance as
+  the rest of the gold; recorded in `gold.yaml`'s `_meta.regional_note`.
+
+### Fixed
+- **Stage-1 value gate over-dropped large-budget regional grants** (a *production*
+  bug surfaced by the refresh). The LLM-scraper regional sources extract a bando's
+  TOTAL endowment into `value_amount`; the value gate (built for tenders, where
+  `value_amount` is the contract size) then compared that fund total against a
+  profile's per-project range and wrongly dropped big grants (HYDROGEN VALLEY,
+  SMART&START, FESR, …). Fix (`_has_gateable_value`, pure — guardrail 4 intact): a
+  bare `value_amount` on a grant/incentive no longer gates; tenders and explicit
+  per-firm ranges still do. National `incentivi` (no bare `value_amount`) are
+  unaffected; existing eval numbers move only marginally.
+
+### Measured (reproduce with `bandiradar eval --diagnostics`)
+- LLM pointwise (Haiku), min_score 40, all 11 profiles: **P@5 0.70 / P@10 0.66 /
+  recall 0.57 / FPR 0.02** (was 0.73 / 0.68 / 0.45 / 0.03 on 8 profiles — operating
+  point held, recall up). The **3 regional profiles** alone: **P@5 0.80 / P@10 0.76 /
+  FPR 0.00** at min_score 40 — the matcher generalizes to the regional portals.
+- Heuristic offline (zero-secret) baseline: P@5 0.36 at the firehose, no clean cut.
+- Gate attribution unchanged: the 6 prefilter drops of relevant items are 4
+  correctly-closed bandi + 2 lexical-gap — no over-strict gate.
+
 ## [0.12.0] — 2026-06-13 — Trust spine: deterministic extraction validation
 
 ### Added

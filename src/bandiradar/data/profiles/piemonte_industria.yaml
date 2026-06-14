@@ -1,0 +1,16 @@
+# PMI industriale piemontese orientata alla transizione energetica — copre i bandi
+# Piemonte (es. idrogeno, ammodernamento impianti) + incentivi nazionali. 0.13.0.
+name: "Industria Subalpina S.r.l."
+language: it
+ateco: ["27.11", "28.29"]                  # apparecchiature elettriche / macchinari
+cpv_interests: []                          # incentivi, keyword-driven (no CPV)
+keywords:
+  ["transizione energetica", "idrogeno", "ammodernamento impianti",
+   "efficientamento energetico", "investimenti produttivi", "innovazione"]
+regions: ["Piemonte"]
+value_range: { min: 20000, max: 2000000 }
+capabilities: >
+  PMI industriale piemontese che investe nella transizione energetica e
+  nell'ammodernamento degli impianti produttivi; progetti di innovazione di processo.
+exclusions: ["servizi alla persona", "catering"]
+seeks: ["grant"]   # insegue incentivi industriali/energetici, non gare pubbliche

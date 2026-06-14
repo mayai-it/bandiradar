@@ -269,7 +269,9 @@ label kept as keyword text when it doesn't resolve.
 
 **Stage 1 — deterministic prefilter (no LLM, pure function, fully tested).**
 Ordered gates: `deadline > now`, instrument type (`Profile.seeks`: grant vs
-tender), region/geo, value range, exclusion terms, and a relevance signal: the
+tender), region/geo, value range (a bare `value_amount` on a grant/incentive is the
+bando's total budget, not the per-firm ask, so it does NOT gate — only tenders and
+explicit per-firm ranges do), exclusion terms, and a relevance signal: the
 opportunity's CPV codes prefix-matched against the profile's `cpv_interests`, OR a
 keyword overlap. (There is no ATECO→CPV mapping; ATECO lives on the profile as
 metadata and is not used as a prefilter gate.) Cuts thousands of rows to dozens.

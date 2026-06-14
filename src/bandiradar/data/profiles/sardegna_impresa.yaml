@@ -1,0 +1,16 @@
+# Giovane PMI innovativa sarda — copre i bandi Sardegna (nuove imprese, investimenti
+# produttivi, innovazione) oltre agli incentivi nazionali per startup/PMI. 0.13.0.
+name: "Innova Sardegna S.r.l."
+language: it
+ateco: ["62.01", "63.11"]                  # software / elaborazione dati e hosting
+cpv_interests: []                          # incentivi, keyword-driven (no CPV)
+keywords:
+  ["nuove imprese", "startup innovativa", "investimenti produttivi",
+   "innovazione", "digitale", "competitività"]
+regions: ["Sardegna"]
+value_range: { min: 5000, max: 1000000 }
+capabilities: >
+  Giovane PMI innovativa sarda nei servizi digitali; investimenti produttivi e
+  progetti di innovazione, anche tramite incentivi per nuove imprese e startup.
+exclusions: ["servizi alla persona", "catering"]
+seeks: ["grant"]   # insegue incentivi a nuove imprese e innovazione, non gare

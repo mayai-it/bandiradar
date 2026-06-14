@@ -13,6 +13,10 @@ _meta:
   anac_pvl_note: 'anac_pvl costruzioni labels are AUTO-PROPOSED (rules in scripts/build_pvl_eval.py:
     relevant=Lombardia works, borderline=out-of-region works or energetico, not=non-edile)
     — PENDING HUMAN REVIEW.'
+  regional_note: Regional sources (v0.6.0+) folded into the corpus by scripts/build_regional_eval.py;
+    their labels + the 3 regional profiles (piemonte_industria, sardegna_impresa,
+    sicilia_pmi) are LLM-PROPOSED by scripts/propose_regional_gold.py — PENDING HUMAN
+    REVIEW, then deterministically corrected by scripts/correct_gold.py.
 profiles:
   mayai:
     lazio:48841: relevant
@@ -135,11 +139,11 @@ profiles:
     anac_pvl:40a9769a-0086-49db-a2b3-e7265aae057a: relevant
     anac_pvl:45ac2ff5-76b9-44e4-bd5c-6e130c33dee0: relevant
     anac_pvl:7544a79e-2254-431d-a8f7-42790763b23a: relevant
-    anac_pvl:009d2cf6-5bec-496a-979f-0fe4b17d1457: borderline
-    anac_pvl:02cdc33d-30ca-41e9-b318-13128769a8aa: borderline
-    anac_pvl:0565234a-7ca3-4dc0-969c-623a7a4d0c99: borderline
-    anac_pvl:063ed009-9ace-4305-ae98-9789321e1520: borderline
-    anac_pvl:08564a11-bdae-4a80-b5e9-9f2ae068aa0a: borderline
+    anac_pvl:009d2cf6-5bec-496a-979f-0fe4b17d1457: not
+    anac_pvl:02cdc33d-30ca-41e9-b318-13128769a8aa: not
+    anac_pvl:0565234a-7ca3-4dc0-969c-623a7a4d0c99: not
+    anac_pvl:063ed009-9ace-4305-ae98-9789321e1520: not
+    anac_pvl:08564a11-bdae-4a80-b5e9-9f2ae068aa0a: not
     anac_pvl:003ab53c-7dcd-46d7-95c7-9ec39098f20a: not
     anac_pvl:00bb5b3f-6ece-4f68-b605-9041525725a8: not
     anac_pvl:02870e7b-6ca3-45ca-a5be-d4a22ce707a8: not
@@ -175,6 +179,12 @@ profiles:
     ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not
+    sardegna:bando-pubblico-la-concessione-dei-contributi-lorganizzazione-di-manifestazioni: not
+    calabria:61173: not
+    liguria:4593: borderline
+    piemonte:progetto-bandiera-piemonte-hydrogen-valley: borderline
+    sardegna:bando-regionale-2026-azioni-di-sostegno-allattivita-di-impresa-servizio-taxi: not
+    basilicata:102230: not
   hospitality_retail:
     lazio:48841: relevant
     lazio:43887: borderline
@@ -225,3 +235,42 @@ profiles:
     ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not
+  piemonte_industria:
+    piemonte:fondo-rotativo-foncooper: not
+    incentivi:1426: not
+    incentivi:3400: borderline
+    incentivi:7828: not
+    incentivi:143: relevant
+    incentivi:145: relevant
+    incentivi:1523: not
+    incentivi:3265: borderline
+    piemonte:progetto-bandiera-piemonte-hydrogen-valley: relevant
+    incentivi:146: borderline
+  sardegna_impresa:
+    sardegna:avviso-pubblico-azione-4-competitivita-e-sicurezza-dellattivita-di-acquacoltura: not
+    sardegna:bando-pubblico-lassegnazione-di-contributi-fondo-perduto-comune-di-baradili: relevant
+    sardegna:bando-regionale-2026-azioni-di-sostegno-allattivita-di-impresa-servizio-taxi: not
+    sardegna:oltre-nuove-imprese-tasso-zero: borderline
+    incentivi:1426: not
+    incentivi:3400: borderline
+    incentivi:7828: relevant
+    sardegna:call-imprese-della-regione-sardegna-partecipa-al-wmf-2026: relevant
+    incentivi:143: relevant
+    incentivi:145: relevant
+    incentivi:1523: borderline
+    incentivi:3265: borderline
+    sardegna:smartstart-italia: relevant
+    incentivi:146: borderline
+  sicilia_pmi:
+    incentivi:1426: not
+    incentivi:3400: borderline
+    sicilia:148320: not
+    incentivi:143: relevant
+    incentivi:1523: not
+    incentivi:7828: relevant
+    sicilia:145569: not
+    sicilia:162453: relevant
+    incentivi:145: borderline
+    incentivi:146: borderline
+    incentivi:3265: borderline
+    sicilia:158722: borderline

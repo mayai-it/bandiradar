@@ -15,7 +15,9 @@ Gates, evaluated in order (the first failing gate's reason is reported):
 3. Geography  — national/eu bypass; regional/local must match a profile region
                 (when the profile lists any). Empty profile.regions = no limit.
 4. Value      — drop only when BOTH sides carry value info and the ranges do not
-                overlap. Missing data never drops.
+                overlap. Missing data never drops. A bare ``value_amount`` on a
+                grant/incentive is the bando's total budget (not the per-firm
+                ask), so it does NOT gate; tenders + explicit ranges still do.
 5. Exclusions — drop if any exclusion term appears in title + summary.
 6. Relevance  — when the profile has cpv_interests or keywords, require a CPV
                 match or a keyword hit; OR (hybrid, opt-in) a semantic-embedding
@@ -206,12 +208,22 @@ def cpv_match(opp_cpv: list[str], interests: list[str]) -> bool:
     return cpv_match_depth(opp_cpv, interests) > 0
 
 
-def _has_value_info(opp: Opportunity) -> bool:
-    return (
-        opp.value_amount is not None
-        or opp.value_min is not None
-        or opp.value_max is not None
-    )
+def _has_gateable_value(opp: Opportunity) -> bool:
+    """Value info COMPARABLE to a profile's per-project size range (gate 4).
+
+    An explicit ``value_min``/``value_max`` is a per-beneficiary range, and a
+    tender's bare ``value_amount`` is the contract size — both comparable. But a
+    bare ``value_amount`` on a grant/incentive is the bando's TOTAL endowment (the
+    LLM-scraper regional sources extract the fund size), NOT the per-firm grant, so
+    it must not gate — otherwise a large-budget regional grant is wrongly dropped.
+    (National ``incentivi`` leave ``value_amount`` unset and carry per-firm ranges
+    instead, so they are unaffected.)
+    """
+    if opp.value_min is not None or opp.value_max is not None:
+        return True
+    if opp.value_amount is not None:
+        return seek_class(opp.kind) == "tender"
+    return False
 
 
 def _opp_interval(opp: Opportunity) -> tuple[float, float]:
@@ -253,7 +265,7 @@ def _evaluate(
     range_has_bound = (
         profile.value_range.min is not None or profile.value_range.max is not None
     )
-    if _has_value_info(opp) and range_has_bound:
+    if _has_gateable_value(opp) and range_has_bound:
         o_lo, o_hi = _opp_interval(opp)
         vr = profile.value_range
         p_lo = vr.min if vr.min is not None else -math.inf

@@ -1,0 +1,16 @@
+# PMI siciliana che investe in efficientamento energetico e competitività — copre
+# i bandi Sicilia (FESR/FSC) oltre agli incentivi nazionali. Aggiunta 0.13.0 (eval).
+name: "Sicilia Impresa S.r.l."
+language: it
+ateco: ["25.62", "10.71"]                  # lavorazioni meccaniche / alimentare
+cpv_interests: []                          # incentivi, keyword-driven (no CPV)
+keywords:
+  ["efficientamento energetico", "competitività", "innovazione",
+   "turismo", "investimenti", "digitalizzazione"]
+regions: ["Sicilia"]
+value_range: { min: 5000, max: 2000000 }
+capabilities: >
+  PMI siciliana che investe in efficientamento energetico dei processi produttivi
+  e in competitività/innovazione, anche nel comparto turistico-ricettivo.
+exclusions: ["servizi alla persona", "catering"]
+seeks: ["grant"]   # insegue incentivi FESR/FSC e nazionali, non gare pubbliche
