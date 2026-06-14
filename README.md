@@ -38,9 +38,10 @@
 - **Self-healing crawl** — when a scraper's listing drifts, an LLM **re-derives the
   crawl recipe** (data, not code: dotted JSON paths or an HTML `item_regex`); it's
   adopted **only if it exactly reproduces the last-good results**, otherwise
-  human-flagged — never silently. Live on **6 of 10** LLM scrapers: `toscana`,
-  `calabria`, `basilicata` (WP-REST JSON) + `veneto`, `sardegna`, `piemonte` (HTML
-  regex-recipe).
+  human-flagged — never silently. Live on **9 of 10** LLM scrapers: `toscana`,
+  `calabria`, `basilicata` (WP-REST JSON) + `veneto`, `sardegna`, `piemonte`,
+  `campania`, `fvg`, `liguria` (HTML regex-recipe). Only `puglia` (a conditional
+  badge filter, and CI-blocked) stays detect-only.
 - **ANAC historical-benchmark enrichment** — value/volume/seasonality context per
   CPV division, optionally attached to matches.
 - **Document enrichment (PDF/OCR)** — optionally pull attachment PDFs into the

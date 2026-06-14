@@ -28,11 +28,30 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+)
 
 SOURCE_ID = "campania"
 CAMPANIA_BASE_URL = "https://www.sviluppocampania.it"
 CAMPANIA_LISTING_URL = f"{CAMPANIA_BASE_URL}/bandi-aperti/"
+
+# The listing PARSE as DATA — auto-healable, golden-gated. The widget anchors are
+# IMAGE links (no text), so the crawl label is SYNTHESIZED from the slug
+# (``title_template`` humanizes ``-`` -> space); the real title comes from the LLM
+# extraction. Reproduces the hand parser's refs exactly.
+CAMPANIA_RECIPE = HtmlCrawlRecipe(
+    listing_url=CAMPANIA_LISTING_URL,
+    item_regex=(
+        r'class="widget widget_media_image"[^>]*>\s*<a href="'
+        r"(?P<url>https://www\.sviluppocampania\.it/"
+        r'(?P<path>20\d\d/\d\d/\d\d/(?:[^"#?]*/)?(?P<post_id>[^"#?/]+?)))/?"'
+    ),
+    url_template="{url}",
+    title_template="{post_id}",
+)
 
 # The OPEN bandi are the page's curated media-image widget boxes, each linking a
 # DATED post (/YYYY/MM/DD/slug/). This hook is deliberate: the page also carries a
@@ -75,13 +94,15 @@ class CampaniaSource(LlmScraperSource):
     issuer_name = "Regione Campania — Sviluppo Campania"
     listing_url = CAMPANIA_LISTING_URL
 
-    def _listing_refs(self) -> list[DetailRef]:
+    html_recipe = CAMPANIA_RECIPE  # HTML listing -> regex-recipe auto-heal
+
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
         with http.client(follow_redirects=True) as client:
             resp = http.with_retry(
-                lambda: client.get(CAMPANIA_LISTING_URL), what="Campania bandi aperti"
+                lambda: client.get(recipe.listing_url), what="Campania bandi aperti"
             )
             http.raise_for_status(resp, what="Campania bandi aperti")
-            return parse_listing(resp.text)
+            return resp.text
 
 
 SOURCE = CampaniaSource()

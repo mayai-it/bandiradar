@@ -19,7 +19,11 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+)
 
 SOURCE_ID = "liguria"
 LIGURIA_BASE_URL = "https://www.regione.liguria.it"
@@ -27,6 +31,19 @@ LIGURIA_SEARCH_PAGE = f"{LIGURIA_BASE_URL}/bandi-e-avvisi.html"
 LIGURIA_RESULTS_URL = f"{LIGURIA_BASE_URL}/homepage-bandi-e-avvisi.html"
 LIGURIA_TIPOLOGIA_CONTRIBUTI = "6"
 LIGURIA_STATO_ATTIVI = "1"
+
+# The listing PARSE as DATA — auto-healable, golden-gated. Only the PARSE is the
+# recipe; the bespoke FETCH (warm GET for the CSRF token, then the filtered POST)
+# stays in ``_listing_html``. Reproduces the hand parser's refs exactly.
+LIGURIA_RECIPE = HtmlCrawlRecipe(
+    listing_url=LIGURIA_SEARCH_PAGE,
+    base_url=LIGURIA_BASE_URL,
+    item_regex=(
+        r'<a[^>]+href="(?P<path>/homepage-bandi-e-avvisi/publiccompetition/'
+        r'(?P<post_id>\d+):[^"]+\.html)"[^>]*>(?P<title>.*?)</a>'
+    ),
+    url_template="{base}{path}",
+)
 
 # One result item: <a class='bando_link' href="/homepage-bandi-e-avvisi/
 # publiccompetition/<id>:<slug>.html"> title </a>
@@ -76,16 +93,21 @@ class LiguriaSource(LlmScraperSource):
     issuer_name = "Regione Liguria"
     listing_url = LIGURIA_SEARCH_PAGE
 
-    def _listing_refs(self) -> list[DetailRef]:
+    html_recipe = LIGURIA_RECIPE  # parse is a recipe; the POST+CSRF fetch is below
+
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
+        """Bespoke FETCH (the PARSE is the recipe): warm GET for the per-session CSRF
+        token, then the filtered POST. Returns "" if the form drifted (no token) ->
+        the recipe yields no refs -> broken, human-flagged."""
         with http.client(follow_redirects=True) as client:
             # 1) Warm up: session cookie + the per-session CSRF token.
             warm = http.with_retry(
-                lambda: client.get(LIGURIA_SEARCH_PAGE), what="Liguria search page"
+                lambda: client.get(recipe.listing_url), what="Liguria search page"
             )
             http.raise_for_status(warm, what="Liguria search page")
             token = parse_csrf_token(warm.text)
             if token is None:
-                return []  # form drifted -> no token -> broken, human-flagged
+                return ""  # form drifted -> no token -> broken, human-flagged
             # 2) The filtered query: tipologia=contributi, stato=Attivi.
             data = {
                 "quicksearch": "",
@@ -102,7 +124,7 @@ class LiguriaSource(LlmScraperSource):
                 what="Liguria contributi search",
             )
             http.raise_for_status(resp, what="Liguria contributi search")
-            return parse_listing(resp.text)
+            return resp.text
 
 
 SOURCE = LiguriaSource()

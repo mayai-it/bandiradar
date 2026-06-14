@@ -125,16 +125,19 @@ class HtmlCrawlRecipe:
     """How to parse an HTML listing — DATA (a regex-template), so it is validatable
     and re-derivable by the healer without touching adapter code.
 
-    ``item_regex`` is a regex with NAMED groups: ``post_id`` and ``title`` are read
-    directly (title is tag-stripped); the detail URL is built from
-    ``url_template`` (``{base}`` + any captured group, e.g. ``{post_id}`` or a
-    captured ``{path}``). The listing FETCH (which page(s), params, POST/auth) stays
-    in the source's code — only the PARSE is data."""
+    ``item_regex`` is a regex with NAMED groups: ``post_id`` (and usually ``title``)
+    + any group the URL needs. The detail URL is built from ``url_template`` (``{base}``
+    + captured groups, e.g. ``{post_id}`` or ``{path}``). The title is read from the
+    ``title`` group (tag-stripped) UNLESS ``title_template`` is set — then the label is
+    SYNTHESIZED from captured groups (e.g. a slug humanized: ``-`` → space), for
+    listings whose anchors carry no text (image widgets). The listing FETCH (which
+    page(s), params, POST/auth) stays in the source's code — only the PARSE is data."""
 
     listing_url: str
     base_url: str = ""
     item_regex: str = ""
     url_template: str = "{base}{url}"
+    title_template: str = ""  # set when the title is synthesized (e.g. "{post_id}")
     params: dict[str, Any] = field(default_factory=dict)
 
 
@@ -169,7 +172,15 @@ def apply_html_recipe(recipe: HtmlCrawlRecipe, page_html: str) -> list[DetailRef
     for m in rx.finditer(page_html or ""):
         groups = {k: (v or "") for k, v in m.groupdict().items()}
         post_id = groups.get("post_id", "")
-        title = _clean_title(groups.get("title", ""))
+        if recipe.title_template:
+            # Synthesized label (e.g. a slug): humanize '-' -> space + unescape.
+            try:
+                raw = recipe.title_template.format(base=recipe.base_url, **groups)
+            except (KeyError, IndexError):
+                raw = ""
+            title = _html.unescape(raw.replace("-", " ")).strip()
+        else:
+            title = _clean_title(groups.get("title", ""))
         try:
             url = recipe.url_template.format(base=recipe.base_url, **groups)
         except (KeyError, IndexError):

@@ -4,6 +4,30 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.16.0] — 2026-06-14 — Self-maintaining: 9 of 10 scrapers auto-heal
+
+### Added
+- **`campania`, `fvg`, `liguria` now auto-heal** — the last clean HTML scrapers join
+  the regex-recipe self-heal, bringing auto-heal to **9 of 10 LLM scrapers**. The key
+  insight: the `HtmlCrawlRecipe` already separates the **PARSE** (a DATA regex,
+  healable) from the **FETCH** (code in `_listing_html`), so a bespoke fetch is no
+  obstacle:
+  - `liguria` — the POST + per-session CSRF dance stays in `_listing_html`; the parse
+    is a plain `item_regex`.
+  - `fvg` — the `#contributi` contribution filter lives INSIDE the regex; the
+    multi-page fetch concatenates pages for the recipe to parse.
+  - `campania` — its image-widget anchors carry no text, so the new
+    **`HtmlCrawlRecipe.title_template`** synthesizes the crawl label from the slug
+    (humanize `-` → space), exactly as the hand parser did.
+- Each new recipe **reproduces its source's hand parser refs exactly** (cassette
+  tests), the same golden-gated bar the others meet.
+
+### Notes
+- Only **`puglia`** stays detect-only: its "Bando aperto" badge filter is a
+  conditional on a SIBLING element, not reducible to one item regex — and the host is
+  CI-blocked regardless. The fetch/parse split made the planned "assisted-heal" path
+  unnecessary for everything except puglia (`docs/self-heal-html-design.md`).
+
 ## [0.15.0] — 2026-06-14 — Self-healing for HTML-listing scrapers (regex-recipe)
 
 ### Added

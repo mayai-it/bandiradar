@@ -1,12 +1,20 @@
 # Self-healing for HTML-listing scrapers — design (Phase 2)
 
-> Status: **Phase 2a SHIPPED (v0.15.0).** Phase 1 (v0.14.0) generalized the gated
-> self-heal from `toscana` to the JSON-listing scrapers (`calabria`, `basilicata`).
-> Phase 2a built the **regex-template HTML recipe** (Approach A below, stdlib `re`,
-> ReDoS-guarded) and migrated the 3 clean single-regex HTML scrapers — `veneto`,
-> `sardegna`, `piemonte` — to true golden-gated auto-heal (**auto-heal now 6 of 10
-> scrapers**). Still open (this document): `campania` (synthesized title, needs a
-> `title_template`) and the bespoke `fvg`/`puglia`/`liguria` (Phase 2b assisted-heal).
+> Status: **Phase 2 essentially COMPLETE — 9 of 10 scrapers auto-heal (v0.16.0).**
+> Phase 1 (v0.14.0) extended the gated self-heal from `toscana` to the JSON scrapers
+> (`calabria`, `basilicata`). Phase 2a (v0.15.0) built the **regex-template HTML
+> recipe** (Approach A below, stdlib `re`, ReDoS-guarded) for `veneto`, `sardegna`,
+> `piemonte`. v0.16.0 added `HtmlCrawlRecipe.title_template` and — crucially — leaned
+> on the recipe's **fetch/parse split** (the bespoke FETCH lives in `_listing_html`,
+> only the PARSE is the healable regex) to bring `campania` (label from slug), `fvg`
+> (the `#contributi` filter is in the regex; multi-page fetch) and `liguria`
+> (POST+CSRF fetch, regex parse) into auto-heal too.
+>
+> **Outcome:** the fetch/parse split made the proposed **assisted-heal (Approach B)
+> unnecessary for everything except `puglia`** — whose "Bando aperto" badge filter is a
+> conditional on a sibling element (not one item regex) AND whose host is CI-blocked.
+> So `puglia` stays detect-only (a documented skip); assisted-heal remains the option
+> if it is ever both unblocked and worth a regex with a bounded lookahead.
 
 ## 1. The problem
 

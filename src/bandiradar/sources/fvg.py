@@ -24,7 +24,12 @@ import re
 
 from bandiradar import http
 from bandiradar.sources.base import register
-from bandiradar.sources.llm_scraper import DetailRef, LlmScraperSource
+from bandiradar.sources.llm_scraper import (
+    DetailRef,
+    HtmlCrawlRecipe,
+    LlmScraperSource,
+    apply_html_recipe,
+)
 
 SOURCE_ID = "fvg"
 FVG_BASE_URL = "https://www.regione.fvg.it"
@@ -34,6 +39,20 @@ FVG_LISTING_URL = f"{FVG_BASE_URL}{_MODULE}/ricerca.jsp"
 FVG_LISTING_PARAMS = {"txtChiave": "", "onlyTagServizio": "1", "startsearch": "vai"}
 # Current contributi bandi span ~2 result pages; 3 is a safe bound.
 _LISTING_PAGES = 3
+
+# The listing PARSE as DATA — auto-healable, golden-gated. The ``#contributi`` anchor
+# IS the portal's contribution filter (baked into the regex); the title is the item's
+# <h3>. Reproduces the hand parser's refs exactly.
+FVG_RECIPE = HtmlCrawlRecipe(
+    listing_url=FVG_LISTING_URL,
+    base_url=FVG_BASE_URL,
+    item_regex=(
+        r'<a href="(?P<path>/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/'
+        r'(?P<post_id>\d+)\.html)#contributi"[^>]*>.*?<h3[^>]*>(?P<title>.*?)</h3>'
+    ),
+    url_template="{base}{path}",
+    params=FVG_LISTING_PARAMS,
+)
 
 # One result item: <a href="…/BANDI/<id>.html#contributi" …> … <h3>title</h3> … </a>
 _ITEM_RE = re.compile(
@@ -78,26 +97,26 @@ class FvgSource(LlmScraperSource):
     issuer_name = "Regione Autonoma Friuli Venezia Giulia"
     listing_url = f"{FVG_LISTING_URL}?txtChiave=&onlyTagServizio=1&startsearch=vai"
 
-    def _listing_refs(self) -> list[DetailRef]:
-        refs: list[DetailRef] = []
-        seen: set = set()
+    html_recipe = FVG_RECIPE  # filtered HTML listing -> regex-recipe auto-heal
+
+    def _listing_html(self, recipe: HtmlCrawlRecipe) -> str:
+        """Fetch the filtered result pages and CONCATENATE their HTML; the recipe
+        parses + dedups the combined markup. Stops at the first page with no items."""
+        parts: list[str] = []
         with http.client(follow_redirects=True) as client:
             for page in range(1, _LISTING_PAGES + 1):
-                params = dict(FVG_LISTING_PARAMS)
+                params = dict(recipe.params)
                 if page > 1:
                     params["pag"] = str(page)
                 resp = http.with_retry(
-                    lambda params=params: client.get(FVG_LISTING_URL, params=params),
+                    lambda params=params: client.get(recipe.listing_url, params=params),
                     what="FVG bandi ricerca",
                 )
                 http.raise_for_status(resp, what="FVG bandi ricerca")
-                page_refs = parse_listing(resp.text)
-                fresh = [r for r in page_refs if r[0] not in seen]
-                if not fresh:
+                if not apply_html_recipe(recipe, resp.text):
                     break  # past the last page of filtered results
-                seen.update(r[0] for r in fresh)
-                refs.extend(fresh)
-        return refs
+                parts.append(resp.text)
+        return "\n".join(parts)
 
 
 SOURCE = FvgSource()

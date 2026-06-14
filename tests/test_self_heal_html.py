@@ -20,7 +20,15 @@ from bandiradar.crawl import (
     is_safe_regex,
 )
 from bandiradar.recipe_store import RecipeStore, recipe_from_json, recipe_to_json
-from bandiradar.sources import liguria, piemonte, sardegna, veneto
+from bandiradar.sources import (
+    campania,
+    fvg,
+    liguria,
+    piemonte,
+    puglia,
+    sardegna,
+    veneto,
+)
 from bandiradar.storage import Store
 
 CASS = Path(__file__).parent / "cassettes"
@@ -45,11 +53,22 @@ class _FakeHtmlHealer:
         (veneto, veneto.VENETO_RECIPE, "veneto_listing.html"),
         (sardegna, sardegna.SARDEGNA_RECIPE, "sardegna_listing.html"),
         (piemonte, piemonte.PIEMONTE_RECIPE, "piemonte_listing.html"),
+        (campania, campania.CAMPANIA_RECIPE, "campania_listing.html"),
+        (fvg, fvg.FVG_RECIPE, "fvg_listing.html"),
+        (liguria, liguria.LIGURIA_RECIPE, "liguria_listing.html"),
     ],
 )
 def test_html_recipe_reproduces_cassette(mod, recipe, cassette):
     page = (CASS / cassette).read_text(encoding="utf-8")
     assert apply_html_recipe(recipe, page) == mod.parse_listing(page)
+
+
+def test_title_template_synthesizes_label_from_slug():
+    # campania anchors are image links (no text): the title is humanized from the
+    # slug via title_template ("-" -> space), exactly as the hand parser did.
+    page = (CASS / "campania_listing.html").read_text(encoding="utf-8")
+    refs = apply_html_recipe(campania.CAMPANIA_RECIPE, page)
+    assert refs and all(ref[2] and "-" not in ref[2] for ref in refs)
 
 
 # --------------------------------------------------------------------------- #
@@ -83,12 +102,21 @@ def test_is_safe_regex_guard():
 
 
 def test_html_recipe_sources_opt_in_bespoke_does_not():
-    for src in (veneto.SOURCE, sardegna.SOURCE, piemonte.SOURCE):
+    # The clean single-regex HTML scrapers all opt into the regex-recipe auto-heal.
+    for src in (
+        veneto.SOURCE,
+        sardegna.SOURCE,
+        piemonte.SOURCE,
+        campania.SOURCE,
+        fvg.SOURCE,
+        liguria.SOURCE,
+    ):
         assert src.html_recipe is not None
         assert src.default_recipe is None  # not a JSON listing
-    # A bespoke HTML scraper (POST + CSRF) keeps neither recipe -> detect-only.
-    assert liguria.SOURCE.html_recipe is None
-    assert liguria.SOURCE.default_recipe is None
+    # puglia stays detect-only: its "Bando aperto" badge filter is a conditional on a
+    # sibling element, not reducible to one item regex (and the host is CI-blocked).
+    assert puglia.SOURCE.html_recipe is None
+    assert puglia.SOURCE.default_recipe is None
 
 
 # --------------------------------------------------------------------------- #
