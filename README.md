@@ -214,10 +214,10 @@ MedForniture medical devices        76               92   ← strong sector fit 
 
 ## Matching quality (measured)
 
-Most matching repos ask you to trust them. This one ships the numbers. On a
-**labelled gold set of 405 real opportunities × 11 company profiles**
-(`src/bandiradar/data/eval/`) — spanning all 19 sources, incl. the regional ones —
-here is the matcher quality — reproduce it any time with
+Most matching repos ask you to trust them. This one ships the numbers — measured
+against a **human-reviewed gold set of 405 real opportunities × 11 company profiles**
+(`src/bandiradar/data/eval/`, reviewed 2026-06-14: expired windows, out-of-region
+items and over-generous positives all corrected by hand). Reproduce it any time with
 `bandiradar eval --diagnostics` (offline for the heuristic; set an LLM key for the
 LLM column):
 
@@ -225,29 +225,37 @@ LLM column):
 min_score sweep — precision@5 / precision@10 / recall / false-positive-rate / returned
                  P@5   P@10  recall  FPR    returned
 HEURISTIC (offline, zero-secret)
-  recall  (0)   0.36  0.30   0.93   0.49    150      ← the firehose
-  balanced(20)  0.36  0.30   0.93   0.49    150      ← scores too coarse to move
-  precision(40) 0.44  0.39   0.70   0.45    121
-  (60)          0.30  0.30   0.07   0.08     11      ← collapses; no usable cut
+  recall  (0)   0.22  0.21   0.89   0.52    150      ← the firehose
+  balanced(20)  0.22  0.21   0.89   0.52    150      ← scores too coarse to move
+  precision(40) 0.29  0.30   0.69   0.45    121
+  (60)          0.27  0.27   0.09   0.05     11      ← collapses; no usable cut
 LLM pointwise (anthropic Haiku)
-  recall  (0)   0.51  0.34   0.93   0.49    150      ← the firehose
-  balanced(20)  0.52  0.40   0.88   0.14     88
-  precision(40) 0.70  0.66   0.57   0.02     51      ← the operating point
-  (60)          0.86  0.84   0.48   0.01     41
+  recall  (0)   0.35  0.22   0.89   0.52    150      ← the firehose
+  balanced(20)  0.35  0.24   0.86   0.21     88
+  precision(40) 0.39  0.34   0.61   0.06     51      ← the operating point
+  (60)          0.50  0.45   0.53   0.04     41
 ```
 
-**Read it:** with an LLM, raising the cutoff cleanly trades recall for precision —
-at `precision` (min_score ≥ 40) **P@5 0.70 / P@10 0.66 / FPR 0.02**, well above the
-unfiltered firehose (**P@5 0.51 / FPR 0.49**) while still holding ~half the recall.
-The **offline heuristic** is a genuine zero-secret fallback (P@5 0.36) but its scores
-are too coarse to threshold — it has no usable precision cut (it collapses to 11
-items at 60). So **the LLM is the matcher to ship**, and precision modes are
-meaningful **only with a key**; keyless runs are recall-oriented whatever the mode.
+**Read it honestly:** against a strict human gold the matcher is a **low-FPR,
+recall-oriented engine, not a high-precision oracle**. At `precision` (min_score ≥ 40)
+the LLM gives **P@5 0.39 / P@10 0.34 / FPR 0.06 / recall 0.61** — roughly **double the
+heuristic's precision** (P@5 0.22) at a clean false-positive rate, but far from
+"perfect shortlist". The aggregate hides **wide per-profile variance**: the matcher
+nails some profiles (`costruzioni`, `sardegna_impresa` P@5 1.00 at min_score 40) and
+misses others with tiny positive pools (1–2 relevants, where one miss reads as 0.00).
+The **offline heuristic** is a genuine zero-secret fallback but its scores are too
+coarse to threshold (it collapses to 11 items at 60), so keyless runs are
+recall-oriented whatever the mode — the LLM is the matcher to ship.
 
-The **3 regional example profiles** (Piemonte / Sardegna / Sicilia), added with the
-regional sources, measure *better* than the aggregate at the operating point —
-**P@5 0.80 / P@10 0.76 / FPR 0.00** at min_score ≥ 40 — evidence the matcher
-generalizes to the regional grant portals, not just the national hubs.
+> **Note on the numbers (honest):** an earlier *auto-proposed* gold reported far
+> higher precision (P@5 0.70). A human review of every label revealed that gold was
+> too generous (counting expired/out-of-region items as relevant); these are the
+> corrected, defensible figures. Lower and true beats higher and wishful.
+
+The **3 regional example profiles** (Piemonte / Sardegna / Sicilia) still measure
+*above* the aggregate at the operating point — **P@5 0.69 / P@10 0.56 / FPR 0.05** at
+min_score ≥ 40 — so the matcher generalizes to the regional grant portals, not just
+the national hubs.
 
 ### Operating-point modes
 
@@ -255,9 +263,9 @@ generalizes to the regional grant portals, not just the national hubs.
 
 | mode | cutoff | with an LLM key | use it for |
 |------|--------|-----------------|------------|
-| `precision` | `min_score ≥ 40` | P@5 0.70, P@10 0.66, FPR 0.02 | a tight shortlist |
-| `balanced` *(default)* | `min_score ≥ 20` | P@5 0.52, recall 0.88 | day-to-day |
-| `recall` | everything prefiltered | recall 0.93 | the monitor's safety net |
+| `precision` | `min_score ≥ 40` | P@5 0.39, P@10 0.34, FPR 0.06 | a tighter shortlist |
+| `balanced` *(default)* | `min_score ≥ 20` | P@5 0.35, recall 0.86 | day-to-day |
+| `recall` | everything prefiltered | recall 0.89 | the monitor's safety net |
 
 `--min-score N` still works for power users (it overrides `--mode`).
 
@@ -267,9 +275,9 @@ generalizes to the regional grant portals, not just the national hubs.
   measured but net-negative** at the current recall ceiling: ~+0.02 recall for a
   1.2–2.7× larger candidate set and higher FPR, so they ship **optional and off**.
 - **Recall ceiling is real.** Gate attribution shows the few relevant items the
-  prefilter drops are **4/6 correctly-closed bandi** (the deadline gate is right —
-  expired calls shouldn't surface) and only **2** a lexical gap; no over-strict gate
-  to tune.
+  prefilter drops are **all 4 a lexical gap** (`hospitality_retail`, `pmi_toscana`:
+  the keyword/CPV signal didn't fire) — no over-strict hard gate to tune, and (after
+  the human gold review) no relevant item wrongly dropped as closed.
 - **Listwise reranking** (`eval --rerank`) is an **optional cheaper top-k mode**
   (one LLM call/profile vs N) that lifts top-k slightly but loses the calibrated
   thresholding — so pointwise stays the default.

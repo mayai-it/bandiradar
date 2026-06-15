@@ -1,8 +1,9 @@
 _meta:
   captured: '2026-06-08'
   eval_now: '2026-06-08'
-  note: AUTO-PROPOSED labels (heuristic top-k + cross-source sample, LLM-labelled).
-    A CURATED STARTING SET FOR HUMAN REVIEW — correct as needed.
+  note: Human-reviewed labels as of 2026-06-14 (against eval_now=2026-06-08).
+    Corrected for closed windows, local/regional eligibility, instrument fit,
+    and applicant fit.
   corrections:
   - 'GEO: regional opportunity whose region != profile region(s) and not national/eu
     -> not (uses Opportunity.region/geo_scope vs Profile.regions).'
@@ -10,16 +11,17 @@ _meta:
     -> not (e.g. public tenders for grant-only profiles).'
   - 'INSTRUMENT: for grant-seeking SME profiles, debt/equity/financing and non-funding
     items (by title) -> not. See scripts/correct_gold.py.'
-  anac_pvl_note: 'anac_pvl costruzioni labels are AUTO-PROPOSED (rules in scripts/build_pvl_eval.py:
-    relevant=Lombardia works, borderline=out-of-region works or energetico, not=non-edile)
-    — PENDING HUMAN REVIEW.'
+  anac_pvl_note: 'anac_pvl costruzioni labels human-reviewed on 2026-06-14:
+    kept Lombardia public-works tenders as relevant; non-edile/out-of-fit items
+    remain not.'
   regional_note: Regional sources (v0.6.0+) folded into the corpus by scripts/build_regional_eval.py;
     their labels + the 3 regional profiles (piemonte_industria, sardegna_impresa,
-    sicilia_pmi) are LLM-PROPOSED by scripts/propose_regional_gold.py — PENDING HUMAN
-    REVIEW, then deterministically corrected by scripts/correct_gold.py.
+    sicilia_pmi) were initially LLM-proposed by scripts/propose_regional_gold.py,
+    then deterministically corrected by scripts/correct_gold.py and human-reviewed
+    on 2026-06-14.
 profiles:
   mayai:
-    lazio:48841: relevant
+    lazio:48841: not
     incentivi:146: borderline
     incentivi:3400: not
     lazio:40791: not
@@ -39,7 +41,7 @@ profiles:
     incentivi:1053: not
     incentivi:1071: not
     lazio:12899: not
-    lazio:40990: relevant
+    lazio:40990: not
     lombardia:140990: not
     lombardia:140997: not
     ted:371438-2026: not
@@ -62,23 +64,23 @@ profiles:
     incentivi:1071: not
     lazio:12899: not
     lazio:40791: not
-    lombardia:140990: relevant
+    lombardia:140990: not
     lombardia:141141: not
     ted:371438-2026: not
     ted:372600-2026: not
     toscana:10135: not
     toscana:10136: not
   pmi_toscana:
-    toscana:11787: relevant
+    toscana:11787: borderline
     toscana:11481: relevant
     incentivi:143: borderline
-    toscana:11907: relevant
+    toscana:11907: borderline
     incentivi:145: borderline
     incentivi:1445: borderline
     incentivi:1446: borderline
     incentivi:146: borderline
     incentivi:3265: borderline
-    incentivi:3400: borderline
+    incentivi:3400: not
     ted:372600-2026: not
     incentivi:1426: not
     incentivi:1523: not
@@ -95,12 +97,12 @@ profiles:
     ted:371438-2026: not
     ted:372712-2026: not
     toscana:10135: relevant
-    toscana:10136: relevant
+    toscana:10136: borderline
   manifattura:
     incentivi:1468: relevant
     incentivi:146: not
     incentivi:3265: not
-    incentivi:3400: borderline
+    incentivi:3400: not
     incentivi:1523: not
     incentivi:1426: not
     anac:ocds-hu01ve-8114164: not
@@ -118,9 +120,9 @@ profiles:
   costruzioni:
     lombardia:141201: relevant
     ted:372600-2026: not
-    ted:389163-2026: borderline
+    ted:389163-2026: not
     anac:ocds-hu01ve-8114164: not
-    anac:ocds-hu01ve-8315069: relevant
+    anac:ocds-hu01ve-8315069: not
     incentivi:1053: not
     incentivi:1071: not
     lazio:12899: not
@@ -153,23 +155,23 @@ profiles:
     anac_pvl:03d845bc-8dc4-4014-ad30-123be909240f: not
   consulenza:
     incentivi:2748: relevant
-    lazio:48841: relevant
-    incentivi:3400: relevant
+    lazio:48841: not
+    incentivi:3400: borderline
     incentivi:143: borderline
-    incentivi:1445: relevant
-    incentivi:1446: relevant
-    incentivi:5525: relevant
-    lazio:43887: borderline
+    incentivi:1445: borderline
+    incentivi:1446: borderline
+    incentivi:5525: borderline
+    lazio:43887: not
     lazio:48957: not
     lazio:52641: not
     lazio:52668: not
     incentivi:1426: not
     incentivi:146: not
     incentivi:3265: not
-    incentivi:8141: relevant
+    incentivi:8141: not
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
-    incentivi:1053: borderline
+    incentivi:1053: not
     incentivi:1071: not
     lazio:12899: not
     lazio:40791: not
@@ -186,15 +188,17 @@ profiles:
     sardegna:bando-regionale-2026-azioni-di-sostegno-allattivita-di-impresa-servizio-taxi: not
     basilicata:102230: not
   hospitality_retail:
-    lazio:48841: relevant
-    lazio:43887: borderline
-    lazio:48260: borderline
+    lazio:48841: not
+    lazio:43887: not
+    lazio:48260: not
     incentivi:3400: not
     incentivi:3265: not
     lazio:48957: not
     incentivi:1426: not
     lazio:48519: not
     lazio:56446: not
+    lazio:56759: borderline
+    lazio:58887: borderline
     anac:ocds-hu01ve-8114164: not
     anac:ocds-hu01ve-8315069: not
     incentivi:1053: not
@@ -208,11 +212,11 @@ profiles:
     toscana:10135: not
     toscana:10136: not
   studio_commercialisti:
-    lazio:48841: relevant
+    lazio:48841: not
     incentivi:143: borderline
     incentivi:146: borderline
-    incentivi:3400: borderline
-    lazio:42837: borderline
+    incentivi:3400: not
+    lazio:42837: not
     incentivi:3265: borderline
     lazio:44498: not
     lazio:48957: not
@@ -238,39 +242,39 @@ profiles:
   piemonte_industria:
     piemonte:fondo-rotativo-foncooper: not
     incentivi:1426: not
-    incentivi:3400: borderline
+    incentivi:3400: not
     incentivi:7828: not
     incentivi:143: relevant
-    incentivi:145: relevant
+    incentivi:145: borderline
     incentivi:1523: not
     incentivi:3265: borderline
     piemonte:progetto-bandiera-piemonte-hydrogen-valley: relevant
     incentivi:146: borderline
   sardegna_impresa:
     sardegna:avviso-pubblico-azione-4-competitivita-e-sicurezza-dellattivita-di-acquacoltura: not
-    sardegna:bando-pubblico-lassegnazione-di-contributi-fondo-perduto-comune-di-baradili: relevant
+    sardegna:bando-pubblico-lassegnazione-di-contributi-fondo-perduto-comune-di-baradili: borderline
     sardegna:bando-regionale-2026-azioni-di-sostegno-allattivita-di-impresa-servizio-taxi: not
     sardegna:oltre-nuove-imprese-tasso-zero: borderline
     incentivi:1426: not
-    incentivi:3400: borderline
+    incentivi:3400: not
     incentivi:7828: relevant
     sardegna:call-imprese-della-regione-sardegna-partecipa-al-wmf-2026: relevant
     incentivi:143: relevant
     incentivi:145: relevant
-    incentivi:1523: borderline
+    incentivi:1523: not
     incentivi:3265: borderline
     sardegna:smartstart-italia: relevant
     incentivi:146: borderline
   sicilia_pmi:
     incentivi:1426: not
-    incentivi:3400: borderline
+    incentivi:3400: not
     sicilia:148320: not
     incentivi:143: relevant
     incentivi:1523: not
     incentivi:7828: relevant
     sicilia:145569: not
-    sicilia:162453: relevant
+    sicilia:162453: not
     incentivi:145: borderline
     incentivi:146: borderline
     incentivi:3265: borderline
-    sicilia:158722: borderline
+    sicilia:158722: not

@@ -294,8 +294,9 @@ SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL 
 NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic
 baseline alongside a configured LLM, pass `client=relevance.HEURISTIC` (NOT
 `client=None`, which falls back to the configured client). Gold labels in
-`gold.yaml` are AUTO-PROPOSED — a curated starting set for human review, then
-hardened by `scripts/correct_gold.py`: deterministic, auditable rule-based fixes
+`gold.yaml` were AUTO-PROPOSED then **HUMAN-REVIEWED** (2026-06-14: expired windows,
+out-of-region items and over-generous positives corrected by hand — `_meta.note`),
+on top of `scripts/correct_gold.py`'s deterministic, auditable rule-based fixes
 (GEO = wrong-region → not; SEEKS = wrong instrument class for `Profile.seeks`, e.g.
 tenders for a grant-only profile → not; INSTRUMENT = debt/equity/non-funding → not
 for grant-seekers). The rules are recorded in `gold.yaml`'s `_meta.corrections`; the
@@ -313,8 +314,8 @@ existing reviewed labels untouched), then deterministically corrected by
 attribution* splits each missed relevant-for-recall item into Stage-1 `prefilter_drop`
 (→ embeddings) vs Stage-2 `below_k` (→ reranking); *gate attribution* names WHICH
 Stage-1 gate dropped each (so an over-strict gate is told from a real ceiling — on
-the corrected gold the 6 drops are 4 genuinely-closed + 2 lexical-gap, i.e. NO
-over-strict gate, ceiling is real); a *min_score sweep* prints the
+the human-reviewed gold the 4 drops are ALL lexical-gap, i.e. NO over-strict gate and
+NO relevant wrongly closed, ceiling is real); a *min_score sweep* prints the
 precision/recall/FPR curve across cutoffs.
 
 **Listwise rerank** (`eval --rerank`, `matching/rerank.py`, OFF by default, opt-in):

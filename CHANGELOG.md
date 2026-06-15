@@ -4,6 +4,38 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.17.0] — 2026-06-14 — Human-reviewed gold + honest matching numbers; TED status fix
+
+### Changed
+- **The eval gold is now HUMAN-REVIEWED** (was auto-proposed + rule-corrected). Every
+  label was checked by hand: expired/closed windows → `not`, out-of-region items →
+  `not`, over-generous `relevant` → `borderline`, plus a few real false positives
+  removed and two active borderline positives added where a profile had none. The
+  `_meta` no longer says "pending review".
+- **Matching numbers re-measured on the strict gold — and they are LOWER, which is the
+  point.** The earlier *auto-proposed* gold overstated precision (it counted
+  expired/out-of-region items as relevant). Honest figures now (LLM pointwise Haiku):
+
+  | min_score | P@5 | P@10 | recall | FPR |
+  |---|---|---|---|---|
+  | 40 (precision) | **0.39** | 0.34 | 0.61 | 0.06 |
+  | 20 (balanced)  | 0.35 | 0.24 | 0.86 | 0.21 |
+
+  (was 0.70 / 0.66 / 0.57 / 0.02 on the lenient gold). The matcher is a **low-FPR,
+  recall-oriented engine, ~2× the heuristic's precision** (heuristic P@5 0.22), with
+  wide per-profile variance (`costruzioni`/`sardegna_impresa` P@5 1.00; small-pool
+  profiles 0.00). README's "Matching quality" section is rewritten to these.
+
+### Fixed
+- **TED: a notice with no submission deadline now maps to `closed`** (not the global
+  optimistic "open"). A genuine above-threshold biddable call always states a
+  deadline; a TED notice without one is almost always an award/result (already
+  closed) or a prior-information notice (not yet biddable) — neither belongs in an
+  "open calls" radar. Rule lives in `ted.to_opportunities` (fixes production live
+  too); the eval corpus's 41 deadline-less TED rows were recomputed to `closed`
+  (gold untouched). This was found while reviewing the gold: many corpus items showed
+  `status: open` though the source clearly wasn't biddable.
+
 ## [0.16.1] — 2026-06-14 — Fixes from an external code review
 
 ### Fixed
