@@ -78,9 +78,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     """PURE map of one EXTRACTED bando record (``raw.payload``) to an Opportunity."""
     p: dict[str, Any] = raw.payload
     deadline = _parse_iso(p.get("deadline"))
-    kind: Kind = (
-        p.get("kind") if p.get("kind") in ("incentive", "tender") else "incentive"
-    )
+    kind: Kind = "tender" if p.get("kind") == "tender" else "incentive"
     keywords = p.get("keywords")
     keywords = [str(k) for k in keywords] if isinstance(keywords, list) else []
 
@@ -157,9 +155,12 @@ class ToscanaSource:
     last_crawl_health: Health | None = None
 
     def _active_recipe(self, recipe_store: RecipeStore | None) -> CrawlRecipe:
-        """The adopted override if present, else the baked default."""
+        """The adopted override if present, else the baked default. Toscana's listing
+        is JSON, so any adopted override is a CrawlRecipe (the store is generic)."""
         override = recipe_store.get_recipe(SOURCE_ID) if recipe_store else None
-        return override or TOSCANA_RECIPE
+        if isinstance(override, CrawlRecipe):
+            return override
+        return TOSCANA_RECIPE
 
     def _listing_json(self, recipe: CrawlRecipe) -> Any:
         """Fetch the raw WP-REST listing JSON for a recipe (the key-less crawl)."""

@@ -1,6 +1,6 @@
 [project]
 name = "bandiradar"
-version = "0.18.0"
+version = "0.19.0"
 description = "Monitor Italian public funding opportunities (tenders, grants, incentives) and rank them against a company profile."
 readme = "README.md"
 license = { text = "MIT" }
@@ -45,6 +45,7 @@ dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
     "ruff>=0.6",
+    "mypy>=1.11",
     "bandit>=1.7",
     "pip-audit>=2.7",
 ]
@@ -70,6 +71,7 @@ dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
     "ruff>=0.6",
+    "mypy>=1.11",
     "bandit>=1.7",
     "pip-audit>=2.7",
 ]
@@ -80,6 +82,13 @@ source = ["src/bandiradar"]
 [tool.coverage.report]
 # CI fails below this; src-only coverage is ~90% (live/network paths are the gap).
 fail_under = 88
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/bandiradar"]
+# Optional provider SDKs (anthropic/openai/fastembed/pdf) are lazy extras — don't
+# fail when they aren't installed in the default (offline) environment.
+ignore_missing_imports = true
 
 [tool.bandit]
 # B101 (assert_used) is noise here — asserts are test/contract guards, not security.

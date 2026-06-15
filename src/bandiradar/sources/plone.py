@@ -162,7 +162,7 @@ class PloneBandoSource:
     ) -> Iterator[RawDoc]:
         cap = limit if limit is not None else self._MAX_RECORDS
         seen = 0
-        params: dict[str, Any] | None = {
+        base_params: dict[str, Any] = {
             "portal_type": "Bando",
             "fullobjects": "true",
             "b_size": self.b_size,
@@ -170,8 +170,10 @@ class PloneBandoSource:
             "sort_order": "descending",
         }
         if since is not None:
-            params["modified.query"] = since.astimezone(UTC).isoformat()
-            params["modified.range"] = "min"
+            base_params["modified.query"] = since.astimezone(UTC).isoformat()
+            base_params["modified.range"] = "min"
+        # After the first page Plone follows the `next` link, so params -> None.
+        params: dict[str, Any] | None = base_params
         url: str | None = self._search_url
         page = 0
         with http.client(follow_redirects=True) as client:

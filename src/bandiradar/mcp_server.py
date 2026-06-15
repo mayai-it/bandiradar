@@ -29,6 +29,7 @@ def _resolve_profile(
         raise ValueError("provide exactly one of 'profile_path' or 'profile'")
     if profile_path is not None:
         return core.load_profile(profile_path)
+    assert profile is not None  # the XOR check above guarantees it
     return Profile(**profile)
 
 

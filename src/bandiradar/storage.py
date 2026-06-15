@@ -421,7 +421,8 @@ class Store:
             (source, _to_text(_now(started_at))),
         )
         self.conn.commit()
-        return int(cur.lastrowid)
+        assert cur.lastrowid is not None  # guaranteed right after an INSERT
+        return cur.lastrowid
 
     def finish_run(
         self,

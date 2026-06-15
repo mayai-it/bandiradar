@@ -31,6 +31,11 @@ jobs:
       - name: Format check (ruff format)
         run: uv run ruff format --check .
 
+      # Static type check. The optional provider SDKs aren't installed here, so
+      # mypy treats them as Any (ignore_missing_imports) — the gate checks OUR types.
+      - name: Type check (mypy)
+        run: uv run mypy
+
       # Tests + a coverage floor (src-only ~90%; the gap is live/network paths that
       # can't run offline). Fails the build if coverage regresses below 88%.
       - name: Tests + coverage gate (pytest)

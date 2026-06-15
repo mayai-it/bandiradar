@@ -197,9 +197,9 @@ def _parse_date(value: Any) -> date | None:
         return _safe_date(year, month, day)
     m = _TEXTUAL_DATE_RE.search(text)
     if m:
-        month = _MONTH_BY_NAME.get(_fold(m.group(2).lower()))
-        if month is not None:
-            return _safe_date(int(m.group(3)), month, int(m.group(1)))
+        month_num = _MONTH_BY_NAME.get(_fold(m.group(2).lower()))
+        if month_num is not None:
+            return _safe_date(int(m.group(3)), month_num, int(m.group(1)))
     return None
 
 

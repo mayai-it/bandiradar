@@ -205,7 +205,9 @@ def _backoff_seconds(attempt: int) -> float:
 
 
 def with_retry(
-    send: Callable[[], httpx.Response],
+    # `...` (not `[]`) so the common loop-capture idiom `lambda page=page: ...` (a
+    # callable WITH a defaulted arg) type-checks; with_retry always calls it no-arg.
+    send: Callable[..., httpx.Response],
     *,
     what: str,
     max_retries: int = DEFAULT_MAX_RETRIES,
@@ -235,11 +237,10 @@ def with_retry(
                 return response
             last_error = f"HTTP {response.status_code}"
             last_kind = _status_kind(response.status_code)
-            delay = None
+            delay = _backoff_seconds(attempt)
             if response.status_code == 429:
-                delay = _retry_after_seconds(response)
-            if delay is None:
-                delay = _backoff_seconds(attempt)
+                # honour Retry-After when present, else keep the backoff
+                delay = _retry_after_seconds(response) or delay
         if attempt >= max_retries or _monotonic() - start >= max_elapsed:
             break
         _sleep(delay)
@@ -272,7 +273,7 @@ def stream_with_retry(
     :class:`FetchError` when retries OR the cumulative ``max_elapsed`` budget are
     exhausted.
     """
-    headers = {**DEFAULT_HEADERS, **(kwargs.pop("headers", None) or {})}  # type: ignore[arg-type]
+    headers = {**DEFAULT_HEADERS, **(kwargs.pop("headers", None) or {})}  # type: ignore[dict-item]
     cfg = config.relay()
     if cfg is not None:
         relay_url, token, hosts = cfg
@@ -293,7 +294,9 @@ def stream_with_retry(
     last_kind: FetchErrorKind = "unknown"
     start = _monotonic()
     for attempt in range(max_retries + 1):
-        cm = httpx.stream(method, url, timeout=effective_timeout, **kwargs)
+        # dynamic passthrough of httpx.stream's many heterogeneous kwargs (headers,
+        # params, content, …); matching its overloaded signature isn't worth it.
+        cm = httpx.stream(method, url, timeout=effective_timeout, **kwargs)  # type: ignore[arg-type]
         try:
             response = cm.__enter__()
         except _TRANSIENT_EXC as exc:

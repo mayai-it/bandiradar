@@ -56,7 +56,7 @@ class HealResult:
     status: HealStatus
     adopted: bool
     reason: str
-    candidate: CrawlRecipe | None = None
+    candidate: CrawlRecipe | HtmlCrawlRecipe | None = None
 
 
 def _as_path(value: Any) -> str | None:

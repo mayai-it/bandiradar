@@ -64,6 +64,13 @@ Kind = Literal["tender", "grant", "incentive"]
 # "tender", grants/incentives -> "grant" (see ``matching.prefilter.seek_class``).
 Seek = Literal["grant", "tender"]
 GeoScope = Literal["national", "regional", "eu", "local"]
+
+
+def _default_seeks() -> list[Seek]:
+    """Profile default: pursue BOTH instrument classes (typed for the Field factory)."""
+    return ["grant", "tender"]
+
+
 # ``status`` is PURELY the lifecycle of the deadline (open / closing soon / closed).
 # It is DERIVED from ``deadline`` + the current time at READ time (see
 # ``default_status``), so a stored item never shows "open" past its deadline. The
@@ -168,7 +175,9 @@ def default_status(
     read so ``status`` is always current; the "changed" signal is separate
     (``version`` / ``updated_at``).
     """
-    now = datetime.now(UTC) if now is None else _ensure_utc(now)
+    # `or` fallback keeps `now` typed datetime (datetimes are always truthy, so the
+    # fallback only fires when _ensure_utc returns None for a None input).
+    now = _ensure_utc(now) or datetime.now(UTC)
     deadline = _ensure_utc(deadline)
     if deadline is None:
         return "open"
@@ -310,7 +319,7 @@ class Profile(BaseModel):
     # grant-only profile (e.g. an AI studio) drops public tenders at Stage 1; a
     # firm that sells to the PA (construction, medical supply) keeps ["grant",
     # "tender"]. See the Stage-1 instrument gate.
-    seeks: list[Seek] = Field(default_factory=lambda: ["grant", "tender"])
+    seeks: list[Seek] = Field(default_factory=lambda: _default_seeks())
 
     @property
     def version(self) -> str:

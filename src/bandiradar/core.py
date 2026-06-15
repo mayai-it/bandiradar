@@ -27,6 +27,8 @@ from bandiradar.models import (
     DoctorEnv,
     DoctorReport,
     DoctorSourceResult,
+    FetchErrorKind,
+    FetchStatus,
     Match,
     Opportunity,
     Profile,
@@ -110,12 +112,12 @@ def _clean_error(exc: BaseException) -> str:
     return str(exc) or type(exc).__name__
 
 
-def _error_kind(exc: BaseException) -> str:
+def _error_kind(exc: BaseException) -> FetchErrorKind:
     """Structured cause: a FetchError's own kind, else "unknown"."""
     return exc.kind if isinstance(exc, FetchError) else "unknown"
 
 
-def _classify(error: str | None, fetched: int) -> str:
+def _classify(error: str | None, fetched: int) -> FetchStatus:
     """Derive the FetchStatus from whether the fetch errored and how much arrived."""
     if error is not None:
         return "partial" if fetched > 0 else "failed"
@@ -150,6 +152,7 @@ def run_fetch(
     started = datetime.now(UTC)
     t0 = time.monotonic()
     run_id = store.start_run(source_id, started_at=started)
+    effective_limit: int | None
     if limit is not None:
         effective_limit = limit
     else:
@@ -157,7 +160,7 @@ def run_fetch(
 
     fetched = mapped = new = amended = skipped_invalid = 0
     error: str | None = None
-    error_kind: str | None = None
+    error_kind: FetchErrorKind | None = None
     source = None
 
     try:

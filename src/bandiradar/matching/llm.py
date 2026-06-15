@@ -89,8 +89,10 @@ class AnthropicClient:
         except anthropic.AnthropicError as exc:
             raise RuntimeError(f"Anthropic scoring failed: {exc}") from exc
 
+        # getattr (not block.text): response.content is a union of block types, only
+        # TextBlock has `.text`; the type filter selects them, getattr keeps mypy happy.
         text = "".join(
-            block.text
+            getattr(block, "text", "")
             for block in response.content
             if getattr(block, "type", None) == "text"
         )
@@ -159,7 +161,7 @@ def get_client() -> LLMClient | None:
     """Build the configured client, or ``None`` to signal the offline fallback."""
     client, _reason = _resolve()
     if client is not None:
-        _announce(config.llm_provider(), client.model)
+        _announce(config.llm_provider(), getattr(client, "model", ""))
     return client
 
 

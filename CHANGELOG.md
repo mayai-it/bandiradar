@@ -4,6 +4,29 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.19.0] — 2026-06-15 — Type checking: mypy clean + CI gate
+
+### Added
+- **`mypy` gate in CI** (`uv run mypy`, config in `[tool.mypy]`). The codebase is now
+  **type-clean (0 errors)** — the 80 real issues mypy found were FIXED, not silenced:
+  - source classes now declare `kind: Kind` (was bare `str`) so they satisfy the
+    `Source` protocol;
+  - the recipe self-heal paths narrow `recipe`/`hrecipe` with asserts (the invariant
+    is real — those paths run only when a recipe is set);
+  - `default_status` keeps `now` typed (the `_ensure_utc(now) or ...` form);
+  - `core` returns the proper `FetchStatus`/`FetchErrorKind` literals;
+  - `with_retry` accepts `Callable[..., Response]` so the loop-capture idiom
+    `lambda x=x: …` type-checks;
+  - the LLM-extracted `kind` simplifies to `"tender" if … else "incentive"` (no `Any`);
+  - plus a handful of small Optional-narrowing fixes. Only two justified
+    `# type: ignore` remain (httpx's overloaded `stream(**kwargs)` and the header dict).
+- `mypy` added to the `dev` group.
+
+### Notes
+- No runtime behaviour change (asserts are invariant guards; the `kind` and status
+  logic are equivalent). This completes the CI-hardening chapter the external review
+  asked for (lint + format + tests + coverage + security + audit + types).
+
 ## [0.18.0] — 2026-06-15 — CI hardening: coverage floor + security gates
 
 ### Added

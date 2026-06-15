@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime
+from typing import Any, cast
 
 import yaml
 from pydantic import BaseModel
@@ -290,15 +291,17 @@ def _score_profiles(
     scored: list[_Scored] = []
     for name in sorted(gold_profiles):
         profile = core.load_profile(name)
+        # client_obj/embedder are `object` to carry the HEURISTIC sentinel + a real
+        # client interchangeably; run_match special-cases them at runtime.
         ranked = core.run_match(
             profile,
             store,
-            client=client_obj,
+            client=cast(Any, client_obj),
             now=EVAL_NOW,
             with_benchmarks=with_benchmarks,
             with_documents=with_documents,
             full_text=full_text,
-            embedder=embedder,
+            embedder=cast(Any, embedder),
             sim_threshold=sim_threshold,
         )
         scored.append(
@@ -316,7 +319,7 @@ def _rerank_profiles(
     scored: list[_Scored] = []
     for name in sorted(gold_profiles):
         profile = core.load_profile(name)
-        ranked = core.run_rerank(profile, store, client, now=EVAL_NOW)
+        ranked = core.run_rerank(profile, store, cast(Any, client), now=EVAL_NOW)
         scored.append(
             (name, gold_profiles[name], [(opp.id, m.score) for opp, m in ranked])
         )

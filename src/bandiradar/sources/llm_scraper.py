@@ -35,6 +35,7 @@ from bandiradar.crawl import (  # the self-healing spine lives top-level; re-exp
 )
 from bandiradar.matching.llm import LLMClient
 from bandiradar.models import (
+    Kind,
     Opportunity,
     RawDoc,
     default_status,
@@ -43,6 +44,8 @@ from bandiradar.models import (
 from bandiradar.sources.base import ProgressFn
 
 if TYPE_CHECKING:
+    from importlib.resources.abc import Traversable
+
     from bandiradar.storage import Store
 
 logger = logging.getLogger(__name__)
@@ -215,7 +218,7 @@ class LlmScraperSource:
     issuer_name: str = ""
     listing_url: str = ""  # informational + the doctor probe target
 
-    kind = "incentive"  # registry hint; per-record kind comes from the extraction
+    kind: Kind = "incentive"  # registry hint; per-record kind comes from extraction
     requires_llm = True  # live fetch extracts fields with an LLM
     last_crawl_health: Health | None = None
     _MAX_ITEMS = 20
@@ -264,7 +267,7 @@ class LlmScraperSource:
 
     # ---- shared plumbing ---------------------------------------------------- #
 
-    def _fixture_path(self) -> Path:
+    def _fixture_path(self) -> Traversable:
         return resources.fixture(f"{self.id}.json")
 
     def _fetch_text(self, url: str) -> str:
@@ -306,6 +309,7 @@ class LlmScraperSource:
         from bandiradar.sources.heal import heal_crawl
 
         recipe = self._active_recipe(recipe_store)
+        assert recipe is not None  # this path runs only when default_recipe is set
         listing = self._listing_json(recipe)
         refs = apply_recipe(recipe, listing)
         self.last_crawl_health = validate_refs(refs)
@@ -332,7 +336,9 @@ class LlmScraperSource:
                 result.reason,
             )
             if result.adopted:
-                refs = apply_recipe(self._active_recipe(recipe_store), listing)
+                healed = self._active_recipe(recipe_store)
+                assert healed is not None
+                refs = apply_recipe(healed, listing)
                 self.last_crawl_health = validate_refs(refs)
         return refs
 
@@ -341,6 +347,7 @@ class LlmScraperSource:
         from bandiradar.sources.heal import heal_html_crawl
 
         recipe = self._active_html_recipe(recipe_store)
+        assert recipe is not None  # this path runs only when html_recipe is set
         page_html = self._listing_html(recipe)
         refs = apply_html_recipe(recipe, page_html)
         self.last_crawl_health = validate_refs(refs)
@@ -367,9 +374,9 @@ class LlmScraperSource:
                 result.reason,
             )
             if result.adopted:
-                refs = apply_html_recipe(
-                    self._active_html_recipe(recipe_store), page_html
-                )
+                healed = self._active_html_recipe(recipe_store)
+                assert healed is not None
+                refs = apply_html_recipe(healed, page_html)
                 self.last_crawl_health = validate_refs(refs)
         return refs
 
@@ -385,9 +392,11 @@ class LlmScraperSource:
                 rs = RecipeStore(store)
                 if self.default_recipe is not None:
                     recipe = self._active_recipe(rs)
+                    assert recipe is not None
                     listing = self._listing_json(recipe)
                     return validate_refs(apply_recipe(recipe, listing))
                 hrecipe = self._active_html_recipe(rs)
+                assert hrecipe is not None
                 return validate_refs(
                     apply_html_recipe(hrecipe, self._listing_html(hrecipe))
                 )
@@ -487,9 +496,7 @@ class LlmScraperSource:
         """PURE map of one EXTRACTED bando record (``raw.payload``)."""
         p: dict[str, Any] = raw.payload
         deadline = _parse_iso_date(p.get("deadline"))
-        kind = (
-            p.get("kind") if p.get("kind") in ("incentive", "tender") else ("incentive")
-        )
+        kind: Kind = "tender" if p.get("kind") == "tender" else "incentive"
         keywords = p.get("keywords")
         keywords = [str(k) for k in keywords] if isinstance(keywords, list) else []
         eligibility = " ".join(

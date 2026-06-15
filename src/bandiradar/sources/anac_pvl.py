@@ -351,7 +351,7 @@ def _matcher_text(oggetto: str, lotti: list[dict[str, Any]]) -> str | None:
             val = lotto.get(key)
             if val:
                 parts.append(str(val))
-    cigs = [lotto.get("cig") for lotto in lotti if lotto.get("cig")]
+    cigs = [str(lotto.get("cig")) for lotto in lotti if lotto.get("cig")]
     if cigs:
         parts.append("CIG: " + ", ".join(cigs))
     text = " — ".join(dict.fromkeys(parts)).strip()  # dedupe, keep order
@@ -388,7 +388,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     # CPV: resolve the Italian LABEL(s) to official codes (often coarse divisions);
     # unresolved labels stay in eligibility_text (built below) as keyword signal.
     cpv_codes = cpv.resolve_labels(
-        [lotto.get("cpv") for lotto in lotti if lotto.get("cpv")]
+        [str(lotto.get("cpv")) for lotto in lotti if lotto.get("cpv")]
     )
     deadline = _deadline(payload)
 

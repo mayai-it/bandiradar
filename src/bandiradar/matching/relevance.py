@@ -156,6 +156,7 @@ def _value_fit(opp: Opportunity, profile: Profile) -> float:
         o_lo = opp.value_min if opp.value_min is not None else -math.inf
         o_hi = opp.value_max if opp.value_max is not None else math.inf
     else:
+        assert opp.value_amount is not None  # this branch runs only with value info
         o_lo = o_hi = opp.value_amount
     p_lo = vr.min if vr.min is not None else -math.inf
     p_hi = vr.max if vr.max is not None else math.inf
