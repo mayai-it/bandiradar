@@ -4,6 +4,27 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.18.0] — 2026-06-15 — CI hardening: coverage floor + security gates
+
+### Added
+- **Coverage gate** — CI now runs `pytest --cov --cov-fail-under=88`. Measured
+  src-only coverage is **90%** (the gap is live/network paths that can't run offline);
+  the build fails if it regresses below 88%.
+- **`bandit` security scan** in CI. Every existing finding was REVIEWED, not blanket-
+  ignored: the 4 false positives (RSS XML is *built* not parsed, `X-Relay-Token` is a
+  header name not a secret, the storage SQL is parameterized via `?`, a deliberate
+  skip-bad-PDF-page) carry an inline justification + a scoped `# nosec`; `B101`
+  (assert) is skipped project-wide in `[tool.bandit]`. A NEW unreviewed finding (e.g.
+  unparameterized SQL) fails the build.
+- **`pip-audit` dependency audit** in CI (PyPA advisory DB) — currently clean.
+- Dev tooling (`pytest-cov`, `bandit`, `pip-audit`) added to the `dev` group; coverage
+  + bandit config live in `pyproject.toml`.
+
+### Notes
+- This is a CI / dev-tooling change: no runtime behaviour change (only inline `# nosec`
+  comments touch shipped source). `mypy` is the next, separate hardening step (80 real
+  type issues to fix first — a green gate, not a red one).
+
 ## [0.17.1] — 2026-06-15 — Revert the TED "no deadline ⇒ closed" rule (it hid open calls)
 
 ### Fixed

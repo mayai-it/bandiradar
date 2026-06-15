@@ -9,7 +9,9 @@ bandiradar-pro; here we produce files a single user can consume or self-host.
 from __future__ import annotations
 
 import json
-import xml.etree.ElementTree as ET
+
+# ET builds RSS XML only (Element/SubElement); it never parses untrusted input.
+import xml.etree.ElementTree as ET  # nosec B405
 from email.utils import format_datetime
 
 from bandiradar.models import Match, Opportunity

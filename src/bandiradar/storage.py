@@ -336,9 +336,9 @@ class Store:
         moment = _now(now)
         where = " WHERE source=?" if source is not None else ""
         params = [source] if source is not None else []
-        rows = self.conn.execute(
-            f"SELECT data FROM opportunities{where} ORDER BY id", params
-        ).fetchall()
+        # `where` is fixed clause text (no user input); values are bound via `?`.
+        query = f"SELECT data FROM opportunities{where} ORDER BY id"  # nosec B608
+        rows = self.conn.execute(query, params).fetchall()
         opps = [_load_opportunity(r["data"], moment) for r in rows]
         if status is not None:
             opps = [o for o in opps if o.status == status]
@@ -511,9 +511,9 @@ class Store:
         if source is not None:
             where += " AND source = ?"
             params.append(source)
-        rows = self.conn.execute(
-            f"SELECT data FROM opportunities {where} ORDER BY id", params
-        ).fetchall()
+        # `where` is fixed clause text (no user input); values are bound via `?`.
+        query = f"SELECT data FROM opportunities {where} ORDER BY id"  # nosec B608
+        rows = self.conn.execute(query, params).fetchall()
         return [_load_opportunity(r["data"], moment) for r in rows]
 
     def backfill_trust(self, sources: set[str] | None = None) -> int:
@@ -545,9 +545,9 @@ class Store:
             placeholders = ",".join("?" for _ in sources)
             where += f" AND source IN ({placeholders})"
             params = sorted(sources)
-        rows = self.conn.execute(
-            f"SELECT id, data FROM opportunities {where}", params
-        ).fetchall()
+        # `where` holds only `?` placeholders; values are bound via params.
+        query = f"SELECT id, data FROM opportunities {where}"  # nosec B608
+        rows = self.conn.execute(query, params).fetchall()
         updated = 0
         for r in rows:
             payload = json.loads(r["data"])

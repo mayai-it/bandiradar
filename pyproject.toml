@@ -1,6 +1,6 @@
 [project]
 name = "bandiradar"
-version = "0.17.1"
+version = "0.18.0"
 description = "Monitor Italian public funding opportunities (tenders, grants, incentives) and rank them against a company profile."
 readme = "README.md"
 license = { text = "MIT" }
@@ -43,7 +43,10 @@ bandiradar = "bandiradar.cli:main"
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
+    "pytest-cov>=5.0",
     "ruff>=0.6",
+    "bandit>=1.7",
+    "pip-audit>=2.7",
 ]
 # Live Stage-2 LLM scoring is OPTIONAL — the repo runs fully offline (heuristic
 # fallback) without these. Install with `uv sync --extra anthropic`.
@@ -65,8 +68,23 @@ packages = ["src/bandiradar"]
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "pytest-cov>=5.0",
     "ruff>=0.6",
+    "bandit>=1.7",
+    "pip-audit>=2.7",
 ]
+
+[tool.coverage.run]
+source = ["src/bandiradar"]
+
+[tool.coverage.report]
+# CI fails below this; src-only coverage is ~90% (live/network paths are the gap).
+fail_under = 88
+
+[tool.bandit]
+# B101 (assert_used) is noise here — asserts are test/contract guards, not security.
+# Reviewed findings (XML-build, header name, parameterized SQL) carry inline # nosec.
+skips = ["B101"]
 
 [tool.ruff]
 line-length = 88

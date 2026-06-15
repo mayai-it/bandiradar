@@ -34,7 +34,7 @@ def _extract_with_pypdf(data: bytes) -> str:
             try:
                 parts.append(page.extract_text() or "")
             except Exception:  # noqa: BLE001 — a bad page must not sink the doc
-                continue
+                continue  # nosec B112
         return "\n".join(parts).strip()
     except Exception as exc:  # noqa: BLE001
         logger.warning("pypdf extraction failed: %s", exc)

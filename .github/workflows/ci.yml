@@ -31,8 +31,20 @@ jobs:
       - name: Format check (ruff format)
         run: uv run ruff format --check .
 
-      - name: Tests (pytest)
-        run: uv run pytest
+      # Tests + a coverage floor (src-only ~90%; the gap is live/network paths that
+      # can't run offline). Fails the build if coverage regresses below 88%.
+      - name: Tests + coverage gate (pytest)
+        run: uv run pytest --cov=src/bandiradar --cov-fail-under=88
+
+      # Security lint. Reviewed false positives carry an inline justification + a
+      # `# nosec`; B101 (assert) is skipped in pyproject. A NEW unreviewed finding
+      # (e.g. unparameterized SQL) fails the build.
+      - name: Security scan (bandit)
+        run: uv run bandit -r src/bandiradar -c pyproject.toml -q
+
+      # Fail if a dependency has a known published vulnerability (PyPA advisory DB).
+      - name: Dependency audit (pip-audit)
+        run: uv run pip-audit
 
   # Prove that `--sample` works from a pip-installed WHEEL (data is packaged),
   # not just from the source checkout. Builds the wheel, installs it into a CLEAN

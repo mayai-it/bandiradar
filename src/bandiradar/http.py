@@ -63,7 +63,7 @@ def default_timeout() -> httpx.Timeout:
 
 
 # Header carrying the relay auth token (value from env/secrets, never the repo).
-RELAY_TOKEN_HEADER = "X-Relay-Token"
+RELAY_TOKEN_HEADER = "X-Relay-Token"  # nosec B105
 
 
 class RelayTransport(httpx.BaseTransport):
