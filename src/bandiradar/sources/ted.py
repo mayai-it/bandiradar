@@ -137,12 +137,6 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
     pub_number = record["publication-number"]
 
     deadline = _parse_deadline(record)
-    # A genuine above-threshold biddable TED call always states a submission deadline;
-    # a notice WITHOUT one is almost always an award/result (already closed) or a
-    # prior-information notice (not yet biddable) — neither belongs in an "open calls"
-    # radar. So for TED specifically, a missing deadline means CLOSED, not the global
-    # optimistic "open" default (which would surface non-biddable notices).
-    status = "closed" if deadline is None else default_status(deadline, now)
     value_amount = _to_float(record.get("estimated-value-proc"))
     currency = record.get("estimated-value-cur-proc")
     if value_amount is None:
@@ -169,7 +163,7 @@ def to_opportunities(raw: RawDoc, now: datetime | None = None) -> list[Opportuni
         region=None,
         published_at=_parse_date(record.get("publication-date")),
         deadline=deadline,
-        status=status,
+        status=default_status(deadline, now),
         eligibility_text=None,
         document_urls=_document_urls(record),
         raw_ref=raw.id,

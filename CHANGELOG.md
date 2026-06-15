@@ -4,6 +4,27 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.17.1] — 2026-06-15 — Revert the TED "no deadline ⇒ closed" rule (it hid open calls)
+
+### Fixed
+- **Reverted the 0.17.0 TED status rule.** It was wrong and harmful. The premise ("a
+  biddable TED call always states a deadline") does not hold: the TED *search* API,
+  as read by the adapter (only `deadline-receipt-tender-date-lot`), returns **no
+  deadline for many genuine open calls**. Measured on the corpus: of the 41
+  deadline-less TED notices, only **2 are awards/results** — **32 are open calls**
+  ("PROCEDURA APERTA", forniture, gare). So "no deadline ⇒ closed" was *hiding ~32
+  live, biddable tenders* — the worst error for an opportunities radar (a false
+  negative costs the user a real chance). A missing deadline once again defaults to
+  `open` (recall-safe). The eval corpus's TED statuses were restored; the
+  human-reviewed gold and the (unchanged) matching numbers from 0.17.0 stand — the
+  rule never affected the eval (TED tenders are dropped at Stage 1 by `seeks`/keyword
+  for these profiles anyway), only production.
+- **Lesson / real root cause:** the actual "closed-shown-as-open" items are the
+  *Lazio* past-edition bandi (no structured deadline in the WP body), not TED. The
+  proper TED improvement is to *capture* the deadline that exists on the notice
+  (read beyond the lot-level field) — which needs live TED data to validate, so it is
+  deferred rather than guessed.
+
 ## [0.17.0] — 2026-06-14 — Human-reviewed gold + honest matching numbers; TED status fix
 
 ### Changed

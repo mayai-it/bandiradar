@@ -59,13 +59,14 @@ def test_field_mapping_for_known_notice(by_id):
     assert opp.status == "open"  # deadline in the future
 
 
-def test_missing_deadline_maps_to_closed(by_id):
-    # 383667-2026 carries no tender deadline in the fixture. A biddable TED call always
-    # states a deadline, so a notice WITHOUT one (award/result/PIN) maps to CLOSED — it
-    # is not an open, biddable call and must not surface as one.
+def test_missing_deadline_maps_to_open(by_id):
+    # 383667-2026 carries no tender deadline in the fixture. Many genuine open calls
+    # come through the TED search API WITHOUT a populated deadline field, so a missing
+    # deadline must NOT be treated as closed (that would hide live, biddable tenders) —
+    # it defaults to open (recall-safe), the global lifecycle default.
     opp = by_id["ted:383667-2026"]
     assert opp.deadline is None
-    assert opp.status == "closed"
+    assert opp.status == "open"
 
 
 def test_missing_value_is_none(by_id):
@@ -73,14 +74,10 @@ def test_missing_value_is_none(by_id):
     assert by_id["ted:376324-2026"].value_amount is None
 
 
-def test_deadlined_notices_are_active_undated_are_closed(by_id):
-    # The capture is of ACTIVE notices, so any WITH a (future) deadline is not closed;
-    # any WITHOUT a deadline is closed (the no-deadline = not-biddable rule).
-    for o in by_id.values():
-        if o.deadline is None:
-            assert o.status == "closed"
-        else:
-            assert o.status != "closed"
+def test_no_active_notice_is_closed(by_id):
+    # The capture is of ACTIVE notices (calls), so none should be closed: those with a
+    # future deadline are open, and those without a captured deadline default to open.
+    assert all(o.status != "closed" for o in by_id.values())
 
 
 def test_ted_is_registered():
