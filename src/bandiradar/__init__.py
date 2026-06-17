@@ -9,4 +9,11 @@ contract. This package is the open (MIT) core; managed/delivery features live
 in the private ``bandiradar-pro``.
 """
 
-__version__ = "0.12.0"
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    # Single source of truth: the version declared in pyproject (installed metadata),
+    # so __version__ never drifts from the package version again.
+    __version__ = version("bandiradar")
+except PackageNotFoundError:  # not installed (e.g. running from a raw checkout)
+    __version__ = "0.0.0+unknown"

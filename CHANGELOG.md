@@ -4,6 +4,47 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.20.0] — 2026-06-16 — `useful@k` metric (honest reading) + `__version__` fix
+
+### Added
+- **`useful@k` eval metric** — the lived-experience companion to strict `precision@k`.
+  Strict P@k counts ONLY `relevant`; `useful@k` also counts `borderline` (adjacent,
+  worth-a-look) items, which a user genuinely finds useful. Surfaced as the `USE@5`
+  column in `bandiradar eval` and in the README. **Why it matters:** on the
+  human-reviewed gold the LLM's strict P@5 is 0.39 but **useful@5 is 0.65**; and 3 of
+  the 11 profiles have ZERO relevant items in the corpus (only borderline), so their
+  strict P@5 is structurally 0 and drags the aggregate. On the **8 profiles where the
+  corpus holds relevant bandi**, the LLM scores **strict P@5 0.54 / useful@5 0.83** —
+  i.e. *where the question is well-posed the matcher is good*; the low aggregate is
+  mostly corpus coverage, not a broken ranker (recall is fine — 55 of 60 wanted items
+  land in the top-10). README "Matching quality" rewritten to show this decomposition.
+
+### Changed
+- **Embeddings semantic prefilter — re-measured on the human-reviewed gold; verdict
+  corrected.** The old docs called embeddings "net-negative"; that was on the
+  permissive pre-review gold. On the corrected gold, `semantic ≥ 0.4` lifts recall
+  **0.89 → 0.95** (rescuing 3 of the 4 lexical prefilter-drops) at a **flat FPR**
+  (0.52 → 0.53) for a **1.6× larger candidate set** (150 → 240) — a REAL recall gain.
+  It still **ships optional and off by default**, because the 1.6× candidate set means
+  ~1.6× more LLM scorings per run (cost) and 2 of the 4 rescued drops are correctly-weak
+  borderline items. Docs (README *Honest limits*, `CLAUDE.md`) updated from "net-negative"
+  to the honest trade-off; `0.3` over-expands (2.4×), `0.5` barely helps. No code/default
+  change — measurement + documentation only.
+
+### Fixed
+- **`bandiradar.__version__` was hardcoded to `"0.12.0"`** and had drifted from the
+  package version for seven releases — it also rode into the HTTP `User-Agent`
+  (`bandiradar/0.12.0`). It now **derives from the installed package metadata**
+  (`importlib.metadata.version`), so it can never drift from pyproject again; a
+  regression test pins `__version__` to the pyproject version.
+
+### Security
+- **Bumped three transitive dependencies to clear newly-disclosed advisories** so the
+  `pip-audit` CI gate stays green: `cryptography` 48.0.0 → 49.0.0
+  (GHSA-537c-gmf6-5ccf), `python-multipart` 0.0.30 → 0.0.32 (CVE-2026-53540), and
+  `starlette` 1.2.1 → 1.3.1 (CVE-2026-54282, CVE-2026-54283). Lockfile-only; no
+  source or default-behaviour change. Full test suite + mypy + bandit re-run green.
+
 ## [0.19.0] — 2026-06-15 — Type checking: mypy clean + CI gate
 
 ### Added

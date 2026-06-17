@@ -236,16 +236,26 @@ LLM pointwise (anthropic Haiku)
   (60)          0.50  0.45   0.53   0.04     41
 ```
 
-**Read it honestly:** against a strict human gold the matcher is a **low-FPR,
-recall-oriented engine, not a high-precision oracle**. At `precision` (min_score ≥ 40)
-the LLM gives **P@5 0.39 / P@10 0.34 / FPR 0.06 / recall 0.61** — roughly **double the
-heuristic's precision** (P@5 0.22) at a clean false-positive rate, but far from
-"perfect shortlist". The aggregate hides **wide per-profile variance**: the matcher
-nails some profiles (`costruzioni`, `sardegna_impresa` P@5 1.00 at min_score 40) and
-misses others with tiny positive pools (1–2 relevants, where one miss reads as 0.00).
-The **offline heuristic** is a genuine zero-secret fallback but its scores are too
-coarse to threshold (it collapses to 11 items at 60), so keyless runs are
-recall-oriented whatever the mode — the LLM is the matcher to ship.
+**Read it honestly — and read the decomposition, because the aggregate undersells it.**
+At `precision` (min_score ≥ 40) the LLM's **strict P@5 is 0.39** (relevant-only) — but
+two things matter:
+
+- **`useful@5` is 0.65.** Strict P@k counts ONLY `relevant`; a `borderline` (adjacent,
+  still-worth-a-look) item is not a precision hit. Counting borderline as useful — the
+  lived experience — **~3 of the top 5 are useful**, at a clean **FPR 0.06**. Run
+  `bandiradar eval` to see the `USE@5` column next to `P@5`.
+- **3 of the 11 profiles have ZERO `relevant` items in this corpus** (`mayai`,
+  `hospitality_retail`, `studio_commercialisti` — only borderline), so their strict
+  P@5 is *structurally* 0 and drags the macro-average down. On the **8 profiles where
+  the corpus actually holds relevant bandi**, the LLM scores **strict P@5 0.54 /
+  useful@5 0.83** — `costruzioni`, `sardegna_impresa`, `piemonte_industria`,
+  `pmi_toscana` all hit useful@5 1.00.
+
+So: **where the question is well-posed, the matcher is good (useful@5 0.83); the low
+aggregate is mostly corpus coverage, not a broken ranker** — recall is fine too (55 of
+60 wanted items land in the top-10). The **offline heuristic** is a genuine zero-secret
+fallback (P@5 0.22) but too coarse to threshold, so keyless runs are recall-oriented
+whatever the mode — the LLM is the matcher to ship.
 
 > **Note on the numbers (honest):** an earlier *auto-proposed* gold reported far
 > higher precision (P@5 0.70). A human review of every label revealed that gold was
@@ -272,8 +282,13 @@ the national hubs.
 ### Honest limits (also measured — `eval --diagnostics`)
 
 - **Embeddings** (semantic prefilter, the `embeddings` extra) are **built and
-  measured but net-negative** at the current recall ceiling: ~+0.02 recall for a
-  1.2–2.7× larger candidate set and higher FPR, so they ship **optional and off**.
+  measured; they ship optional and off** — but the trade-off is now honest, not
+  dismissive. On the human-reviewed gold, `semantic ≥ 0.4` lifts recall **0.89 →
+  0.95** (rescuing 3 of the 4 lexical prefilter-drops) at a **flat FPR** (0.52 →
+  0.53) for a **1.6× larger candidate set** (150 → 240). It's a real recall gain,
+  but the bigger candidate set means **~1.6× more LLM scorings per run**, so it
+  stays **off by default**; enable it (`--extra embeddings`) if you prioritise the
+  recall safety net over scoring cost.
 - **Recall ceiling is real.** Gate attribution shows the few relevant items the
   prefilter drops are **all 4 a lexical gap** (`hospitality_retail`, `pmi_toscana`:
   the keyword/CPV signal didn't fire) — no over-strict hard gate to tune, and (after
@@ -669,7 +684,8 @@ which depends on this package — never the reverse.
   enrichment (`--with-benchmarks`).
 - **`watch` monitor loop** (new/amended deltas) + **JSON/RSS export**.
 - **Embeddings semantic prefilter** — built and **measured; ships optional and off**
-  (net-negative at the current recall ceiling — see *Honest limits* under
+  (`semantic ≥ 0.4` is a real recall booster — 0.89 → 0.95 at flat FPR — but 1.6×'s
+  the candidate set, so off by default; see *Honest limits* under
   [Matching quality](#matching-quality-measured)).
 
 **Upcoming**

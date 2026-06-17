@@ -37,6 +37,25 @@ def test_precision_at_k():
     assert ev.precision_at_k(["a", "c"], labels, 5) == 1.0
 
 
+def test_useful_at_k_counts_borderline():
+    ranked = ["a", "b", "c", "d", "e", "f"]
+    labels = {
+        "a": "relevant",
+        "b": "not",
+        "c": "relevant",
+        "d": "borderline",
+        "e": "relevant",
+        "f": "not",
+    }
+    # top-5 = a,b,c,d,e -> useful (relevant+borderline) = a,c,d,e = 4/5
+    assert ev.useful_at_k(ranked, labels, 5) == 0.8
+    # borderline DOES count as useful (vs precision, where it doesn't)
+    assert ev.useful_at_k(["d"], {"d": "borderline"}, 5) == 1.0
+    # useful >= precision always (same hits + borderline)
+    assert ev.useful_at_k(ranked, labels, 5) >= ev.precision_at_k(ranked, labels, 5)
+    assert ev.useful_at_k([], labels, 5) == 0.0
+
+
 def test_recall_counts_borderline_as_relevant():
     labels = {"a": "relevant", "b": "borderline", "c": "not", "d": "relevant"}
     # relevant-for-recall = {a, b, d}; returned {a, b} -> 2/3

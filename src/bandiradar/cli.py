@@ -885,19 +885,21 @@ def doctor(
 
 def _render_eval(report) -> str:
     head = (
-        f"{'PROFILE':28} {'P@5':>5} {'P@10':>5} {'RECALL':>6} {'FPR':>5} "
-        f"{'RET':>4} {'POOL':>4}"
+        f"{'PROFILE':28} {'P@5':>5} {'USE@5':>6} {'P@10':>5} {'RECALL':>6} "
+        f"{'FPR':>5} {'RET':>4} {'POOL':>4}"
     )
     lines = [
         f"corpus: {report.corpus_size} opportunities | "
         f"profiles: {len(report.gold_profiles)} | eval_now: {report.eval_now}",
         f"labels: {report.note}",
+        "USE@5 = useful@5: top-5 that are relevant OR borderline (user-useful); P@5 "
+        "counts only 'relevant' (strict).",
     ]
 
     def row(label, m):
         return (
             f"{_trunc(label, 28):28} {m.precision_at_5:>5.2f} "
-            f"{m.precision_at_10:>5.2f} {m.recall:>6.2f} "
+            f"{m.useful_at_5:>6.2f} {m.precision_at_10:>5.2f} {m.recall:>6.2f} "
             f"{m.false_positive_rate:>5.2f} {m.returned:>4} {m.pool:>4}"
         )
 

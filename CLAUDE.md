@@ -289,6 +289,11 @@ Runs the matcher over the shipped labelled corpus (`data/eval/`, now 405
 opportunities × 11 profiles — up from 312 × 8, after the regional refresh folded in
 the 12 regional sources + 3 regional profiles) for the gold profiles and prints
 precision@5/@10, recall, FPR — per profile + macro-aggregate.
+Also reports **`useful@k`** (the `USE@5` column) — top-k that are `relevant` OR
+`borderline` (user-useful), the lived-experience companion to strict P@k. On the
+human-reviewed gold the LLM is strict P@5 0.39 / useful@5 0.65 (all 11), but **0.54 /
+0.83 on the 8 profiles that actually have `relevant` items** — 3 profiles have only
+borderline, so their strict P@5 is structurally 0 and drags the macro-average.
 Offline by default (heuristic). If an LLM key is set it ALSO reports the LLM on the
 SAME gold set. **Label convention:** `borderline` counts as relevant for RECALL but
 NON-relevant for PRECISION; `not` are the negatives for FPR. To pin a TRUE heuristic
@@ -337,11 +342,15 @@ relevance signal: `cpv OR keyword OR cosine ≥ threshold`, injected via
 extra/model is absent, so the default path is unchanged and the test suite never
 loads a model — `conftest` forces `BANDIRADAR_EMBEDDINGS=none`; tests use a fake
 embedder). Opportunity vectors cache in SQLite (`SqliteEmbeddingCache`, by
-content_hash). **Measured & currently NOT enabled:** `eval --embeddings` (offline,
-heuristic) showed recall +0.01–0.02 but FPR up and the candidate set 1.2–2.7× —
-not net-positive, because the gold corrections already removed most prefilter-drops
-(only ~6 remain). Keep the code optional/off; revisit with reranking or a higher
-threshold.
+content_hash). **Measured on the human-reviewed gold & currently NOT enabled:**
+`eval --embeddings` (offline, heuristic) sweeps thresholds — `semantic ≥ 0.4` is
+the sweet spot: recall **0.89 → 0.95** (rescues 3 of the 4 lexical prefilter-drops)
+at **flat FPR** (0.52 → 0.53) for a **1.6× candidate set** (150 → 240). So it's a
+REAL recall gain (the old "net-negative" verdict was on the permissive pre-review
+gold; corrected). It stays optional/off because the 1.6× candidate set = ~1.6× LLM
+scorings/run (cost), and 2 of the 4 rescued drops were correctly-weak borderline
+items — not pure signal. Enable it only when the recall safety net is worth the
+scoring cost; `0.3` over-expands (2.4×, FPR up), `0.5` barely helps (drop 3).
 
 ## Conventions
 - Python 3.12, full type hints, pydantic v2.

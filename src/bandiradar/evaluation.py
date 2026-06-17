@@ -63,6 +63,19 @@ def precision_at_k(ranked_ids: list[str], labels: dict[str, Label], k: int) -> f
     return hits / len(top)
 
 
+def useful_at_k(ranked_ids: list[str], labels: dict[str, Label], k: int) -> float:
+    """Fraction of the top-k that are USEFUL to a user — ``relevant`` OR
+    ``borderline`` (adjacent but worth a look). The lived-experience companion to the
+    strict :func:`precision_at_k`: an adjacent grant is not a precision hit but is
+    still a useful result, so useful@k reads higher than P@k where borderline items
+    rank well. 0.0 when nothing returned."""
+    top = ranked_ids[:k]
+    if not top:
+        return 0.0
+    hits = sum(1 for i in top if labels.get(i) in ("relevant", "borderline"))
+    return hits / len(top)
+
+
 def recall(ranked_ids: list[str], labels: dict[str, Label]) -> float:
     """Relevant-for-recall (relevant + borderline) found anywhere in the ranking,
     over all such labelled in the pool. 1.0 when there are none to find."""
@@ -113,6 +126,8 @@ def attribute_recall(
 class EvalMetrics(BaseModel):
     precision_at_5: float
     precision_at_10: float
+    useful_at_5: float  # top-5 that are relevant OR borderline (user-useful)
+    useful_at_10: float
     recall: float
     false_positive_rate: float
     returned: int  # ranked results for this profile
@@ -225,6 +240,8 @@ def _metrics(ranked_ids: list[str], labels: dict[str, Label]) -> EvalMetrics:
     return EvalMetrics(
         precision_at_5=precision_at_k(ranked_ids, labels, 5),
         precision_at_10=precision_at_k(ranked_ids, labels, 10),
+        useful_at_5=useful_at_k(ranked_ids, labels, 5),
+        useful_at_10=useful_at_k(ranked_ids, labels, 10),
         recall=recall(ranked_ids, labels),
         false_positive_rate=false_positive_rate(ranked_ids, labels),
         returned=len(ranked_ids),
@@ -239,6 +256,8 @@ def _aggregate(metrics: list[EvalMetrics]) -> EvalMetrics:
     return EvalMetrics(
         precision_at_5=sum(x.precision_at_5 for x in metrics) / n,
         precision_at_10=sum(x.precision_at_10 for x in metrics) / n,
+        useful_at_5=sum(x.useful_at_5 for x in metrics) / n,
+        useful_at_10=sum(x.useful_at_10 for x in metrics) / n,
         recall=sum(x.recall for x in metrics) / n,
         false_positive_rate=sum(x.false_positive_rate for x in metrics) / n,
         returned=sum(x.returned for x in metrics),
