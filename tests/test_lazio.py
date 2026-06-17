@@ -80,6 +80,24 @@ def test_parse_scadenza_none_when_absent():
     assert lazio._parse_scadenza("Bando a sportello senza data indicata.") is None
 
 
+def test_parse_scadenza_fino_al_window_picks_end_date():
+    # The Lazio window form: the real deadline is the END ("fino al"), not the
+    # opening ("dal"). Without the "fino a" key the date lived only in prose and
+    # the bando was mapped status="open" long after it had closed.
+    text = (
+        "Domande online su GeCoWEB Plus dalle ore 12 del 10 gennaio 2025 "
+        "e fino alle ore 17 del 14 febbraio 2025."
+    )
+    d = lazio._parse_scadenza(text)
+    assert d is not None and (d.year, d.month, d.day) == (2025, 2, 14)
+
+
+def test_parse_scadenza_fino_ad_esaurimento_no_false_positive():
+    # "fino a" without a real date nearby must NOT invent a deadline.
+    text = "Sportello aperto fino ad esaurimento risorse."
+    assert lazio._parse_scadenza(text) is None
+
+
 def test_lazio_registered():
     source = get("lazio")
     assert source.id == "lazio"

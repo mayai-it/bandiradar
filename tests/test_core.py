@@ -74,8 +74,8 @@ def test_llm_fetch_persists_extractions_and_golden_to_passed_store(monkeypatch):
 
 def test_sample_match_is_reproducible_and_pinned():
     """`--sample` pins ``now`` to ``SAMPLE_NOW`` so the Quickstart reproduces forever
-    regardless of the calendar date. Guards the README's documented output (3 matches
-    for `mayai` at the balanced cutoff)."""
+    regardless of the calendar date. Guards the README's documented output (the open
+    `mayai` matches at the balanced cutoff)."""
     profile = core.load_profile("mayai")
     s1 = Store(":memory:")
     s2 = Store(":memory:")
@@ -89,7 +89,12 @@ def test_sample_match_is_reproducible_and_pinned():
     # The README's documented matches are present (the test suite also registers a
     # `synthetic` source, so don't assert an exact count — assert the real ones).
     ids = {o.id for o, _ in a}
-    assert {"incentivi:3400", "lazio:48841", "lazio:58887"} <= ids
+    assert {"incentivi:3400", "lazio:58887"} <= ids
+    # lazio:48841 ("Voucher Digitalizzazione PMI 2025") closed on 2025-02-14 — a
+    # deadline that lived only in prose ("… fino al 14 febbraio 2025"). Since the
+    # `fino a` parser fix it is correctly mapped status="closed" and dropped by the
+    # open-gate, so it must NOT surface as a live match at SAMPLE_NOW.
+    assert "lazio:48841" not in ids
 
 
 def test_run_fetch_sample_counts_and_dedupe(store):

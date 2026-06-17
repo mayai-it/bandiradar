@@ -89,24 +89,25 @@ Real output on the bundled sample data (reproducible — `--sample` pins the run
 fixed reference date, `2026-06-08`, so the demo never drifts as the calendar moves):
 
 ```text
-3 matching opportunities for 'MayAI':
+2 matching opportunities for 'MayAI':
 
 #1  score 55  [open]  Manifestazione d'interesse per l'accesso ai servizi per la digitalizzazione forniti da SoE AP EDIH
      issuer: Ministero delle Imprese e del Made in Italy (Campania)   deadline: 2026-06-30
      why: capability overlap: artificiale, digitalizzazione, intelligenza; within profile value range; national scope
      https://www.medisdih.it/wp/
 
-#2  score 52  [open]  Voucher Digitalizzazione PMI 2025
-     issuer: LazioInnova (Lazio)   deadline: —
-     why: capability overlap: cloud, conforme, dati, digitalizzazione, machine; region match: Lazio
-     https://www.lazioinnova.it/bandi/voucher-digitalizzazione-pmi-2025/
-
-#3  score 42  [closing_soon]  Donne e Impresa 2026
+#2  score 42  [closing_soon]  Donne e Impresa 2026
      issuer: LazioInnova (Lazio)   deadline: 2026-06-10
      why: capability overlap: data, software; region match: Lazio
      risk: deadline closing soon
      https://www.lazioinnova.it/bandi/donne-e-impresa-2026/
 ```
+
+> Only **open** opportunities surface. A third thematically-on-target bando
+> ("Voucher Digitalizzazione PMI 2025") is correctly **withheld**: its application
+> window closed on 14 Feb 2025, a deadline that lived only in the bando's prose
+> ("… *fino al 14 febbraio 2025*"). The engine reads that free-text deadline, so it
+> won't show you an expired call dressed up as live.
 
 `--profile` accepts either a **bundled example name** (`mayai`,
 `medtech_lombardia`, `pmi_toscana`, … — packaged in the wheel, so the demos work

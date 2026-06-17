@@ -4,6 +4,33 @@ All notable changes to BandiRadar are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow
 [SemVer](https://semver.org/).
 
+## [0.20.1] — 2026-06-17 — free-text deadline fix: "… fino al &lt;date&gt;"
+
+### Fixed
+- **Expired bandi were shown as `open`.** `wordpress._parse_scadenza` (the Lazio/
+  Sicilia adapters' deadline parser) only accepted a date introduced by
+  `scadenza/termine/entro/presentazione/chiusura`. The dominant Lazio window form is
+  `"… dalle ore 12 del <start> e fino alle ore 17 del <end>"`, where the closing date
+  is introduced by **"fino al/alle/ad"** — not in the key list. So those bandi were
+  mapped `deadline=None → status="open"` and surfaced as live long after they had
+  closed. Added `"fino a"` to `_DEADLINE_KEYS`. **Measured on the bundled data:** the
+  fix correctly closes ~20 expired Lazio/Sicilia items (e.g. "Voucher Digitalizzazione
+  PMI 2025", window closed 14 Feb 2025), with **zero recall risk** — none of the
+  newly-closed items is labelled relevant/borderline by any profile.
+- **README Quickstart no longer showcases an expired match.** `mayai --sample` had
+  documented "Voucher Digitalizzazione PMI 2025" (deadline `—`) as match #2; it is now
+  correctly withheld (closed), so the Quickstart shows 2 genuinely-open matches. The
+  pinned reproducibility test asserts the expired bando is dropped.
+
+### Notes
+- The **eval corpus was deliberately left untouched.** Its frozen Lazio slice (60 rows)
+  predates the fix and the committed fixtures cover only 15 of them, so a *faithful*
+  refresh of the other 45 would need the full source payloads (not available offline);
+  recomputing from the corpus's truncated stored text was verified to mis-date some
+  near-boundary rows, so it was rejected. Leaving the stale-`open` items in the corpus
+  is the conservative choice — they are extra negatives that make the matcher's job
+  harder, never easier.
+
 ## [0.20.0] — 2026-06-16 — `useful@k` metric (honest reading) + `__version__` fix
 
 ### Added

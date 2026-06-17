@@ -46,7 +46,17 @@ _MONTHS = {
     "dicembre": 12,
 }
 # A date counts as the deadline only if one of these words precedes it nearby.
-_DEADLINE_KEYS = ("scadenz", "termine", "entro", "presentazione", "chiusura")
+# "fino a" catches the Lazio/Sicilia window form "dal <start> ... fino al <end>"
+# (the closing date introduced by "fino al/alle/ad") — without it the real
+# deadline lived only in prose, so expired bandi were mapped status="open".
+_DEADLINE_KEYS = (
+    "scadenz",
+    "termine",
+    "entro",
+    "presentazione",
+    "chiusura",
+    "fino a",
+)
 _MONTH_DATE_RE = re.compile(r"(\d{1,2})\s+(" + "|".join(_MONTHS) + r")\s+(\d{4})")
 _NUMERIC_DATE_RE = re.compile(r"(\d{1,2})[/.](\d{1,2})[/.](\d{4})")
 _TAG_RE = re.compile(r"<[^>]+>")
