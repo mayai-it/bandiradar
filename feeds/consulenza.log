@@ -1,0 +1,149 @@
+INFO httpx: HTTP Request: GET https://data.open-contracting.org/en/publication/117/download?name=2026.jsonl.gz "HTTP/1.1 404 Not Found"
+INFO httpx: HTTP Request: GET https://data.open-contracting.org/en/publication/117/download?name=2025.jsonl.gz "HTTP/1.1 302 Found"
+INFO httpx: HTTP Request: GET https://fastly.data.open-contracting.org/downloads/italy_anac/3868/2025.jsonl.gz "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=anac status=ok fetched=2000 mapped=2000 new=0 amended=0 skipped_invalid=0 duration=3.76s
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=0 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=2 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=3 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=4 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=5 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=6 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=7 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=8 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=9 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=10 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=11 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=12 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=13 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=14 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=15 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=16 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=17 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=18 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=19 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=20 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=21 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=22 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=23 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=24 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=25 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=26 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=27 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=28 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://pubblicitalegale.anticorruzione.it/api/v0/avvisi?sortField=dataPubblicazione&sortDirection=DESC&dataPubblicazioneStart=25%2F06%2F2026&dataPubblicazioneEnd=02%2F07%2F2026&size=100&page=29 "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=anac_pvl status=ok fetched=68 mapped=68 new=68 amended=0 skipped_invalid=0 duration=7.87s
+[bandiradar] scoring via anthropic:claude-haiku-4-5-20251001
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fportalebandi.regione.basilicata.it%2Fwp-json%2Fwp%2Fv2%2Favvisi-e-bandi%3Fper_page%3D20%26orderby%3Ddate%26order%3Ddesc%26_fields%3Did%252Clink%252Ctitle "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=basilicata status=ok fetched=20 mapped=20 new=0 amended=0 skipped_invalid=0 duration=1.09s
+INFO httpx: HTTP Request: GET https://calabriaeuropa.regione.calabria.it/wp-json/wp/v2/bando?per_page=20&orderby=date&order=desc&_fields=id%2Clink%2Ctitle "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=calabria status=ok fetched=20 mapped=20 new=0 amended=0 skipped_invalid=0 duration=1.31s
+INFO httpx: HTTP Request: GET https://www.sviluppocampania.it/bandi-aperti/ "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=campania status=ok fetched=6 mapped=6 new=0 amended=0 skipped_invalid=0 duration=0.98s
+INFO httpx: HTTP Request: GET https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?portal_type=Bando&fullobjects=true&b_size=50&sort_on=modified&sort_order=descending "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://politicheterritoriali.regione.emilia-romagna.it/++api++/@search?b_start=50&portal_type=Bando&fullobjects=true&b_size=50&sort_on=modified&sort_order=descending "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=emilia_romagna status=ok fetched=73 mapped=73 new=0 amended=0 skipped_invalid=0 duration=5.04s
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.regione.fvg.it%2Frafvg%2Fcms%2FRAFVG%2FMODULI%2Fbandi_avvisi%2Fricerca.jsp%3FtxtChiave%3D%26onlyTagServizio%3D1%26startsearch%3Dvai "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.regione.fvg.it%2Frafvg%2Fcms%2FRAFVG%2FMODULI%2Fbandi_avvisi%2Fricerca.jsp%3FtxtChiave%3D%26onlyTagServizio%3D1%26startsearch%3Dvai%26pag%3D2 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.regione.fvg.it%2Frafvg%2Fcms%2FRAFVG%2FMODULI%2Fbandi_avvisi%2Fricerca.jsp%3FtxtChiave%3D%26onlyTagServizio%3D1%26startsearch%3Dvai%26pag%3D3 "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=fvg status=ok fetched=12 mapped=12 new=0 amended=0 skipped_invalid=0 duration=20.29s
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D0%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D200%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D400%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D600%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D800%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D1000%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D1200%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D1400%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D1600%26wt%3Djson "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.incentivi.gov.it%2Fsolr%2Fcoredrupal%2Fselect%3Fq%3D%252A%253A%252A%26q.op%3DOR%26fq%3Dindex_id%253Aincentivi%26fl%3D%252A%26rows%3D200%26start%3D1800%26wt%3Djson "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=incentivi status=ok fetched=2000 mapped=2000 new=0 amended=0 skipped_invalid=0 duration=11.03s
+INFO httpx: HTTP Request: GET https://www.lazioinnova.it/wp-json/wp/v2/bandi?per_page=100&page=1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://www.lazioinnova.it/wp-json/wp/v2/bandi?per_page=100&page=2 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://www.lazioinnova.it/wp-json/wp/v2/bandi?per_page=100&page=3 "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=lazio status=ok fetched=291 mapped=291 new=1 amended=0 skipped_invalid=0 duration=8.05s
+INFO httpx: HTTP Request: GET https://www.regione.liguria.it/bandi-e-avvisi.html "HTTP/1.1 302 Found"
+INFO httpx: HTTP Request: GET https://www.regione.liguria.it/homepage-bandi-e-avvisi.html "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://www.regione.liguria.it/homepage-bandi-e-avvisi.html "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://www.regione.liguria.it/homepage-bandi-e-avvisi/publiccompetition/2321:avviso-pubblico-presentazione-domande-contributo-adattamento-postazioni-lavoro-lavoratori-con-disabilit%C3%A0.html "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=liguria status=ok fetched=10 mapped=10 new=1 amended=0 skipped_invalid=0 duration=6.05s
+INFO httpx: HTTP Request: GET https://dati.lombardia.it/resource/k6cb-4hbm.json?%24order=data_pubblicazione+DESC&%24limit=1000&%24offset=0 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://dati.lombardia.it/resource/k6cb-4hbm.json?%24order=data_pubblicazione+DESC&%24limit=1000&%24offset=1000 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://dati.lombardia.it/resource/k6cb-4hbm.json?%24order=data_pubblicazione+DESC&%24limit=1000&%24offset=2000 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://dati.lombardia.it/resource/k6cb-4hbm.json?%24order=data_pubblicazione+DESC&%24limit=1000&%24offset=3000 "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=lombardia status=ok fetched=2000 mapped=2000 new=6 amended=55 skipped_invalid=0 duration=4.77s
+INFO httpx: HTTP Request: GET https://bandi.regione.piemonte.it/contributi-finanziamenti?field_stato_target_id=19&page=0 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandi.regione.piemonte.it/contributi-finanziamenti?field_stato_target_id=19&page=1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandi.regione.piemonte.it/contributi-finanziamenti?field_stato_target_id=19&page=2 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandi.regione.piemonte.it/contributi-finanziamenti/matchin-mobilizing-advanced-talents-for-competence-and-high-innovation "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=piemonte status=ok fetched=27 mapped=27 new=1 amended=0 skipped_invalid=0 duration=7.22s
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fpr2127.regione.puglia.it%2Felenco-avvisi-pubblicati%3Fp_p_id%3DRicercaNews_INSTANCE_HR72zDg9uWt0%26p_p_lifecycle%3D2%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_resource_id%3D%252Fricerca%252Fnews%252Fnews-list%26p_p_cacheability%3DcacheLevelPage%26_RicercaNews_INSTANCE_HR72zDg9uWt0_delta%3D30 "HTTP/1.1 502 Bad Gateway"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fpr2127.regione.puglia.it%2Felenco-avvisi-pubblicati%3Fp_p_id%3DRicercaNews_INSTANCE_HR72zDg9uWt0%26p_p_lifecycle%3D2%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_resource_id%3D%252Fricerca%252Fnews%252Fnews-list%26p_p_cacheability%3DcacheLevelPage%26_RicercaNews_INSTANCE_HR72zDg9uWt0_delta%3D30 "HTTP/1.1 502 Bad Gateway"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fpr2127.regione.puglia.it%2Felenco-avvisi-pubblicati%3Fp_p_id%3DRicercaNews_INSTANCE_HR72zDg9uWt0%26p_p_lifecycle%3D2%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_resource_id%3D%252Fricerca%252Fnews%252Fnews-list%26p_p_cacheability%3DcacheLevelPage%26_RicercaNews_INSTANCE_HR72zDg9uWt0_delta%3D30 "HTTP/1.1 502 Bad Gateway"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fpr2127.regione.puglia.it%2Felenco-avvisi-pubblicati%3Fp_p_id%3DRicercaNews_INSTANCE_HR72zDg9uWt0%26p_p_lifecycle%3D2%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_resource_id%3D%252Fricerca%252Fnews%252Fnews-list%26p_p_cacheability%3DcacheLevelPage%26_RicercaNews_INSTANCE_HR72zDg9uWt0_delta%3D30 "HTTP/1.1 502 Bad Gateway"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fpr2127.regione.puglia.it%2Felenco-avvisi-pubblicati%3Fp_p_id%3DRicercaNews_INSTANCE_HR72zDg9uWt0%26p_p_lifecycle%3D2%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_resource_id%3D%252Fricerca%252Fnews%252Fnews-list%26p_p_cacheability%3DcacheLevelPage%26_RicercaNews_INSTANCE_HR72zDg9uWt0_delta%3D30 "HTTP/1.1 502 Bad Gateway"
+ERROR bandiradar.core: source=puglia fetch stopped after 0 records: Puglia avvisi fragment failed after 5 attempts (HTTP 502) (kind=unavailable)
+ERROR bandiradar.core: source=puglia status=failed fetched=0 mapped=0 new=0 amended=0 skipped_invalid=0 duration=60.89s
+INFO httpx: HTTP Request: GET https://www.sardegnaimpresa.eu/it/agevolazioni "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=sardegna status=ok fetched=10 mapped=10 new=0 amended=0 skipped_invalid=0 duration=1.67s
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.euroinfosicilia.it%2Fwp-json%2Fwp%2Fv2%2Fposts%3Fcategories%3D321%26orderby%3Ddate%26order%3Ddesc%26per_page%3D100%26page%3D1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fwww.euroinfosicilia.it%2Fwp-json%2Fwp%2Fv2%2Fposts%3Fcategories%3D321%26orderby%3Ddate%26order%3Ddesc%26per_page%3D100%26page%3D2 "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=sicilia status=ok fetched=138 mapped=138 new=0 amended=0 skipped_invalid=0 duration=17.28s
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.ted.europa.eu/v3/notices/search "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=ted status=ok fetched=2000 mapped=2000 new=171 amended=0 skipped_invalid=0 duration=28.51s
+INFO httpx: HTTP Request: GET https://www.sviluppo.toscana.it/wp-json/wp/v2/bando?per_page=20&_fields=id%2Clink%2Ctitle "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://www.sviluppo.toscana.it/bando/bando-verifiche-tecniche-di-edifici-pubblici-strategici-e-o-rilevanti-sub-azione-2-4-1-2-b/ "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=toscana status=ok fetched=20 mapped=20 new=1 amended=0 skipped_invalid=0 duration=8.90s
+INFO httpx: HTTP Request: GET https://docs.google.com/spreadsheets/d/e/2PACX-1vTOHrmvCu7YH-UBG0snJO_KsxvdvP4fCpgek-Bb9SBrxx-pM4hKRfNJtlHvWR0RBN_u-NQf0ggeu5pE/pub?output=csv "HTTP/1.1 307 Temporary Redirect"
+INFO httpx: HTTP Request: GET https://doc-00-60-sheets.googleusercontent.com/pub/54bogvaave6cua4cdnls17ksc4/t5juj28r8snshm371b9ih7uj1k/1782981060000/105250506097979753968/*/e@2PACX-1vTOHrmvCu7YH-UBG0snJO_KsxvdvP4fCpgek-Bb9SBrxx-pM4hKRfNJtlHvWR0RBN_u-NQf0ggeu5pE?output=csv "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=trentino status=ok fetched=41 mapped=41 new=0 amended=0 skipped_invalid=0 duration=3.03s
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fbandi.regione.veneto.it%2FPublic%2FIndex "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fbandi.regione.veneto.it%2FPublic%2FDettaglio%3FidAtto%3D13094 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://bandiradar.vercel.app/api/relay?u=https%3A%2F%2Fbandi.regione.veneto.it%2FPublic%2FDettaglio%3FidAtto%3D13098 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+INFO bandiradar.core: source=veneto status=ok fetched=10 mapped=10 new=2 amended=0 skipped_invalid=0 duration=7.68s
+SOURCE         STATUS    NEW AMEND SKIP  ERROR
+----------------------------------------------------------------
+anac           ok          0     0    0  —
+anac_pvl       ok         68     0    0  —
+basilicata     ok          0     0    0  —
+calabria       ok          0     0    0  —
+campania       ok          0     0    0  —
+emilia_romagna ok          0     0    0  —
+fvg            ok          0     0    0  —
+incentivi      ok          0     0    0  —
+lazio          ok          1     0    0  —
+liguria        ok          1     0    0  —
+lombardia      ok          6    55    0  —
+piemonte       ok          1     0    0  —
+puglia         failed      0     0    0  Puglia avvisi fragment failed after 5 attempts …
+sardegna       ok          0     0    0  —
+sicilia        ok          0     0    0  —
+ted            ok        171     0    0  —
+toscana        ok          1     0    0  —
+trentino       ok          0     0    0  —
+veneto         ok          2     0    0  —
+wrote RSS feed: state/feeds/consulenza.xml (0 items)

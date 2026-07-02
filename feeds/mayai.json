@@ -1,0 +1,22 @@
+[
+  {
+    "opportunity_id": "lazio:60933",
+    "score": 25,
+    "status": "open",
+    "title": "Valore Artigiano 2026",
+    "deadline": "2026-10-28T00:00:00+00:00",
+    "reasons": [
+      "MayAI è un'azienda di consulenza software e AI, non un'impresa artigiana iscritta all'albo",
+      "Il bando è esclusivamente riservato alle imprese artigiane del Lazio; MayAI non rientra in questa categoria",
+      "MayAI potrebbe essere fornitore di servizi digitali per artigiani, ma non beneficiario diretto",
+      "L'ATECO di MayAI (62.01, 62.02, 63.11) riguarda servizi IT e consulenza, non artigianato"
+    ],
+    "matched_capabilities": [
+      "Sviluppo di soluzioni digitali e software per PMI",
+      "Servizi cloud e SaaS (ammissibili come spese nel bando)",
+      "Tecnologie digitali e automazione dei processi",
+      "Consulenza in transizione digitale"
+    ],
+    "source_url": "https://www.lazioinnova.it/bandi/valore-artigiano-2026/"
+  }
+]

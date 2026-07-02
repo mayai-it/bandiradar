@@ -1,0 +1,266 @@
+{
+  "sources": [
+    {
+      "source": "anac",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "anac_pvl",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "basilicata",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "calabria",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "campania",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "emilia_romagna",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "fvg",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "incentivi",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "lazio",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "liguria",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "lombardia",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "piemonte",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "puglia",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": false,
+      "parsed": false,
+      "status": "failed",
+      "error_kind": "unavailable",
+      "note": "Puglia avvisi fragment failed after 5 attempts (HTTP 502)",
+      "crawl_health": null
+    },
+    {
+      "source": "sardegna",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "sicilia",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "ted",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "toscana",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    },
+    {
+      "source": "trentino",
+      "needs_key": false,
+      "key_ok": null,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": null
+    },
+    {
+      "source": "veneto",
+      "needs_key": true,
+      "key_ok": true,
+      "reachable": true,
+      "parsed": true,
+      "status": "ok",
+      "error_kind": null,
+      "note": null,
+      "crawl_health": "ok"
+    }
+  ],
+  "env": {
+    "python_version": "3.12.3",
+    "llm_provider": "anthropic",
+    "llm_key_present": true,
+    "llm_ready": true,
+    "extras": {
+      "anthropic": true,
+      "openai": false,
+      "ocr": false
+    },
+    "db_ok": true,
+    "db_error": null
+  },
+  "healthy": false,
+  "exit_code": 4,
+  "trust_counts": {
+    "basilicata": {
+      "ok": 24,
+      "suspect": 1
+    },
+    "calabria": {
+      "ok": 24,
+      "suspect": 1
+    },
+    "campania": {
+      "ok": 5,
+      "suspect": 1
+    },
+    "fvg": {
+      "ok": 12
+    },
+    "liguria": {
+      "ok": 16,
+      "suspect": 1
+    },
+    "piemonte": {
+      "ok": 42,
+      "suspect": 3
+    },
+    "puglia": {
+      "ok": 5
+    },
+    "sardegna": {
+      "ok": 17
+    },
+    "toscana": {
+      "ok": 26
+    },
+    "veneto": {
+      "ok": 42,
+      "quarantine": 1
+    }
+  }
+}
